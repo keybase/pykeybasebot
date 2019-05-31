@@ -22,5 +22,8 @@ listen_options = {
     'filter_channels': None,
 }
 
-bot = Bot(Handler())
+bot = Bot(
+    username="yourbot",
+    handler=Handler(),
+)
 asyncio.run(bot.start(listen_options))

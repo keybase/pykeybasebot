@@ -29,4 +29,4 @@ class ChatClient:
         })
 
     async def execute(self, command):
-        return await self.bot.submit("keybase chat api", json.dumps(command).encode('utf-8'))
+        return await self.bot.submit("chat api", json.dumps(command).encode('utf-8'))

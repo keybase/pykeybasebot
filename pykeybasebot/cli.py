@@ -7,8 +7,8 @@ import shlex
 from .kbevent import KbEvent
 
 
-async def kblisten(options):
-    command = ['keybase', 'chat', 'api-listen']
+async def kblisten(keybase_cli, options):
+    command = shlex.split(keybase_cli) + ['chat', 'api-listen']
     if options.get('local'):
         command.append('--local')
     if options.get('hide-exploding'):
@@ -40,14 +40,15 @@ async def kblisten(options):
             pass
 
 
-async def kbsubmit(command, input_data=None):
-    cmd_list = shlex.split(command)
+async def kbsubmit(keybase_cli, command, input_data=None, **kwargs):
+    cmd_list = shlex.split(keybase_cli) + shlex.split(command)
     logging.debug(f"executing command: {cmd_list} with input {input_data}")
     proc = await asyncio.create_subprocess_exec(
         *cmd_list,
         stdin=asyncio.subprocess.PIPE,
         stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE)
+        stderr=asyncio.subprocess.PIPE,
+        **kwargs)
     stdout, stderr = await proc.communicate(input_data)
 
     if stderr:

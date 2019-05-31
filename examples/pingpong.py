@@ -21,5 +21,8 @@ listen_options = {
     'filter-channels': '[{"name": "yourbot,youcryptodev,someoneelse"},{"name": "mkbot", "topic_name": "general", "members_type": "team"}]'
 }
 
-bot = Bot(Handler())
+bot = Bot(
+    username="yourbot",
+    handler=Handler(),
+)
 asyncio.run(bot.start(listen_options))

@@ -37,5 +37,8 @@ listen_options = {
     "wallet": True
 }
 
-bot = Bot(Handler(), name='yourbot')
+bot = Bot(
+    username="yourbot",
+    handler=Handler(),
+)
 asyncio.run(bot.start(listen_options))

@@ -11,10 +11,16 @@ logging.basicConfig(level=logging.DEBUG)
 
 async def make_a_poll():
     channel = {"name": "yourcompany.marketing", "topic_name": "lunchtalk", "members_type": "team"}
+    paperkey = os.environ['KEYBASE_PAPERKEY']
 
     def noop_handler(*args, **kwargs):
         pass
-    bot = Bot(noop_handler)
+
+    bot = Bot(
+        username="yourbot",
+        handler=noop_handler,
+    )
+    await bot.oneshot(paperkey)
 
     resp = await bot.chat.send(channel, "what are y'all feeling for lunch?")
     msg_id = resp['result']['id']

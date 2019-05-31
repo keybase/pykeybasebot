@@ -122,6 +122,7 @@ class Content(DataClassJSONMixin):
     reaction: Reaction = OmitIfEmpty()
     unfurl: Any = OmitIfEmpty()
     edit: Any = OmitIfEmpty()
+    flip: Any = OmitIfEmpty()
 
 @dataclass
 class ChannelNameMention(DataClassJSONMixin):
@@ -131,12 +132,12 @@ class ChannelNameMention(DataClassJSONMixin):
 @dataclass
 class Message(DataClassJSONMixin):
     id: int
-    conversation_id: str
     channel: Channel
     sender: Sender
     sent_at: int
     sent_at_ms: int
     content: Content
+    conversation_id: str = OmitIfEmpty()
     prev: str = OmitIfEmpty()
     unread: bool = OmitIfEmpty()
     channel_mention: str = OmitIfEmpty()
