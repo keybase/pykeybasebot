@@ -23,6 +23,7 @@ listen_options = {
 
 bot = Bot(
     username="yourbot",
+    paperkey=os.environ['KEYBASE_PAPERKEY'],
     handler=handler,
 )
 asyncio.run(bot.start(listen_options))

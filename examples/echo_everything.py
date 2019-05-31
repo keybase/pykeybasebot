@@ -2,6 +2,7 @@
 
 import asyncio
 import logging
+import os
 
 from pykeybasebot import Bot
 
@@ -24,6 +25,7 @@ listen_options = {
 
 bot = Bot(
     username="yourbot",
+    paperkey=os.environ['KEYBASE_PAPERKEY'],
     handler=Handler(),
 )
 asyncio.run(bot.start(listen_options))

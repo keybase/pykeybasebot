@@ -6,6 +6,7 @@ class ChatClient:
         self.bot = bot
 
     async def send(self, channel_dict, message):
+        await self.bot.must_be_initialized()
         return await self.execute({
             "method": "send",
             "params": {
@@ -17,6 +18,7 @@ class ChatClient:
         })
 
     async def react(self, channel_dict, message_id, reaction):
+        await self.bot.must_be_initialized()
         return await self.execute({
             "method": "reaction",
             "params": {
