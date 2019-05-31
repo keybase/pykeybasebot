@@ -3,7 +3,7 @@
 import asyncio
 import logging
 
-from kbpybot import Bot
+from pykeybasebot import Bot
 
 
 logging.basicConfig(level=logging.DEBUG)

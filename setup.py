@@ -8,7 +8,7 @@ with open('README.md') as f:
     readme = f.read()
 
 setup(
-    name='kbpybot',
+    name='pykeybasebot',
     version='0.0.1',
     description='python bot client for keybase',
     long_description=readme,

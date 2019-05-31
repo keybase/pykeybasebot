@@ -3,7 +3,7 @@
 import asyncio
 import logging
 
-from kbpybot import Bot, EventType, PaymentStatusStr
+from pykeybasebot import Bot, EventType, PaymentStatusStr
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -37,5 +37,5 @@ listen_options = {
     "wallet": True
 }
 
-bot = Bot(Handler(), name='yeoldebot')
+bot = Bot(Handler(), name='yourbot')
 asyncio.run(bot.start(listen_options))

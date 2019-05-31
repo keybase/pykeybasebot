@@ -3,7 +3,7 @@
 import asyncio
 import logging
 
-from kbpybot import Bot, ContentType
+from pykeybasebot import Bot, ContentType
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -18,7 +18,7 @@ class Handler:
             await bot.chat.send(channel.replyable_dict(), "PONG!")
 
 listen_options = {
-    'filter-channels': '[{"name": "pingpongbot,youcryptodev,someoneelse"},{"name": "mkbot", "topic_name": "general", "members_type": "team"}]'
+    'filter-channels': '[{"name": "yourbot,youcryptodev,someoneelse"},{"name": "mkbot", "topic_name": "general", "members_type": "team"}]'
 }
 
 bot = Bot(Handler())
