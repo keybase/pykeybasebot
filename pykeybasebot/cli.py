@@ -19,10 +19,10 @@ async def kblisten(keybase_cli, options, loop=None):
         command.append('--wallet')
     if options.get('filter-channel'):
         command.append('--filter-channel')
-        command.append(options['filter-channel'])
+        command.append(json.dumps(options['filter-channel']))
     if options.get('filter-channels'):
         command.append('--filter-channels')
-        command.append(options['filter-channels'])
+        command.append(json.dumps(options['filter-channels']))
 
     logging.debug(f"executing command: {command}")
     process = await asyncio.create_subprocess_exec(

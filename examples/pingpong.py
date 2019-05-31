@@ -19,7 +19,10 @@ class Handler:
             await bot.chat.send(channel.replyable_dict(), "PONG!")
 
 listen_options = {
-    'filter-channels': '[{"name": "yourbot,youcryptodev,someoneelse"},{"name": "mkbot", "topic_name": "general", "members_type": "team"}]'
+    'filter-channels': [
+        {"name": "yourbot,someoneelse"},
+        {"name": "yourcompany.marketing", "topic_name": "lunchtalk", "members_type": "team"}
+    ]
 }
 
 bot = Bot(

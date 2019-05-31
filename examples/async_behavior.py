@@ -38,7 +38,7 @@ class Handler:
 
 
 listen_options = {
-    'filter-channel': '{"name":"yourbot,someoneelse"}'
+    'filter-channel': {"name": "yourbot,someoneelse"}
 }
 
 loop = asyncio.get_event_loop()

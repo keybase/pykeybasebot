@@ -18,7 +18,7 @@ async def handler(bot, event):
 
 
 listen_options = {
-    'filter-channel': '{"name":"yourbot,someoneelse"}'
+    'filter-channel': {"name":"yourbot,someoneelse"}
 }
 
 bot = Bot(
