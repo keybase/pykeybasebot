@@ -7,7 +7,7 @@ import shlex
 from .kbevent import KbEvent
 
 
-async def kblisten(keybase_cli, options):
+async def kblisten(keybase_cli, options, loop=None):
     command = shlex.split(keybase_cli) + ['chat', 'api-listen']
     if options.get('local'):
         command.append('--local')
@@ -30,6 +30,7 @@ async def kblisten(keybase_cli, options):
         stdin=asyncio.subprocess.PIPE,
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.STDOUT,
+        loop=loop,
     )
     while True:
         line = await process.stdout.readline()

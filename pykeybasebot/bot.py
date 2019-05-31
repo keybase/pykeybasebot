@@ -29,7 +29,7 @@ class Bot:
                 asyncio.create_task(self.handler(self, event))
 
     async def submit(self, command, input_data=None, **opts):
-        return await kbsubmit(self.keybase_cli, command, input_data, **opts)
+        return await kbsubmit(self.keybase_cli, command, input_data, loop=self.loop, **opts)
 
     @property
     def chat(self):

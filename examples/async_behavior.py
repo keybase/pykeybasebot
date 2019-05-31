@@ -44,6 +44,6 @@ loop = asyncio.get_event_loop()
 bot = Bot(
     username="yourbot",
     handler=Handler(use_lock=False),
-    loop=loop,
 )
 loop.run_until_complete(bot.start(listen_options))
+loop.close()
