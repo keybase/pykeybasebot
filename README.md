@@ -8,7 +8,7 @@ This library is very far from exhaustively covering the complete Keybase API, bu
 
 
 ## Installation
-Python 3.6 or greater, please. And it's all async, so you'll need to call into it with that in mind.
+Python 3.7 or greater, please. And it's all async, so you'll need to call into it with that in mind.
 
 ## Setup
 
