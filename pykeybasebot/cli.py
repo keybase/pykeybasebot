@@ -44,16 +44,16 @@ async def kblisten(keybase_cli, options, loop=None):
 async def kbsubmit(keybase_cli, command, input_data=None, **kwargs):
     cmd_list = shlex.split(keybase_cli) + shlex.split(command)
     logging.debug(f"executing command: {cmd_list} with input {input_data}")
-    proc = await asyncio.create_subprocess_exec(
+    process = await asyncio.create_subprocess_exec(
         *cmd_list,
         stdin=asyncio.subprocess.PIPE,
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE,
         **kwargs)
-    stdout, stderr = await proc.communicate(input_data)
+    stdout, stderr = await process.communicate(input_data)
 
-    if stderr:
-        logging.error(f'[{command!r} exited with {proc.returncode}]')
+    if process.returncode != 0:
+        logging.error(f'[{command!r} exited with {process.returncode}]')
         logging.error(stderr.decode())
 
     response = stdout.decode('utf-8')

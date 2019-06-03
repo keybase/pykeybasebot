@@ -1,10 +1,6 @@
 import asyncio
-import json
 import logging
 import os
-import re
-import subprocess
-import shlex
 
 from .cli import kblisten, kbsubmit
 from .chat_client import ChatClient
@@ -25,12 +21,12 @@ class Bot:
         return f"<{self.__class__.__name__}({self.handler.__class__.__name__}, username={self.username})>"
 
     async def start(self, listen_options):
-        await self.must_be_initialized()
-        async for event in kblisten(self.keybase_cli, listen_options):
-            if self.loop is not None:
-                self.loop.create_task(self.handler(self, event))
-            else:
-                asyncio.create_task(self.handler(self, event))
+        async with _botlifecycle(self, listen_options) as events:
+            async for event in events:
+                if self.loop is not None:
+                    self.loop.create_task(self.handler(self, event))
+                else:
+                    asyncio.create_task(self.handler(self, event))
 
     async def submit(self, command, input_data=None, **opts):
         return await kbsubmit(self.keybase_cli, command, input_data, loop=self.loop, **opts)
@@ -48,15 +44,11 @@ class Bot:
     def chat(self):
         return ChatClient(self)
 
-    async def must_be_initialized(self):
-        if not await self.is_initialized():
-            oneshot_res = await self.oneshot()
-            if not await self.is_initialized():
-                logging.error("failed to initialize using oneshot")
-                logging.error(f"oneshot results: {oneshot_res}")
-                raise "You must be logged in to do this. Calling `oneshot` with your paperkey failed."
+    async def ensure_initialized(self):
+        if not await self._is_initialized():
+            await self._initialize()
 
-    async def is_initialized(self):
+    async def _is_initialized(self):
         if not self._initialized:
             res = await self.submit('status --json')
             actual_username = res['Username']
@@ -64,8 +56,34 @@ class Bot:
             self._initialized = (self.username == actual_username and actual_logged_in)
         return self._initialized
 
-    async def oneshot(self):
+    async def _initialize(self):
+        if await self._is_initialized():
+            # already initialized. fine to bail.
+            return
+        # login as a `oneshot` device
         env_with_paperkey = os.environ.copy()
         env_with_paperkey['KEYBASE_PAPERKEY'] = self.paperkey
         oneshot_command = f"oneshot -u {self.username}"
-        await self.submit(oneshot_command, env=env_with_paperkey)
+        oneshot_result = await self.submit(oneshot_command, env=env_with_paperkey)
+        logging.info(oneshot_result)
+        if not await self._is_initialized():
+            # raise an exception because we can't authenticate
+            raise f"failed to initialize with oneshot {oneshot_res}"
+
+    async def teardown(self):
+        await self.submit("logout")
+
+
+class _botlifecycle:
+    # manage ensuring that the bot is initialized and torn down
+    # around calls to listening for events.
+    def __init__(self, bot, listen_options):
+        self.bot = bot
+        self.listen_options = listen_options
+
+    async def __aenter__(self):
+        await self.bot.ensure_initialized()
+        return kblisten(self.bot.keybase_cli, self.listen_options, loop=self.bot.loop)
+
+    async def __aexit__(self, *args):
+        await self.bot.teardown()

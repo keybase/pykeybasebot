@@ -46,6 +46,7 @@ bot = Bot(
     username="yourbot",
     paperkey=os.environ['KEYBASE_PAPERKEY'],
     handler=Handler(use_lock=False),
+    loop=loop,
 )
 loop.run_until_complete(bot.start(listen_options))
 loop.close()
