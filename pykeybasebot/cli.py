@@ -7,6 +7,9 @@ import shlex
 from .kbevent import KbEvent
 
 
+KEYBASE_TIMEOUT_MS = 2000
+
+
 async def kblisten(keybase_cli, options, loop=None):
     command = shlex.split(keybase_cli) + ['chat', 'api-listen']
     if options.get('local'):
@@ -38,6 +41,8 @@ async def kblisten(keybase_cli, options, loop=None):
             logging.debug(f"unparsed incoming event: {line.decode().strip()}")
             yield KbEvent.from_json(line.decode().strip())
         except json.decoder.JSONDecodeError:
+            # the first few messages that come out aren't actually valid json
+            # they just describe the options you've selected
             pass
 
 
@@ -50,7 +55,11 @@ async def kbsubmit(keybase_cli, command, input_data=None, **kwargs):
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE,
         **kwargs)
-    stdout, stderr = await process.communicate(input_data)
+    stdout, stderr = await asyncio.wait_for(
+        process.communicate(input_data),
+        KEYBASE_TIMEOUT_MS/1000.0,
+        loop=kwargs.get('loop')
+    )
 
     if process.returncode != 0:
         logging.error(f'[{command!r} exited with {process.returncode}]')
