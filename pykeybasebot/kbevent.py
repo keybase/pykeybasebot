@@ -1,5 +1,5 @@
-from enum import Enum
 from dataclasses import dataclass
+from enum import Enum
 from typing import List, Any
 
 from mashumaro import DataClassJSONMixin
@@ -47,8 +47,9 @@ class Channel(DataClassJSONMixin):
     topic_name: str = OmitIfEmpty()
 
     def replyable_dict(self):
-        # event channels are a little bit different from api send channels.
-        # see examples/pingpong.py for this in action.
+        # Channels that come from the chat event stream are formatted
+        # a little bit differently from how channels need to be structured for
+        # API Send commands. This method converts from the former to the latter.
         running_dict = {'name': self.name}
         if self.members_type == MembersType.IMPTEAMNATIVE:
             return running_dict

@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 
+###################################
+# WHAT IS IN THIS EXAMPLE?
+#
+# This bot listens in one channel and reacts to every text message.
+###################################
+
 import asyncio
 import logging
 

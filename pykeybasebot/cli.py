@@ -38,17 +38,17 @@ async def kblisten(keybase_cli, options, loop=None):
     while True:
         line = await process.stdout.readline()
         try:
-            logging.debug(f"unparsed incoming event: {line.decode().strip()}")
             yield KbEvent.from_json(line.decode().strip())
         except json.decoder.JSONDecodeError:
-            # the first few messages that come out aren't actually valid json
-            # they just describe the options you've selected
+            # The first few messages that come out aren't actually valid json.
+            # They just describe the options you've selected for listening.
+            # It would probably be better only to do this `pass` for a couple
+            # seconds.
             pass
 
 
 async def kbsubmit(keybase_cli, command, input_data=None, **kwargs):
     cmd_list = shlex.split(keybase_cli) + shlex.split(command)
-    logging.debug(f"executing command: {cmd_list} with input {input_data}")
     process = await asyncio.create_subprocess_exec(
         *cmd_list,
         stdin=asyncio.subprocess.PIPE,

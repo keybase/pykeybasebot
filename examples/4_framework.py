@@ -1,9 +1,15 @@
 #!/usr/bin/env python3
 
-##############################
-# example of an opinionated bot framework
-# that completely hides async/await
-##############################
+###################################
+# WHAT IS IN THIS EXAMPLE?
+#
+# This example shows an opinionated chatbot framework built on top
+# of pykeybasebot. The aim is to allow the most simple command and
+# response behavior while also hiding async complexity. This is not
+# necessarily the best way to achieve this aim, it's more intended
+# to be illustrative of building custom frameworks (and to encourage
+# you to try building one of your own).
+###################################
 
 import asyncio
 import functools
@@ -67,7 +73,7 @@ class BasicBot:
 
 
 ##############################
-# example using the above framework
+# a bot using the above framework
 ##############################
 
 pingbot = BasicBot(

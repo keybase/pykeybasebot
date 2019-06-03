@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
 
+###################################
+# WHAT IS IN THIS EXAMPLE?
+#
+# This bot listens to two channels for a special text message. When
+# it sees this message, it replies in the same channel with a response.
+###################################
+
 import asyncio
 import logging
 import os

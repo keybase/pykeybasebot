@@ -1,5 +1,15 @@
 #!/usr/bin/env python3
 
+###################################
+# WHAT IS IN THIS EXAMPLE?
+#
+# This bot demos showing off the async features of the framework.
+# With the lock set to `True`, it will only process one event at
+# a time to completion. With the lock set to `False` it will schedule
+# the events to be handled asynchronously.
+# This bot also shows manual management of the python event loop.
+###################################
+
 import asyncio
 import logging
 import os

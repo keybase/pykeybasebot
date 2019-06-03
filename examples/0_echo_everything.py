@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
 
+###################################
+# WHAT IS IN THIS EXAMPLE?
+#
+# This bot listens to every channel and every
+# available message type. It prints all parsed
+# events to STDOUT. This is the simplest bot
+# in the set of examples.
+###################################
+
 import asyncio
 import logging
 import os

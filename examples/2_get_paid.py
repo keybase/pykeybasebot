@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
 
+###################################
+# WHAT IS IN THIS EXAMPLE?
+#
+# This bot listens for completed payments. When it gets paid,
+# it does something.
+###################################
+
 import asyncio
 import logging
 import os
