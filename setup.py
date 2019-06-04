@@ -19,11 +19,12 @@ setup(
     include_package_data=True,
     author=['keybase developers'],
     install_requires=['mashumaro'],
+    setup_requires=['pytest-runner'],
+    tests_require=['pytest'],
     author_email='alex@keyba.se',
     classifiers=[
         'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
         'Topic :: Communications :: Chat :: Keybase',
         'Framework :: Robot Framework :: Library',
         'Framework :: Robot Framework :: Tool',

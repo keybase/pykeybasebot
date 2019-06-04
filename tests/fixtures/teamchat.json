@@ -1,0 +1,45 @@
+{
+  "msg": {
+    "channel": {
+      "members_type": "team",
+      "name": "yourcompany.marketing",
+      "public": false,
+      "topic_name": "lunchtalk",
+      "topic_type": "chat"
+    },
+    "channel_mention": "none",
+    "content": {
+      "text": {
+        "body": "leave a comment over in @yourcompany.marketing#general",
+        "payments": null,
+        "teamMentions": [
+          {
+            "channel": "general",
+            "name": "yourcompany.marketing"
+          }
+        ],
+        "userMentions": null
+      },
+      "type": "text"
+    },
+    "id": 66,
+    "prev": null,
+    "sender": {
+      "device_id": "c6d6a1d816910093e8554d95e982e118",
+      "device_name": "home thing",
+      "uid": "7c40f172bfde0622001b89f0775e7319",
+      "username": "yourbot"
+    },
+    "sent_at": 1559599057,
+    "sent_at_ms": 1559599057477,
+    "unread": false
+  },
+  "pagination": {
+    "last": false,
+    "next": "42",
+    "num": 1,
+    "previous": "42"
+  },
+  "source": "remote",
+  "type": "chat"
+}

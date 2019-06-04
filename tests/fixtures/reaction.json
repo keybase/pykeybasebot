@@ -1,0 +1,37 @@
+{
+  "msg": {
+    "channel": {
+      "members_type": "impteamnative",
+      "name": "someoneelse,yourbot",
+      "public": false,
+      "topic_type": "chat"
+    },
+    "channel_mention": "none",
+    "content": {
+      "reaction": {
+        "b": ":sunglasses:",
+        "m": 171
+      },
+      "type": "reaction"
+    },
+    "id": 173,
+    "prev": null,
+    "sender": {
+      "device_id": "c6d6a1d816910093e8554d95e982e118",
+      "device_name": "home thing",
+      "uid": "7c40f172bfde0622001b89f0775e7319",
+      "username": "yourbot"
+    },
+    "sent_at": 1559599015,
+    "sent_at_ms": 1559599015254,
+    "unread": false
+  },
+  "pagination": {
+    "last": false,
+    "next": "ccad",
+    "num": 1,
+    "previous": "ccad"
+  },
+  "source": "remote",
+  "type": "chat"
+}

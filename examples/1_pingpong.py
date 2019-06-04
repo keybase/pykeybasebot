@@ -5,6 +5,7 @@
 #
 # This bot listens to two channels for a special text message. When
 # it sees this message, it replies in the same channel with a response.
+# This also shows sending and receiving unicode characters.
 ###################################
 
 import asyncio
@@ -21,9 +22,9 @@ class Handler:
     async def __call__(self, bot, event):
         if event.msg.content.type != ContentType.TEXT:
             return
-        if event.msg.content.text.body == "ping":
+        if event.msg.content.text.body == "🌴ping🌴":
             channel = event.msg.channel
-            await bot.chat.send(channel.replyable_dict(), "PONG!")
+            await bot.chat.send(channel.replyable_dict(), "🍹PONG!🍹")
 
 listen_options = {
     'filter-channels': [

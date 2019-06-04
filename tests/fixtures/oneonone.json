@@ -1,0 +1,39 @@
+{
+  "msg": {
+    "channel": {
+      "members_type": "impteamnative",
+      "name": "someoneelse,yourbot",
+      "public": false,
+      "topic_type": "chat"
+    },
+    "channel_mention": "none",
+    "content": {
+      "text": {
+        "body": "hi",
+        "payments": null,
+        "teamMentions": null,
+        "userMentions": null
+      },
+      "type": "text"
+    },
+    "id": 171,
+    "prev": null,
+    "sender": {
+      "device_id": "c6d6a1d816910093e8554d95e982e118",
+      "device_name": "home thing",
+      "uid": "7c40f172bfde0622001b89f0775e7319",
+      "username": "yourbot"
+    },
+    "sent_at": 1559598868,
+    "sent_at_ms": 1559598868611,
+    "unread": false
+  },
+  "pagination": {
+    "last": false,
+    "next": "ccab",
+    "num": 1,
+    "previous": "ccab"
+  },
+  "source": "remote",
+  "type": "chat"
+}
