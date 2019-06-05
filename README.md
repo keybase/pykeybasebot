@@ -1,6 +1,5 @@
-# Python Keybase Bot Library
 
-This is an unopinionated, simple wrapper around the Keybase CLI API for creating an interactive bot or general scripting. This library does not attempt to do intent parsing or manage state at all. You'll have to build that yourself, but with the examples, this library will hopefully make whatever you want to build much much easier `:)`.
+This is the officially support Keybase Python library. It is an unopinionated, simple wrapper around the Keybase CLI API for creating an interactive bot or general scripting. This library does not attempt to do intent parsing or manage state at all. You'll have to build that yourself, but with the examples, this library will hopefully make whatever you want to build much much easier `:)`.
 
 See https://github.com/keybase/keybase-bot for a similar framework in Javascript.
 
@@ -8,6 +7,9 @@ This library is very far from exhaustively covering the complete Keybase API, bu
 
 
 ## Installation
+```
+pip install pykeybasebot
+```
 Python 3.7 or greater, please. And it's all async, so you'll need to call into it with that in mind.
 
 
@@ -25,6 +27,13 @@ Definitely definitely check out the examples. We're really counting on them to m
 
 ## Developing
 PRs are extremely welcome. First, hop into a Python 3.7 environment however you like to manage python environments. The tests are admittedly weak. If you clone and pull down the repo, this command should get you all set up:
-```sh
+```
 python setup.py test
+```
+
+### Updating
+Increment the version in setup.py, compile the new version, and push it to PyPI.
+```
+python setup.py sdist bdist_wheel
+python -m twine upload dist/* --verbose
 ```
