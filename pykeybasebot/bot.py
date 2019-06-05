@@ -54,7 +54,7 @@ class _botlifecycle:
 
 
 class Bot:
-    def __init__(self, username, handler, paperkey=None, loop=None, keybase=None, home_path=None, pid_file=None):
+    def __init__(self, handler, username=None, paperkey=None, loop=None, keybase=None, home_path=None, pid_file=None):
         self.username = username
         self.paperkey = paperkey
         self.handler = handler
@@ -104,6 +104,8 @@ class Bot:
                 logging.error("the result of `status --json` was not a parseable json object")
                 raise KeybaseNotConnectedError(f"the keybase service is probably not running: {res}")
             actual_username = res['Username']
+            if self.username is None:
+                self.username = actual_username
             actual_logged_in = res['LoggedIn']
             self._initialized = (self.username == actual_username and actual_logged_in)
         return self._initialized

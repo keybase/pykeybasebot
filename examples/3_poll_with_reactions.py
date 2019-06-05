@@ -29,8 +29,7 @@ async def make_a_poll():
         pass
 
     bot = Bot(
-        username="currentlyloggedinuser",
-        # you don't need to pass in a paperkey if you're already logged in
+        # you don't need to pass in a username or paperkey if you're already logged in
         handler=noop_handler,
     )
 
