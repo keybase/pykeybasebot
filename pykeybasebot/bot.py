@@ -1,9 +1,56 @@
 import asyncio
+from functools import wraps
 import logging
 import os
+import time
 
-from .cli import kblisten, kbsubmit
+from .cli import kblisten, kbsubmit, KeybaseNotConnectedError
 from .chat_client import ChatClient
+
+
+RETRY_ATTEMPTS = 100
+SLEEP_SECS_BETWEEEN_RETRIES = 1
+
+
+def _with_reconnect_to_keybase(keybase_bot_start_function):
+    # This decorator manages catching disconnect errors from the keybase service
+    # and attempting to reconnect to it periodically. If the very first attempt
+    # to connect fails, that error will be allowed to bubble up.
+    @wraps(keybase_bot_start_function)
+    async def wrapped_f(self, *args, **kwargs):
+        attempts = RETRY_ATTEMPTS
+        while True:
+            try:
+                await keybase_bot_start_function(self, *args, **kwargs)
+            except KeybaseNotConnectedError:
+                if self._initialized:
+                    # this is the first caught error after it was previously working
+                    attempts = 0
+                    self._initialized = False
+                    logging.info(f"RECONNECT: the keybase service has died or disappeared. attempting to reconnect {RETRY_ATTEMPTS} times...")
+                attempts += 1
+                if attempts > RETRY_ATTEMPTS:
+                    # Retries exhausted or the bot hasn't initialized on its first attempt.
+                    # Either way, reraise the caught exception.
+                    raise
+                logging.info(f"RECONNECT: sleeping {SLEEP_SECS_BETWEEEN_RETRIES} seconds...")
+                time.sleep(SLEEP_SECS_BETWEEEN_RETRIES)
+    return wrapped_f
+
+
+class _botlifecycle:
+    # This context manager ensures that the bot is initialized and torn down
+    # around calls to listening for events.
+    def __init__(self, bot, listen_options):
+        self.bot = bot
+        self.listen_options = listen_options
+
+    async def __aenter__(self):
+        await self.bot.ensure_initialized()
+        return kblisten(self.bot.keybase_cli, self.listen_options, loop=self.bot.loop)
+
+    async def __aexit__(self, *args):
+        await self.bot.teardown()
 
 
 class Bot:
@@ -20,7 +67,9 @@ class Bot:
     def __repr__(self):
         return f"<{self.__class__.__name__}({self.handler.__class__.__name__}, username={self.username})>"
 
+    @_with_reconnect_to_keybase
     async def start(self, listen_options):
+        # This is the main, expected entry point.
         async with _botlifecycle(self, listen_options) as events:
             async for event in events:
                 if self.loop is not None:
@@ -51,6 +100,9 @@ class Bot:
     async def _is_initialized(self):
         if not self._initialized:
             res = await self.submit('status --json')
+            if not isinstance(res, dict):
+                logging.error("the result of `status --json` was not a parseable json object")
+                raise KeybaseNotConnectedError(f"the keybase service is probably not running: {res}")
             actual_username = res['Username']
             actual_logged_in = res['LoggedIn']
             self._initialized = (self.username == actual_username and actual_logged_in)
@@ -72,18 +124,3 @@ class Bot:
 
     async def teardown(self):
         await self.submit("logout")
-
-
-class _botlifecycle:
-    # manage ensuring that the bot is initialized and torn down
-    # around calls to listening for events.
-    def __init__(self, bot, listen_options):
-        self.bot = bot
-        self.listen_options = listen_options
-
-    async def __aenter__(self):
-        await self.bot.ensure_initialized()
-        return kblisten(self.bot.keybase_cli, self.listen_options, loop=self.bot.loop)
-
-    async def __aexit__(self, *args):
-        await self.bot.teardown()

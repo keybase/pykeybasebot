@@ -18,7 +18,7 @@ setup(
     packages=find_packages(exclude=['docs', 'tests*', 'examples']),
     include_package_data=True,
     author=['keybase developers'],
-    install_requires=['mashumaro'],
+    install_requires=['mashumaro==1.6.2'],
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
     author_email='alex@keyba.se',

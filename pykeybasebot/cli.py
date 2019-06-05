@@ -10,6 +10,9 @@ from .kbevent import KbEvent
 KEYBASE_TIMEOUT_MS = 2000
 
 
+class KeybaseNotConnectedError(Exception):
+    pass
+
 async def kblisten(keybase_cli, options, loop=None):
     command = shlex.split(keybase_cli) + ['chat', 'api-listen']
     if options.get('local'):
@@ -37,6 +40,9 @@ async def kblisten(keybase_cli, options, loop=None):
     )
     while True:
         line = await process.stdout.readline()
+        if not line:
+            # when the keybase service dies, `api-listen` will emit empty byte strings
+            raise KeybaseNotConnectedError("the keybase service is probably not running")
         try:
             yield KbEvent.from_json(line.decode().strip())
         except json.decoder.JSONDecodeError:
