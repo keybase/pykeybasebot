@@ -5,7 +5,7 @@
 #
 # This example shows using the bot framework to build non-bot functionality.
 # Here, the currently logged in user will send a message to the channel and
-# then looping through rotating the message by moving the first character to
+# then loop through rotating the message by moving the first character to
 # the end, and editing the original message with the rotated message. This
 # creates a scrolling or marquee effect.
 ###################################
