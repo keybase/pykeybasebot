@@ -43,7 +43,7 @@ async def scrolling_message(message, before="", after=""):
         handler=noop_handler,
     )
 
-    resp = await bot.chat.send(channel, message)
+    resp = await bot.chat.send(channel, f"{before}{message}{after}")
     msg_id = resp['result']['id']
 
     while True:
