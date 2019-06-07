@@ -19,11 +19,13 @@ from pykeybasebot import Bot
 
 logging.basicConfig(level=logging.DEBUG)
 
+
 def rotate(message):
     """
     Returns a string with the first character of 'message' moved to the end
     """
     return f"{message[1:]}{message[0]}"
+
 
 async def scrolling_message(message, before="", after=""):
     channel = {
@@ -53,7 +55,7 @@ async def scrolling_message(message, before="", after=""):
 asyncio.run(
     scrolling_message(
         "There's pizza in the break room!",
-        #before="--[ `",
-        #after="` ]--"
+        before="--[ `",
+        after="` ]--"
     )
 )
