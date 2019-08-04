@@ -122,7 +122,9 @@ class Bot:
         logging.info(oneshot_result)
         if not await self._is_initialized():
             # raise an exception because we can't authenticate
-            raise f"failed to initialize with oneshot {oneshot_res}"
+            raise f"failed to initialize with oneshot {oneshot_result}"
 
     async def teardown(self):
-        await self.submit("logout")
+        if self.paperkey is not None:
+            # don't log out the user if they didn't use a paperkey to login
+            await self.submit("logout")
