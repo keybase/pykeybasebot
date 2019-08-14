@@ -30,5 +30,18 @@ class ChatClient:
             }
         })
 
+    async def edit(self, channel_dict, message_id, message):
+        await self.bot.ensure_initialized()
+        return await self.execute({
+            "method": "edit",
+            "params": {
+                "options": {
+                    "channel": channel_dict,
+                    "message_id": message_id,
+                    "message": {"body": message}
+                }
+            }
+        })
+
     async def execute(self, command):
         return await self.bot.submit("chat api", json.dumps(command).encode('utf-8'))
