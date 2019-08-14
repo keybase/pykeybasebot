@@ -38,7 +38,6 @@ async def scrolling_message(message, before="", after=""):
         pass
 
     bot = Bot(
-        username="currentlyloggedinuser",
         # you don't need to pass in a username or paperkey if you're already logged in
         handler=noop_handler,
     )
