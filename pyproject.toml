@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "pykeybasebot"
+version = "0.1.0"
+description = ""
+authors = ["Nathan Smith <nathan@keyba.se>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+mashumaro = "^1.7"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.1.1"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
