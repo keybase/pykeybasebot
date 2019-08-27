@@ -47,6 +47,15 @@ poetry install
 
 This will set up a virtualenv for you and install all the dependencies needed into it!
 
+### Static code analysis tools
+
+We use a few different static analysis tools to perform linting, type-checking, formatting, etc. The correct versions should be install when you run `poetry install`, but you'll probably want to configure your editor to work with:
+
+- [mypy](http://www.mypy-lang.org/) (Type checking)
+- [black](https://github.com/psf/black) (code formatting)
+- [isort](https://github.com/timothycrosley/isort) (import formatting)
+- [flake8](http://flake8.pycqa.org) (linting)
+
 ### Testing
 
 To run tests, type
