@@ -1,4 +1,3 @@
-pykeybasebot.egg-info/**
-**/__pycache__
-.eggs/**
-**/.DS_Store
+.DS_Store
+dist/
+__pycache__/
