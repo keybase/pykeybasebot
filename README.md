@@ -62,8 +62,9 @@ Poetry can build and publish packages to PyPI. We've run into some issues with u
 
 ```shell
 poetry build
-# Upload to Test PyPi
-poetry run twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+# Upload to Test PyPi. You only need to run the first command once
+poetry config repositories.testpypi https://test.pypi.org/legacy/
+poetry publish -r testpypi
 # Upload to real PyPi
-poetry run twine upload dist/*
+poetry publish
 ```
