@@ -1,8 +1,17 @@
 [tool.poetry]
 name = "pykeybasebot"
-version = "0.1.0"
-description = ""
-authors = ["Nathan Smith <nathan@keyba.se>"]
+version = "0.1.1"
+description = "Officially supported Keybase python bot client library"
+authors = ["Keybase Engineering Team <alex@keyba.se>"]
+license = "BSD-3-Clause"
+readme = "README.md"
+homepage = 'https://github.com/keybase/pykeybasebot'
+classifiers = [
+  'Programming Language :: Python :: 3 :: Only',
+  'Programming Language :: Python :: 3.7',
+  'Framework :: Robot Framework :: Library',
+  'Framework :: Robot Framework :: Tool',
+]
 
 [tool.poetry.dependencies]
 python = "^3.7"
