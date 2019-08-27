@@ -46,7 +46,7 @@ class Channel(DataClassJSONMixin):
     public: bool
     members_type: MembersType
     topic_type: TopicType
-    topic_name: Optional[str]
+    topic_name: Optional[str] = None
 
     def replyable_dict(self):
         # Channels that come from the chat event stream are formatted
@@ -115,7 +115,7 @@ class ContentText(DataClassJSONMixin):
     payments: List[Payment]
     userMentions: List[UserMention]
     teamMentions: List[TeamMention]
-    at_mention_usernames: Optional[List[str]]
+    at_mention_usernames: Optional[List[str]] = None
 
 
 @dataclass
@@ -127,11 +127,11 @@ class Reaction(DataClassJSONMixin):
 @dataclass
 class Content(DataClassJSONMixin):
     type: ContentType
-    text: Optional[ContentText]
-    reaction: Optional[Reaction]
-    unfurl: Optional[Any]
-    edit: Optional[Any]
-    flip: Optional[Any]
+    text: Optional[ContentText] = None
+    reaction: Optional[Reaction] = None
+    unfurl: Optional[Any] = None
+    edit: Optional[Any] = None
+    flip: Optional[Any] = None
 
 
 @dataclass
@@ -148,11 +148,11 @@ class Message(DataClassJSONMixin):
     sent_at: int
     sent_at_ms: int
     content: Content
-    conversation_id: Optional[str]
-    prev: Optional[str]
-    unread: Optional[bool]
-    channel_mention: Optional[str]
-    channel_name_mention: Optional[List[ChannelNameMention]]
+    conversation_id: Optional[str] = None
+    prev: Optional[str] = None
+    unread: Optional[bool] = None
+    channel_mention: Optional[str] = None
+    channel_name_mention: Optional[List[ChannelNameMention]] = None
 
 
 @dataclass
@@ -235,6 +235,6 @@ class Notification(DataClassJSONMixin):
 class KbEvent(DataClassJSONMixin):
     type: EventType
     source: Source
-    pagination: Optional[Pagination]
-    msg: Optional[Message]
-    notification: Optional[Notification]
+    pagination: Optional[Pagination] = None
+    msg: Optional[Message] = None
+    notification: Optional[Notification] = None
