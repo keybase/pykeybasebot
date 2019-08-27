@@ -58,9 +58,12 @@ Tests are admittedly weak. You could change that!
 
 ### Publishing
 
-Increment the version in setup.py, compile the new version, and push it to PyPI.
+Poetry can build and publish packages to PyPI. We've run into some issues with uploading to PyPI and Poetry, though, so for now we're reccomending building with Poetry and uploading with Twine.
 
-```
-python setup.py sdist bdist_wheel
-python -m twine upload dist/* --verbose
+```shell
+poetry build
+# Upload to Test PyPi
+poetry run twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+# Upload to real PyPi
+poetry run twine upload dist/*
 ```
