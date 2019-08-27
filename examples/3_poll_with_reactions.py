@@ -28,10 +28,8 @@ async def make_a_poll():
     def noop_handler(*args, **kwargs):
         pass
 
-    bot = Bot(
-        # you don't need to pass in a username or paperkey if you're already logged in
-        handler=noop_handler
-    )
+    # you don't need to pass in a username or paperkey if you're already logged in
+    bot = Bot(handler=noop_handler)
 
     resp = await bot.chat.send(channel, "what are y'all feeling for lunch?")
     msg_id = resp["result"]["id"]
