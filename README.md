@@ -58,7 +58,7 @@ We use a few different static analysis tools to perform linting, type-checking, 
 
 #### pre-commit hooks
 
-We check all git commits with the above tools with via
+We check all git commits with the above tools with
 [pre-commit.com](http://pre-commit.com) pre-commit hooks.
 To enable use of these pre-commit hooks:
 
