@@ -68,7 +68,7 @@ class BasicBot:
         # a synchronous context
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        result = loop.run_until_complete(self._bot.chat.send(channel, message))
+        loop.run_until_complete(self._bot.chat.send(channel, message))
 
     async def command_handler(self, bot, event):
         for possibility in self._commands:

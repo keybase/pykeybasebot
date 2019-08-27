@@ -2,7 +2,6 @@ import asyncio
 import json
 import logging
 import shlex
-import subprocess
 
 from .kbevent import KbEvent
 

@@ -16,7 +16,6 @@ from pykeybasebot import (
 
 @pytest.fixture()
 def fixture_path():
-    path = os.path.dirname(os.path.abspath(__file__))
     app_dir = Path().absolute()
     return os.path.join(app_dir, "tests/fixtures")
 
