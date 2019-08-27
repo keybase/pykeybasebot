@@ -36,7 +36,7 @@ git clone https://github.com/keybase/pykeybasebot
 cd pykeybasebot
 ```
 
-We use [Poetry](https://poetry.eustace.io/) to handle our packaging. Go check out their website for installation instructions. To start Poetry, you'll need the `python` executable in your path to link to Python 3.7. We reccomend using [pyenv](https://github.com/pyenv/pyenv) to handle different versions of Python on your machine. With pyenv installed, it should automatically set `python` to 3.7 when you `cd` into this repo.
+We use [Poetry](https://poetry.eustace.io/) to handle our packaging. Go check out their website for installation instructions. To start Poetry, you'll need the `python` executable in your path to link to Python 3.7. We recommend using [pyenv](https://github.com/pyenv/pyenv) to handle different versions of Python on your machine. With pyenv installed, it should automatically set `python` to 3.7 when you `cd` into this repo.
 
 Once you have the right Python version, you can run:
 
