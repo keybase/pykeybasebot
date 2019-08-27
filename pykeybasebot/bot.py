@@ -1,12 +1,11 @@
 import asyncio
-from functools import wraps
 import logging
 import os
 import time
+from functools import wraps
 
-from .cli import kblisten, kbsubmit, KeybaseNotConnectedError
 from .chat_client import ChatClient
-
+from .cli import KeybaseNotConnectedError, kblisten, kbsubmit
 
 RETRY_ATTEMPTS = 100
 SLEEP_SECS_BETWEEEN_RETRIES = 1
@@ -27,14 +26,19 @@ def _with_reconnect_to_keybase(keybase_bot_start_function):
                     # this is the first caught error after it was previously working
                     attempts = 0
                     self._initialized = False
-                    logging.info(f"RECONNECT: the keybase service has died or disappeared. attempting to reconnect {RETRY_ATTEMPTS} times...")
+                    logging.info(
+                        f"RECONNECT: the keybase service has died or disappeared. attempting to reconnect {RETRY_ATTEMPTS} times..."
+                    )
                 attempts += 1
                 if attempts > RETRY_ATTEMPTS:
                     # Retries exhausted or the bot hasn't initialized on its first attempt.
                     # Either way, reraise the caught exception.
                     raise
-                logging.info(f"RECONNECT: sleeping {SLEEP_SECS_BETWEEEN_RETRIES} seconds...")
+                logging.info(
+                    f"RECONNECT: sleeping {SLEEP_SECS_BETWEEEN_RETRIES} seconds..."
+                )
                 time.sleep(SLEEP_SECS_BETWEEEN_RETRIES)
+
     return wrapped_f
 
 
@@ -54,11 +58,20 @@ class _botlifecycle:
 
 
 class Bot:
-    def __init__(self, handler, username=None, paperkey=None, loop=None, keybase=None, home_path=None, pid_file=None):
+    def __init__(
+        self,
+        handler,
+        username=None,
+        paperkey=None,
+        loop=None,
+        keybase=None,
+        home_path=None,
+        pid_file=None,
+    ):
         self.username = username
         self.paperkey = paperkey
         self.handler = handler
-        self.keybase = keybase or 'keybase'
+        self.keybase = keybase or "keybase"
         self.loop = loop
         self.home_path = home_path
         self.pid_file = pid_file
@@ -78,7 +91,9 @@ class Bot:
                     asyncio.create_task(self.handler(self, event))
 
     async def submit(self, command, input_data=None, **opts):
-        return await kbsubmit(self.keybase_cli, command, input_data, loop=self.loop, **opts)
+        return await kbsubmit(
+            self.keybase_cli, command, input_data, loop=self.loop, **opts
+        )
 
     @property
     def keybase_cli(self):
@@ -99,15 +114,19 @@ class Bot:
 
     async def _is_initialized(self):
         if not self._initialized:
-            res = await self.submit('status --json')
+            res = await self.submit("status --json")
             if not isinstance(res, dict):
-                logging.error("the result of `status --json` was not a parseable json object")
-                raise KeybaseNotConnectedError(f"the keybase service is probably not running: {res}")
-            actual_username = res['Username']
+                logging.error(
+                    "the result of `status --json` was not a parseable json object"
+                )
+                raise KeybaseNotConnectedError(
+                    f"the keybase service is probably not running: {res}"
+                )
+            actual_username = res["Username"]
             if self.username is None:
                 self.username = actual_username
-            actual_logged_in = res['LoggedIn']
-            self._initialized = (self.username == actual_username and actual_logged_in)
+            actual_logged_in = res["LoggedIn"]
+            self._initialized = self.username == actual_username and actual_logged_in
         return self._initialized
 
     async def _initialize(self):
@@ -116,7 +135,7 @@ class Bot:
             return
         # login as a `oneshot` device
         env_with_paperkey = os.environ.copy()
-        env_with_paperkey['KEYBASE_PAPERKEY'] = self.paperkey
+        env_with_paperkey["KEYBASE_PAPERKEY"] = self.paperkey
         oneshot_command = f"oneshot -u {self.username}"
         oneshot_result = await self.submit(oneshot_command, env=env_with_paperkey)
         logging.info(oneshot_result)

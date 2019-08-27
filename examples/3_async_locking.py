@@ -16,13 +16,14 @@ import os
 
 from pykeybasebot import Bot, ContentType
 
-
 logging.basicConfig(level=logging.DEBUG)
 
 
 async def alert(bot, wait_sec, channel):
     await asyncio.sleep(wait_sec)
-    await bot.chat.send(channel.replyable_dict(), f"waited: {wait_sec} and now... ALERT!")
+    await bot.chat.send(
+        channel.replyable_dict(), f"waited: {wait_sec} and now... ALERT!"
+    )
 
 
 class Handler:
@@ -47,14 +48,12 @@ class Handler:
             await alert(bot, 5, channel)
 
 
-listen_options = {
-    'filter-channel': {"name": "yourbot,someoneelse"}
-}
+listen_options = {"filter-channel": {"name": "yourbot,someoneelse"}}
 
 loop = asyncio.get_event_loop()
 bot = Bot(
     username="yourbot",
-    paperkey=os.environ['KEYBASE_PAPERKEY'],
+    paperkey=os.environ["KEYBASE_PAPERKEY"],
     handler=Handler(use_lock=False),
     loop=loop,
 )
