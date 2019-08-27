@@ -41,6 +41,7 @@ We use [Poetry](https://poetry.eustace.io/) to handle our packaging. Go check ou
 Once you have the right Python version, you can run:
 
 ```
+pip install poetry
 poetry install
 ```
 
