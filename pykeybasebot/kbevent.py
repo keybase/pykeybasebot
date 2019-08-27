@@ -1,12 +1,8 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, List
+from typing import Any, List, Optional
 
-from mashumaro import DataClassJSONMixin
-
-
-class OmitIfEmpty:
-    pass
+from mashumaro import DataClassJSONMixin  # type: ignore
 
 
 class EventType(Enum):
@@ -50,7 +46,7 @@ class Channel(DataClassJSONMixin):
     public: bool
     members_type: MembersType
     topic_type: TopicType
-    topic_name: str = OmitIfEmpty()
+    topic_name: Optional[str]
 
     def replyable_dict(self):
         # Channels that come from the chat event stream are formatted
@@ -119,7 +115,7 @@ class ContentText(DataClassJSONMixin):
     payments: List[Payment]
     userMentions: List[UserMention]
     teamMentions: List[TeamMention]
-    at_mention_usernames: List[str] = OmitIfEmpty()
+    at_mention_usernames: Optional[List[str]]
 
 
 @dataclass
@@ -131,11 +127,11 @@ class Reaction(DataClassJSONMixin):
 @dataclass
 class Content(DataClassJSONMixin):
     type: ContentType
-    text: ContentText = OmitIfEmpty()
-    reaction: Reaction = OmitIfEmpty()
-    unfurl: Any = OmitIfEmpty()
-    edit: Any = OmitIfEmpty()
-    flip: Any = OmitIfEmpty()
+    text: Optional[ContentText]
+    reaction: Optional[Reaction]
+    unfurl: Optional[Any]
+    edit: Optional[Any]
+    flip: Optional[Any]
 
 
 @dataclass
@@ -152,11 +148,11 @@ class Message(DataClassJSONMixin):
     sent_at: int
     sent_at_ms: int
     content: Content
-    conversation_id: str = OmitIfEmpty()
-    prev: str = OmitIfEmpty()
-    unread: bool = OmitIfEmpty()
-    channel_mention: str = OmitIfEmpty()
-    channel_name_mention: List[ChannelNameMention] = OmitIfEmpty()
+    conversation_id: Optional[str]
+    prev: Optional[str]
+    unread: Optional[bool]
+    channel_mention: Optional[str]
+    channel_name_mention: Optional[List[ChannelNameMention]]
 
 
 @dataclass
@@ -239,6 +235,6 @@ class Notification(DataClassJSONMixin):
 class KbEvent(DataClassJSONMixin):
     type: EventType
     source: Source
-    pagination: Pagination = OmitIfEmpty()
-    msg: Message = OmitIfEmpty()
-    notification: Notification = OmitIfEmpty()
+    pagination: Optional[Pagination]
+    msg: Optional[Message]
+    notification: Optional[Notification]

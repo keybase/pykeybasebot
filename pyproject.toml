@@ -24,6 +24,7 @@ twine = "^1.13"
 black = {version = "^18.3-alpha.0", allows-prereleases = true}
 isort = "^4.3"
 flake8 = "^3.7"
+mypy = "^0.720.0"
 
 [tool.isort]
 combine_as_imports = true
