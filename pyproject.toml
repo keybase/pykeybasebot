@@ -12,6 +12,7 @@ classifiers = [
   'Framework :: Robot Framework :: Library',
   'Framework :: Robot Framework :: Tool',
 ]
+exclude = ["tests/", "examples/"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
