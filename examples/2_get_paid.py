@@ -13,7 +13,6 @@ import os
 
 from pykeybasebot import Bot, EventType, PaymentStatusStr
 
-
 logging.basicConfig(level=logging.DEBUG)
 
 
@@ -25,6 +24,7 @@ def parse_usd_amount(amount_description):
     amount_str, currency = amount_description.split()
     assert currency == "XLM"
     return float(amount_str) * DollarsPerLumen
+
 
 class Handler:
     async def __call__(self, bot, event):
@@ -41,13 +41,9 @@ class Handler:
         await bot.chat.send(channel, message)
 
 
-listen_options = {
-    "wallet": True
-}
+listen_options = {"wallet": True}
 
 bot = Bot(
-    username="yourbot",
-    paperkey=os.environ['KEYBASE_PAPERKEY'],
-    handler=Handler(),
+    username="yourbot", paperkey=os.environ["KEYBASE_PAPERKEY"], handler=Handler()
 )
 asyncio.run(bot.start(listen_options))

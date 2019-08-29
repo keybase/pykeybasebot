@@ -21,6 +21,16 @@ mashumaro = "^1.7"
 [tool.poetry.dev-dependencies]
 pytest = "^5.1.1"
 twine = "^1.13"
+black = {version = "^18.3-alpha.0", allows-prereleases = true}
+isort = "^4.3"
+flake8 = "^3.7"
+mypy = "^0.720.0"
+
+[tool.isort]
+combine_as_imports = true
+include_trailing_comma = true
+line_length = 88
+multi_line_output = 3
 
 [build-system]
 requires = ["poetry>=0.12"]

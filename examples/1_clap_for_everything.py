@@ -8,9 +8,9 @@
 
 import asyncio
 import logging
+import os
 
 from pykeybasebot import Bot, ContentType
-
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -23,13 +23,7 @@ async def handler(bot, event):
     await bot.chat.react(channel.replyable_dict(), msg_id, ":clap:")
 
 
-listen_options = {
-    'filter-channel': {"name":"yourbot,someoneelse"}
-}
+listen_options = {"filter-channel": {"name": "yourbot,someoneelse"}}
 
-bot = Bot(
-    username="yourbot",
-    paperkey=os.environ['KEYBASE_PAPERKEY'],
-    handler=handler,
-)
+bot = Bot(username="yourbot", paperkey=os.environ["KEYBASE_PAPERKEY"], handler=handler)
 asyncio.run(bot.start(listen_options))

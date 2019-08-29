@@ -47,6 +47,27 @@ poetry install
 
 This will set up a virtualenv for you and install all the dependencies needed into it!
 
+### Static code analysis tools
+
+We use a few different static analysis tools to perform linting, type-checking, formatting, etc. The correct versions should be install when you run `poetry install`, but you'll probably want to configure your editor to work with:
+
+- [mypy](http://www.mypy-lang.org/) (Type checking)
+- [black](https://github.com/psf/black) (code formatting)
+- [isort](https://github.com/timothycrosley/isort) (import formatting)
+- [flake8](http://flake8.pycqa.org) (linting)
+
+#### pre-commit hooks
+
+We check all git commits with the above tools with
+[pre-commit.com](http://pre-commit.com) pre-commit hooks.
+To enable use of these pre-commit hooks:
+
+- [Install](http://pre-commit.com/#install) the `pre-commit` utility.
+- Remove any existing pre-commit hooks via `rm .git/hooks/pre-commit`
+- Configure via `pre-commit install`
+
+Then proceed as normal.
+
 ### Testing
 
 To run tests, type

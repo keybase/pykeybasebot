@@ -1,17 +1,15 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import List, Any
+from typing import Any, List, Optional
 
-from mashumaro import DataClassJSONMixin
+from mashumaro import DataClassJSONMixin  # type: ignore
 
-
-class OmitIfEmpty:
-    pass
 
 class EventType(Enum):
     CHAT = "chat"
     DEV = "dev"
     WALLET = "wallet"
+
 
 class Source(Enum):
     REMOTE = "remote"
@@ -19,17 +17,20 @@ class Source(Enum):
     PAYMENT_STATUS = "payment_status"
     PAYMENT = "payment"
 
+
 class MembersType(Enum):
     KBFS = "kbfs"
     TEAM = "team"
     IMPTEAMNATIVE = "impteamnative"
     IMPTEAMUPGRADE = "impteamupgrade"
 
+
 class TopicType(Enum):
     NONE = "none"
     CHAT = "chat"
     DEV = "dev"
     KBFSFILEEDIT = "kbfsfileedit"
+
 
 @dataclass
 class Sender(DataClassJSONMixin):
@@ -38,25 +39,26 @@ class Sender(DataClassJSONMixin):
     device_id: str
     device_name: str
 
+
 @dataclass
 class Channel(DataClassJSONMixin):
     name: str
     public: bool
     members_type: MembersType
     topic_type: TopicType
-    topic_name: str = OmitIfEmpty()
+    topic_name: Optional[str] = None
 
     def replyable_dict(self):
         # Channels that come from the chat event stream are formatted
         # a little bit differently from how channels need to be structured for
         # API Send commands. This method converts from the former to the latter.
-        running_dict = {'name': self.name}
+        running_dict = {"name": self.name}
         if self.members_type == MembersType.IMPTEAMNATIVE:
             return running_dict
         if self.public:
-            running_dict['public'] = True
-        running_dict['members_type'] = self.members_type.value
-        running_dict['topic_name'] = self.topic_name
+            running_dict["public"] = True
+        running_dict["members_type"] = self.members_type.value
+        running_dict["topic_name"] = self.topic_name
         return running_dict
 
 
@@ -87,21 +89,25 @@ class PaymentResult(DataClassJSONMixin):
     resultTyp: int
     error: str
 
+
 @dataclass
 class Payment(DataClassJSONMixin):
     username: str
     paymentText: str
     result: PaymentResult
 
+
 @dataclass
 class UserMention(DataClassJSONMixin):
     text: str
     uid: str
 
+
 @dataclass
 class TeamMention(DataClassJSONMixin):
     name: str
     channel: str
+
 
 @dataclass
 class ContentText(DataClassJSONMixin):
@@ -109,26 +115,30 @@ class ContentText(DataClassJSONMixin):
     payments: List[Payment]
     userMentions: List[UserMention]
     teamMentions: List[TeamMention]
-    at_mention_usernames: List[str] = OmitIfEmpty()
+    at_mention_usernames: Optional[List[str]] = None
+
 
 @dataclass
 class Reaction(DataClassJSONMixin):
-    m: int # message id to react to
-    b: str # reaction (or text), e.g. :mag:
+    m: int  # message id to react to
+    b: str  # reaction (or text), e.g. :mag:
+
 
 @dataclass
 class Content(DataClassJSONMixin):
     type: ContentType
-    text: ContentText = OmitIfEmpty()
-    reaction: Reaction = OmitIfEmpty()
-    unfurl: Any = OmitIfEmpty()
-    edit: Any = OmitIfEmpty()
-    flip: Any = OmitIfEmpty()
+    text: Optional[ContentText] = None
+    reaction: Optional[Reaction] = None
+    unfurl: Optional[Any] = None
+    edit: Optional[Any] = None
+    flip: Optional[Any] = None
+
 
 @dataclass
 class ChannelNameMention(DataClassJSONMixin):
     name: str
     conv_id: str
+
 
 @dataclass
 class Message(DataClassJSONMixin):
@@ -138,11 +148,12 @@ class Message(DataClassJSONMixin):
     sent_at: int
     sent_at_ms: int
     content: Content
-    conversation_id: str = OmitIfEmpty()
-    prev: str = OmitIfEmpty()
-    unread: bool = OmitIfEmpty()
-    channel_mention: str = OmitIfEmpty()
-    channel_name_mention: List[ChannelNameMention] = OmitIfEmpty()
+    conversation_id: Optional[str] = None
+    prev: Optional[str] = None
+    unread: Optional[bool] = None
+    channel_mention: Optional[str] = None
+    channel_name_mention: Optional[List[ChannelNameMention]] = None
+
 
 @dataclass
 class Pagination(DataClassJSONMixin):
@@ -150,6 +161,7 @@ class Pagination(DataClassJSONMixin):
     previous: str
     num: int
     last: bool
+
 
 class PaymentStatusStr(Enum):
     NONE = "none"
@@ -160,6 +172,7 @@ class PaymentStatusStr(Enum):
     UNKNOWN = "unknown"
     CANCELED = "canceled"
 
+
 class PaymentStatusInt(Enum):
     NONE = 0
     PENDING = 1
@@ -168,6 +181,7 @@ class PaymentStatusInt(Enum):
     ERROR = 4
     UNKNOWN = 5
     CANCELED = 6
+
 
 @dataclass
 class SourceAsset(DataClassJSONMixin):
@@ -178,6 +192,7 @@ class SourceAsset(DataClassJSONMixin):
     issuerName: str
     desc: str
     infoUrl: str
+
 
 @dataclass
 class Notification(DataClassJSONMixin):
@@ -215,10 +230,11 @@ class Notification(DataClassJSONMixin):
     fromAirdrop: bool
     isInflation: bool
 
+
 @dataclass
 class KbEvent(DataClassJSONMixin):
     type: EventType
     source: Source
-    pagination: Pagination = OmitIfEmpty()
-    msg: Message = OmitIfEmpty()
-    notification: Notification = OmitIfEmpty()
+    pagination: Optional[Pagination] = None
+    msg: Optional[Message] = None
+    notification: Optional[Notification] = None

@@ -16,7 +16,6 @@ import time
 
 from pykeybasebot import Bot
 
-
 logging.basicConfig(level=logging.DEBUG)
 
 
@@ -39,11 +38,11 @@ async def scrolling_message(message, before="", after=""):
 
     bot = Bot(
         # you don't need to pass in a username or paperkey if you're already logged in
-        handler=noop_handler,
+        handler=noop_handler
     )
 
     resp = await bot.chat.send(channel, f"{before}{message}{after}")
-    msg_id = resp['result']['id']
+    msg_id = resp["result"]["id"]
 
     while True:
         message = rotate(message)
@@ -52,9 +51,5 @@ async def scrolling_message(message, before="", after=""):
 
 
 asyncio.run(
-    scrolling_message(
-        "There's pizza in the break room!",
-        before="--[ `",
-        after="` ]--"
-    )
+    scrolling_message("There's pizza in the break room!", before="--[ `", after="` ]--")
 )
