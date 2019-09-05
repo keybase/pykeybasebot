@@ -11,7 +11,7 @@ Input files:
  - ../client/protocol/avdl/gregor1/remind.avdl
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 from typing import Dict, List, Optional, Union
 
@@ -22,10 +22,10 @@ DurationMsec = int
 DurationSec = int
 Category = str
 System = str
-UID = bytes
-MsgID = bytes
-DeviceID = bytes
-Body = bytes
+UID = str
+MsgID = str
+DeviceID = str
+Body = str
 Time = int
 SessionID = str
 SessionToken = str
@@ -93,7 +93,9 @@ class StateSyncMessage:
 class MsgRange:
     end_time: TimeOrOffset = field(metadata=config(field_name="endTime"))
     category: Category = field(metadata=config(field_name="category"))
-    skip_msg_i_ds: List[MsgID] = field(metadata=config(field_name="skipMsgIDs"))
+    skip_msg_i_ds: Optional[Optional[List[MsgID]]] = field(
+        default=None, metadata=config(field_name="skipMsgIDs")
+    )
 
 
 @dataclass_json
@@ -101,43 +103,57 @@ class MsgRange:
 class Item:
     category: Category = field(metadata=config(field_name="category"))
     dtime: TimeOrOffset = field(metadata=config(field_name="dtime"))
-    remind_times: List[TimeOrOffset] = field(metadata=config(field_name="remindTimes"))
     body: Body = field(metadata=config(field_name="body"))
+    remind_times: Optional[Optional[List[TimeOrOffset]]] = field(
+        default=None, metadata=config(field_name="remindTimes")
+    )
 
 
 @dataclass_json
 @dataclass
 class ConnectedUser:
     uid: UID = field(metadata=config(field_name="uid"))
-    devices: List[ConnectedDevice] = field(metadata=config(field_name="devices"))
+    devices: Optional[Optional[List[ConnectedDevice]]] = field(
+        default=None, metadata=config(field_name="devices")
+    )
 
 
 @dataclass_json
 @dataclass
 class Dismissal:
-    msg_i_ds: List[MsgID] = field(metadata=config(field_name="msgIDs"))
-    ranges: List[MsgRange] = field(metadata=config(field_name="ranges"))
+    msg_i_ds: Optional[Optional[List[MsgID]]] = field(
+        default=None, metadata=config(field_name="msgIDs")
+    )
+    ranges: Optional[Optional[List[MsgRange]]] = field(
+        default=None, metadata=config(field_name="ranges")
+    )
 
 
 @dataclass_json
 @dataclass
 class ItemAndMetadata:
-    md: Optional[Metadata] = field(metadata=config(field_name="md"))
-    item: Optional[Item] = field(metadata=config(field_name="item"))
+    md: Optional[Metadata] = field(default=None, metadata=config(field_name="md"))
+    item: Optional[Item] = field(default=None, metadata=config(field_name="item"))
 
 
 @dataclass_json
 @dataclass
 class State:
-    items: List[ItemAndMetadata] = field(metadata=config(field_name="items"))
+    items: Optional[Optional[List[ItemAndMetadata]]] = field(
+        default=None, metadata=config(field_name="items")
+    )
 
 
 @dataclass_json
 @dataclass
 class StateUpdateMessage:
     md: Metadata = field(metadata=config(field_name="md"))
-    creation: Optional[Item] = field(metadata=config(field_name="creation"))
-    dismissal: Optional[Dismissal] = field(metadata=config(field_name="dismissal"))
+    creation: Optional[Item] = field(
+        default=None, metadata=config(field_name="creation")
+    )
+    dismissal: Optional[Dismissal] = field(
+        default=None, metadata=config(field_name="dismissal")
+    )
 
 
 @dataclass_json
@@ -152,29 +168,37 @@ class Reminder:
 @dataclass
 class InBandMessage:
     state_update: Optional[StateUpdateMessage] = field(
-        metadata=config(field_name="stateUpdate")
+        default=None, metadata=config(field_name="stateUpdate")
     )
     state_sync: Optional[StateSyncMessage] = field(
-        metadata=config(field_name="stateSync")
+        default=None, metadata=config(field_name="stateSync")
     )
 
 
 @dataclass_json
 @dataclass
 class ReminderSet:
-    reminders: List[Reminder] = field(metadata=config(field_name="reminders"))
     more_reminders_ready: bool = field(metadata=config(field_name="moreRemindersReady"))
+    reminders: Optional[Optional[List[Reminder]]] = field(
+        default=None, metadata=config(field_name="reminders")
+    )
 
 
 @dataclass_json
 @dataclass
 class Message:
-    oobm: Optional[OutOfBandMessage] = field(metadata=config(field_name="oobm"))
-    ibm: Optional[InBandMessage] = field(metadata=config(field_name="ibm"))
+    oobm: Optional[OutOfBandMessage] = field(
+        default=None, metadata=config(field_name="oobm")
+    )
+    ibm: Optional[InBandMessage] = field(
+        default=None, metadata=config(field_name="ibm")
+    )
 
 
 @dataclass_json
 @dataclass
 class SyncResult:
-    msgs: List[InBandMessage] = field(metadata=config(field_name="msgs"))
-    hash: bytes = field(metadata=config(field_name="hash"))
+    hash: str = field(metadata=config(field_name="hash"))
+    msgs: Optional[Optional[List[InBandMessage]]] = field(
+        default=None, metadata=config(field_name="msgs")
+    )

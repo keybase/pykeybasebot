@@ -11,14 +11,14 @@ Input files:
  - ../client/protocol/avdl/stellar1/ui.avdl
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 from typing import Dict, List, Optional, Union
 
 from dataclasses_json import config, dataclass_json
 from typing_extensions import Literal
 
-import keybase1
+import pykeybasebot.types.keybase1 as keybase1
 
 BundleRevision = int
 
@@ -27,12 +27,25 @@ BundleRevision = int
 @dataclass
 class EncryptedBundle:
     v: int = field(metadata=config(field_name="v"))
-    e: bytes = field(metadata=config(field_name="e"))
+    e: str = field(metadata=config(field_name="e"))
     n: keybase1.BoxNonce = field(metadata=config(field_name="n"))
     gen: keybase1.PerUserKeyGeneration = field(metadata=config(field_name="gen"))
 
 
 class BundleVersion(Enum):
+    V1 = 1
+    V2 = 2
+    V3 = 3
+    V4 = 4
+    V5 = 5
+    V6 = 6
+    V7 = 7
+    V8 = 8
+    V9 = 9
+    V10 = 10
+
+
+class BundleVersionStrings(Enum):
     V1 = "v1"
     V2 = "v2"
     V3 = "v3"
@@ -55,12 +68,25 @@ class BundleSecretUnsupported:
 @dataclass
 class EncryptedAccountBundle:
     v: int = field(metadata=config(field_name="v"))
-    e: bytes = field(metadata=config(field_name="e"))
+    e: str = field(metadata=config(field_name="e"))
     n: keybase1.BoxNonce = field(metadata=config(field_name="n"))
     gen: keybase1.PerUserKeyGeneration = field(metadata=config(field_name="gen"))
 
 
 class AccountBundleVersion(Enum):
+    V1 = 1
+    V2 = 2
+    V3 = 3
+    V4 = 4
+    V5 = 5
+    V6 = 6
+    V7 = 7
+    V8 = 8
+    V9 = 9
+    V10 = 10
+
+
+class AccountBundleVersionStrings(Enum):
     V1 = "v1"
     V2 = "v2"
     V3 = "v3"
@@ -85,7 +111,7 @@ TransactionID = str
 PaymentID = str
 KeybaseTransactionID = str
 TimeMs = int
-Hash = bytes
+Hash = str
 KeybaseRequestID = str
 AssetCode = str
 
@@ -118,6 +144,14 @@ class AccountReserve:
 
 
 class TransactionStatus(Enum):
+    NONE = 0
+    PENDING = 1
+    SUCCESS = 2
+    ERROR_TRANSIENT = 3
+    ERROR_PERMANENT = 4
+
+
+class TransactionStatusStrings(Enum):
     NONE = "none"
     PENDING = "pending"
     SUCCESS = "success"
@@ -126,18 +160,35 @@ class TransactionStatus(Enum):
 
 
 class RequestStatus(Enum):
+    OK = 0
+    CANCELED = 1
+    DONE = 2
+
+
+class RequestStatusStrings(Enum):
     OK = "ok"
     CANCELED = "canceled"
     DONE = "done"
 
 
 class PaymentStrategy(Enum):
+    NONE = 0
+    DIRECT = 1
+    RELAY = 2
+
+
+class PaymentStrategyStrings(Enum):
     NONE = "none"
     DIRECT = "direct"
     RELAY = "relay"
 
 
 class RelayDirection(Enum):
+    CLAIM = 0
+    YANK = 1
+
+
+class RelayDirectionStrings(Enum):
     CLAIM = "claim"
     YANK = "yank"
 
@@ -153,7 +204,7 @@ class NoteRecipient:
 @dataclass
 class EncryptedRelaySecret:
     v: int = field(metadata=config(field_name="v"))
-    e: bytes = field(metadata=config(field_name="e"))
+    e: str = field(metadata=config(field_name="e"))
     n: keybase1.BoxNonce = field(metadata=config(field_name="n"))
     gen: keybase1.PerTeamKeyGeneration = field(metadata=config(field_name="gen"))
 
@@ -178,18 +229,40 @@ class PageCursor:
 
 
 class AccountMode(Enum):
+    NONE = 0
+    USER = 1
+    MOBILE = 2
+
+
+class AccountModeStrings(Enum):
     NONE = "none"
     USER = "user"
     MOBILE = "mobile"
 
 
 class BalanceDelta(Enum):
+    NONE = 0
+    INCREASE = 1
+    DECREASE = 2
+
+
+class BalanceDeltaStrings(Enum):
     NONE = "none"
     INCREASE = "increase"
     DECREASE = "decrease"
 
 
 class PaymentStatus(Enum):
+    NONE = 0
+    PENDING = 1
+    CLAIMABLE = 2
+    COMPLETED = 3
+    ERROR = 4
+    UNKNOWN = 5
+    CANCELED = 6
+
+
+class PaymentStatusStrings(Enum):
     NONE = "none"
     PENDING = "pending"
     CLAIMABLE = "claimable"
@@ -200,6 +273,14 @@ class PaymentStatus(Enum):
 
 
 class ParticipantType(Enum):
+    NONE = 0
+    KEYBASE = 1
+    STELLAR = 2
+    SBS = 3
+    OWNACCOUNT = 4
+
+
+class ParticipantTypeStrings(Enum):
     NONE = "none"
     KEYBASE = "keybase"
     STELLAR = "stellar"
@@ -211,6 +292,12 @@ BuildPaymentID = str
 
 
 class AdvancedBanner(Enum):
+    NO_BANNER = 0
+    SENDER_BANNER = 1
+    RECEIVER_BANNER = 2
+
+
+class AdvancedBannerStrings(Enum):
     NO_BANNER = "no_banner"
     SENDER_BANNER = "sender_banner"
     RECEIVER_BANNER = "receiver_banner"
@@ -241,9 +328,11 @@ class AirdropQualification:
 @dataclass_json
 @dataclass
 class AssetActionResultLocal:
-    external_url: Optional[str] = field(metadata=config(field_name="externalUrl"))
+    external_url: Optional[str] = field(
+        default=None, metadata=config(field_name="externalUrl")
+    )
     message_from_anchor: Optional[str] = field(
-        metadata=config(field_name="messageFromAnchor")
+        default=None, metadata=config(field_name="messageFromAnchor")
     )
 
 
@@ -297,6 +386,13 @@ class DirectOp:
 
 
 class PaymentSummaryType(Enum):
+    NONE = 0
+    STELLAR = 1
+    DIRECT = 2
+    RELAY = 3
+
+
+class PaymentSummaryTypeStrings(Enum):
     NONE = "none"
     STELLAR = "stellar"
     DIRECT = "direct"
@@ -339,7 +435,9 @@ class BundleSecretEntryV2:
 @dataclass
 class AccountBundleSecretV1:
     account_id: AccountID = field(metadata=config(field_name="accountID"))
-    signers: List[SecretKey] = field(metadata=config(field_name="signers"))
+    signers: Optional[Optional[List[SecretKey]]] = field(
+        default=None, metadata=config(field_name="signers")
+    )
 
 
 @dataclass_json
@@ -361,14 +459,18 @@ class AccountBundle:
     prev: Hash = field(metadata=config(field_name="prev"))
     own_hash: Hash = field(metadata=config(field_name="ownHash"))
     account_id: AccountID = field(metadata=config(field_name="accountID"))
-    signers: List[SecretKey] = field(metadata=config(field_name="signers"))
+    signers: Optional[Optional[List[SecretKey]]] = field(
+        default=None, metadata=config(field_name="signers")
+    )
 
 
 @dataclass_json
 @dataclass
 class AssetListResult:
-    assets: List[Asset] = field(metadata=config(field_name="assets"))
     total_count: int = field(metadata=config(field_name="totalCount"))
+    assets: Optional[Optional[List[Asset]]] = field(
+        default=None, metadata=config(field_name="assets")
+    )
 
 
 @dataclass_json
@@ -401,10 +503,12 @@ class RelayClaimResult:
 @dataclass
 class EncryptedNote:
     v: int = field(metadata=config(field_name="v"))
-    e: bytes = field(metadata=config(field_name="e"))
+    e: str = field(metadata=config(field_name="e"))
     n: keybase1.BoxNonce = field(metadata=config(field_name="n"))
     sender: NoteRecipient = field(metadata=config(field_name="sender"))
-    recipient: Optional[NoteRecipient] = field(metadata=config(field_name="recipient"))
+    recipient: Optional[NoteRecipient] = field(
+        default=None, metadata=config(field_name="recipient")
+    )
 
 
 @dataclass_json
@@ -449,11 +553,13 @@ class PaymentPath:
     source_amount: str = field(metadata=config(field_name="sourceAmount"))
     source_amount_max: str = field(metadata=config(field_name="sourceAmountMax"))
     source_asset: Asset = field(metadata=config(field_name="sourceAsset"))
-    path: List[Asset] = field(metadata=config(field_name="path"))
     destination_amount: str = field(metadata=config(field_name="destinationAmount"))
     destination_asset: Asset = field(metadata=config(field_name="destinationAsset"))
     source_insufficient_balance: str = field(
         metadata=config(field_name="sourceInsufficientBalance")
+    )
+    path: Optional[Optional[List[Asset]]] = field(
+        default=None, metadata=config(field_name="path")
     )
 
 
@@ -497,7 +603,6 @@ class AccountAssetLocal:
     available_to_send_worth: str = field(
         metadata=config(field_name="availableToSendWorth")
     )
-    reserves: List[AccountReserve] = field(metadata=config(field_name="reserves"))
     desc: str = field(metadata=config(field_name="desc"))
     info_url: str = field(metadata=config(field_name="infoUrl"))
     info_url_text: str = field(metadata=config(field_name="infoUrlText"))
@@ -505,6 +610,9 @@ class AccountAssetLocal:
     deposit_button_text: str = field(metadata=config(field_name="depositButtonText"))
     show_withdraw_button: bool = field(metadata=config(field_name="showWithdrawButton"))
     withdraw_button_text: str = field(metadata=config(field_name="withdrawButtonText"))
+    reserves: Optional[Optional[List[AccountReserve]]] = field(
+        default=None, metadata=config(field_name="reserves")
+    )
 
 
 @dataclass_json
@@ -516,8 +624,8 @@ class PaymentDetailsOnlyLocal:
     fee_charged_description: str = field(
         metadata=config(field_name="feeChargedDescription")
     )
-    path_intermediate: List[Asset] = field(
-        metadata=config(field_name="pathIntermediate")
+    path_intermediate: Optional[Optional[List[Asset]]] = field(
+        default=None, metadata=config(field_name="pathIntermediate")
     )
 
 
@@ -575,13 +683,13 @@ class RequestDetailsLocal:
     to_user_type: ParticipantType = field(metadata=config(field_name="toUserType"))
     to_assertion: str = field(metadata=config(field_name="toAssertion"))
     amount: str = field(metadata=config(field_name="amount"))
-    asset: Optional[Asset] = field(metadata=config(field_name="asset"))
-    currency: Optional[OutsideCurrencyCode] = field(
-        metadata=config(field_name="currency")
-    )
     amount_description: str = field(metadata=config(field_name="amountDescription"))
     worth_at_request_time: str = field(metadata=config(field_name="worthAtRequestTime"))
     status: RequestStatus = field(metadata=config(field_name="status"))
+    asset: Optional[Asset] = field(default=None, metadata=config(field_name="asset"))
+    currency: Optional[OutsideCurrencyCode] = field(
+        default=None, metadata=config(field_name="currency")
+    )
 
 
 @dataclass_json
@@ -598,7 +706,9 @@ class PredefinedInflationDestination:
 @dataclass
 class AirdropStatus:
     state: AirdropState = field(metadata=config(field_name="state"))
-    rows: List[AirdropQualification] = field(metadata=config(field_name="rows"))
+    rows: Optional[Optional[List[AirdropQualification]]] = field(
+        default=None, metadata=config(field_name="rows")
+    )
 
 
 @dataclass_json
@@ -617,21 +727,12 @@ class PaymentCLILocal:
     status_detail: str = field(metadata=config(field_name="statusDetail"))
     amount: str = field(metadata=config(field_name="amount"))
     asset: Asset = field(metadata=config(field_name="asset"))
-    display_amount: Optional[str] = field(metadata=config(field_name="displayAmount"))
-    display_currency: Optional[str] = field(
-        metadata=config(field_name="displayCurrency")
-    )
     source_amount_max: str = field(metadata=config(field_name="sourceAmountMax"))
     source_amount_actual: str = field(metadata=config(field_name="sourceAmountActual"))
     source_asset: Asset = field(metadata=config(field_name="sourceAsset"))
     is_advanced: bool = field(metadata=config(field_name="isAdvanced"))
     summary_advanced: str = field(metadata=config(field_name="summaryAdvanced"))
-    operations: List[str] = field(metadata=config(field_name="operations"))
     from_stellar: AccountID = field(metadata=config(field_name="fromStellar"))
-    to_stellar: Optional[AccountID] = field(metadata=config(field_name="toStellar"))
-    from_username: Optional[str] = field(metadata=config(field_name="fromUsername"))
-    to_username: Optional[str] = field(metadata=config(field_name="toUsername"))
-    to_assertion: Optional[str] = field(metadata=config(field_name="toAssertion"))
     note: str = field(metadata=config(field_name="note"))
     note_err: str = field(metadata=config(field_name="noteErr"))
     unread: bool = field(metadata=config(field_name="unread"))
@@ -640,13 +741,36 @@ class PaymentCLILocal:
     fee_charged_description: str = field(
         metadata=config(field_name="feeChargedDescription")
     )
+    display_amount: Optional[str] = field(
+        default=None, metadata=config(field_name="displayAmount")
+    )
+    display_currency: Optional[str] = field(
+        default=None, metadata=config(field_name="displayCurrency")
+    )
+    operations: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="operations")
+    )
+    to_stellar: Optional[AccountID] = field(
+        default=None, metadata=config(field_name="toStellar")
+    )
+    from_username: Optional[str] = field(
+        default=None, metadata=config(field_name="fromUsername")
+    )
+    to_username: Optional[str] = field(
+        default=None, metadata=config(field_name="toUsername")
+    )
+    to_assertion: Optional[str] = field(
+        default=None, metadata=config(field_name="toAssertion")
+    )
 
 
 @dataclass_json
 @dataclass
 class LookupResultCLILocal:
     account_id: AccountID = field(metadata=config(field_name="accountID"))
-    username: Optional[str] = field(metadata=config(field_name="username"))
+    username: Optional[str] = field(
+        default=None, metadata=config(field_name="username")
+    )
 
 
 @dataclass_json
@@ -659,7 +783,9 @@ class BatchPaymentResult:
     tx_id: TransactionID = field(metadata=config(field_name="txID"))
     status: PaymentStatus = field(metadata=config(field_name="status"))
     status_description: str = field(metadata=config(field_name="statusDescription"))
-    error: Optional[BatchPaymentError] = field(metadata=config(field_name="error"))
+    error: Optional[BatchPaymentError] = field(
+        default=None, metadata=config(field_name="error")
+    )
 
 
 @dataclass_json
@@ -669,7 +795,9 @@ class TxDisplaySummary:
     fee: int = field(metadata=config(field_name="fee"))
     memo: str = field(metadata=config(field_name="memo"))
     memo_type: str = field(metadata=config(field_name="memoType"))
-    operations: List[str] = field(metadata=config(field_name="operations"))
+    operations: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="operations")
+    )
 
 
 @dataclass_json
@@ -677,9 +805,11 @@ class TxDisplaySummary:
 class SignXdrResult:
     singed_tx: str = field(metadata=config(field_name="singedTx"))
     account_id: AccountID = field(metadata=config(field_name="accountID"))
-    submit_err: Optional[str] = field(metadata=config(field_name="submitErr"))
+    submit_err: Optional[str] = field(
+        default=None, metadata=config(field_name="submitErr")
+    )
     submit_tx_id: Optional[TransactionID] = field(
-        metadata=config(field_name="submitTxID")
+        default=None, metadata=config(field_name="submitTxID")
     )
 
 
@@ -689,16 +819,18 @@ class PaymentDirectPost:
     from_device_id: keybase1.DeviceID = field(
         metadata=config(field_name="fromDeviceID")
     )
-    to: Optional[keybase1.UserVersion] = field(metadata=config(field_name="to"))
     display_amount: str = field(metadata=config(field_name="displayAmount"))
     display_currency: str = field(metadata=config(field_name="displayCurrency"))
     note_b_64: str = field(metadata=config(field_name="noteB64"))
     signed_transaction: str = field(metadata=config(field_name="signedTransaction"))
     quick_return: bool = field(metadata=config(field_name="quickReturn"))
-    chat_conversation_id: Optional[ChatConversationID] = field(
-        metadata=config(field_name="chatConversationID")
-    )
     batch_id: str = field(metadata=config(field_name="batchID"))
+    to: Optional[keybase1.UserVersion] = field(
+        default=None, metadata=config(field_name="to")
+    )
+    chat_conversation_id: Optional[ChatConversationID] = field(
+        default=None, metadata=config(field_name="chatConversationID")
+    )
 
 
 @dataclass_json
@@ -707,7 +839,6 @@ class PaymentRelayPost:
     from_device_id: keybase1.DeviceID = field(
         metadata=config(field_name="fromDeviceID")
     )
-    to: Optional[keybase1.UserVersion] = field(metadata=config(field_name="to"))
     to_assertion: str = field(metadata=config(field_name="toAssertion"))
     relay_account: AccountID = field(metadata=config(field_name="relayAccount"))
     team_id: keybase1.TeamID = field(metadata=config(field_name="teamID"))
@@ -716,10 +847,13 @@ class PaymentRelayPost:
     box_b_64: str = field(metadata=config(field_name="boxB64"))
     signed_transaction: str = field(metadata=config(field_name="signedTransaction"))
     quick_return: bool = field(metadata=config(field_name="quickReturn"))
-    chat_conversation_id: Optional[ChatConversationID] = field(
-        metadata=config(field_name="chatConversationID")
-    )
     batch_id: str = field(metadata=config(field_name="batchID"))
+    to: Optional[keybase1.UserVersion] = field(
+        default=None, metadata=config(field_name="to")
+    )
+    chat_conversation_id: Optional[ChatConversationID] = field(
+        default=None, metadata=config(field_name="chatConversationID")
+    )
 
 
 @dataclass_json
@@ -729,7 +863,7 @@ class RelayClaimPost:
     dir: RelayDirection = field(metadata=config(field_name="dir"))
     signed_transaction: str = field(metadata=config(field_name="signedTransaction"))
     auto_claim_token: Optional[str] = field(
-        metadata=config(field_name="autoClaimToken")
+        default=None, metadata=config(field_name="autoClaimToken")
     )
 
 
@@ -739,12 +873,14 @@ class PathPaymentPost:
     from_device_id: keybase1.DeviceID = field(
         metadata=config(field_name="fromDeviceID")
     )
-    to: Optional[keybase1.UserVersion] = field(metadata=config(field_name="to"))
     note_b_64: str = field(metadata=config(field_name="noteB64"))
     signed_transaction: str = field(metadata=config(field_name="signedTransaction"))
     quick_return: bool = field(metadata=config(field_name="quickReturn"))
+    to: Optional[keybase1.UserVersion] = field(
+        default=None, metadata=config(field_name="to")
+    )
     chat_conversation_id: Optional[ChatConversationID] = field(
-        metadata=config(field_name="chatConversationID")
+        default=None, metadata=config(field_name="chatConversationID")
     )
 
 
@@ -770,13 +906,8 @@ class PaymentSummaryDirect:
         metadata=config(field_name="fromDeviceID")
     )
     to_stellar: AccountID = field(metadata=config(field_name="toStellar"))
-    to: Optional[keybase1.UserVersion] = field(metadata=config(field_name="to"))
     amount: str = field(metadata=config(field_name="amount"))
     asset: Asset = field(metadata=config(field_name="asset"))
-    display_amount: Optional[str] = field(metadata=config(field_name="displayAmount"))
-    display_currency: Optional[str] = field(
-        metadata=config(field_name="displayCurrency")
-    )
     note_b_64: str = field(metadata=config(field_name="noteB64"))
     from_display_amount: str = field(metadata=config(field_name="fromDisplayAmount"))
     from_display_currency: str = field(
@@ -794,6 +925,15 @@ class PaymentSummaryDirect:
     source_amount_max: str = field(metadata=config(field_name="sourceAmountMax"))
     source_amount_actual: str = field(metadata=config(field_name="sourceAmountActual"))
     source_asset: Asset = field(metadata=config(field_name="sourceAsset"))
+    to: Optional[keybase1.UserVersion] = field(
+        default=None, metadata=config(field_name="to")
+    )
+    display_amount: Optional[str] = field(
+        default=None, metadata=config(field_name="displayAmount")
+    )
+    display_currency: Optional[str] = field(
+        default=None, metadata=config(field_name="displayCurrency")
+    )
 
 
 @dataclass_json
@@ -822,14 +962,14 @@ class AutoClaim:
 @dataclass_json
 @dataclass
 class RequestPost:
-    to_user: Optional[keybase1.UserVersion] = field(
-        metadata=config(field_name="toUser")
-    )
     to_assertion: str = field(metadata=config(field_name="toAssertion"))
     amount: str = field(metadata=config(field_name="amount"))
-    asset: Optional[Asset] = field(metadata=config(field_name="asset"))
+    to_user: Optional[keybase1.UserVersion] = field(
+        default=None, metadata=config(field_name="toUser")
+    )
+    asset: Optional[Asset] = field(default=None, metadata=config(field_name="asset"))
     currency: Optional[OutsideCurrencyCode] = field(
-        metadata=config(field_name="currency")
+        default=None, metadata=config(field_name="currency")
     )
 
 
@@ -838,15 +978,8 @@ class RequestPost:
 class RequestDetails:
     id: KeybaseRequestID = field(metadata=config(field_name="id"))
     from_user: keybase1.UserVersion = field(metadata=config(field_name="fromUser"))
-    to_user: Optional[keybase1.UserVersion] = field(
-        metadata=config(field_name="toUser")
-    )
     to_assertion: str = field(metadata=config(field_name="toAssertion"))
     amount: str = field(metadata=config(field_name="amount"))
-    asset: Optional[Asset] = field(metadata=config(field_name="asset"))
-    currency: Optional[OutsideCurrencyCode] = field(
-        metadata=config(field_name="currency")
-    )
     from_display_amount: str = field(metadata=config(field_name="fromDisplayAmount"))
     from_display_currency: str = field(
         metadata=config(field_name="fromDisplayCurrency")
@@ -857,6 +990,13 @@ class RequestDetails:
         metadata=config(field_name="fundingKbTxID")
     )
     status: RequestStatus = field(metadata=config(field_name="status"))
+    to_user: Optional[keybase1.UserVersion] = field(
+        default=None, metadata=config(field_name="toUser")
+    )
+    asset: Optional[Asset] = field(default=None, metadata=config(field_name="asset"))
+    currency: Optional[OutsideCurrencyCode] = field(
+        default=None, metadata=config(field_name="currency")
+    )
 
 
 @dataclass_json
@@ -874,73 +1014,77 @@ class PaymentPathQuery:
 class BundleVisibleV2:
     revision: BundleRevision = field(metadata=config(field_name="revision"))
     prev: Hash = field(metadata=config(field_name="prev"))
-    accounts: List[BundleVisibleEntryV2] = field(metadata=config(field_name="accounts"))
+    accounts: Optional[Optional[List[BundleVisibleEntryV2]]] = field(
+        default=None, metadata=config(field_name="accounts")
+    )
 
 
 @dataclass_json
 @dataclass
 class BundleSecretV2:
     visible_hash: Hash = field(metadata=config(field_name="visibleHash"))
-    accounts: List[BundleSecretEntryV2] = field(metadata=config(field_name="accounts"))
+    accounts: Optional[Optional[List[BundleSecretEntryV2]]] = field(
+        default=None, metadata=config(field_name="accounts")
+    )
 
 
 @dataclass
 class AccountBundleSecretVersioned__V1:
-    version: Literal[AccountBundleVersion.V1]
+    version: Literal[AccountBundleVersionStrings.V1]
     V1: Optional[AccountBundleSecretV1]
 
 
 @dataclass
 class AccountBundleSecretVersioned__V2:
-    version: Literal[AccountBundleVersion.V2]
+    version: Literal[AccountBundleVersionStrings.V2]
     V2: Optional[AccountBundleSecretUnsupported]
 
 
 @dataclass
 class AccountBundleSecretVersioned__V3:
-    version: Literal[AccountBundleVersion.V3]
+    version: Literal[AccountBundleVersionStrings.V3]
     V3: Optional[AccountBundleSecretUnsupported]
 
 
 @dataclass
 class AccountBundleSecretVersioned__V4:
-    version: Literal[AccountBundleVersion.V4]
+    version: Literal[AccountBundleVersionStrings.V4]
     V4: Optional[AccountBundleSecretUnsupported]
 
 
 @dataclass
 class AccountBundleSecretVersioned__V5:
-    version: Literal[AccountBundleVersion.V5]
+    version: Literal[AccountBundleVersionStrings.V5]
     V5: Optional[AccountBundleSecretUnsupported]
 
 
 @dataclass
 class AccountBundleSecretVersioned__V6:
-    version: Literal[AccountBundleVersion.V6]
+    version: Literal[AccountBundleVersionStrings.V6]
     V6: Optional[AccountBundleSecretUnsupported]
 
 
 @dataclass
 class AccountBundleSecretVersioned__V7:
-    version: Literal[AccountBundleVersion.V7]
+    version: Literal[AccountBundleVersionStrings.V7]
     V7: Optional[AccountBundleSecretUnsupported]
 
 
 @dataclass
 class AccountBundleSecretVersioned__V8:
-    version: Literal[AccountBundleVersion.V8]
+    version: Literal[AccountBundleVersionStrings.V8]
     V8: Optional[AccountBundleSecretUnsupported]
 
 
 @dataclass
 class AccountBundleSecretVersioned__V9:
-    version: Literal[AccountBundleVersion.V9]
+    version: Literal[AccountBundleVersionStrings.V9]
     V9: Optional[AccountBundleSecretUnsupported]
 
 
 @dataclass
 class AccountBundleSecretVersioned__V10:
-    version: Literal[AccountBundleVersion.V10]
+    version: Literal[AccountBundleVersionStrings.V10]
     V10: Optional[AccountBundleSecretUnsupported]
 
 
@@ -964,9 +1108,11 @@ class Bundle:
     revision: BundleRevision = field(metadata=config(field_name="revision"))
     prev: Hash = field(metadata=config(field_name="prev"))
     own_hash: Hash = field(metadata=config(field_name="ownHash"))
-    accounts: List[BundleEntry] = field(metadata=config(field_name="accounts"))
     account_bundles: Dict[str, AccountBundle] = field(
         metadata=config(field_name="accountBundles")
+    )
+    accounts: Optional[Optional[List[BundleEntry]]] = field(
+        default=None, metadata=config(field_name="accounts")
     )
 
 
@@ -1015,18 +1161,12 @@ class PaymentLocal:
     worth: str = field(metadata=config(field_name="worth"))
     worth_at_send_time: str = field(metadata=config(field_name="worthAtSendTime"))
     issuer_description: str = field(metadata=config(field_name="issuerDescription"))
-    issuer_account_id: Optional[AccountID] = field(
-        metadata=config(field_name="issuerAccountID")
-    )
     from_type: ParticipantType = field(metadata=config(field_name="fromType"))
     to_type: ParticipantType = field(metadata=config(field_name="toType"))
     asset_code: str = field(metadata=config(field_name="assetCode"))
     from_account_id: AccountID = field(metadata=config(field_name="fromAccountID"))
     from_account_name: str = field(metadata=config(field_name="fromAccountName"))
     from_username: str = field(metadata=config(field_name="fromUsername"))
-    to_account_id: Optional[AccountID] = field(
-        metadata=config(field_name="toAccountID")
-    )
     to_account_name: str = field(metadata=config(field_name="toAccountName"))
     to_username: str = field(metadata=config(field_name="toUsername"))
     to_assertion: str = field(metadata=config(field_name="toAssertion"))
@@ -1041,16 +1181,24 @@ class PaymentLocal:
     source_conv_rate: str = field(metadata=config(field_name="sourceConvRate"))
     is_advanced: bool = field(metadata=config(field_name="isAdvanced"))
     summary_advanced: str = field(metadata=config(field_name="summaryAdvanced"))
-    operations: List[str] = field(metadata=config(field_name="operations"))
     unread: bool = field(metadata=config(field_name="unread"))
     batch_id: str = field(metadata=config(field_name="batchID"))
     from_airdrop: bool = field(metadata=config(field_name="fromAirdrop"))
     is_inflation: bool = field(metadata=config(field_name="isInflation"))
+    issuer_account_id: Optional[AccountID] = field(
+        default=None, metadata=config(field_name="issuerAccountID")
+    )
+    to_account_id: Optional[AccountID] = field(
+        default=None, metadata=config(field_name="toAccountID")
+    )
+    operations: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="operations")
+    )
     inflation_source: Optional[str] = field(
-        metadata=config(field_name="inflationSource")
+        default=None, metadata=config(field_name="inflationSource")
     )
     trustline: Optional[PaymentTrustlineLocal] = field(
-        metadata=config(field_name="trustline")
+        default=None, metadata=config(field_name="trustline")
     )
 
 
@@ -1073,7 +1221,9 @@ class BuildPaymentResLocal:
         metadata=config(field_name="sendingIntentionXLM")
     )
     amount_available: str = field(metadata=config(field_name="amountAvailable"))
-    banners: List[SendBannerLocal] = field(metadata=config(field_name="banners"))
+    banners: Optional[Optional[List[SendBannerLocal]]] = field(
+        default=None, metadata=config(field_name="banners")
+    )
 
 
 @dataclass_json
@@ -1090,24 +1240,30 @@ class BuildRequestResLocal:
     sending_intention_xlm: bool = field(
         metadata=config(field_name="sendingIntentionXLM")
     )
-    banners: List[SendBannerLocal] = field(metadata=config(field_name="banners"))
+    banners: Optional[Optional[List[SendBannerLocal]]] = field(
+        default=None, metadata=config(field_name="banners")
+    )
 
 
 @dataclass_json
 @dataclass
 class InflationDestinationResultLocal:
-    destination: Optional[AccountID] = field(metadata=config(field_name="destination"))
-    known_destination: Optional[PredefinedInflationDestination] = field(
-        metadata=config(field_name="knownDestination")
-    )
     self_: bool = field(metadata=config(field_name="self"))
+    destination: Optional[AccountID] = field(
+        default=None, metadata=config(field_name="destination")
+    )
+    known_destination: Optional[PredefinedInflationDestination] = field(
+        default=None, metadata=config(field_name="knownDestination")
+    )
 
 
 @dataclass_json
 @dataclass
 class RecipientTrustlinesLocal:
-    trustlines: List[Balance] = field(metadata=config(field_name="trustlines"))
     recipient_type: ParticipantType = field(metadata=config(field_name="recipientType"))
+    trustlines: Optional[Optional[List[Balance]]] = field(
+        default=None, metadata=config(field_name="trustlines")
+    )
 
 
 @dataclass_json
@@ -1127,8 +1283,10 @@ class PaymentPathLocal:
 @dataclass_json
 @dataclass
 class PaymentOrErrorCLILocal:
-    payment: Optional[PaymentCLILocal] = field(metadata=config(field_name="payment"))
-    err: Optional[str] = field(metadata=config(field_name="err"))
+    payment: Optional[PaymentCLILocal] = field(
+        default=None, metadata=config(field_name="payment")
+    )
+    err: Optional[str] = field(default=None, metadata=config(field_name="err"))
 
 
 @dataclass_json
@@ -1137,11 +1295,13 @@ class OwnAccountCLILocal:
     account_id: AccountID = field(metadata=config(field_name="accountID"))
     is_primary: bool = field(metadata=config(field_name="isPrimary"))
     name: str = field(metadata=config(field_name="name"))
-    balance: List[Balance] = field(metadata=config(field_name="balance"))
-    exchange_rate: Optional[OutsideExchangeRate] = field(
-        metadata=config(field_name="exchangeRate")
-    )
     account_mode: AccountMode = field(metadata=config(field_name="accountMode"))
+    balance: Optional[Optional[List[Balance]]] = field(
+        default=None, metadata=config(field_name="balance")
+    )
+    exchange_rate: Optional[OutsideExchangeRate] = field(
+        default=None, metadata=config(field_name="exchangeRate")
+    )
 
 
 @dataclass_json
@@ -1152,7 +1312,6 @@ class BatchResultLocal:
     all_submitted_time: TimeMs = field(metadata=config(field_name="allSubmittedTime"))
     all_complete_time: TimeMs = field(metadata=config(field_name="allCompleteTime"))
     end_time: TimeMs = field(metadata=config(field_name="endTime"))
-    payments: List[BatchPaymentResult] = field(metadata=config(field_name="payments"))
     overall_duration_ms: TimeMs = field(metadata=config(field_name="overallDurationMs"))
     prepare_duration_ms: TimeMs = field(metadata=config(field_name="prepareDurationMs"))
     submit_duration_ms: TimeMs = field(metadata=config(field_name="submitDurationMs"))
@@ -1179,6 +1338,9 @@ class BatchResultLocal:
     )
     avg_error_duration_ms: TimeMs = field(
         metadata=config(field_name="avgErrorDurationMs")
+    )
+    payments: Optional[Optional[List[BatchPaymentResult]]] = field(
+        default=None, metadata=config(field_name="payments")
     )
 
 
@@ -1210,9 +1372,13 @@ class ValidateStellarURIResultLocal:
 @dataclass_json
 @dataclass
 class PaymentOp:
-    to: Optional[keybase1.UserVersion] = field(metadata=config(field_name="to"))
-    direct: Optional[DirectOp] = field(metadata=config(field_name="direct"))
-    relay: Optional[RelayOp] = field(metadata=config(field_name="relay"))
+    to: Optional[keybase1.UserVersion] = field(
+        default=None, metadata=config(field_name="to")
+    )
+    direct: Optional[DirectOp] = field(
+        default=None, metadata=config(field_name="direct")
+    )
+    relay: Optional[RelayOp] = field(default=None, metadata=config(field_name="relay"))
 
 
 @dataclass_json
@@ -1227,17 +1393,19 @@ class PaymentSummaryStellar:
     cursor_token: str = field(metadata=config(field_name="cursorToken"))
     unread: bool = field(metadata=config(field_name="unread"))
     is_inflation: bool = field(metadata=config(field_name="isInflation"))
-    inflation_source: Optional[str] = field(
-        metadata=config(field_name="inflationSource")
-    )
     source_amount_max: str = field(metadata=config(field_name="sourceAmountMax"))
     source_amount_actual: str = field(metadata=config(field_name="sourceAmountActual"))
     source_asset: Asset = field(metadata=config(field_name="sourceAsset"))
     is_advanced: bool = field(metadata=config(field_name="isAdvanced"))
     summary_advanced: str = field(metadata=config(field_name="summaryAdvanced"))
-    operations: List[str] = field(metadata=config(field_name="operations"))
+    inflation_source: Optional[str] = field(
+        default=None, metadata=config(field_name="inflationSource")
+    )
+    operations: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="operations")
+    )
     trustline: Optional[PaymentTrustlineLocal] = field(
-        metadata=config(field_name="trustline")
+        default=None, metadata=config(field_name="trustline")
     )
 
 
@@ -1253,22 +1421,28 @@ class PaymentSummaryRelay:
     from_device_id: keybase1.DeviceID = field(
         metadata=config(field_name="fromDeviceID")
     )
-    to: Optional[keybase1.UserVersion] = field(metadata=config(field_name="to"))
     to_assertion: str = field(metadata=config(field_name="toAssertion"))
     relay_account: AccountID = field(metadata=config(field_name="relayAccount"))
     amount: str = field(metadata=config(field_name="amount"))
-    display_amount: Optional[str] = field(metadata=config(field_name="displayAmount"))
-    display_currency: Optional[str] = field(
-        metadata=config(field_name="displayCurrency")
-    )
     ctime: TimeMs = field(metadata=config(field_name="ctime"))
     rtime: TimeMs = field(metadata=config(field_name="rtime"))
     box_b_64: str = field(metadata=config(field_name="boxB64"))
     team_id: keybase1.TeamID = field(metadata=config(field_name="teamID"))
-    claim: Optional[ClaimSummary] = field(metadata=config(field_name="claim"))
     cursor_token: str = field(metadata=config(field_name="cursorToken"))
     batch_id: str = field(metadata=config(field_name="batchID"))
     from_airdrop: bool = field(metadata=config(field_name="fromAirdrop"))
+    to: Optional[keybase1.UserVersion] = field(
+        default=None, metadata=config(field_name="to")
+    )
+    display_amount: Optional[str] = field(
+        default=None, metadata=config(field_name="displayAmount")
+    )
+    display_currency: Optional[str] = field(
+        default=None, metadata=config(field_name="displayCurrency")
+    )
+    claim: Optional[ClaimSummary] = field(
+        default=None, metadata=config(field_name="claim")
+    )
 
 
 @dataclass_json
@@ -1276,17 +1450,21 @@ class PaymentSummaryRelay:
 class AccountDetails:
     account_id: AccountID = field(metadata=config(field_name="accountID"))
     seqno: str = field(metadata=config(field_name="seqno"))
-    balances: List[Balance] = field(metadata=config(field_name="balances"))
     subentry_count: int = field(metadata=config(field_name="subentryCount"))
     available: str = field(metadata=config(field_name="available"))
-    reserves: List[AccountReserve] = field(metadata=config(field_name="reserves"))
-    read_transaction_id: Optional[TransactionID] = field(
-        metadata=config(field_name="readTransactionID")
-    )
     unread_payments: int = field(metadata=config(field_name="unreadPayments"))
     display_currency: str = field(metadata=config(field_name="displayCurrency"))
+    balances: Optional[Optional[List[Balance]]] = field(
+        default=None, metadata=config(field_name="balances")
+    )
+    reserves: Optional[Optional[List[AccountReserve]]] = field(
+        default=None, metadata=config(field_name="reserves")
+    )
+    read_transaction_id: Optional[TransactionID] = field(
+        default=None, metadata=config(field_name="readTransactionID")
+    )
     inflation_destination: Optional[AccountID] = field(
-        metadata=config(field_name="inflationDestination")
+        default=None, metadata=config(field_name="inflationDestination")
     )
 
 
@@ -1296,67 +1474,69 @@ class UIPaymentReviewed:
     bid: BuildPaymentID = field(metadata=config(field_name="bid"))
     review_id: int = field(metadata=config(field_name="reviewID"))
     seqno: int = field(metadata=config(field_name="seqno"))
-    banners: List[SendBannerLocal] = field(metadata=config(field_name="banners"))
     next_button: str = field(metadata=config(field_name="nextButton"))
+    banners: Optional[Optional[List[SendBannerLocal]]] = field(
+        default=None, metadata=config(field_name="banners")
+    )
 
 
 @dataclass
 class BundleSecretVersioned__V1:
-    version: Literal[BundleVersion.V1]
+    version: Literal[BundleVersionStrings.V1]
     V1: Optional[BundleSecretUnsupported]
 
 
 @dataclass
 class BundleSecretVersioned__V2:
-    version: Literal[BundleVersion.V2]
+    version: Literal[BundleVersionStrings.V2]
     V2: Optional[BundleSecretV2]
 
 
 @dataclass
 class BundleSecretVersioned__V3:
-    version: Literal[BundleVersion.V3]
+    version: Literal[BundleVersionStrings.V3]
     V3: Optional[BundleSecretUnsupported]
 
 
 @dataclass
 class BundleSecretVersioned__V4:
-    version: Literal[BundleVersion.V4]
+    version: Literal[BundleVersionStrings.V4]
     V4: Optional[BundleSecretUnsupported]
 
 
 @dataclass
 class BundleSecretVersioned__V5:
-    version: Literal[BundleVersion.V5]
+    version: Literal[BundleVersionStrings.V5]
     V5: Optional[BundleSecretUnsupported]
 
 
 @dataclass
 class BundleSecretVersioned__V6:
-    version: Literal[BundleVersion.V6]
+    version: Literal[BundleVersionStrings.V6]
     V6: Optional[BundleSecretUnsupported]
 
 
 @dataclass
 class BundleSecretVersioned__V7:
-    version: Literal[BundleVersion.V7]
+    version: Literal[BundleVersionStrings.V7]
     V7: Optional[BundleSecretUnsupported]
 
 
 @dataclass
 class BundleSecretVersioned__V8:
-    version: Literal[BundleVersion.V8]
+    version: Literal[BundleVersionStrings.V8]
     V8: Optional[BundleSecretUnsupported]
 
 
 @dataclass
 class BundleSecretVersioned__V9:
-    version: Literal[BundleVersion.V9]
+    version: Literal[BundleVersionStrings.V9]
     V9: Optional[BundleSecretUnsupported]
 
 
 @dataclass
 class BundleSecretVersioned__V10:
-    version: Literal[BundleVersion.V10]
+    version: Literal[BundleVersionStrings.V10]
     V10: Optional[BundleSecretUnsupported]
 
 
@@ -1377,8 +1557,10 @@ BundleSecretVersioned = Union[
 @dataclass_json
 @dataclass
 class PaymentOrErrorLocal:
-    payment: Optional[PaymentLocal] = field(metadata=config(field_name="payment"))
-    err: Optional[str] = field(metadata=config(field_name="err"))
+    payment: Optional[PaymentLocal] = field(
+        default=None, metadata=config(field_name="payment")
+    )
+    err: Optional[str] = field(default=None, metadata=config(field_name="err"))
 
 
 @dataclass_json
@@ -1395,25 +1577,27 @@ class PaymentMultiPost:
         metadata=config(field_name="fromDeviceID")
     )
     signed_transaction: str = field(metadata=config(field_name="signedTransaction"))
-    operations: List[PaymentOp] = field(metadata=config(field_name="operations"))
     batch_id: str = field(metadata=config(field_name="batchID"))
+    operations: Optional[Optional[List[PaymentOp]]] = field(
+        default=None, metadata=config(field_name="operations")
+    )
 
 
 @dataclass
 class PaymentSummary__STELLAR:
-    typ: Literal[PaymentSummaryType.STELLAR]
+    typ: Literal[PaymentSummaryTypeStrings.STELLAR]
     STELLAR: Optional[PaymentSummaryStellar]
 
 
 @dataclass
 class PaymentSummary__DIRECT:
-    typ: Literal[PaymentSummaryType.DIRECT]
+    typ: Literal[PaymentSummaryTypeStrings.DIRECT]
     DIRECT: Optional[PaymentSummaryDirect]
 
 
 @dataclass
 class PaymentSummary__RELAY:
-    typ: Literal[PaymentSummaryType.RELAY]
+    typ: Literal[PaymentSummaryTypeStrings.RELAY]
     RELAY: Optional[PaymentSummaryRelay]
 
 
@@ -1425,10 +1609,14 @@ PaymentSummary = Union[
 @dataclass_json
 @dataclass
 class PaymentsPageLocal:
-    payments: List[PaymentOrErrorLocal] = field(metadata=config(field_name="payments"))
-    cursor: Optional[PageCursor] = field(metadata=config(field_name="cursor"))
+    payments: Optional[Optional[List[PaymentOrErrorLocal]]] = field(
+        default=None, metadata=config(field_name="payments")
+    )
+    cursor: Optional[PageCursor] = field(
+        default=None, metadata=config(field_name="cursor")
+    )
     oldest_unread: Optional[PaymentID] = field(
-        metadata=config(field_name="oldestUnread")
+        default=None, metadata=config(field_name="oldestUnread")
     )
 
 
@@ -1440,18 +1628,22 @@ class PaymentDetails:
     memo_type: str = field(metadata=config(field_name="memoType"))
     external_tx_url: str = field(metadata=config(field_name="externalTxURL"))
     fee_charged: str = field(metadata=config(field_name="feeCharged"))
-    path_intermediate: List[Asset] = field(
-        metadata=config(field_name="pathIntermediate")
+    path_intermediate: Optional[Optional[List[Asset]]] = field(
+        default=None, metadata=config(field_name="pathIntermediate")
     )
 
 
 @dataclass_json
 @dataclass
 class PaymentsPage:
-    payments: List[PaymentSummary] = field(metadata=config(field_name="payments"))
-    cursor: Optional[PageCursor] = field(metadata=config(field_name="cursor"))
+    payments: Optional[Optional[List[PaymentSummary]]] = field(
+        default=None, metadata=config(field_name="payments")
+    )
+    cursor: Optional[PageCursor] = field(
+        default=None, metadata=config(field_name="cursor")
+    )
     oldest_unread: Optional[TransactionID] = field(
-        metadata=config(field_name="oldestUnread")
+        default=None, metadata=config(field_name="oldestUnread")
     )
 
 
@@ -1460,6 +1652,6 @@ class PaymentsPage:
 class DetailsPlusPayments:
     details: AccountDetails = field(metadata=config(field_name="details"))
     recent_payments: PaymentsPage = field(metadata=config(field_name="recentPayments"))
-    pending_payments: List[PaymentSummary] = field(
-        metadata=config(field_name="pendingPayments")
+    pending_payments: Optional[Optional[List[PaymentSummary]]] = field(
+        default=None, metadata=config(field_name="pendingPayments")
     )

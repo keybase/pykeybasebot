@@ -13,16 +13,15 @@ Input files:
  - ../client/protocol/avdl/chat1/unfurl.avdl
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 from typing import Dict, List, Optional, Union
 
+import pykeybasebot.types.gregor1 as gregor1
+import pykeybasebot.types.keybase1 as keybase1
+import pykeybasebot.types.stellar1 as stellar1
 from dataclasses_json import config, dataclass_json
 from typing_extensions import Literal
-
-import gregor1
-import keybase1
-import stellar1
 
 
 @dataclass_json
@@ -40,8 +39,12 @@ class ChatChannel:
     name: str = field(metadata=config(field_name="name"))
     public: bool = field(metadata=config(field_name="public"))
     members_type: str = field(metadata=config(field_name="members_type"))
-    topic_type: Optional[str] = field(metadata=config(field_name="topic_type"))
-    topic_name: Optional[str] = field(metadata=config(field_name="topic_name"))
+    topic_type: Optional[str] = field(
+        default=None, metadata=config(field_name="topic_type")
+    )
+    topic_name: Optional[str] = field(
+        default=None, metadata=config(field_name="topic_name")
+    )
 
 
 @dataclass_json
@@ -54,9 +57,13 @@ class ChatMessage:
 @dataclass
 class MsgSender:
     uid: str = field(metadata=config(field_name="uid"))
-    username: Optional[str] = field(metadata=config(field_name="username"))
     device_id: str = field(metadata=config(field_name="device_id"))
-    device_name: Optional[str] = field(metadata=config(field_name="device_name"))
+    username: Optional[str] = field(
+        default=None, metadata=config(field_name="username")
+    )
+    device_name: Optional[str] = field(
+        default=None, metadata=config(field_name="device_name")
+    )
 
 
 @dataclass_json
@@ -76,13 +83,22 @@ class UnverifiedInboxUIItemMetadata:
     headline_decorated: str = field(metadata=config(field_name="headlineDecorated"))
     snippet: str = field(metadata=config(field_name="snippet"))
     snippet_decoration: str = field(metadata=config(field_name="snippetDecoration"))
-    writer_names: List[str] = field(metadata=config(field_name="writerNames"))
-    reset_participants: List[str] = field(
-        metadata=config(field_name="resetParticipants")
+    writer_names: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="writerNames")
+    )
+    reset_participants: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="resetParticipants")
     )
 
 
 class UIParticipantType(Enum):
+    NONE = 0
+    USER = 1
+    PHONENO = 2
+    EMAIL = 3
+
+
+class UIParticipantTypeStrings(Enum):
     NONE = "none"
     USER = "user"
     PHONENO = "phoneno"
@@ -103,18 +119,17 @@ class UIAssetUrlInfo:
     full_url: str = field(metadata=config(field_name="fullUrl"))
     full_url_cached: bool = field(metadata=config(field_name="fullUrlCached"))
     mime_type: str = field(metadata=config(field_name="mimeType"))
-    video_duration: Optional[str] = field(metadata=config(field_name="videoDuration"))
     inline_video_playable: bool = field(
         metadata=config(field_name="inlineVideoPlayable")
+    )
+    video_duration: Optional[str] = field(
+        default=None, metadata=config(field_name="videoDuration")
     )
 
 
 @dataclass_json
 @dataclass
 class UIPaymentInfo:
-    account_id: Optional[stellar1.AccountID] = field(
-        metadata=config(field_name="accountID")
-    )
     amount_description: str = field(metadata=config(field_name="amountDescription"))
     worth: str = field(metadata=config(field_name="worth"))
     worth_at_send_time: str = field(metadata=config(field_name="worthAtSendTime"))
@@ -130,6 +145,9 @@ class UIPaymentInfo:
     source_amount: str = field(metadata=config(field_name="sourceAmount"))
     source_asset: stellar1.Asset = field(metadata=config(field_name="sourceAsset"))
     issuer_description: str = field(metadata=config(field_name="issuerDescription"))
+    account_id: Optional[stellar1.AccountID] = field(
+        default=None, metadata=config(field_name="accountID")
+    )
 
 
 @dataclass_json
@@ -137,15 +155,24 @@ class UIPaymentInfo:
 class UIRequestInfo:
     amount: str = field(metadata=config(field_name="amount"))
     amount_description: str = field(metadata=config(field_name="amountDescription"))
-    asset: Optional[stellar1.Asset] = field(metadata=config(field_name="asset"))
-    currency: Optional[stellar1.OutsideCurrencyCode] = field(
-        metadata=config(field_name="currency")
-    )
     worth_at_request_time: str = field(metadata=config(field_name="worthAtRequestTime"))
     status: stellar1.RequestStatus = field(metadata=config(field_name="status"))
+    asset: Optional[stellar1.Asset] = field(
+        default=None, metadata=config(field_name="asset")
+    )
+    currency: Optional[stellar1.OutsideCurrencyCode] = field(
+        default=None, metadata=config(field_name="currency")
+    )
 
 
 class MessageUnboxedState(Enum):
+    VALID = 1
+    ERROR = 2
+    OUTBOX = 3
+    PLACEHOLDER = 4
+
+
+class MessageUnboxedStateStrings(Enum):
     VALID = "valid"
     ERROR = "error"
     OUTBOX = "outbox"
@@ -157,13 +184,29 @@ class MessageUnboxedState(Enum):
 class UITeamMention:
     in_team: bool = field(metadata=config(field_name="inTeam"))
     open: bool = field(metadata=config(field_name="open"))
-    description: Optional[str] = field(metadata=config(field_name="description"))
-    num_members: Optional[int] = field(metadata=config(field_name="numMembers"))
-    public_admins: List[str] = field(metadata=config(field_name="publicAdmins"))
-    conv_id: Optional[str] = field(metadata=config(field_name="convID"))
+    description: Optional[str] = field(
+        default=None, metadata=config(field_name="description")
+    )
+    num_members: Optional[int] = field(
+        default=None, metadata=config(field_name="numMembers")
+    )
+    public_admins: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="publicAdmins")
+    )
+    conv_id: Optional[str] = field(default=None, metadata=config(field_name="convID"))
 
 
 class UITextDecorationTyp(Enum):
+    PAYMENT = 0
+    ATMENTION = 1
+    CHANNELNAMEMENTION = 2
+    MAYBEMENTION = 3
+    LINK = 4
+    MAILTO = 5
+    KBFSPATH = 6
+
+
+class UITextDecorationTypStrings(Enum):
     PAYMENT = "payment"
     ATMENTION = "atmention"
     CHANNELNAMEMENTION = "channelnamemention"
@@ -174,6 +217,13 @@ class UITextDecorationTyp(Enum):
 
 
 class UIMaybeMentionStatus(Enum):
+    UNKNOWN = 0
+    USER = 1
+    TEAM = 2
+    NOTHING = 3
+
+
+class UIMaybeMentionStatusStrings(Enum):
     UNKNOWN = "unknown"
     USER = "user"
     TEAM = "team"
@@ -188,6 +238,13 @@ class UILinkDecoration:
 
 
 class UIChatThreadStatusTyp(Enum):
+    NONE = 0
+    SERVER = 1
+    VALIDATING = 2
+    VALIDATED = 3
+
+
+class UIChatThreadStatusTypStrings(Enum):
     NONE = "none"
     SERVER = "server"
     VALIDATING = "validating"
@@ -196,25 +253,25 @@ class UIChatThreadStatusTyp(Enum):
 
 @dataclass
 class UIChatThreadStatus__NONE:
-    typ: Literal[UIChatThreadStatusTyp.NONE]
+    typ: Literal[UIChatThreadStatusTypStrings.NONE]
     NONE: None
 
 
 @dataclass
 class UIChatThreadStatus__SERVER:
-    typ: Literal[UIChatThreadStatusTyp.SERVER]
+    typ: Literal[UIChatThreadStatusTypStrings.SERVER]
     SERVER: None
 
 
 @dataclass
 class UIChatThreadStatus__VALIDATING:
-    typ: Literal[UIChatThreadStatusTyp.VALIDATING]
+    typ: Literal[UIChatThreadStatusTypStrings.VALIDATING]
     VALIDATING: Optional[int]
 
 
 @dataclass
 class UIChatThreadStatus__VALIDATED:
-    typ: Literal[UIChatThreadStatusTyp.VALIDATED]
+    typ: Literal[UIChatThreadStatusTypStrings.VALIDATED]
     VALIDATED: None
 
 
@@ -232,8 +289,10 @@ class UIChatPayment:
     username: str = field(metadata=config(field_name="username"))
     full_name: str = field(metadata=config(field_name="fullName"))
     xlm_amount: str = field(metadata=config(field_name="xlmAmount"))
-    error: Optional[str] = field(metadata=config(field_name="error"))
-    display_amount: Optional[str] = field(metadata=config(field_name="displayAmount"))
+    error: Optional[str] = field(default=None, metadata=config(field_name="error"))
+    display_amount: Optional[str] = field(
+        default=None, metadata=config(field_name="displayAmount")
+    )
 
 
 @dataclass_json
@@ -247,6 +306,13 @@ class GiphySearchResult:
 
 
 class UICoinFlipPhase(Enum):
+    COMMITMENT = 0
+    REVEALS = 1
+    COMPLETE = 2
+    ERROR = 3
+
+
+class UICoinFlipPhaseStrings(Enum):
     COMMITMENT = "commitment"
     REVEALS = "reveals"
     COMPLETE = "complete"
@@ -261,6 +327,17 @@ class UICoinFlipErrorParticipant:
 
 
 class UICoinFlipErrorTyp(Enum):
+    GENERIC = 0
+    ABSENTEE = 1
+    TIMEOUT = 2
+    ABORTED = 3
+    DUPREG = 4
+    DUPCOMMITCOMPLETE = 5
+    DUPREVEAL = 6
+    COMMITMISMATCH = 7
+
+
+class UICoinFlipErrorTypStrings(Enum):
     GENERIC = "generic"
     ABSENTEE = "absentee"
     TIMEOUT = "timeout"
@@ -272,6 +349,14 @@ class UICoinFlipErrorTyp(Enum):
 
 
 class UICoinFlipResultTyp(Enum):
+    NUMBER = 0
+    SHUFFLE = 1
+    DECK = 2
+    HANDS = 3
+    COIN = 4
+
+
+class UICoinFlipResultTypStrings(Enum):
     NUMBER = "number"
     SHUFFLE = "shuffle"
     DECK = "deck"
@@ -283,7 +368,9 @@ class UICoinFlipResultTyp(Enum):
 @dataclass
 class UICoinFlipHand:
     target: str = field(metadata=config(field_name="target"))
-    hand: List[int] = field(metadata=config(field_name="hand"))
+    hand: Optional[Optional[List[int]]] = field(
+        default=None, metadata=config(field_name="hand")
+    )
 
 
 @dataclass_json
@@ -294,30 +381,47 @@ class UICoinFlipParticipant:
     username: str = field(metadata=config(field_name="username"))
     device_name: str = field(metadata=config(field_name="deviceName"))
     commitment: str = field(metadata=config(field_name="commitment"))
-    reveal: Optional[str] = field(metadata=config(field_name="reveal"))
+    reveal: Optional[str] = field(default=None, metadata=config(field_name="reveal"))
 
 
 @dataclass_json
 @dataclass
 class UICommandMarkdown:
     body: str = field(metadata=config(field_name="body"))
-    title: Optional[str] = field(metadata=config(field_name="title"))
+    title: Optional[str] = field(default=None, metadata=config(field_name="title"))
 
 
 LocationWatchID = int
 
 
 class UICommandStatusDisplayTyp(Enum):
+    STATUS = 0
+    WARNING = 1
+    ERROR = 2
+
+
+class UICommandStatusDisplayTypStrings(Enum):
     STATUS = "status"
     WARNING = "warning"
     ERROR = "error"
 
 
 class UICommandStatusActionTyp(Enum):
+    APPSETTINGS = 0
+
+
+class UICommandStatusActionTypStrings(Enum):
     APPSETTINGS = "appsettings"
 
 
 class UIBotCommandsUpdateStatus(Enum):
+    UPTODATE = 0
+    UPDATING = 1
+    FAILED = 2
+    BLANK = 3
+
+
+class UIBotCommandsUpdateStatusStrings(Enum):
     UPTODATE = "uptodate"
     UPDATING = "updating"
     FAILED = "failed"
@@ -331,16 +435,32 @@ class ConversationCommand:
     name: str = field(metadata=config(field_name="name"))
     usage: str = field(metadata=config(field_name="usage"))
     has_help_text: bool = field(metadata=config(field_name="hasHelpText"))
-    username: Optional[str] = field(metadata=config(field_name="username"))
+    username: Optional[str] = field(
+        default=None, metadata=config(field_name="username")
+    )
 
 
 class ConversationCommandGroupsTyp(Enum):
+    BUILTIN = 0
+    CUSTOM = 1
+    NONE = 2
+
+
+class ConversationCommandGroupsTypStrings(Enum):
     BUILTIN = "builtin"
     CUSTOM = "custom"
     NONE = "none"
 
 
 class ConversationBuiltinCommandTyp(Enum):
+    NONE = 0
+    ADHOC = 1
+    SMALLTEAM = 2
+    BIGTEAM = 3
+    BIGTEAMGENERAL = 4
+
+
+class ConversationBuiltinCommandTypStrings(Enum):
     NONE = "none"
     ADHOC = "adhoc"
     SMALLTEAM = "smallteam"
@@ -348,22 +468,29 @@ class ConversationBuiltinCommandTyp(Enum):
     BIGTEAMGENERAL = "bigteamgeneral"
 
 
-ThreadID = bytes
+ThreadID = str
 MessageID = int
 TLFConvOrdinal = int
-TopicID = bytes
-ConversationID = bytes
-TLFID = bytes
-Hash = bytes
+TopicID = str
+ConversationID = str
+TLFID = str
+Hash = str
 InboxVers = int
 LocalConversationVers = int
 ConversationVers = int
-OutboxID = bytes
-TopicNameState = bytes
-FlipGameID = bytes
+OutboxID = str
+TopicNameState = str
+FlipGameID = str
 
 
 class ConversationExistence(Enum):
+    ACTIVE = 0
+    ARCHIVED = 1
+    DELETED = 2
+    ABANDONED = 3
+
+
+class ConversationExistenceStrings(Enum):
     ACTIVE = "active"
     ARCHIVED = "archived"
     DELETED = "deleted"
@@ -371,6 +498,13 @@ class ConversationExistence(Enum):
 
 
 class ConversationMembersType(Enum):
+    KBFS = 0
+    TEAM = 1
+    IMPTEAMNATIVE = 2
+    IMPTEAMUPGRADE = 3
+
+
+class ConversationMembersTypeStrings(Enum):
     KBFS = "kbfs"
     TEAM = "team"
     IMPTEAMNATIVE = "impteamnative"
@@ -378,12 +512,40 @@ class ConversationMembersType(Enum):
 
 
 class SyncInboxResType(Enum):
+    CURRENT = 0
+    INCREMENTAL = 1
+    CLEAR = 2
+
+
+class SyncInboxResTypeStrings(Enum):
     CURRENT = "current"
     INCREMENTAL = "incremental"
     CLEAR = "clear"
 
 
 class MessageType(Enum):
+    NONE = 0
+    TEXT = 1
+    ATTACHMENT = 2
+    EDIT = 3
+    DELETE = 4
+    METADATA = 5
+    TLFNAME = 6
+    HEADLINE = 7
+    ATTACHMENTUPLOADED = 8
+    JOIN = 9
+    LEAVE = 10
+    SYSTEM = 11
+    DELETEHISTORY = 12
+    REACTION = 13
+    SENDPAYMENT = 14
+    REQUESTPAYMENT = 15
+    UNFURL = 16
+    FLIP = 17
+    PIN = 18
+
+
+class MessageTypeStrings(Enum):
     NONE = "none"
     TEXT = "text"
     ATTACHMENT = "attachment"
@@ -406,6 +568,13 @@ class MessageType(Enum):
 
 
 class TopicType(Enum):
+    NONE = 0
+    CHAT = 1
+    DEV = 2
+    KBFSFILEEDIT = 3
+
+
+class TopicTypeStrings(Enum):
     NONE = "none"
     CHAT = "chat"
     DEV = "dev"
@@ -413,17 +582,36 @@ class TopicType(Enum):
 
 
 class TeamType(Enum):
+    NONE = 0
+    SIMPLE = 1
+    COMPLEX = 2
+
+
+class TeamTypeStrings(Enum):
     NONE = "none"
     SIMPLE = "simple"
     COMPLEX = "complex"
 
 
 class NotificationKind(Enum):
+    GENERIC = 0
+    ATMENTION = 1
+
+
+class NotificationKindStrings(Enum):
     GENERIC = "generic"
     ATMENTION = "atmention"
 
 
 class GlobalAppNotificationSetting(Enum):
+    NEWMESSAGES = 0
+    PLAINTEXTMOBILE = 1
+    PLAINTEXTDESKTOP = 2
+    DEFAULTSOUNDMOBILE = 3
+    DISABLETYPING = 4
+
+
+class GlobalAppNotificationSettingStrings(Enum):
     NEWMESSAGES = "newmessages"
     PLAINTEXTMOBILE = "plaintextmobile"
     PLAINTEXTDESKTOP = "plaintextdesktop"
@@ -438,6 +626,15 @@ class GlobalAppNotificationSettings:
 
 
 class ConversationStatus(Enum):
+    UNFILED = 0
+    FAVORITE = 1
+    IGNORED = 2
+    BLOCKED = 3
+    MUTED = 4
+    REPORTED = 5
+
+
+class ConversationStatusStrings(Enum):
     UNFILED = "unfiled"
     FAVORITE = "favorite"
     IGNORED = "ignored"
@@ -456,6 +653,15 @@ class KBFSPath:
 
 
 class ConversationMemberStatus(Enum):
+    ACTIVE = 0
+    REMOVED = 1
+    LEFT = 2
+    PREVIEW = 3
+    RESET = 4
+    NEVER_JOINED = 5
+
+
+class ConversationMemberStatusStrings(Enum):
     ACTIVE = "active"
     REMOVED = "removed"
     LEFT = "left"
@@ -467,8 +673,8 @@ class ConversationMemberStatus(Enum):
 @dataclass_json
 @dataclass
 class Pagination:
-    next: bytes = field(metadata=config(field_name="next"))
-    previous: bytes = field(metadata=config(field_name="previous"))
+    next: str = field(metadata=config(field_name="next"))
+    previous: str = field(metadata=config(field_name="previous"))
     num: int = field(metadata=config(field_name="num"))
     last: bool = field(metadata=config(field_name="last"))
     force_first_page: bool = field(metadata=config(field_name="forceFirstPage"))
@@ -531,54 +737,67 @@ class ConversationMinWriterRoleInfo:
 class MsgEphemeralMetadata:
     lifetime: gregor1.DurationSec = field(metadata=config(field_name="l"))
     generation: keybase1.EkGeneration = field(metadata=config(field_name="g"))
-    exploded_by: Optional[str] = field(metadata=config(field_name="u"))
+    exploded_by: Optional[str] = field(default=None, metadata=config(field_name="u"))
 
 
 @dataclass_json
 @dataclass
 class EncryptedData:
     v: int = field(metadata=config(field_name="v"))
-    e: bytes = field(metadata=config(field_name="e"))
-    n: bytes = field(metadata=config(field_name="n"))
+    e: str = field(metadata=config(field_name="e"))
+    n: str = field(metadata=config(field_name="n"))
 
 
 @dataclass_json
 @dataclass
 class SignEncryptedData:
     v: int = field(metadata=config(field_name="v"))
-    e: bytes = field(metadata=config(field_name="e"))
-    n: bytes = field(metadata=config(field_name="n"))
+    e: str = field(metadata=config(field_name="e"))
+    n: str = field(metadata=config(field_name="n"))
 
 
 @dataclass_json
 @dataclass
 class SealedData:
     v: int = field(metadata=config(field_name="v"))
-    e: bytes = field(metadata=config(field_name="e"))
-    n: bytes = field(metadata=config(field_name="n"))
+    e: str = field(metadata=config(field_name="e"))
+    n: str = field(metadata=config(field_name="n"))
 
 
 @dataclass_json
 @dataclass
 class SignatureInfo:
     v: int = field(metadata=config(field_name="v"))
-    s: bytes = field(metadata=config(field_name="s"))
-    k: bytes = field(metadata=config(field_name="k"))
+    s: str = field(metadata=config(field_name="s"))
+    k: str = field(metadata=config(field_name="k"))
 
 
 @dataclass_json
 @dataclass
 class MerkleRoot:
     seqno: int = field(metadata=config(field_name="seqno"))
-    hash: bytes = field(metadata=config(field_name="hash"))
+    hash: str = field(metadata=config(field_name="hash"))
 
 
 class InboxResType(Enum):
+    VERSIONHIT = 0
+    FULL = 1
+
+
+class InboxResTypeStrings(Enum):
     VERSIONHIT = "versionhit"
     FULL = "full"
 
 
 class RetentionPolicyType(Enum):
+    NONE = 0
+    RETAIN = 1
+    EXPIRE = 2
+    INHERIT = 3
+    EPHEMERAL = 4
+
+
+class RetentionPolicyTypeStrings(Enum):
     NONE = "none"
     RETAIN = "retain"
     EXPIRE = "expire"
@@ -611,6 +830,20 @@ class RpEphemeral:
 
 
 class GetThreadReason(Enum):
+    GENERAL = 0
+    PUSH = 1
+    FOREGROUND = 2
+    BACKGROUNDCONVLOAD = 3
+    FIXRETRY = 4
+    PREPARE = 5
+    SEARCHER = 6
+    INDEXED_SEARCH = 7
+    KBFSFILEACTIVITY = 8
+    COINFLIP = 9
+    BOTCOMMANDS = 10
+
+
+class GetThreadReasonStrings(Enum):
     GENERAL = "general"
     PUSH = "push"
     FOREGROUND = "foreground"
@@ -625,6 +858,12 @@ class GetThreadReason(Enum):
 
 
 class ReIndexingMode(Enum):
+    NONE = 0
+    PRESEARCH_SYNC = 1
+    POSTSEARCH_SYNC = 2
+
+
+class ReIndexingModeStrings(Enum):
     NONE = "none"
     PRESEARCH_SYNC = "presearch_sync"
     POSTSEARCH_SYNC = "postsearch_sync"
@@ -681,6 +920,13 @@ class AssetMetadataAudio:
 
 
 class AssetMetadataType(Enum):
+    NONE = 0
+    IMAGE = 1
+    VIDEO = 2
+    AUDIO = 3
+
+
+class AssetMetadataTypeStrings(Enum):
     NONE = "none"
     IMAGE = "image"
     VIDEO = "video"
@@ -688,10 +934,20 @@ class AssetMetadataType(Enum):
 
 
 class AssetTag(Enum):
+    PRIMARY = 0
+
+
+class AssetTagStrings(Enum):
     PRIMARY = "primary"
 
 
 class BotCommandsAdvertisementTyp(Enum):
+    PUBLIC = 0
+    TLFID_MEMBERS = 1
+    TLFID_CONVS = 2
+
+
+class BotCommandsAdvertisementTypStrings(Enum):
     PUBLIC = "public"
     TLFID_MEMBERS = "tlfid_members"
     TLFID_CONVS = "tlfid_convs"
@@ -709,19 +965,24 @@ VersionKind = str
 
 
 class TextPaymentResultTyp(Enum):
+    SENT = 0
+    ERROR = 1
+
+
+class TextPaymentResultTypStrings(Enum):
     SENT = "sent"
     ERROR = "error"
 
 
 @dataclass
 class TextPaymentResult__ERROR:
-    resultTyp: Literal[TextPaymentResultTyp.ERROR]
+    resultTyp: Literal[TextPaymentResultTypStrings.ERROR]
     ERROR: Optional[str]
 
 
 @dataclass
 class TextPaymentResult__SENT:
-    resultTyp: Literal[TextPaymentResultTyp.SENT]
+    resultTyp: Literal[TextPaymentResultTypStrings.SENT]
     SENT: Optional[stellar1.PaymentID]
 
 
@@ -776,6 +1037,17 @@ class MessageHeadline:
 
 
 class MessageSystemType(Enum):
+    ADDEDTOTEAM = 0
+    INVITEADDEDTOTEAM = 1
+    COMPLEXTEAM = 2
+    CREATETEAM = 3
+    GITPUSH = 4
+    CHANGEAVATAR = 5
+    CHANGERETENTION = 6
+    BULKADDTOCONV = 7
+
+
+class MessageSystemTypeStrings(Enum):
     ADDEDTOTEAM = "addedtoteam"
     INVITEADDEDTOTEAM = "inviteaddedtoteam"
     COMPLEXTEAM = "complexteam"
@@ -792,12 +1064,24 @@ class MessageSystemAddedToTeam:
     team: str = field(metadata=config(field_name="team"))
     adder: str = field(metadata=config(field_name="adder"))
     addee: str = field(metadata=config(field_name="addee"))
-    owners: List[str] = field(metadata=config(field_name="owners"))
-    admins: List[str] = field(metadata=config(field_name="admins"))
-    writers: List[str] = field(metadata=config(field_name="writers"))
-    readers: List[str] = field(metadata=config(field_name="readers"))
-    bots: List[str] = field(metadata=config(field_name="bots"))
-    restricted_bots: List[str] = field(metadata=config(field_name="restrictedBots"))
+    owners: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="owners")
+    )
+    admins: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="admins")
+    )
+    writers: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="writers")
+    )
+    readers: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="readers")
+    )
+    bots: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="bots")
+    )
+    restricted_bots: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="restrictedBots")
+    )
 
 
 @dataclass_json
@@ -832,9 +1116,11 @@ class MessageSystemGitPush:
     pusher: str = field(metadata=config(field_name="pusher"))
     repo_name: str = field(metadata=config(field_name="repoName"))
     repo_id: keybase1.RepoID = field(metadata=config(field_name="repoID"))
-    refs: List[keybase1.GitRefMetadata] = field(metadata=config(field_name="refs"))
     push_type: keybase1.GitPushType = field(metadata=config(field_name="pushType"))
     previous_repo_name: str = field(metadata=config(field_name="previousRepoName"))
+    refs: Optional[Optional[List[keybase1.GitRefMetadata]]] = field(
+        default=None, metadata=config(field_name="refs")
+    )
 
 
 @dataclass_json
@@ -847,14 +1133,20 @@ class MessageSystemChangeAvatar:
 @dataclass_json
 @dataclass
 class MessageSystemBulkAddToConv:
-    usernames: List[str] = field(metadata=config(field_name="usernames"))
+    usernames: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="usernames")
+    )
 
 
 @dataclass_json
 @dataclass
 class MessageJoin:
-    joiners: List[str] = field(metadata=config(field_name="joiners"))
-    leavers: List[str] = field(metadata=config(field_name="leavers"))
+    joiners: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="joiners")
+    )
+    leavers: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="leavers")
+    )
 
 
 @dataclass_json
@@ -879,11 +1171,28 @@ class MessageRequestPayment:
 
 
 class OutboxStateType(Enum):
+    SENDING = 0
+    ERROR = 1
+
+
+class OutboxStateTypeStrings(Enum):
     SENDING = "sending"
     ERROR = "error"
 
 
 class OutboxErrorType(Enum):
+    MISC = 0
+    OFFLINE = 1
+    IDENTIFY = 2
+    TOOLONG = 3
+    DUPLICATE = 4
+    EXPIRED = 5
+    TOOMANYATTEMPTS = 6
+    ALREADY_DELETED = 7
+    UPLOADFAILED = 8
+
+
+class OutboxErrorTypeStrings(Enum):
     MISC = "misc"
     OFFLINE = "offline"
     IDENTIFY = "identify"
@@ -896,6 +1205,19 @@ class OutboxErrorType(Enum):
 
 
 class HeaderPlaintextVersion(Enum):
+    V1 = 1
+    V2 = 2
+    V3 = 3
+    V4 = 4
+    V5 = 5
+    V6 = 6
+    V7 = 7
+    V8 = 8
+    V9 = 9
+    V10 = 10
+
+
+class HeaderPlaintextVersionStrings(Enum):
     V1 = "v1"
     V2 = "v2"
     V3 = "v3"
@@ -915,6 +1237,19 @@ class HeaderPlaintextMetaInfo:
 
 
 class BodyPlaintextVersion(Enum):
+    V1 = 1
+    V2 = 2
+    V3 = 3
+    V4 = 4
+    V5 = 5
+    V6 = 6
+    V7 = 7
+    V8 = 8
+    V9 = 9
+    V10 = 10
+
+
+class BodyPlaintextVersionStrings(Enum):
     V1 = "v1"
     V2 = "v2"
     V3 = "v3"
@@ -934,6 +1269,15 @@ class BodyPlaintextMetaInfo:
 
 
 class MessageUnboxedErrorType(Enum):
+    MISC = 0
+    BADVERSION_CRITICAL = 1
+    BADVERSION = 2
+    IDENTIFY = 3
+    EPHEMERAL = 4
+    PAIRWISE_MISSING = 5
+
+
+class MessageUnboxedErrorTypeStrings(Enum):
     MISC = "misc"
     BADVERSION_CRITICAL = "badversion_critical"
     BADVERSION = "badversion"
@@ -954,11 +1298,25 @@ class UnreadFirstNumLimit:
 @dataclass
 class ConversationLocalParticipant:
     username: str = field(metadata=config(field_name="username"))
-    fullname: Optional[str] = field(metadata=config(field_name="fullname"))
-    contact_name: Optional[str] = field(metadata=config(field_name="contactName"))
+    fullname: Optional[str] = field(
+        default=None, metadata=config(field_name="fullname")
+    )
+    contact_name: Optional[str] = field(
+        default=None, metadata=config(field_name="contactName")
+    )
 
 
 class ConversationErrorType(Enum):
+    PERMANENT = 0
+    MISSINGINFO = 1
+    SELFREKEYNEEDED = 2
+    OTHERREKEYNEEDED = 3
+    IDENTIFY = 4
+    TRANSIENT = 5
+    NONE = 6
+
+
+class ConversationErrorTypeStrings(Enum):
     PERMANENT = "permanent"
     MISSINGINFO = "missinginfo"
     SELFREKEYNEEDED = "selfrekeyneeded"
@@ -973,9 +1331,15 @@ class ConversationErrorType(Enum):
 class ConversationErrorRekey:
     tlf_name: str = field(metadata=config(field_name="tlfName"))
     tlf_public: bool = field(metadata=config(field_name="tlfPublic"))
-    rekeyers: List[str] = field(metadata=config(field_name="rekeyers"))
-    writer_names: List[str] = field(metadata=config(field_name="writerNames"))
-    reader_names: List[str] = field(metadata=config(field_name="readerNames"))
+    rekeyers: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="rekeyers")
+    )
+    writer_names: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="writerNames")
+    )
+    reader_names: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="readerNames")
+    )
 
 
 @dataclass_json
@@ -987,6 +1351,13 @@ class ConversationMinWriterRoleInfoLocal:
 
 
 class MessageIDControlMode(Enum):
+    OLDERMESSAGES = 0
+    NEWERMESSAGES = 1
+    CENTERED = 2
+    UNREADLINE = 3
+
+
+class MessageIDControlModeStrings(Enum):
     OLDERMESSAGES = "oldermessages"
     NEWERMESSAGES = "newermessages"
     CENTERED = "centered"
@@ -994,16 +1365,32 @@ class MessageIDControlMode(Enum):
 
 
 class GetThreadNonblockCbMode(Enum):
+    FULL = 0
+    INCREMENTAL = 1
+
+
+class GetThreadNonblockCbModeStrings(Enum):
     FULL = "full"
     INCREMENTAL = "incremental"
 
 
 class GetThreadNonblockPgMode(Enum):
+    DEFAULT = 0
+    SERVER = 1
+
+
+class GetThreadNonblockPgModeStrings(Enum):
     DEFAULT = "default"
     SERVER = "server"
 
 
 class PreviewLocationTyp(Enum):
+    URL = 0
+    FILE = 1
+    BYTES = 2
+
+
+class PreviewLocationTypStrings(Enum):
     URL = "url"
     FILE = "file"
     BYTES = "bytes"
@@ -1011,20 +1398,20 @@ class PreviewLocationTyp(Enum):
 
 @dataclass
 class PreviewLocation__URL:
-    ltyp: Literal[PreviewLocationTyp.URL]
+    ltyp: Literal[PreviewLocationTypStrings.URL]
     URL: Optional[str]
 
 
 @dataclass
 class PreviewLocation__FILE:
-    ltyp: Literal[PreviewLocationTyp.FILE]
+    ltyp: Literal[PreviewLocationTypStrings.FILE]
     FILE: Optional[str]
 
 
 @dataclass
 class PreviewLocation__BYTES:
-    ltyp: Literal[PreviewLocationTyp.BYTES]
-    BYTES: Optional[bytes]
+    ltyp: Literal[PreviewLocationTypStrings.BYTES]
+    BYTES: Optional[str]
 
 
 PreviewLocation = Union[
@@ -1033,6 +1420,14 @@ PreviewLocation = Union[
 
 
 class UnfurlPromptAction(Enum):
+    ALWAYS = 0
+    NEVER = 1
+    ACCEPT = 2
+    NOTNOW = 3
+    ONETIME = 4
+
+
+class UnfurlPromptActionStrings(Enum):
     ALWAYS = "always"
     NEVER = "never"
     ACCEPT = "accept"
@@ -1042,31 +1437,31 @@ class UnfurlPromptAction(Enum):
 
 @dataclass
 class UnfurlPromptResult__ALWAYS:
-    actionType: Literal[UnfurlPromptAction.ALWAYS]
+    actionType: Literal[UnfurlPromptActionStrings.ALWAYS]
     ALWAYS: None
 
 
 @dataclass
 class UnfurlPromptResult__NEVER:
-    actionType: Literal[UnfurlPromptAction.NEVER]
+    actionType: Literal[UnfurlPromptActionStrings.NEVER]
     NEVER: None
 
 
 @dataclass
 class UnfurlPromptResult__NOTNOW:
-    actionType: Literal[UnfurlPromptAction.NOTNOW]
+    actionType: Literal[UnfurlPromptActionStrings.NOTNOW]
     NOTNOW: None
 
 
 @dataclass
 class UnfurlPromptResult__ACCEPT:
-    actionType: Literal[UnfurlPromptAction.ACCEPT]
+    actionType: Literal[UnfurlPromptActionStrings.ACCEPT]
     ACCEPT: Optional[str]
 
 
 @dataclass
 class UnfurlPromptResult__ONETIME:
-    actionType: Literal[UnfurlPromptAction.ONETIME]
+    actionType: Literal[UnfurlPromptActionStrings.ONETIME]
     ONETIME: Optional[str]
 
 
@@ -1080,6 +1475,12 @@ UnfurlPromptResult = Union[
 
 
 class GalleryItemTyp(Enum):
+    MEDIA = 0
+    LINK = 1
+    DOC = 2
+
+
+class GalleryItemTypStrings(Enum):
     MEDIA = "media"
     LINK = "link"
     DOC = "doc"
@@ -1094,11 +1495,32 @@ class UserBotExtendedDescription:
 
 
 class ChatActivitySource(Enum):
+    LOCAL = 0
+    REMOTE = 1
+
+
+class ChatActivitySourceStrings(Enum):
     LOCAL = "local"
     REMOTE = "remote"
 
 
 class ChatActivityType(Enum):
+    RESERVED = 0
+    INCOMING_MESSAGE = 1
+    READ_MESSAGE = 2
+    NEW_CONVERSATION = 3
+    SET_STATUS = 4
+    FAILED_MESSAGE = 5
+    MEMBERS_UPDATE = 6
+    SET_APP_NOTIFICATION_SETTINGS = 7
+    TEAMTYPE = 8
+    EXPUNGE = 9
+    EPHEMERAL_PURGE = 10
+    REACTION_UPDATE = 11
+    MESSAGES_UPDATED = 12
+
+
+class ChatActivityTypeStrings(Enum):
     RESERVED = "reserved"
     INCOMING_MESSAGE = "incoming_message"
     READ_MESSAGE = "read_message"
@@ -1125,12 +1547,26 @@ class TyperInfo:
 
 
 class StaleUpdateType(Enum):
+    CLEAR = 0
+    NEWACTIVITY = 1
+    CONVUPDATE = 2
+
+
+class StaleUpdateTypeStrings(Enum):
     CLEAR = "clear"
     NEWACTIVITY = "newactivity"
     CONVUPDATE = "convupdate"
 
 
 class MessageBoxedVersion(Enum):
+    VNONE = 0
+    V1 = 1
+    V2 = 2
+    V3 = 3
+    V4 = 4
+
+
+class MessageBoxedVersionStrings(Enum):
     VNONE = "vnone"
     V1 = "v1"
     V2 = "v2"
@@ -1139,6 +1575,12 @@ class MessageBoxedVersion(Enum):
 
 
 class ChannelMention(Enum):
+    NONE = 0
+    ALL = 1
+    HERE = 2
+
+
+class ChannelMentionStrings(Enum):
     NONE = "none"
     ALL = "all"
     HERE = "here"
@@ -1166,24 +1608,34 @@ class ServerCacheVers:
 
 
 class SyncAllProtVers(Enum):
+    V0 = 0
+    V1 = 1
+
+
+class SyncAllProtVersStrings(Enum):
     V0 = "v0"
     V1 = "v1"
 
 
 class SyncAllNotificationType(Enum):
+    STATE = 0
+    INCREMENTAL = 1
+
+
+class SyncAllNotificationTypeStrings(Enum):
     STATE = "state"
     INCREMENTAL = "incremental"
 
 
 @dataclass
 class SyncAllNotificationRes__STATE:
-    typ: Literal[SyncAllNotificationType.STATE]
+    typ: Literal[SyncAllNotificationTypeStrings.STATE]
     STATE: Optional[gregor1.State]
 
 
 @dataclass
 class SyncAllNotificationRes__INCREMENTAL:
-    typ: Literal[SyncAllNotificationType.INCREMENTAL]
+    typ: Literal[SyncAllNotificationTypeStrings.INCREMENTAL]
     INCREMENTAL: Optional[gregor1.SyncResult]
 
 
@@ -1193,19 +1645,24 @@ SyncAllNotificationRes = Union[
 
 
 class ExternalAPIKeyTyp(Enum):
+    GOOGLEMAPS = 0
+    GIPHY = 1
+
+
+class ExternalAPIKeyTypStrings(Enum):
     GOOGLEMAPS = "googlemaps"
     GIPHY = "giphy"
 
 
 @dataclass
 class ExternalAPIKey__GOOGLEMAPS:
-    typ: Literal[ExternalAPIKeyTyp.GOOGLEMAPS]
+    typ: Literal[ExternalAPIKeyTypStrings.GOOGLEMAPS]
     GOOGLEMAPS: Optional[str]
 
 
 @dataclass
 class ExternalAPIKey__GIPHY:
-    typ: Literal[ExternalAPIKeyTyp.GIPHY]
+    typ: Literal[ExternalAPIKeyTypStrings.GIPHY]
     GIPHY: Optional[str]
 
 
@@ -1215,14 +1672,26 @@ CommandConvVers = int
 
 
 class BotInfoResponseTyp(Enum):
+    UPTODATE = 0
+    INFO = 1
+
+
+class BotInfoResponseTypStrings(Enum):
     UPTODATE = "uptodate"
     INFO = "info"
 
 
-BotInfoHash = bytes
+BotInfoHash = str
 
 
 class UnfurlType(Enum):
+    GENERIC = 0
+    YOUTUBE = 1
+    GIPHY = 2
+    MAPS = 3
+
+
+class UnfurlTypeStrings(Enum):
     GENERIC = "generic"
     YOUTUBE = "youtube"
     GIPHY = "giphy"
@@ -1266,6 +1735,12 @@ class UnfurlYoutubeDisplay:
 
 
 class UnfurlMode(Enum):
+    ALWAYS = 0
+    NEVER = 1
+    WHITELISTED = 2
+
+
+class UnfurlModeStrings(Enum):
     ALWAYS = "always"
     NEVER = "never"
     WHITELISTED = "whitelisted"
@@ -1277,11 +1752,11 @@ class MsgFlipContent:
     text: str = field(metadata=config(field_name="text"))
     game_id: str = field(metadata=config(field_name="game_id"))
     flip_conv_id: str = field(metadata=config(field_name="flip_conv_id"))
-    user_mentions: List[KnownUserMention] = field(
-        metadata=config(field_name="user_mentions")
+    user_mentions: Optional[Optional[List[KnownUserMention]]] = field(
+        default=None, metadata=config(field_name="user_mentions")
     )
-    team_mentions: List[KnownTeamMention] = field(
-        metadata=config(field_name="team_mentions")
+    team_mentions: Optional[Optional[List[KnownTeamMention]]] = field(
+        default=None, metadata=config(field_name="team_mentions")
     )
 
 
@@ -1294,28 +1769,36 @@ class ConvSummary:
     active_at: int = field(metadata=config(field_name="active_at"))
     active_at_ms: int = field(metadata=config(field_name="active_at_ms"))
     member_status: str = field(metadata=config(field_name="member_status"))
-    reset_users: Optional[List[str]] = field(metadata=config(field_name="reset_users"))
+    reset_users: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="reset_users")
+    )
     finalize_info: Optional[ConversationFinalizeInfo] = field(
-        metadata=config(field_name="finalize_info")
+        default=None, metadata=config(field_name="finalize_info")
     )
-    supersedes: Optional[List[str]] = field(metadata=config(field_name="supersedes"))
-    superseded_by: Optional[List[str]] = field(
-        metadata=config(field_name="superseded_by")
+    supersedes: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="supersedes")
     )
-    error: Optional[str] = field(metadata=config(field_name="error"))
+    superseded_by: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="superseded_by")
+    )
+    error: Optional[str] = field(default=None, metadata=config(field_name="error"))
 
 
 @dataclass_json
 @dataclass
 class SendRes:
     message: str = field(metadata=config(field_name="message"))
-    message_id: Optional[MessageID] = field(metadata=config(field_name="id"))
-    outbox_id: Optional[OutboxID] = field(metadata=config(field_name="outbox_id"))
-    identify_failures: Optional[List[keybase1.TLFIdentifyFailure]] = field(
-        metadata=config(field_name="identify_failures")
+    message_id: Optional[MessageID] = field(
+        default=None, metadata=config(field_name="id")
     )
-    rate_limits: Optional[List[RateLimitRes]] = field(
-        metadata=config(field_name="ratelimits")
+    outbox_id: Optional[OutboxID] = field(
+        default=None, metadata=config(field_name="outbox_id")
+    )
+    identify_failures: Optional[Optional[List[keybase1.TLFIdentifyFailure]]] = field(
+        default=None, metadata=config(field_name="identify_failures")
+    )
+    rate_limits: Optional[Optional[List[RateLimitRes]]] = field(
+        default=None, metadata=config(field_name="ratelimits")
     )
 
 
@@ -1323,19 +1806,19 @@ class SendRes:
 @dataclass
 class NewConvRes:
     id: str = field(metadata=config(field_name="id"))
-    identify_failures: Optional[List[keybase1.TLFIdentifyFailure]] = field(
-        metadata=config(field_name="identify_failures")
+    identify_failures: Optional[Optional[List[keybase1.TLFIdentifyFailure]]] = field(
+        default=None, metadata=config(field_name="identify_failures")
     )
-    rate_limits: Optional[List[RateLimitRes]] = field(
-        metadata=config(field_name="ratelimits")
+    rate_limits: Optional[Optional[List[RateLimitRes]]] = field(
+        default=None, metadata=config(field_name="ratelimits")
     )
 
 
 @dataclass_json
 @dataclass
 class EmptyRes:
-    rate_limits: Optional[List[RateLimitRes]] = field(
-        metadata=config(field_name="ratelimits")
+    rate_limits: Optional[Optional[List[RateLimitRes]]] = field(
+        default=None, metadata=config(field_name="ratelimits")
     )
 
 
@@ -1344,31 +1827,35 @@ class EmptyRes:
 class UIParticipant:
     type: UIParticipantType = field(metadata=config(field_name="type"))
     assertion: str = field(metadata=config(field_name="assertion"))
-    full_name: Optional[str] = field(metadata=config(field_name="fullName"))
-    contact_name: Optional[str] = field(metadata=config(field_name="contactName"))
+    full_name: Optional[str] = field(
+        default=None, metadata=config(field_name="fullName")
+    )
+    contact_name: Optional[str] = field(
+        default=None, metadata=config(field_name="contactName")
+    )
 
 
 @dataclass
 class UIMaybeMentionInfo__UNKNOWN:
-    status: Literal[UIMaybeMentionStatus.UNKNOWN]
+    status: Literal[UIMaybeMentionStatusStrings.UNKNOWN]
     UNKNOWN: None
 
 
 @dataclass
 class UIMaybeMentionInfo__USER:
-    status: Literal[UIMaybeMentionStatus.USER]
+    status: Literal[UIMaybeMentionStatusStrings.USER]
     USER: None
 
 
 @dataclass
 class UIMaybeMentionInfo__TEAM:
-    status: Literal[UIMaybeMentionStatus.TEAM]
+    status: Literal[UIMaybeMentionStatusStrings.TEAM]
     TEAM: Optional[UITeamMention]
 
 
 @dataclass
 class UIMaybeMentionInfo__NOTHING:
-    status: Literal[UIMaybeMentionStatus.NOTHING]
+    status: Literal[UIMaybeMentionStatusStrings.NOTHING]
     NOTHING: None
 
 
@@ -1394,51 +1881,55 @@ class UIChatSearchConvHit:
 class UIChatPaymentSummary:
     xlm_total: str = field(metadata=config(field_name="xlmTotal"))
     display_total: str = field(metadata=config(field_name="displayTotal"))
-    payments: List[UIChatPayment] = field(metadata=config(field_name="payments"))
+    payments: Optional[Optional[List[UIChatPayment]]] = field(
+        default=None, metadata=config(field_name="payments")
+    )
 
 
 @dataclass_json
 @dataclass
 class GiphySearchResults:
-    results: List[GiphySearchResult] = field(metadata=config(field_name="results"))
     gallery_url: str = field(metadata=config(field_name="galleryUrl"))
+    results: Optional[Optional[List[GiphySearchResult]]] = field(
+        default=None, metadata=config(field_name="results")
+    )
 
 
 @dataclass_json
 @dataclass
 class UICoinFlipAbsenteeError:
-    absentees: List[UICoinFlipErrorParticipant] = field(
-        metadata=config(field_name="absentees")
+    absentees: Optional[Optional[List[UICoinFlipErrorParticipant]]] = field(
+        default=None, metadata=config(field_name="absentees")
     )
 
 
 @dataclass
 class UICoinFlipResult__NUMBER:
-    typ: Literal[UICoinFlipResultTyp.NUMBER]
+    typ: Literal[UICoinFlipResultTypStrings.NUMBER]
     NUMBER: Optional[str]
 
 
 @dataclass
 class UICoinFlipResult__SHUFFLE:
-    typ: Literal[UICoinFlipResultTyp.SHUFFLE]
+    typ: Literal[UICoinFlipResultTypStrings.SHUFFLE]
     SHUFFLE: Optional[List[str]]
 
 
 @dataclass
 class UICoinFlipResult__DECK:
-    typ: Literal[UICoinFlipResultTyp.DECK]
+    typ: Literal[UICoinFlipResultTypStrings.DECK]
     DECK: Optional[List[int]]
 
 
 @dataclass
 class UICoinFlipResult__HANDS:
-    typ: Literal[UICoinFlipResultTyp.HANDS]
+    typ: Literal[UICoinFlipResultTypStrings.HANDS]
     HANDS: Optional[List[UICoinFlipHand]]
 
 
 @dataclass
 class UICoinFlipResult__COIN:
-    typ: Literal[UICoinFlipResultTyp.COIN]
+    typ: Literal[UICoinFlipResultTypStrings.COIN]
     COIN: Optional[bool]
 
 
@@ -1454,7 +1945,9 @@ UICoinFlipResult = Union[
 @dataclass_json
 @dataclass
 class ConversationCommandGroupsCustom:
-    commands: List[ConversationCommand] = field(metadata=config(field_name="commands"))
+    commands: Optional[Optional[List[ConversationCommand]]] = field(
+        default=None, metadata=config(field_name="commands")
+    )
 
 
 @dataclass_json
@@ -1489,34 +1982,48 @@ class ChannelNameMention:
 @dataclass_json
 @dataclass
 class GetInboxQuery:
-    conv_id: Optional[ConversationID] = field(metadata=config(field_name="convID"))
-    topic_type: Optional[TopicType] = field(metadata=config(field_name="topicType"))
-    tlf_id: Optional[TLFID] = field(metadata=config(field_name="tlfID"))
-    tlf_visibility: Optional[keybase1.TLFVisibility] = field(
-        metadata=config(field_name="tlfVisibility")
-    )
-    before: Optional[gregor1.Time] = field(metadata=config(field_name="before"))
-    after: Optional[gregor1.Time] = field(metadata=config(field_name="after"))
-    one_chat_type_per_tlf: Optional[bool] = field(
-        metadata=config(field_name="oneChatTypePerTLF")
-    )
-    topic_name: Optional[str] = field(metadata=config(field_name="topicName"))
-    status: List[ConversationStatus] = field(metadata=config(field_name="status"))
-    member_status: List[ConversationMemberStatus] = field(
-        metadata=config(field_name="memberStatus")
-    )
-    existences: List[ConversationExistence] = field(
-        metadata=config(field_name="existences")
-    )
-    members_types: List[ConversationMembersType] = field(
-        metadata=config(field_name="membersTypes")
-    )
-    conv_i_ds: List[ConversationID] = field(metadata=config(field_name="convIDs"))
     unread_only: bool = field(metadata=config(field_name="unreadOnly"))
     read_only: bool = field(metadata=config(field_name="readOnly"))
     compute_active_list: bool = field(metadata=config(field_name="computeActiveList"))
     summarize_max_msgs: bool = field(metadata=config(field_name="summarizeMaxMsgs"))
     skip_bg_loads: bool = field(metadata=config(field_name="skipBgLoads"))
+    conv_id: Optional[ConversationID] = field(
+        default=None, metadata=config(field_name="convID")
+    )
+    topic_type: Optional[TopicType] = field(
+        default=None, metadata=config(field_name="topicType")
+    )
+    tlf_id: Optional[TLFID] = field(default=None, metadata=config(field_name="tlfID"))
+    tlf_visibility: Optional[keybase1.TLFVisibility] = field(
+        default=None, metadata=config(field_name="tlfVisibility")
+    )
+    before: Optional[gregor1.Time] = field(
+        default=None, metadata=config(field_name="before")
+    )
+    after: Optional[gregor1.Time] = field(
+        default=None, metadata=config(field_name="after")
+    )
+    one_chat_type_per_tlf: Optional[bool] = field(
+        default=None, metadata=config(field_name="oneChatTypePerTLF")
+    )
+    topic_name: Optional[str] = field(
+        default=None, metadata=config(field_name="topicName")
+    )
+    status: Optional[Optional[List[ConversationStatus]]] = field(
+        default=None, metadata=config(field_name="status")
+    )
+    member_status: Optional[Optional[List[ConversationMemberStatus]]] = field(
+        default=None, metadata=config(field_name="memberStatus")
+    )
+    existences: Optional[Optional[List[ConversationExistence]]] = field(
+        default=None, metadata=config(field_name="existences")
+    )
+    members_types: Optional[Optional[List[ConversationMembersType]]] = field(
+        default=None, metadata=config(field_name="membersTypes")
+    )
+    conv_i_ds: Optional[Optional[List[ConversationID]]] = field(
+        default=None, metadata=config(field_name="convIDs")
+    )
 
 
 @dataclass_json
@@ -1547,7 +2054,7 @@ class ConversationReaderInfo:
 @dataclass
 class ConversationSettings:
     min_writer_role_info: Optional[ConversationMinWriterRoleInfo] = field(
-        metadata=config(field_name="mwr")
+        default=None, metadata=config(field_name="mwr")
     )
 
 
@@ -1573,12 +2080,20 @@ class Reaction:
 class MessageServerHeader:
     message_id: MessageID = field(metadata=config(field_name="messageID"))
     superseded_by: MessageID = field(metadata=config(field_name="supersededBy"))
-    reaction_i_ds: List[MessageID] = field(metadata=config(field_name="r"))
-    unfurl_i_ds: List[MessageID] = field(metadata=config(field_name="u"))
-    replies: List[MessageID] = field(metadata=config(field_name="replies"))
     ctime: gregor1.Time = field(metadata=config(field_name="ctime"))
     now: gregor1.Time = field(metadata=config(field_name="n"))
-    rtime: Optional[gregor1.Time] = field(metadata=config(field_name="rt"))
+    reaction_i_ds: Optional[Optional[List[MessageID]]] = field(
+        default=None, metadata=config(field_name="r")
+    )
+    unfurl_i_ds: Optional[Optional[List[MessageID]]] = field(
+        default=None, metadata=config(field_name="u")
+    )
+    replies: Optional[Optional[List[MessageID]]] = field(
+        default=None, metadata=config(field_name="replies")
+    )
+    rtime: Optional[gregor1.Time] = field(
+        default=None, metadata=config(field_name="rt")
+    )
 
 
 @dataclass_json
@@ -1606,25 +2121,25 @@ class EphemeralPurgeInfo:
 
 @dataclass
 class RetentionPolicy__RETAIN:
-    typ: Literal[RetentionPolicyType.RETAIN]
+    typ: Literal[RetentionPolicyTypeStrings.RETAIN]
     RETAIN: Optional[RpRetain]
 
 
 @dataclass
 class RetentionPolicy__EXPIRE:
-    typ: Literal[RetentionPolicyType.EXPIRE]
+    typ: Literal[RetentionPolicyTypeStrings.EXPIRE]
     EXPIRE: Optional[RpExpire]
 
 
 @dataclass
 class RetentionPolicy__INHERIT:
-    typ: Literal[RetentionPolicyType.INHERIT]
+    typ: Literal[RetentionPolicyTypeStrings.INHERIT]
     INHERIT: Optional[RpInherit]
 
 
 @dataclass
 class RetentionPolicy__EPHEMERAL:
-    typ: Literal[RetentionPolicyType.EPHEMERAL]
+    typ: Literal[RetentionPolicyTypeStrings.EPHEMERAL]
     EPHEMERAL: Optional[RpEphemeral]
 
 
@@ -1649,31 +2164,33 @@ class SearchOpts:
     max_messages: int = field(metadata=config(field_name="maxMessages"))
     before_context: int = field(metadata=config(field_name="beforeContext"))
     after_context: int = field(metadata=config(field_name="afterContext"))
-    initial_pagination: Optional[Pagination] = field(
-        metadata=config(field_name="initialPagination")
-    )
     reindex_mode: ReIndexingMode = field(metadata=config(field_name="reindexMode"))
     max_convs_searched: int = field(metadata=config(field_name="maxConvsSearched"))
     max_convs_hit: int = field(metadata=config(field_name="maxConvsHit"))
-    conv_id: Optional[ConversationID] = field(metadata=config(field_name="convID"))
     max_name_convs: int = field(metadata=config(field_name="maxNameConvs"))
+    initial_pagination: Optional[Pagination] = field(
+        default=None, metadata=config(field_name="initialPagination")
+    )
+    conv_id: Optional[ConversationID] = field(
+        default=None, metadata=config(field_name="convID")
+    )
 
 
 @dataclass
 class AssetMetadata__IMAGE:
-    assetType: Literal[AssetMetadataType.IMAGE]
+    assetType: Literal[AssetMetadataTypeStrings.IMAGE]
     IMAGE: Optional[AssetMetadataImage]
 
 
 @dataclass
 class AssetMetadata__VIDEO:
-    assetType: Literal[AssetMetadataType.VIDEO]
+    assetType: Literal[AssetMetadataTypeStrings.VIDEO]
     VIDEO: Optional[AssetMetadataVideo]
 
 
 @dataclass
 class AssetMetadata__AUDIO:
-    assetType: Literal[AssetMetadataType.AUDIO]
+    assetType: Literal[AssetMetadataTypeStrings.AUDIO]
     AUDIO: Optional[AssetMetadataAudio]
 
 
@@ -1698,8 +2215,10 @@ class TLFFinalizeUpdate:
     finalize_info: ConversationFinalizeInfo = field(
         metadata=config(field_name="finalizeInfo")
     )
-    conv_i_ds: List[ConversationID] = field(metadata=config(field_name="convIDs"))
     inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
+    conv_i_ds: Optional[Optional[List[ConversationID]]] = field(
+        default=None, metadata=config(field_name="convIDs")
+    )
 
 
 @dataclass_json
@@ -1742,8 +2261,10 @@ class KBFSImpteamUpgradeUpdate:
 @dataclass_json
 @dataclass
 class SubteamRenameUpdate:
-    conv_i_ds: List[ConversationID] = field(metadata=config(field_name="convIDs"))
     inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
+    conv_i_ds: Optional[Optional[List[ConversationID]]] = field(
+        default=None, metadata=config(field_name="convIDs")
+    )
 
 
 @dataclass_json
@@ -1759,18 +2280,20 @@ class TextPayment:
 class MessageEdit:
     message_id: MessageID = field(metadata=config(field_name="messageID"))
     body: str = field(metadata=config(field_name="body"))
-    user_mentions: List[KnownUserMention] = field(
-        metadata=config(field_name="userMentions")
+    user_mentions: Optional[Optional[List[KnownUserMention]]] = field(
+        default=None, metadata=config(field_name="userMentions")
     )
-    team_mentions: List[KnownTeamMention] = field(
-        metadata=config(field_name="teamMentions")
+    team_mentions: Optional[Optional[List[KnownTeamMention]]] = field(
+        default=None, metadata=config(field_name="teamMentions")
     )
 
 
 @dataclass_json
 @dataclass
 class MessageDelete:
-    message_i_ds: List[MessageID] = field(metadata=config(field_name="messageIDs"))
+    message_i_ds: Optional[Optional[List[MessageID]]] = field(
+        default=None, metadata=config(field_name="messageIDs")
+    )
 
 
 @dataclass_json
@@ -1779,11 +2302,11 @@ class MessageFlip:
     text: str = field(metadata=config(field_name="text"))
     game_id: FlipGameID = field(metadata=config(field_name="gameID"))
     flip_conv_id: ConversationID = field(metadata=config(field_name="flipConvID"))
-    user_mentions: List[KnownUserMention] = field(
-        metadata=config(field_name="userMentions")
+    user_mentions: Optional[Optional[List[KnownUserMention]]] = field(
+        default=None, metadata=config(field_name="userMentions")
     )
-    team_mentions: List[KnownTeamMention] = field(
-        metadata=config(field_name="teamMentions")
+    team_mentions: Optional[Optional[List[KnownTeamMention]]] = field(
+        default=None, metadata=config(field_name="teamMentions")
     )
 
 
@@ -1812,14 +2335,16 @@ class SenderPrepareOptions:
     skip_topic_name_state: bool = field(
         metadata=config(field_name="skipTopicNameState")
     )
-    reply_to: Optional[MessageID] = field(metadata=config(field_name="replyTo"))
+    reply_to: Optional[MessageID] = field(
+        default=None, metadata=config(field_name="replyTo")
+    )
 
 
 @dataclass_json
 @dataclass
 class SenderSendOptions:
     join_mentions_as: Optional[ConversationMemberStatus] = field(
-        metadata=config(field_name="joinMentionsAs")
+        default=None, metadata=config(field_name="joinMentionsAs")
     )
 
 
@@ -1873,7 +2398,7 @@ class MessageUnboxedPlaceholder:
 @dataclass
 class ConversationSettingsLocal:
     min_writer_role_info: Optional[ConversationMinWriterRoleInfoLocal] = field(
-        metadata=config(field_name="minWriterRoleInfo")
+        default=None, metadata=config(field_name="minWriterRoleInfo")
     )
 
 
@@ -1881,30 +2406,36 @@ class ConversationSettingsLocal:
 @dataclass
 class NonblockFetchRes:
     offline: bool = field(metadata=config(field_name="offline"))
-    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
-    identify_failures: List[keybase1.TLFIdentifyFailure] = field(
-        metadata=config(field_name="identifyFailures")
+    rate_limits: Optional[Optional[List[RateLimit]]] = field(
+        default=None, metadata=config(field_name="rateLimits")
+    )
+    identify_failures: Optional[Optional[List[keybase1.TLFIdentifyFailure]]] = field(
+        default=None, metadata=config(field_name="identifyFailures")
     )
 
 
 @dataclass_json
 @dataclass
 class MessageIDControl:
-    pivot: Optional[MessageID] = field(metadata=config(field_name="pivot"))
     mode: MessageIDControlMode = field(metadata=config(field_name="mode"))
     num: int = field(metadata=config(field_name="num"))
+    pivot: Optional[MessageID] = field(
+        default=None, metadata=config(field_name="pivot")
+    )
 
 
 @dataclass_json
 @dataclass
 class UnreadlineRes:
     offline: bool = field(metadata=config(field_name="offline"))
-    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
-    identify_failures: List[keybase1.TLFIdentifyFailure] = field(
-        metadata=config(field_name="identifyFailures")
+    rate_limits: Optional[Optional[List[RateLimit]]] = field(
+        default=None, metadata=config(field_name="rateLimits")
+    )
+    identify_failures: Optional[Optional[List[keybase1.TLFIdentifyFailure]]] = field(
+        default=None, metadata=config(field_name="identifyFailures")
     )
     unreadline_id: Optional[MessageID] = field(
-        metadata=config(field_name="unreadlineID")
+        default=None, metadata=config(field_name="unreadlineID")
     )
 
 
@@ -1912,45 +2443,55 @@ class UnreadlineRes:
 @dataclass
 class NameQuery:
     name: str = field(metadata=config(field_name="name"))
-    tlf_id: Optional[TLFID] = field(metadata=config(field_name="tlfID"))
     members_type: ConversationMembersType = field(
         metadata=config(field_name="membersType")
     )
+    tlf_id: Optional[TLFID] = field(default=None, metadata=config(field_name="tlfID"))
 
 
 @dataclass_json
 @dataclass
 class PostLocalRes:
-    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
     message_id: MessageID = field(metadata=config(field_name="messageID"))
-    identify_failures: List[keybase1.TLFIdentifyFailure] = field(
-        metadata=config(field_name="identifyFailures")
+    rate_limits: Optional[Optional[List[RateLimit]]] = field(
+        default=None, metadata=config(field_name="rateLimits")
+    )
+    identify_failures: Optional[Optional[List[keybase1.TLFIdentifyFailure]]] = field(
+        default=None, metadata=config(field_name="identifyFailures")
     )
 
 
 @dataclass_json
 @dataclass
 class PostLocalNonblockRes:
-    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
     outbox_id: OutboxID = field(metadata=config(field_name="outboxID"))
-    identify_failures: List[keybase1.TLFIdentifyFailure] = field(
-        metadata=config(field_name="identifyFailures")
+    rate_limits: Optional[Optional[List[RateLimit]]] = field(
+        default=None, metadata=config(field_name="rateLimits")
+    )
+    identify_failures: Optional[Optional[List[keybase1.TLFIdentifyFailure]]] = field(
+        default=None, metadata=config(field_name="identifyFailures")
     )
 
 
 @dataclass_json
 @dataclass
 class EditTarget:
-    message_id: Optional[MessageID] = field(metadata=config(field_name="messageID"))
-    outbox_id: Optional[OutboxID] = field(metadata=config(field_name="outboxID"))
+    message_id: Optional[MessageID] = field(
+        default=None, metadata=config(field_name="messageID")
+    )
+    outbox_id: Optional[OutboxID] = field(
+        default=None, metadata=config(field_name="outboxID")
+    )
 
 
 @dataclass_json
 @dataclass
 class SetConversationStatusLocalRes:
-    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
-    identify_failures: List[keybase1.TLFIdentifyFailure] = field(
-        metadata=config(field_name="identifyFailures")
+    rate_limits: Optional[Optional[List[RateLimit]]] = field(
+        default=None, metadata=config(field_name="rateLimits")
+    )
+    identify_failures: Optional[Optional[List[keybase1.TLFIdentifyFailure]]] = field(
+        default=None, metadata=config(field_name="identifyFailures")
     )
 
 
@@ -1961,7 +2502,6 @@ class GetInboxSummaryForCLILocalQuery:
     after: str = field(metadata=config(field_name="after"))
     before: str = field(metadata=config(field_name="before"))
     visibility: keybase1.TLFVisibility = field(metadata=config(field_name="visibility"))
-    status: List[ConversationStatus] = field(metadata=config(field_name="status"))
     unread_first: bool = field(metadata=config(field_name="unreadFirst"))
     unread_first_limit: UnreadFirstNumLimit = field(
         metadata=config(field_name="unreadFirstLimit")
@@ -1969,14 +2509,19 @@ class GetInboxSummaryForCLILocalQuery:
     activity_sorted_limit: int = field(
         metadata=config(field_name="activitySortedLimit")
     )
+    status: Optional[Optional[List[ConversationStatus]]] = field(
+        default=None, metadata=config(field_name="status")
+    )
 
 
 @dataclass_json
 @dataclass
 class DownloadAttachmentLocalRes:
-    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
-    identify_failures: List[keybase1.TLFIdentifyFailure] = field(
-        metadata=config(field_name="identifyFailures")
+    rate_limits: Optional[Optional[List[RateLimit]]] = field(
+        default=None, metadata=config(field_name="rateLimits")
+    )
+    identify_failures: Optional[Optional[List[keybase1.TLFIdentifyFailure]]] = field(
+        default=None, metadata=config(field_name="identifyFailures")
     )
 
 
@@ -1984,9 +2529,11 @@ class DownloadAttachmentLocalRes:
 @dataclass
 class DownloadFileAttachmentLocalRes:
     filename: str = field(metadata=config(field_name="filename"))
-    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
-    identify_failures: List[keybase1.TLFIdentifyFailure] = field(
-        metadata=config(field_name="identifyFailures")
+    rate_limits: Optional[Optional[List[RateLimit]]] = field(
+        default=None, metadata=config(field_name="rateLimits")
+    )
+    identify_failures: Optional[Optional[List[keybase1.TLFIdentifyFailure]]] = field(
+        default=None, metadata=config(field_name="identifyFailures")
     )
 
 
@@ -1994,28 +2541,36 @@ class DownloadFileAttachmentLocalRes:
 @dataclass
 class MarkAsReadLocalRes:
     offline: bool = field(metadata=config(field_name="offline"))
-    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
+    rate_limits: Optional[Optional[List[RateLimit]]] = field(
+        default=None, metadata=config(field_name="rateLimits")
+    )
 
 
 @dataclass_json
 @dataclass
 class JoinLeaveConversationLocalRes:
     offline: bool = field(metadata=config(field_name="offline"))
-    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
+    rate_limits: Optional[Optional[List[RateLimit]]] = field(
+        default=None, metadata=config(field_name="rateLimits")
+    )
 
 
 @dataclass_json
 @dataclass
 class DeleteConversationLocalRes:
     offline: bool = field(metadata=config(field_name="offline"))
-    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
+    rate_limits: Optional[Optional[List[RateLimit]]] = field(
+        default=None, metadata=config(field_name="rateLimits")
+    )
 
 
 @dataclass_json
 @dataclass
 class SetAppNotificationSettingsLocalRes:
     offline: bool = field(metadata=config(field_name="offline"))
-    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
+    rate_limits: Optional[Optional[List[RateLimit]]] = field(
+        default=None, metadata=config(field_name="rateLimits")
+    )
 
 
 @dataclass_json
@@ -2047,7 +2602,9 @@ class ProfileSearchConvStats:
 @dataclass
 class BuiltinCommandGroup:
     typ: ConversationBuiltinCommandTyp = field(metadata=config(field_name="typ"))
-    commands: List[ConversationCommand] = field(metadata=config(field_name="commands"))
+    commands: Optional[Optional[List[ConversationCommand]]] = field(
+        default=None, metadata=config(field_name="commands")
+    )
 
 
 @dataclass_json
@@ -2056,10 +2613,10 @@ class UserBotCommandOutput:
     name: str = field(metadata=config(field_name="name"))
     description: str = field(metadata=config(field_name="description"))
     usage: str = field(metadata=config(field_name="usage"))
-    extended_description: Optional[UserBotExtendedDescription] = field(
-        metadata=config(field_name="extended_description")
-    )
     username: str = field(metadata=config(field_name="username"))
+    extended_description: Optional[UserBotExtendedDescription] = field(
+        default=None, metadata=config(field_name="extended_description")
+    )
 
 
 @dataclass_json
@@ -2069,26 +2626,32 @@ class UserBotCommandInput:
     description: str = field(metadata=config(field_name="description"))
     usage: str = field(metadata=config(field_name="usage"))
     extended_description: Optional[UserBotExtendedDescription] = field(
-        metadata=config(field_name="extended_description")
+        default=None, metadata=config(field_name="extended_description")
     )
 
 
 @dataclass_json
 @dataclass
 class AdvertiseBotCommandsLocalRes:
-    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
+    rate_limits: Optional[Optional[List[RateLimit]]] = field(
+        default=None, metadata=config(field_name="rateLimits")
+    )
 
 
 @dataclass_json
 @dataclass
 class ClearBotCommandsLocalRes:
-    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
+    rate_limits: Optional[Optional[List[RateLimit]]] = field(
+        default=None, metadata=config(field_name="rateLimits")
+    )
 
 
 @dataclass_json
 @dataclass
 class PinMessageRes:
-    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
+    rate_limits: Optional[Optional[List[RateLimit]]] = field(
+        default=None, metadata=config(field_name="rateLimits")
+    )
 
 
 @dataclass_json
@@ -2111,7 +2674,9 @@ class MemberInfo:
 @dataclass
 class ConvTypingUpdate:
     conv_id: ConversationID = field(metadata=config(field_name="convID"))
-    typers: List[TyperInfo] = field(metadata=config(field_name="typers"))
+    typers: Optional[Optional[List[TyperInfo]]] = field(
+        default=None, metadata=config(field_name="typers")
+    )
 
 
 @dataclass_json
@@ -2126,72 +2691,94 @@ class ConversationStaleUpdate:
 class NewConversationRemoteRes:
     conv_id: ConversationID = field(metadata=config(field_name="convID"))
     created_complex_team: bool = field(metadata=config(field_name="createdComplexTeam"))
-    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
+    rate_limit: Optional[RateLimit] = field(
+        default=None, metadata=config(field_name="rateLimit")
+    )
 
 
 @dataclass_json
 @dataclass
 class MarkAsReadRes:
-    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
+    rate_limit: Optional[RateLimit] = field(
+        default=None, metadata=config(field_name="rateLimit")
+    )
 
 
 @dataclass_json
 @dataclass
 class SetConversationStatusRes:
-    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
+    rate_limit: Optional[RateLimit] = field(
+        default=None, metadata=config(field_name="rateLimit")
+    )
 
 
 @dataclass_json
 @dataclass
 class GetUnreadlineRemoteRes:
     unreadline_id: Optional[MessageID] = field(
-        metadata=config(field_name="unreadlineID")
+        default=None, metadata=config(field_name="unreadlineID")
     )
-    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
+    rate_limit: Optional[RateLimit] = field(
+        default=None, metadata=config(field_name="rateLimit")
+    )
 
 
 @dataclass_json
 @dataclass
 class JoinLeaveConversationRemoteRes:
-    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
+    rate_limit: Optional[RateLimit] = field(
+        default=None, metadata=config(field_name="rateLimit")
+    )
 
 
 @dataclass_json
 @dataclass
 class DeleteConversationRemoteRes:
-    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
+    rate_limit: Optional[RateLimit] = field(
+        default=None, metadata=config(field_name="rateLimit")
+    )
 
 
 @dataclass_json
 @dataclass
 class GetMessageBeforeRes:
     msg_id: MessageID = field(metadata=config(field_name="msgID"))
-    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
+    rate_limit: Optional[RateLimit] = field(
+        default=None, metadata=config(field_name="rateLimit")
+    )
 
 
 @dataclass_json
 @dataclass
 class SetAppNotificationSettingsRes:
-    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
+    rate_limit: Optional[RateLimit] = field(
+        default=None, metadata=config(field_name="rateLimit")
+    )
 
 
 @dataclass_json
 @dataclass
 class SetRetentionRes:
-    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
+    rate_limit: Optional[RateLimit] = field(
+        default=None, metadata=config(field_name="rateLimit")
+    )
 
 
 @dataclass_json
 @dataclass
 class SetConvMinWriterRoleRes:
-    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
+    rate_limit: Optional[RateLimit] = field(
+        default=None, metadata=config(field_name="rateLimit")
+    )
 
 
 @dataclass_json
 @dataclass
 class ServerNowRes:
-    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
     now: gregor1.Time = field(metadata=config(field_name="now"))
+    rate_limit: Optional[RateLimit] = field(
+        default=None, metadata=config(field_name="rateLimit")
+    )
 
 
 @dataclass_json
@@ -2219,13 +2806,17 @@ class BotCommandConv:
 @dataclass_json
 @dataclass
 class AdvertiseBotCommandsRes:
-    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
+    rate_limit: Optional[RateLimit] = field(
+        default=None, metadata=config(field_name="rateLimit")
+    )
 
 
 @dataclass_json
 @dataclass
 class ClearBotCommandsRes:
-    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
+    rate_limit: Optional[RateLimit] = field(
+        default=None, metadata=config(field_name="rateLimit")
+    )
 
 
 @dataclass_json
@@ -2234,19 +2825,35 @@ class UnfurlGenericRaw:
     title: str = field(metadata=config(field_name="title"))
     url: str = field(metadata=config(field_name="url"))
     site_name: str = field(metadata=config(field_name="siteName"))
-    favicon_url: Optional[str] = field(metadata=config(field_name="faviconUrl"))
-    image_url: Optional[str] = field(metadata=config(field_name="imageUrl"))
-    video: Optional[UnfurlVideo] = field(metadata=config(field_name="video"))
-    publish_time: Optional[int] = field(metadata=config(field_name="publishTime"))
-    description: Optional[str] = field(metadata=config(field_name="description"))
+    favicon_url: Optional[str] = field(
+        default=None, metadata=config(field_name="faviconUrl")
+    )
+    image_url: Optional[str] = field(
+        default=None, metadata=config(field_name="imageUrl")
+    )
+    video: Optional[UnfurlVideo] = field(
+        default=None, metadata=config(field_name="video")
+    )
+    publish_time: Optional[int] = field(
+        default=None, metadata=config(field_name="publishTime")
+    )
+    description: Optional[str] = field(
+        default=None, metadata=config(field_name="description")
+    )
 
 
 @dataclass_json
 @dataclass
 class UnfurlGiphyRaw:
-    image_url: Optional[str] = field(metadata=config(field_name="imageUrl"))
-    video: Optional[UnfurlVideo] = field(metadata=config(field_name="video"))
-    favicon_url: Optional[str] = field(metadata=config(field_name="faviconUrl"))
+    image_url: Optional[str] = field(
+        default=None, metadata=config(field_name="imageUrl")
+    )
+    video: Optional[UnfurlVideo] = field(
+        default=None, metadata=config(field_name="video")
+    )
+    favicon_url: Optional[str] = field(
+        default=None, metadata=config(field_name="faviconUrl")
+    )
 
 
 @dataclass_json
@@ -2256,16 +2863,16 @@ class UnfurlMapsRaw:
     url: str = field(metadata=config(field_name="url"))
     site_name: str = field(metadata=config(field_name="siteName"))
     image_url: str = field(metadata=config(field_name="imageUrl"))
-    history_image_url: Optional[str] = field(
-        metadata=config(field_name="historyImageUrl")
-    )
     description: str = field(metadata=config(field_name="description"))
     coord: Coordinate = field(metadata=config(field_name="coord"))
     time: gregor1.Time = field(metadata=config(field_name="time"))
-    live_location_end_time: Optional[gregor1.Time] = field(
-        metadata=config(field_name="liveLocationEndTime")
-    )
     live_location_done: bool = field(metadata=config(field_name="liveLocationDone"))
+    history_image_url: Optional[str] = field(
+        default=None, metadata=config(field_name="historyImageUrl")
+    )
+    live_location_end_time: Optional[gregor1.Time] = field(
+        default=None, metadata=config(field_name="liveLocationEndTime")
+    )
 
 
 @dataclass_json
@@ -2273,20 +2880,26 @@ class UnfurlMapsRaw:
 class UnfurlGenericMapInfo:
     coord: Coordinate = field(metadata=config(field_name="coord"))
     time: gregor1.Time = field(metadata=config(field_name="time"))
-    live_location_end_time: Optional[gregor1.Time] = field(
-        metadata=config(field_name="liveLocationEndTime")
-    )
     is_live_location_done: bool = field(
         metadata=config(field_name="isLiveLocationDone")
+    )
+    live_location_end_time: Optional[gregor1.Time] = field(
+        default=None, metadata=config(field_name="liveLocationEndTime")
     )
 
 
 @dataclass_json
 @dataclass
 class UnfurlGiphyDisplay:
-    favicon: Optional[UnfurlImageDisplay] = field(metadata=config(field_name="favicon"))
-    image: Optional[UnfurlImageDisplay] = field(metadata=config(field_name="image"))
-    video: Optional[UnfurlImageDisplay] = field(metadata=config(field_name="video"))
+    favicon: Optional[UnfurlImageDisplay] = field(
+        default=None, metadata=config(field_name="favicon")
+    )
+    image: Optional[UnfurlImageDisplay] = field(
+        default=None, metadata=config(field_name="image")
+    )
+    video: Optional[UnfurlImageDisplay] = field(
+        default=None, metadata=config(field_name="video")
+    )
 
 
 @dataclass_json
@@ -2300,31 +2913,37 @@ class UnfurlSettings:
 @dataclass
 class UnfurlSettingsDisplay:
     mode: UnfurlMode = field(metadata=config(field_name="mode"))
-    whitelist: List[str] = field(metadata=config(field_name="whitelist"))
+    whitelist: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="whitelist")
+    )
 
 
 @dataclass_json
 @dataclass
 class ChatList:
-    conversations: List[ConvSummary] = field(
-        metadata=config(field_name="conversations")
-    )
     offline: bool = field(metadata=config(field_name="offline"))
-    identify_failures: Optional[List[keybase1.TLFIdentifyFailure]] = field(
-        metadata=config(field_name="identify_failures")
+    conversations: Optional[Optional[List[ConvSummary]]] = field(
+        default=None, metadata=config(field_name="conversations")
     )
-    pagination: Optional[Pagination] = field(metadata=config(field_name="pagination"))
-    rate_limits: Optional[List[RateLimitRes]] = field(
-        metadata=config(field_name="ratelimits")
+    identify_failures: Optional[Optional[List[keybase1.TLFIdentifyFailure]]] = field(
+        default=None, metadata=config(field_name="identify_failures")
+    )
+    pagination: Optional[Pagination] = field(
+        default=None, metadata=config(field_name="pagination")
+    )
+    rate_limits: Optional[Optional[List[RateLimitRes]]] = field(
+        default=None, metadata=config(field_name="ratelimits")
     )
 
 
 @dataclass_json
 @dataclass
 class ListCommandsRes:
-    commands: List[UserBotCommandOutput] = field(metadata=config(field_name="commands"))
-    rate_limits: Optional[List[RateLimitRes]] = field(
-        metadata=config(field_name="ratelimits")
+    commands: Optional[Optional[List[UserBotCommandOutput]]] = field(
+        default=None, metadata=config(field_name="commands")
+    )
+    rate_limits: Optional[Optional[List[RateLimitRes]]] = field(
+        default=None, metadata=config(field_name="ratelimits")
     )
 
 
@@ -2332,49 +2951,53 @@ class ListCommandsRes:
 @dataclass
 class AdvertiseCommandAPIParam:
     typ: str = field(metadata=config(field_name="type"))
-    commands: List[UserBotCommandInput] = field(metadata=config(field_name="commands"))
-    team_name: Optional[str] = field(metadata=config(field_name="team_name"))
+    commands: Optional[Optional[List[UserBotCommandInput]]] = field(
+        default=None, metadata=config(field_name="commands")
+    )
+    team_name: Optional[str] = field(
+        default=None, metadata=config(field_name="team_name")
+    )
 
 
 @dataclass
 class UITextDecoration__PAYMENT:
-    typ: Literal[UITextDecorationTyp.PAYMENT]
+    typ: Literal[UITextDecorationTypStrings.PAYMENT]
     PAYMENT: Optional[TextPayment]
 
 
 @dataclass
 class UITextDecoration__ATMENTION:
-    typ: Literal[UITextDecorationTyp.ATMENTION]
+    typ: Literal[UITextDecorationTypStrings.ATMENTION]
     ATMENTION: Optional[str]
 
 
 @dataclass
 class UITextDecoration__CHANNELNAMEMENTION:
-    typ: Literal[UITextDecorationTyp.CHANNELNAMEMENTION]
+    typ: Literal[UITextDecorationTypStrings.CHANNELNAMEMENTION]
     CHANNELNAMEMENTION: Optional[UIChannelNameMention]
 
 
 @dataclass
 class UITextDecoration__MAYBEMENTION:
-    typ: Literal[UITextDecorationTyp.MAYBEMENTION]
+    typ: Literal[UITextDecorationTypStrings.MAYBEMENTION]
     MAYBEMENTION: Optional[MaybeMention]
 
 
 @dataclass
 class UITextDecoration__LINK:
-    typ: Literal[UITextDecorationTyp.LINK]
+    typ: Literal[UITextDecorationTypStrings.LINK]
     LINK: Optional[UILinkDecoration]
 
 
 @dataclass
 class UITextDecoration__MAILTO:
-    typ: Literal[UITextDecorationTyp.MAILTO]
+    typ: Literal[UITextDecorationTypStrings.MAILTO]
     MAILTO: Optional[UILinkDecoration]
 
 
 @dataclass
 class UITextDecoration__KBFSPATH:
-    typ: Literal[UITextDecorationTyp.KBFSPATH]
+    typ: Literal[UITextDecorationTypStrings.KBFSPATH]
     KBFSPATH: Optional[KBFSPath]
 
 
@@ -2392,55 +3015,57 @@ UITextDecoration = Union[
 @dataclass_json
 @dataclass
 class UIChatSearchConvHits:
-    hits: List[UIChatSearchConvHit] = field(metadata=config(field_name="hits"))
     unread_matches: bool = field(metadata=config(field_name="unreadMatches"))
+    hits: Optional[Optional[List[UIChatSearchConvHit]]] = field(
+        default=None, metadata=config(field_name="hits")
+    )
 
 
 @dataclass
 class UICoinFlipError__GENERIC:
-    typ: Literal[UICoinFlipErrorTyp.GENERIC]
+    typ: Literal[UICoinFlipErrorTypStrings.GENERIC]
     GENERIC: Optional[str]
 
 
 @dataclass
 class UICoinFlipError__ABSENTEE:
-    typ: Literal[UICoinFlipErrorTyp.ABSENTEE]
+    typ: Literal[UICoinFlipErrorTypStrings.ABSENTEE]
     ABSENTEE: Optional[UICoinFlipAbsenteeError]
 
 
 @dataclass
 class UICoinFlipError__TIMEOUT:
-    typ: Literal[UICoinFlipErrorTyp.TIMEOUT]
+    typ: Literal[UICoinFlipErrorTypStrings.TIMEOUT]
     TIMEOUT: None
 
 
 @dataclass
 class UICoinFlipError__ABORTED:
-    typ: Literal[UICoinFlipErrorTyp.ABORTED]
+    typ: Literal[UICoinFlipErrorTypStrings.ABORTED]
     ABORTED: None
 
 
 @dataclass
 class UICoinFlipError__DUPREG:
-    typ: Literal[UICoinFlipErrorTyp.DUPREG]
+    typ: Literal[UICoinFlipErrorTypStrings.DUPREG]
     DUPREG: Optional[UICoinFlipErrorParticipant]
 
 
 @dataclass
 class UICoinFlipError__DUPCOMMITCOMPLETE:
-    typ: Literal[UICoinFlipErrorTyp.DUPCOMMITCOMPLETE]
+    typ: Literal[UICoinFlipErrorTypStrings.DUPCOMMITCOMPLETE]
     DUPCOMMITCOMPLETE: Optional[UICoinFlipErrorParticipant]
 
 
 @dataclass
 class UICoinFlipError__DUPREVEAL:
-    typ: Literal[UICoinFlipErrorTyp.DUPREVEAL]
+    typ: Literal[UICoinFlipErrorTypStrings.DUPREVEAL]
     DUPREVEAL: Optional[UICoinFlipErrorParticipant]
 
 
 @dataclass
 class UICoinFlipError__COMMITMISMATCH:
-    typ: Literal[UICoinFlipErrorTyp.COMMITMISMATCH]
+    typ: Literal[UICoinFlipErrorTypStrings.COMMITMISMATCH]
     COMMITMISMATCH: Optional[UICoinFlipErrorParticipant]
 
 
@@ -2458,19 +3083,19 @@ UICoinFlipError = Union[
 
 @dataclass
 class ConversationCommandGroups__BUILTIN:
-    typ: Literal[ConversationCommandGroupsTyp.BUILTIN]
+    typ: Literal[ConversationCommandGroupsTypStrings.BUILTIN]
     BUILTIN: Optional[ConversationBuiltinCommandTyp]
 
 
 @dataclass
 class ConversationCommandGroups__CUSTOM:
-    typ: Literal[ConversationCommandGroupsTyp.CUSTOM]
+    typ: Literal[ConversationCommandGroupsTypStrings.CUSTOM]
     CUSTOM: Optional[ConversationCommandGroupsCustom]
 
 
 @dataclass
 class ConversationCommandGroups__NONE:
-    typ: Literal[ConversationCommandGroupsTyp.NONE]
+    typ: Literal[ConversationCommandGroupsTypStrings.NONE]
     NONE: None
 
 
@@ -2484,8 +3109,8 @@ ConversationCommandGroups = Union[
 @dataclass_json
 @dataclass
 class ConversationIDMessageIDPairs:
-    pairs: List[ConversationIDMessageIDPair] = field(
-        metadata=config(field_name="pairs")
+    pairs: Optional[Optional[List[ConversationIDMessageIDPair]]] = field(
+        default=None, metadata=config(field_name="pairs")
     )
 
 
@@ -2505,24 +3130,36 @@ class MessageClientHeader:
     tlf_public: bool = field(metadata=config(field_name="tlfPublic"))
     message_type: MessageType = field(metadata=config(field_name="messageType"))
     supersedes: MessageID = field(metadata=config(field_name="supersedes"))
-    kbfs_crypt_keys_used: Optional[bool] = field(
-        metadata=config(field_name="kbfsCryptKeysUsed")
-    )
-    deletes: List[MessageID] = field(metadata=config(field_name="deletes"))
-    prev: List[MessagePreviousPointer] = field(metadata=config(field_name="prev"))
-    delete_history: Optional[MessageDeleteHistory] = field(
-        metadata=config(field_name="deleteHistory")
-    )
     sender: gregor1.UID = field(metadata=config(field_name="sender"))
     sender_device: gregor1.DeviceID = field(metadata=config(field_name="senderDevice"))
-    merkle_root: Optional[MerkleRoot] = field(metadata=config(field_name="merkleRoot"))
-    outbox_id: Optional[OutboxID] = field(metadata=config(field_name="outboxID"))
-    outbox_info: Optional[OutboxInfo] = field(metadata=config(field_name="outboxInfo"))
-    ephemeral_metadata: Optional[MsgEphemeralMetadata] = field(
-        metadata=config(field_name="em")
+    pairwise_macs: Dict[str, str] = field(metadata=config(field_name="pm"))
+    kbfs_crypt_keys_used: Optional[bool] = field(
+        default=None, metadata=config(field_name="kbfsCryptKeysUsed")
     )
-    pairwise_macs: Dict[str, bytes] = field(metadata=config(field_name="pm"))
-    bot_uid: Optional[gregor1.UID] = field(metadata=config(field_name="b"))
+    deletes: Optional[Optional[List[MessageID]]] = field(
+        default=None, metadata=config(field_name="deletes")
+    )
+    prev: Optional[Optional[List[MessagePreviousPointer]]] = field(
+        default=None, metadata=config(field_name="prev")
+    )
+    delete_history: Optional[MessageDeleteHistory] = field(
+        default=None, metadata=config(field_name="deleteHistory")
+    )
+    merkle_root: Optional[MerkleRoot] = field(
+        default=None, metadata=config(field_name="merkleRoot")
+    )
+    outbox_id: Optional[OutboxID] = field(
+        default=None, metadata=config(field_name="outboxID")
+    )
+    outbox_info: Optional[OutboxInfo] = field(
+        default=None, metadata=config(field_name="outboxInfo")
+    )
+    ephemeral_metadata: Optional[MsgEphemeralMetadata] = field(
+        default=None, metadata=config(field_name="em")
+    )
+    bot_uid: Optional[gregor1.UID] = field(
+        default=None, metadata=config(field_name="b")
+    )
 
 
 @dataclass_json
@@ -2532,21 +3169,31 @@ class MessageClientHeaderVerified:
     tlf_name: str = field(metadata=config(field_name="tlfName"))
     tlf_public: bool = field(metadata=config(field_name="tlfPublic"))
     message_type: MessageType = field(metadata=config(field_name="messageType"))
-    prev: List[MessagePreviousPointer] = field(metadata=config(field_name="prev"))
     sender: gregor1.UID = field(metadata=config(field_name="sender"))
     sender_device: gregor1.DeviceID = field(metadata=config(field_name="senderDevice"))
-    kbfs_crypt_keys_used: Optional[bool] = field(
-        metadata=config(field_name="kbfsCryptKeysUsed")
-    )
-    merkle_root: Optional[MerkleRoot] = field(metadata=config(field_name="merkleRoot"))
-    outbox_id: Optional[OutboxID] = field(metadata=config(field_name="outboxID"))
-    outbox_info: Optional[OutboxInfo] = field(metadata=config(field_name="outboxInfo"))
-    ephemeral_metadata: Optional[MsgEphemeralMetadata] = field(
-        metadata=config(field_name="em")
-    )
     rtime: gregor1.Time = field(metadata=config(field_name="rt"))
     has_pairwise_macs: bool = field(metadata=config(field_name="pm"))
-    bot_uid: Optional[gregor1.UID] = field(metadata=config(field_name="b"))
+    prev: Optional[Optional[List[MessagePreviousPointer]]] = field(
+        default=None, metadata=config(field_name="prev")
+    )
+    kbfs_crypt_keys_used: Optional[bool] = field(
+        default=None, metadata=config(field_name="kbfsCryptKeysUsed")
+    )
+    merkle_root: Optional[MerkleRoot] = field(
+        default=None, metadata=config(field_name="merkleRoot")
+    )
+    outbox_id: Optional[OutboxID] = field(
+        default=None, metadata=config(field_name="outboxID")
+    )
+    outbox_info: Optional[OutboxInfo] = field(
+        default=None, metadata=config(field_name="outboxInfo")
+    )
+    ephemeral_metadata: Optional[MsgEphemeralMetadata] = field(
+        default=None, metadata=config(field_name="em")
+    )
+    bot_uid: Optional[gregor1.UID] = field(
+        default=None, metadata=config(field_name="b")
+    )
 
 
 @dataclass_json
@@ -2560,10 +3207,10 @@ class Asset:
     size: int = field(metadata=config(field_name="size"))
     mime_type: str = field(metadata=config(field_name="mimeType"))
     enc_hash: Hash = field(metadata=config(field_name="encHash"))
-    key: bytes = field(metadata=config(field_name="key"))
-    verify_key: bytes = field(metadata=config(field_name="verifyKey"))
+    key: str = field(metadata=config(field_name="key"))
+    verify_key: str = field(metadata=config(field_name="verifyKey"))
     title: str = field(metadata=config(field_name="title"))
-    nonce: bytes = field(metadata=config(field_name="nonce"))
+    nonce: str = field(metadata=config(field_name="nonce"))
     metadata: AssetMetadata = field(metadata=config(field_name="metadata"))
     tag: AssetTag = field(metadata=config(field_name="tag"))
 
@@ -2576,7 +3223,7 @@ class GenericPayload:
     conv_id: ConversationID = field(metadata=config(field_name="convID"))
     topic_type: TopicType = field(metadata=config(field_name="topicType"))
     unread_update: Optional[UnreadUpdate] = field(
-        metadata=config(field_name="unreadUpdate")
+        default=None, metadata=config(field_name="unreadUpdate")
     )
 
 
@@ -2588,7 +3235,7 @@ class NewConversationPayload:
     inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
     topic_type: TopicType = field(metadata=config(field_name="topicType"))
     unread_update: Optional[UnreadUpdate] = field(
-        metadata=config(field_name="unreadUpdate")
+        default=None, metadata=config(field_name="unreadUpdate")
     )
 
 
@@ -2601,7 +3248,7 @@ class ReadMessagePayload:
     inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
     topic_type: TopicType = field(metadata=config(field_name="topicType"))
     unread_update: Optional[UnreadUpdate] = field(
-        metadata=config(field_name="unreadUpdate")
+        default=None, metadata=config(field_name="unreadUpdate")
     )
 
 
@@ -2614,7 +3261,7 @@ class SetStatusPayload:
     inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
     topic_type: TopicType = field(metadata=config(field_name="topicType"))
     unread_update: Optional[UnreadUpdate] = field(
-        metadata=config(field_name="unreadUpdate")
+        default=None, metadata=config(field_name="unreadUpdate")
     )
 
 
@@ -2627,7 +3274,7 @@ class TeamTypePayload:
     inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
     topic_type: TopicType = field(metadata=config(field_name="topicType"))
     unread_update: Optional[UnreadUpdate] = field(
-        metadata=config(field_name="unreadUpdate")
+        default=None, metadata=config(field_name="unreadUpdate")
     )
 
 
@@ -2642,7 +3289,7 @@ class SetAppNotificationSettingsPayload:
     )
     topic_type: TopicType = field(metadata=config(field_name="topicType"))
     unread_update: Optional[UnreadUpdate] = field(
-        metadata=config(field_name="unreadUpdate")
+        default=None, metadata=config(field_name="unreadUpdate")
     )
 
 
@@ -2653,10 +3300,12 @@ class ExpungePayload:
     conv_id: ConversationID = field(metadata=config(field_name="convID"))
     inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
     expunge: Expunge = field(metadata=config(field_name="expunge"))
-    max_msgs: List[MessageSummary] = field(metadata=config(field_name="maxMsgs"))
     topic_type: TopicType = field(metadata=config(field_name="topicType"))
+    max_msgs: Optional[Optional[List[MessageSummary]]] = field(
+        default=None, metadata=config(field_name="maxMsgs")
+    )
     unread_update: Optional[UnreadUpdate] = field(
-        metadata=config(field_name="unreadUpdate")
+        default=None, metadata=config(field_name="unreadUpdate")
     )
 
 
@@ -2664,15 +3313,23 @@ class ExpungePayload:
 @dataclass
 class UpdateConversationMembership:
     inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
-    joined: List[ConversationMember] = field(metadata=config(field_name="joined"))
-    removed: List[ConversationMember] = field(metadata=config(field_name="removed"))
-    reset: List[ConversationMember] = field(metadata=config(field_name="reset"))
-    previewed: List[ConversationID] = field(metadata=config(field_name="previewed"))
-    unread_update: Optional[UnreadUpdate] = field(
-        metadata=config(field_name="unreadUpdate")
+    joined: Optional[Optional[List[ConversationMember]]] = field(
+        default=None, metadata=config(field_name="joined")
     )
-    unread_updates: List[UnreadUpdate] = field(
-        metadata=config(field_name="unreadUpdates")
+    removed: Optional[Optional[List[ConversationMember]]] = field(
+        default=None, metadata=config(field_name="removed")
+    )
+    reset: Optional[Optional[List[ConversationMember]]] = field(
+        default=None, metadata=config(field_name="reset")
+    )
+    previewed: Optional[Optional[List[ConversationID]]] = field(
+        default=None, metadata=config(field_name="previewed")
+    )
+    unread_update: Optional[UnreadUpdate] = field(
+        default=None, metadata=config(field_name="unreadUpdate")
+    )
+    unread_updates: Optional[Optional[List[UnreadUpdate]]] = field(
+        default=None, metadata=config(field_name="unreadUpdates")
     )
 
 
@@ -2680,8 +3337,8 @@ class UpdateConversationMembership:
 @dataclass
 class UpdateConversations:
     inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
-    conv_updates: List[ConversationUpdate] = field(
-        metadata=config(field_name="convUpdates")
+    conv_updates: Optional[Optional[List[ConversationUpdate]]] = field(
+        default=None, metadata=config(field_name="convUpdates")
     )
 
 
@@ -2707,7 +3364,7 @@ class SetConvSettingsUpdate:
     inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
     conv_id: ConversationID = field(metadata=config(field_name="convID"))
     conv_settings: Optional[ConversationSettings] = field(
-        metadata=config(field_name="convSettings")
+        default=None, metadata=config(field_name="convSettings")
     )
 
 
@@ -2715,19 +3372,23 @@ class SetConvSettingsUpdate:
 @dataclass
 class MessageText:
     body: str = field(metadata=config(field_name="body"))
-    payments: List[TextPayment] = field(metadata=config(field_name="payments"))
-    reply_to: Optional[MessageID] = field(metadata=config(field_name="replyTo"))
+    payments: Optional[Optional[List[TextPayment]]] = field(
+        default=None, metadata=config(field_name="payments")
+    )
+    reply_to: Optional[MessageID] = field(
+        default=None, metadata=config(field_name="replyTo")
+    )
     reply_to_uid: Optional[gregor1.UID] = field(
-        metadata=config(field_name="replyToUID")
+        default=None, metadata=config(field_name="replyToUID")
     )
-    user_mentions: List[KnownUserMention] = field(
-        metadata=config(field_name="userMentions")
+    user_mentions: Optional[Optional[List[KnownUserMention]]] = field(
+        default=None, metadata=config(field_name="userMentions")
     )
-    team_mentions: List[KnownTeamMention] = field(
-        metadata=config(field_name="teamMentions")
+    team_mentions: Optional[Optional[List[KnownTeamMention]]] = field(
+        default=None, metadata=config(field_name="teamMentions")
     )
     live_location: Optional[LiveLocation] = field(
-        metadata=config(field_name="liveLocation")
+        default=None, metadata=config(field_name="liveLocation")
     )
 
 
@@ -2745,13 +3406,13 @@ class MessageSystemChangeRetention:
 
 @dataclass
 class OutboxState__SENDING:
-    state: Literal[OutboxStateType.SENDING]
+    state: Literal[OutboxStateTypeStrings.SENDING]
     SENDING: Optional[int]
 
 
 @dataclass
 class OutboxState__ERROR:
-    state: Literal[OutboxStateType.ERROR]
+    state: Literal[OutboxStateTypeStrings.ERROR]
     ERROR: Optional[OutboxStateError]
 
 
@@ -2765,30 +3426,39 @@ class HeaderPlaintextV1:
     tlf_name: str = field(metadata=config(field_name="tlfName"))
     tlf_public: bool = field(metadata=config(field_name="tlfPublic"))
     message_type: MessageType = field(metadata=config(field_name="messageType"))
-    prev: List[MessagePreviousPointer] = field(metadata=config(field_name="prev"))
     sender: gregor1.UID = field(metadata=config(field_name="sender"))
     sender_device: gregor1.DeviceID = field(metadata=config(field_name="senderDevice"))
-    kbfs_crypt_keys_used: Optional[bool] = field(
-        metadata=config(field_name="kbfsCryptKeysUsed")
-    )
     body_hash: Hash = field(metadata=config(field_name="bodyHash"))
-    outbox_info: Optional[OutboxInfo] = field(metadata=config(field_name="outboxInfo"))
-    outbox_id: Optional[OutboxID] = field(metadata=config(field_name="outboxID"))
+    prev: Optional[Optional[List[MessagePreviousPointer]]] = field(
+        default=None, metadata=config(field_name="prev")
+    )
+    kbfs_crypt_keys_used: Optional[bool] = field(
+        default=None, metadata=config(field_name="kbfsCryptKeysUsed")
+    )
+    outbox_info: Optional[OutboxInfo] = field(
+        default=None, metadata=config(field_name="outboxInfo")
+    )
+    outbox_id: Optional[OutboxID] = field(
+        default=None, metadata=config(field_name="outboxID")
+    )
     header_signature: Optional[SignatureInfo] = field(
-        metadata=config(field_name="headerSignature")
+        default=None, metadata=config(field_name="headerSignature")
     )
-    merkle_root: Optional[MerkleRoot] = field(metadata=config(field_name="merkleRoot"))
+    merkle_root: Optional[MerkleRoot] = field(
+        default=None, metadata=config(field_name="merkleRoot")
+    )
     ephemeral_metadata: Optional[MsgEphemeralMetadata] = field(
-        metadata=config(field_name="em")
+        default=None, metadata=config(field_name="em")
     )
-    bot_uid: Optional[gregor1.UID] = field(metadata=config(field_name="b"))
+    bot_uid: Optional[gregor1.UID] = field(
+        default=None, metadata=config(field_name="b")
+    )
 
 
 @dataclass_json
 @dataclass
 class GetThreadQuery:
     mark_as_read: bool = field(metadata=config(field_name="markAsRead"))
-    message_types: List[MessageType] = field(metadata=config(field_name="messageTypes"))
     disable_resolve_supersedes: bool = field(
         metadata=config(field_name="disableResolveSupersedes")
     )
@@ -2798,35 +3468,54 @@ class GetThreadQuery:
     disable_post_process_thread: bool = field(
         metadata=config(field_name="disablePostProcessThread")
     )
-    before: Optional[gregor1.Time] = field(metadata=config(field_name="before"))
-    after: Optional[gregor1.Time] = field(metadata=config(field_name="after"))
+    message_types: Optional[Optional[List[MessageType]]] = field(
+        default=None, metadata=config(field_name="messageTypes")
+    )
+    before: Optional[gregor1.Time] = field(
+        default=None, metadata=config(field_name="before")
+    )
+    after: Optional[gregor1.Time] = field(
+        default=None, metadata=config(field_name="after")
+    )
     message_id_control: Optional[MessageIDControl] = field(
-        metadata=config(field_name="messageIDControl")
+        default=None, metadata=config(field_name="messageIDControl")
     )
 
 
 @dataclass_json
 @dataclass
 class GetInboxLocalQuery:
-    name: Optional[NameQuery] = field(metadata=config(field_name="name"))
-    topic_name: Optional[str] = field(metadata=config(field_name="topicName"))
-    conv_i_ds: List[ConversationID] = field(metadata=config(field_name="convIDs"))
-    topic_type: Optional[TopicType] = field(metadata=config(field_name="topicType"))
-    tlf_visibility: Optional[keybase1.TLFVisibility] = field(
-        metadata=config(field_name="tlfVisibility")
-    )
-    before: Optional[gregor1.Time] = field(metadata=config(field_name="before"))
-    after: Optional[gregor1.Time] = field(metadata=config(field_name="after"))
-    one_chat_type_per_tlf: Optional[bool] = field(
-        metadata=config(field_name="oneChatTypePerTLF")
-    )
-    status: List[ConversationStatus] = field(metadata=config(field_name="status"))
-    member_status: List[ConversationMemberStatus] = field(
-        metadata=config(field_name="memberStatus")
-    )
     unread_only: bool = field(metadata=config(field_name="unreadOnly"))
     read_only: bool = field(metadata=config(field_name="readOnly"))
     compute_active_list: bool = field(metadata=config(field_name="computeActiveList"))
+    name: Optional[NameQuery] = field(default=None, metadata=config(field_name="name"))
+    topic_name: Optional[str] = field(
+        default=None, metadata=config(field_name="topicName")
+    )
+    conv_i_ds: Optional[Optional[List[ConversationID]]] = field(
+        default=None, metadata=config(field_name="convIDs")
+    )
+    topic_type: Optional[TopicType] = field(
+        default=None, metadata=config(field_name="topicType")
+    )
+    tlf_visibility: Optional[keybase1.TLFVisibility] = field(
+        default=None, metadata=config(field_name="tlfVisibility")
+    )
+    before: Optional[gregor1.Time] = field(
+        default=None, metadata=config(field_name="before")
+    )
+    after: Optional[gregor1.Time] = field(
+        default=None, metadata=config(field_name="after")
+    )
+    one_chat_type_per_tlf: Optional[bool] = field(
+        default=None, metadata=config(field_name="oneChatTypePerTLF")
+    )
+    status: Optional[Optional[List[ConversationStatus]]] = field(
+        default=None, metadata=config(field_name="status")
+    )
+    member_status: Optional[Optional[List[ConversationMemberStatus]]] = field(
+        default=None, metadata=config(field_name="memberStatus")
+    )
 
 
 @dataclass_json
@@ -2834,23 +3523,27 @@ class GetInboxLocalQuery:
 class MakePreviewRes:
     mime_type: str = field(metadata=config(field_name="mimeType"))
     preview_mime_type: Optional[str] = field(
-        metadata=config(field_name="previewMimeType")
+        default=None, metadata=config(field_name="previewMimeType")
     )
-    location: Optional[PreviewLocation] = field(metadata=config(field_name="location"))
-    metadata: Optional[AssetMetadata] = field(metadata=config(field_name="metadata"))
+    location: Optional[PreviewLocation] = field(
+        default=None, metadata=config(field_name="location")
+    )
+    metadata: Optional[AssetMetadata] = field(
+        default=None, metadata=config(field_name="metadata")
+    )
     base_metadata: Optional[AssetMetadata] = field(
-        metadata=config(field_name="baseMetadata")
+        default=None, metadata=config(field_name="baseMetadata")
     )
 
 
 @dataclass_json
 @dataclass
 class StaticConfig:
-    deletable_by_delete_history: List[MessageType] = field(
-        metadata=config(field_name="deletableByDeleteHistory")
+    deletable_by_delete_history: Optional[Optional[List[MessageType]]] = field(
+        default=None, metadata=config(field_name="deletableByDeleteHistory")
     )
-    builtin_commands: List[BuiltinCommandGroup] = field(
-        metadata=config(field_name="builtinCommands")
+    builtin_commands: Optional[Optional[List[BuiltinCommandGroup]]] = field(
+        default=None, metadata=config(field_name="builtinCommands")
     )
 
 
@@ -2858,22 +3551,32 @@ class StaticConfig:
 @dataclass
 class AdvertiseCommandsParam:
     typ: BotCommandsAdvertisementTyp = field(metadata=config(field_name="typ"))
-    commands: List[UserBotCommandInput] = field(metadata=config(field_name="commands"))
-    team_name: Optional[str] = field(metadata=config(field_name="teamName"))
+    commands: Optional[Optional[List[UserBotCommandInput]]] = field(
+        default=None, metadata=config(field_name="commands")
+    )
+    team_name: Optional[str] = field(
+        default=None, metadata=config(field_name="teamName")
+    )
 
 
 @dataclass_json
 @dataclass
 class ListBotCommandsLocalRes:
-    commands: List[UserBotCommandOutput] = field(metadata=config(field_name="commands"))
-    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
+    commands: Optional[Optional[List[UserBotCommandOutput]]] = field(
+        default=None, metadata=config(field_name="commands")
+    )
+    rate_limits: Optional[Optional[List[RateLimit]]] = field(
+        default=None, metadata=config(field_name="rateLimits")
+    )
 
 
 @dataclass_json
 @dataclass
 class MembersUpdateInfo:
     conv_id: ConversationID = field(metadata=config(field_name="convID"))
-    members: List[MemberInfo] = field(metadata=config(field_name="members"))
+    members: Optional[Optional[List[MemberInfo]]] = field(
+        default=None, metadata=config(field_name="members")
+    )
 
 
 @dataclass_json
@@ -2887,7 +3590,9 @@ class ExpungeInfo:
 @dataclass
 class PostRemoteRes:
     msg_header: MessageServerHeader = field(metadata=config(field_name="msgHeader"))
-    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
+    rate_limit: Optional[RateLimit] = field(
+        default=None, metadata=config(field_name="rateLimit")
+    )
 
 
 @dataclass_json
@@ -2898,7 +3603,9 @@ class UnreadUpdateFull:
     inbox_sync_status: SyncInboxResType = field(
         metadata=config(field_name="inboxSyncStatus")
     )
-    updates: List[UnreadUpdate] = field(metadata=config(field_name="updates"))
+    updates: Optional[Optional[List[UnreadUpdate]]] = field(
+        default=None, metadata=config(field_name="updates")
+    )
 
 
 @dataclass_json
@@ -2911,19 +3618,19 @@ class SweepRes:
 
 @dataclass
 class RemoteBotCommandsAdvertisement__PUBLIC:
-    typ: Literal[BotCommandsAdvertisementTyp.PUBLIC]
+    typ: Literal[BotCommandsAdvertisementTypStrings.PUBLIC]
     PUBLIC: Optional[RemoteBotCommandsAdvertisementPublic]
 
 
 @dataclass
 class RemoteBotCommandsAdvertisement__TLFID_MEMBERS:
-    typ: Literal[BotCommandsAdvertisementTyp.TLFID_MEMBERS]
+    typ: Literal[BotCommandsAdvertisementTypStrings.TLFID_MEMBERS]
     TLFID_MEMBERS: Optional[RemoteBotCommandsAdvertisementTLFID]
 
 
 @dataclass
 class RemoteBotCommandsAdvertisement__TLFID_CONVS:
-    typ: Literal[BotCommandsAdvertisementTyp.TLFID_CONVS]
+    typ: Literal[BotCommandsAdvertisementTypStrings.TLFID_CONVS]
     TLFID_CONVS: Optional[RemoteBotCommandsAdvertisementTLFID]
 
 
@@ -2937,32 +3644,32 @@ RemoteBotCommandsAdvertisement = Union[
 @dataclass_json
 @dataclass
 class BotInfo:
-    command_convs: List[BotCommandConv] = field(
-        metadata=config(field_name="commandConvs")
+    command_convs: Optional[Optional[List[BotCommandConv]]] = field(
+        default=None, metadata=config(field_name="commandConvs")
     )
 
 
 @dataclass
 class UnfurlRaw__GENERIC:
-    unfurlType: Literal[UnfurlType.GENERIC]
+    unfurlType: Literal[UnfurlTypeStrings.GENERIC]
     GENERIC: Optional[UnfurlGenericRaw]
 
 
 @dataclass
 class UnfurlRaw__YOUTUBE:
-    unfurlType: Literal[UnfurlType.YOUTUBE]
+    unfurlType: Literal[UnfurlTypeStrings.YOUTUBE]
     YOUTUBE: Optional[UnfurlYoutubeRaw]
 
 
 @dataclass
 class UnfurlRaw__GIPHY:
-    unfurlType: Literal[UnfurlType.GIPHY]
+    unfurlType: Literal[UnfurlTypeStrings.GIPHY]
     GIPHY: Optional[UnfurlGiphyRaw]
 
 
 @dataclass
 class UnfurlRaw__MAPS:
-    unfurlType: Literal[UnfurlType.MAPS]
+    unfurlType: Literal[UnfurlTypeStrings.MAPS]
     MAPS: Optional[UnfurlMapsRaw]
 
 
@@ -2977,12 +3684,20 @@ class UnfurlGenericDisplay:
     title: str = field(metadata=config(field_name="title"))
     url: str = field(metadata=config(field_name="url"))
     site_name: str = field(metadata=config(field_name="siteName"))
-    favicon: Optional[UnfurlImageDisplay] = field(metadata=config(field_name="favicon"))
-    media: Optional[UnfurlImageDisplay] = field(metadata=config(field_name="media"))
-    publish_time: Optional[int] = field(metadata=config(field_name="publishTime"))
-    description: Optional[str] = field(metadata=config(field_name="description"))
+    favicon: Optional[UnfurlImageDisplay] = field(
+        default=None, metadata=config(field_name="favicon")
+    )
+    media: Optional[UnfurlImageDisplay] = field(
+        default=None, metadata=config(field_name="media")
+    )
+    publish_time: Optional[int] = field(
+        default=None, metadata=config(field_name="publishTime")
+    )
+    description: Optional[str] = field(
+        default=None, metadata=config(field_name="description")
+    )
     map_info: Optional[UnfurlGenericMapInfo] = field(
-        metadata=config(field_name="mapInfo")
+        default=None, metadata=config(field_name="mapInfo")
     )
 
 
@@ -2997,62 +3712,62 @@ class UICoinFlipStatus:
         metadata=config(field_name="commitmentVisualization")
     )
     reveal_visualization: str = field(metadata=config(field_name="revealVisualization"))
-    participants: List[UICoinFlipParticipant] = field(
-        metadata=config(field_name="participants")
+    participants: Optional[Optional[List[UICoinFlipParticipant]]] = field(
+        default=None, metadata=config(field_name="participants")
     )
     error_info: Optional[UICoinFlipError] = field(
-        metadata=config(field_name="errorInfo")
+        default=None, metadata=config(field_name="errorInfo")
     )
     result_info: Optional[UICoinFlipResult] = field(
-        metadata=config(field_name="resultInfo")
+        default=None, metadata=config(field_name="resultInfo")
     )
 
 
 @dataclass
 class MessageSystem__ADDEDTOTEAM:
-    systemType: Literal[MessageSystemType.ADDEDTOTEAM]
+    systemType: Literal[MessageSystemTypeStrings.ADDEDTOTEAM]
     ADDEDTOTEAM: Optional[MessageSystemAddedToTeam]
 
 
 @dataclass
 class MessageSystem__INVITEADDEDTOTEAM:
-    systemType: Literal[MessageSystemType.INVITEADDEDTOTEAM]
+    systemType: Literal[MessageSystemTypeStrings.INVITEADDEDTOTEAM]
     INVITEADDEDTOTEAM: Optional[MessageSystemInviteAddedToTeam]
 
 
 @dataclass
 class MessageSystem__COMPLEXTEAM:
-    systemType: Literal[MessageSystemType.COMPLEXTEAM]
+    systemType: Literal[MessageSystemTypeStrings.COMPLEXTEAM]
     COMPLEXTEAM: Optional[MessageSystemComplexTeam]
 
 
 @dataclass
 class MessageSystem__CREATETEAM:
-    systemType: Literal[MessageSystemType.CREATETEAM]
+    systemType: Literal[MessageSystemTypeStrings.CREATETEAM]
     CREATETEAM: Optional[MessageSystemCreateTeam]
 
 
 @dataclass
 class MessageSystem__GITPUSH:
-    systemType: Literal[MessageSystemType.GITPUSH]
+    systemType: Literal[MessageSystemTypeStrings.GITPUSH]
     GITPUSH: Optional[MessageSystemGitPush]
 
 
 @dataclass
 class MessageSystem__CHANGEAVATAR:
-    systemType: Literal[MessageSystemType.CHANGEAVATAR]
+    systemType: Literal[MessageSystemTypeStrings.CHANGEAVATAR]
     CHANGEAVATAR: Optional[MessageSystemChangeAvatar]
 
 
 @dataclass
 class MessageSystem__CHANGERETENTION:
-    systemType: Literal[MessageSystemType.CHANGERETENTION]
+    systemType: Literal[MessageSystemTypeStrings.CHANGERETENTION]
     CHANGERETENTION: Optional[MessageSystemChangeRetention]
 
 
 @dataclass
 class MessageSystem__BULKADDTOCONV:
-    systemType: Literal[MessageSystemType.BULKADDTOCONV]
+    systemType: Literal[MessageSystemTypeStrings.BULKADDTOCONV]
     BULKADDTOCONV: Optional[MessageSystemBulkAddToConv]
 
 
@@ -3072,10 +3787,14 @@ MessageSystem = Union[
 @dataclass
 class MessageAttachment:
     object: Asset = field(metadata=config(field_name="object"))
-    preview: Optional[Asset] = field(metadata=config(field_name="preview"))
-    previews: List[Asset] = field(metadata=config(field_name="previews"))
-    metadata: bytes = field(metadata=config(field_name="metadata"))
+    metadata: str = field(metadata=config(field_name="metadata"))
     uploaded: bool = field(metadata=config(field_name="uploaded"))
+    preview: Optional[Asset] = field(
+        default=None, metadata=config(field_name="preview")
+    )
+    previews: Optional[Optional[List[Asset]]] = field(
+        default=None, metadata=config(field_name="previews")
+    )
 
 
 @dataclass_json
@@ -3083,67 +3802,69 @@ class MessageAttachment:
 class MessageAttachmentUploaded:
     message_id: MessageID = field(metadata=config(field_name="messageID"))
     object: Asset = field(metadata=config(field_name="object"))
-    previews: List[Asset] = field(metadata=config(field_name="previews"))
-    metadata: bytes = field(metadata=config(field_name="metadata"))
+    metadata: str = field(metadata=config(field_name="metadata"))
+    previews: Optional[Optional[List[Asset]]] = field(
+        default=None, metadata=config(field_name="previews")
+    )
 
 
 @dataclass
 class HeaderPlaintext__V1:
-    version: Literal[HeaderPlaintextVersion.V1]
+    version: Literal[HeaderPlaintextVersionStrings.V1]
     V1: Optional[HeaderPlaintextV1]
 
 
 @dataclass
 class HeaderPlaintext__V2:
-    version: Literal[HeaderPlaintextVersion.V2]
+    version: Literal[HeaderPlaintextVersionStrings.V2]
     V2: Optional[HeaderPlaintextUnsupported]
 
 
 @dataclass
 class HeaderPlaintext__V3:
-    version: Literal[HeaderPlaintextVersion.V3]
+    version: Literal[HeaderPlaintextVersionStrings.V3]
     V3: Optional[HeaderPlaintextUnsupported]
 
 
 @dataclass
 class HeaderPlaintext__V4:
-    version: Literal[HeaderPlaintextVersion.V4]
+    version: Literal[HeaderPlaintextVersionStrings.V4]
     V4: Optional[HeaderPlaintextUnsupported]
 
 
 @dataclass
 class HeaderPlaintext__V5:
-    version: Literal[HeaderPlaintextVersion.V5]
+    version: Literal[HeaderPlaintextVersionStrings.V5]
     V5: Optional[HeaderPlaintextUnsupported]
 
 
 @dataclass
 class HeaderPlaintext__V6:
-    version: Literal[HeaderPlaintextVersion.V6]
+    version: Literal[HeaderPlaintextVersionStrings.V6]
     V6: Optional[HeaderPlaintextUnsupported]
 
 
 @dataclass
 class HeaderPlaintext__V7:
-    version: Literal[HeaderPlaintextVersion.V7]
+    version: Literal[HeaderPlaintextVersionStrings.V7]
     V7: Optional[HeaderPlaintextUnsupported]
 
 
 @dataclass
 class HeaderPlaintext__V8:
-    version: Literal[HeaderPlaintextVersion.V8]
+    version: Literal[HeaderPlaintextVersionStrings.V8]
     V8: Optional[HeaderPlaintextUnsupported]
 
 
 @dataclass
 class HeaderPlaintext__V9:
-    version: Literal[HeaderPlaintextVersion.V9]
+    version: Literal[HeaderPlaintextVersionStrings.V9]
     V9: Optional[HeaderPlaintextUnsupported]
 
 
 @dataclass
 class HeaderPlaintext__V10:
-    version: Literal[HeaderPlaintextVersion.V10]
+    version: Literal[HeaderPlaintextVersionStrings.V10]
     V10: Optional[HeaderPlaintextUnsupported]
 
 
@@ -3171,16 +3892,18 @@ class PostFileAttachmentArg:
     visibility: keybase1.TLFVisibility = field(metadata=config(field_name="visibility"))
     filename: str = field(metadata=config(field_name="filename"))
     title: str = field(metadata=config(field_name="title"))
-    metadata: bytes = field(metadata=config(field_name="metadata"))
+    metadata: str = field(metadata=config(field_name="metadata"))
     identify_behavior: keybase1.TLFIdentifyBehavior = field(
         metadata=config(field_name="identifyBehavior")
     )
     caller_preview: Optional[MakePreviewRes] = field(
-        metadata=config(field_name="callerPreview")
+        default=None, metadata=config(field_name="callerPreview")
     )
-    outbox_id: Optional[OutboxID] = field(metadata=config(field_name="outboxID"))
+    outbox_id: Optional[OutboxID] = field(
+        default=None, metadata=config(field_name="outboxID")
+    )
     ephemeral_lifetime: Optional[gregor1.DurationSec] = field(
-        metadata=config(field_name="ephemeralLifetime")
+        default=None, metadata=config(field_name="ephemeralLifetime")
     )
 
 
@@ -3195,9 +3918,6 @@ class ReactionUpdate:
 @dataclass
 class MessageBoxed:
     version: MessageBoxedVersion = field(metadata=config(field_name="version"))
-    server_header: Optional[MessageServerHeader] = field(
-        metadata=config(field_name="serverHeader")
-    )
     client_header: MessageClientHeader = field(
         metadata=config(field_name="clientHeader")
     )
@@ -3205,19 +3925,22 @@ class MessageBoxed:
         metadata=config(field_name="headerCiphertext")
     )
     body_ciphertext: EncryptedData = field(metadata=config(field_name="bodyCiphertext"))
-    verify_key: bytes = field(metadata=config(field_name="verifyKey"))
+    verify_key: str = field(metadata=config(field_name="verifyKey"))
     key_generation: int = field(metadata=config(field_name="keyGeneration"))
+    server_header: Optional[MessageServerHeader] = field(
+        default=None, metadata=config(field_name="serverHeader")
+    )
 
 
 @dataclass
 class BotInfoResponse__UPTODATE:
-    typ: Literal[BotInfoResponseTyp.UPTODATE]
+    typ: Literal[BotInfoResponseTypStrings.UPTODATE]
     UPTODATE: None
 
 
 @dataclass
 class BotInfoResponse__INFO:
-    typ: Literal[BotInfoResponseTyp.INFO]
+    typ: Literal[BotInfoResponseTypStrings.INFO]
     INFO: Optional[BotInfo]
 
 
@@ -3230,38 +3953,46 @@ class UnfurlGeneric:
     title: str = field(metadata=config(field_name="title"))
     url: str = field(metadata=config(field_name="url"))
     site_name: str = field(metadata=config(field_name="siteName"))
-    favicon: Optional[Asset] = field(metadata=config(field_name="favicon"))
-    image: Optional[Asset] = field(metadata=config(field_name="image"))
-    publish_time: Optional[int] = field(metadata=config(field_name="publishTime"))
-    description: Optional[str] = field(metadata=config(field_name="description"))
+    favicon: Optional[Asset] = field(
+        default=None, metadata=config(field_name="favicon")
+    )
+    image: Optional[Asset] = field(default=None, metadata=config(field_name="image"))
+    publish_time: Optional[int] = field(
+        default=None, metadata=config(field_name="publishTime")
+    )
+    description: Optional[str] = field(
+        default=None, metadata=config(field_name="description")
+    )
     map_info: Optional[UnfurlGenericMapInfo] = field(
-        metadata=config(field_name="mapInfo")
+        default=None, metadata=config(field_name="mapInfo")
     )
 
 
 @dataclass_json
 @dataclass
 class UnfurlGiphy:
-    favicon: Optional[Asset] = field(metadata=config(field_name="favicon"))
-    image: Optional[Asset] = field(metadata=config(field_name="image"))
-    video: Optional[Asset] = field(metadata=config(field_name="video"))
+    favicon: Optional[Asset] = field(
+        default=None, metadata=config(field_name="favicon")
+    )
+    image: Optional[Asset] = field(default=None, metadata=config(field_name="image"))
+    video: Optional[Asset] = field(default=None, metadata=config(field_name="video"))
 
 
 @dataclass
 class UnfurlDisplay__GENERIC:
-    unfurlType: Literal[UnfurlType.GENERIC]
+    unfurlType: Literal[UnfurlTypeStrings.GENERIC]
     GENERIC: Optional[UnfurlGenericDisplay]
 
 
 @dataclass
 class UnfurlDisplay__YOUTUBE:
-    unfurlType: Literal[UnfurlType.YOUTUBE]
+    unfurlType: Literal[UnfurlTypeStrings.YOUTUBE]
     YOUTUBE: Optional[UnfurlYoutubeDisplay]
 
 
 @dataclass
 class UnfurlDisplay__GIPHY:
-    unfurlType: Literal[UnfurlType.GIPHY]
+    unfurlType: Literal[UnfurlTypeStrings.GIPHY]
     GIPHY: Optional[UnfurlGiphyDisplay]
 
 
@@ -3288,18 +4019,22 @@ class NewMessagePayload:
     inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
     topic_type: TopicType = field(metadata=config(field_name="topicType"))
     unread_update: Optional[UnreadUpdate] = field(
-        metadata=config(field_name="unreadUpdate")
+        default=None, metadata=config(field_name="unreadUpdate")
     )
-    max_msgs: List[MessageSummary] = field(metadata=config(field_name="maxMsgs"))
+    max_msgs: Optional[Optional[List[MessageSummary]]] = field(
+        default=None, metadata=config(field_name="maxMsgs")
+    )
 
 
 @dataclass_json
 @dataclass
 class LoadFlipRes:
     status: UICoinFlipStatus = field(metadata=config(field_name="status"))
-    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
-    identify_failures: List[keybase1.TLFIdentifyFailure] = field(
-        metadata=config(field_name="identifyFailures")
+    rate_limits: Optional[Optional[List[RateLimit]]] = field(
+        default=None, metadata=config(field_name="rateLimits")
+    )
+    identify_failures: Optional[Optional[List[keybase1.TLFIdentifyFailure]]] = field(
+        default=None, metadata=config(field_name="identifyFailures")
     )
 
 
@@ -3310,47 +4045,57 @@ class ReactionUpdateNotif:
     user_reacjis: keybase1.UserReacjis = field(
         metadata=config(field_name="userReacjis")
     )
-    reaction_updates: List[ReactionUpdate] = field(
-        metadata=config(field_name="reactionUpdates")
+    reaction_updates: Optional[Optional[List[ReactionUpdate]]] = field(
+        default=None, metadata=config(field_name="reactionUpdates")
     )
 
 
 @dataclass_json
 @dataclass
 class ThreadViewBoxed:
-    messages: List[MessageBoxed] = field(metadata=config(field_name="messages"))
-    pagination: Optional[Pagination] = field(metadata=config(field_name="pagination"))
+    messages: Optional[Optional[List[MessageBoxed]]] = field(
+        default=None, metadata=config(field_name="messages")
+    )
+    pagination: Optional[Pagination] = field(
+        default=None, metadata=config(field_name="pagination")
+    )
 
 
 @dataclass_json
 @dataclass
 class GetMessagesRemoteRes:
-    msgs: List[MessageBoxed] = field(metadata=config(field_name="msgs"))
-    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
+    msgs: Optional[Optional[List[MessageBoxed]]] = field(
+        default=None, metadata=config(field_name="msgs")
+    )
+    rate_limit: Optional[RateLimit] = field(
+        default=None, metadata=config(field_name="rateLimit")
+    )
 
 
 @dataclass_json
 @dataclass
 class GetBotInfoRes:
     response: BotInfoResponse = field(metadata=config(field_name="response"))
-    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
+    rate_limit: Optional[RateLimit] = field(
+        default=None, metadata=config(field_name="rateLimit")
+    )
 
 
 @dataclass
 class Unfurl__GENERIC:
-    unfurlType: Literal[UnfurlType.GENERIC]
+    unfurlType: Literal[UnfurlTypeStrings.GENERIC]
     GENERIC: Optional[UnfurlGeneric]
 
 
 @dataclass
 class Unfurl__YOUTUBE:
-    unfurlType: Literal[UnfurlType.YOUTUBE]
+    unfurlType: Literal[UnfurlTypeStrings.YOUTUBE]
     YOUTUBE: Optional[UnfurlYoutube]
 
 
 @dataclass
 class Unfurl__GIPHY:
-    unfurlType: Literal[UnfurlType.GIPHY]
+    unfurlType: Literal[UnfurlTypeStrings.GIPHY]
     GIPHY: Optional[UnfurlGiphy]
 
 
@@ -3365,7 +4110,9 @@ class GetThreadRemoteRes:
         metadata=config(field_name="membersType")
     )
     visibility: keybase1.TLFVisibility = field(metadata=config(field_name="visibility"))
-    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
+    rate_limit: Optional[RateLimit] = field(
+        default=None, metadata=config(field_name="rateLimit")
+    )
 
 
 @dataclass_json
@@ -3386,130 +4133,146 @@ class MessageUnfurl:
 @dataclass
 class MsgContent:
     type_name: str = field(metadata=config(field_name="type"))
-    text: Optional[MessageText] = field(metadata=config(field_name="text"))
+    text: Optional[MessageText] = field(
+        default=None, metadata=config(field_name="text")
+    )
     attachment: Optional[MessageAttachment] = field(
-        metadata=config(field_name="attachment")
+        default=None, metadata=config(field_name="attachment")
     )
-    edit: Optional[MessageEdit] = field(metadata=config(field_name="edit"))
-    reaction: Optional[MessageReaction] = field(metadata=config(field_name="reaction"))
-    delete: Optional[MessageDelete] = field(metadata=config(field_name="delete"))
+    edit: Optional[MessageEdit] = field(
+        default=None, metadata=config(field_name="edit")
+    )
+    reaction: Optional[MessageReaction] = field(
+        default=None, metadata=config(field_name="reaction")
+    )
+    delete: Optional[MessageDelete] = field(
+        default=None, metadata=config(field_name="delete")
+    )
     metadata: Optional[MessageConversationMetadata] = field(
-        metadata=config(field_name="metadata")
+        default=None, metadata=config(field_name="metadata")
     )
-    headline: Optional[MessageHeadline] = field(metadata=config(field_name="headline"))
+    headline: Optional[MessageHeadline] = field(
+        default=None, metadata=config(field_name="headline")
+    )
     attachment_uploaded: Optional[MessageAttachmentUploaded] = field(
-        metadata=config(field_name="attachment_uploaded")
+        default=None, metadata=config(field_name="attachment_uploaded")
     )
-    system: Optional[MessageSystem] = field(metadata=config(field_name="system"))
+    system: Optional[MessageSystem] = field(
+        default=None, metadata=config(field_name="system")
+    )
     send_payment: Optional[MessageSendPayment] = field(
-        metadata=config(field_name="send_payment")
+        default=None, metadata=config(field_name="send_payment")
     )
     request_payment: Optional[MessageRequestPayment] = field(
-        metadata=config(field_name="request_payment")
+        default=None, metadata=config(field_name="request_payment")
     )
-    unfurl: Optional[MessageUnfurl] = field(metadata=config(field_name="unfurl"))
-    flip: Optional[MsgFlipContent] = field(metadata=config(field_name="flip"))
+    unfurl: Optional[MessageUnfurl] = field(
+        default=None, metadata=config(field_name="unfurl")
+    )
+    flip: Optional[MsgFlipContent] = field(
+        default=None, metadata=config(field_name="flip")
+    )
 
 
 @dataclass
 class MessageBody__TEXT:
-    messageType: Literal[MessageType.TEXT]
+    messageType: Literal[MessageTypeStrings.TEXT]
     TEXT: Optional[MessageText]
 
 
 @dataclass
 class MessageBody__ATTACHMENT:
-    messageType: Literal[MessageType.ATTACHMENT]
+    messageType: Literal[MessageTypeStrings.ATTACHMENT]
     ATTACHMENT: Optional[MessageAttachment]
 
 
 @dataclass
 class MessageBody__EDIT:
-    messageType: Literal[MessageType.EDIT]
+    messageType: Literal[MessageTypeStrings.EDIT]
     EDIT: Optional[MessageEdit]
 
 
 @dataclass
 class MessageBody__DELETE:
-    messageType: Literal[MessageType.DELETE]
+    messageType: Literal[MessageTypeStrings.DELETE]
     DELETE: Optional[MessageDelete]
 
 
 @dataclass
 class MessageBody__METADATA:
-    messageType: Literal[MessageType.METADATA]
+    messageType: Literal[MessageTypeStrings.METADATA]
     METADATA: Optional[MessageConversationMetadata]
 
 
 @dataclass
 class MessageBody__HEADLINE:
-    messageType: Literal[MessageType.HEADLINE]
+    messageType: Literal[MessageTypeStrings.HEADLINE]
     HEADLINE: Optional[MessageHeadline]
 
 
 @dataclass
 class MessageBody__ATTACHMENTUPLOADED:
-    messageType: Literal[MessageType.ATTACHMENTUPLOADED]
+    messageType: Literal[MessageTypeStrings.ATTACHMENTUPLOADED]
     ATTACHMENTUPLOADED: Optional[MessageAttachmentUploaded]
 
 
 @dataclass
 class MessageBody__JOIN:
-    messageType: Literal[MessageType.JOIN]
+    messageType: Literal[MessageTypeStrings.JOIN]
     JOIN: Optional[MessageJoin]
 
 
 @dataclass
 class MessageBody__LEAVE:
-    messageType: Literal[MessageType.LEAVE]
+    messageType: Literal[MessageTypeStrings.LEAVE]
     LEAVE: Optional[MessageLeave]
 
 
 @dataclass
 class MessageBody__SYSTEM:
-    messageType: Literal[MessageType.SYSTEM]
+    messageType: Literal[MessageTypeStrings.SYSTEM]
     SYSTEM: Optional[MessageSystem]
 
 
 @dataclass
 class MessageBody__DELETEHISTORY:
-    messageType: Literal[MessageType.DELETEHISTORY]
+    messageType: Literal[MessageTypeStrings.DELETEHISTORY]
     DELETEHISTORY: Optional[MessageDeleteHistory]
 
 
 @dataclass
 class MessageBody__REACTION:
-    messageType: Literal[MessageType.REACTION]
+    messageType: Literal[MessageTypeStrings.REACTION]
     REACTION: Optional[MessageReaction]
 
 
 @dataclass
 class MessageBody__SENDPAYMENT:
-    messageType: Literal[MessageType.SENDPAYMENT]
+    messageType: Literal[MessageTypeStrings.SENDPAYMENT]
     SENDPAYMENT: Optional[MessageSendPayment]
 
 
 @dataclass
 class MessageBody__REQUESTPAYMENT:
-    messageType: Literal[MessageType.REQUESTPAYMENT]
+    messageType: Literal[MessageTypeStrings.REQUESTPAYMENT]
     REQUESTPAYMENT: Optional[MessageRequestPayment]
 
 
 @dataclass
 class MessageBody__UNFURL:
-    messageType: Literal[MessageType.UNFURL]
+    messageType: Literal[MessageTypeStrings.UNFURL]
     UNFURL: Optional[MessageUnfurl]
 
 
 @dataclass
 class MessageBody__FLIP:
-    messageType: Literal[MessageType.FLIP]
+    messageType: Literal[MessageTypeStrings.FLIP]
     FLIP: Optional[MessageFlip]
 
 
 @dataclass
 class MessageBody__PIN:
-    messageType: Literal[MessageType.PIN]
+    messageType: Literal[MessageTypeStrings.PIN]
     PIN: Optional[MessagePin]
 
 
@@ -3544,28 +4307,40 @@ class MsgSummary:
     sent_at: int = field(metadata=config(field_name="sent_at"))
     sent_at_ms: int = field(metadata=config(field_name="sent_at_ms"))
     content: MsgContent = field(metadata=config(field_name="content"))
-    prev: List[MessagePreviousPointer] = field(metadata=config(field_name="prev"))
     unread: bool = field(metadata=config(field_name="unread"))
-    revoked_device: Optional[bool] = field(metadata=config(field_name="revoked_device"))
-    offline: Optional[bool] = field(metadata=config(field_name="offline"))
-    kbfs_encrypted: Optional[bool] = field(metadata=config(field_name="kbfs_encrypted"))
-    is_ephemeral: Optional[bool] = field(metadata=config(field_name="is_ephemeral"))
+    prev: Optional[Optional[List[MessagePreviousPointer]]] = field(
+        default=None, metadata=config(field_name="prev")
+    )
+    revoked_device: Optional[bool] = field(
+        default=None, metadata=config(field_name="revoked_device")
+    )
+    offline: Optional[bool] = field(default=None, metadata=config(field_name="offline"))
+    kbfs_encrypted: Optional[bool] = field(
+        default=None, metadata=config(field_name="kbfs_encrypted")
+    )
+    is_ephemeral: Optional[bool] = field(
+        default=None, metadata=config(field_name="is_ephemeral")
+    )
     is_ephemeral_expired: Optional[bool] = field(
-        metadata=config(field_name="is_ephemeral_expired")
+        default=None, metadata=config(field_name="is_ephemeral_expired")
     )
-    e_time: Optional[gregor1.Time] = field(metadata=config(field_name="e_time"))
-    reactions: Optional[ReactionMap] = field(metadata=config(field_name="reactions"))
+    e_time: Optional[gregor1.Time] = field(
+        default=None, metadata=config(field_name="e_time")
+    )
+    reactions: Optional[ReactionMap] = field(
+        default=None, metadata=config(field_name="reactions")
+    )
     has_pairwise_macs: Optional[bool] = field(
-        metadata=config(field_name="has_pairwise_macs")
+        default=None, metadata=config(field_name="has_pairwise_macs")
     )
-    at_mention_usernames: Optional[List[str]] = field(
-        metadata=config(field_name="at_mention_usernames")
+    at_mention_usernames: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="at_mention_usernames")
     )
     channel_mention: Optional[str] = field(
-        metadata=config(field_name="channel_mention")
+        default=None, metadata=config(field_name="channel_mention")
     )
-    channel_name_mentions: Optional[List[UIChannelNameMention]] = field(
-        metadata=config(field_name="channel_name_mentions")
+    channel_name_mentions: Optional[Optional[List[UIChannelNameMention]]] = field(
+        default=None, metadata=config(field_name="channel_name_mentions")
     )
 
 
@@ -3590,15 +4365,15 @@ class MessagePlaintext:
     )
     message_body: MessageBody = field(metadata=config(field_name="messageBody"))
     supersedes_outbox_id: Optional[OutboxID] = field(
-        metadata=config(field_name="supersedesOutboxID")
+        default=None, metadata=config(field_name="supersedesOutboxID")
     )
 
 
 @dataclass_json
 @dataclass
 class Message:
-    msg: Optional[MsgSummary] = field(metadata=config(field_name="msg"))
-    error: Optional[str] = field(metadata=config(field_name="error"))
+    msg: Optional[MsgSummary] = field(default=None, metadata=config(field_name="msg"))
+    error: Optional[str] = field(default=None, metadata=config(field_name="error"))
 
 
 @dataclass_json
@@ -3606,68 +4381,70 @@ class Message:
 class MsgNotification:
     type: str = field(metadata=config(field_name="type"))
     source: str = field(metadata=config(field_name="source"))
-    msg: Optional[MsgSummary] = field(metadata=config(field_name="msg"))
-    error: Optional[str] = field(metadata=config(field_name="error"))
-    pagination: Optional[UIPagination] = field(metadata=config(field_name="pagination"))
+    msg: Optional[MsgSummary] = field(default=None, metadata=config(field_name="msg"))
+    error: Optional[str] = field(default=None, metadata=config(field_name="error"))
+    pagination: Optional[UIPagination] = field(
+        default=None, metadata=config(field_name="pagination")
+    )
 
 
 @dataclass
 class BodyPlaintext__V1:
-    version: Literal[BodyPlaintextVersion.V1]
+    version: Literal[BodyPlaintextVersionStrings.V1]
     V1: Optional[BodyPlaintextV1]
 
 
 @dataclass
 class BodyPlaintext__V2:
-    version: Literal[BodyPlaintextVersion.V2]
+    version: Literal[BodyPlaintextVersionStrings.V2]
     V2: Optional[BodyPlaintextV2]
 
 
 @dataclass
 class BodyPlaintext__V3:
-    version: Literal[BodyPlaintextVersion.V3]
+    version: Literal[BodyPlaintextVersionStrings.V3]
     V3: Optional[BodyPlaintextUnsupported]
 
 
 @dataclass
 class BodyPlaintext__V4:
-    version: Literal[BodyPlaintextVersion.V4]
+    version: Literal[BodyPlaintextVersionStrings.V4]
     V4: Optional[BodyPlaintextUnsupported]
 
 
 @dataclass
 class BodyPlaintext__V5:
-    version: Literal[BodyPlaintextVersion.V5]
+    version: Literal[BodyPlaintextVersionStrings.V5]
     V5: Optional[BodyPlaintextUnsupported]
 
 
 @dataclass
 class BodyPlaintext__V6:
-    version: Literal[BodyPlaintextVersion.V6]
+    version: Literal[BodyPlaintextVersionStrings.V6]
     V6: Optional[BodyPlaintextUnsupported]
 
 
 @dataclass
 class BodyPlaintext__V7:
-    version: Literal[BodyPlaintextVersion.V7]
+    version: Literal[BodyPlaintextVersionStrings.V7]
     V7: Optional[BodyPlaintextUnsupported]
 
 
 @dataclass
 class BodyPlaintext__V8:
-    version: Literal[BodyPlaintextVersion.V8]
+    version: Literal[BodyPlaintextVersionStrings.V8]
     V8: Optional[BodyPlaintextUnsupported]
 
 
 @dataclass
 class BodyPlaintext__V9:
-    version: Literal[BodyPlaintextVersion.V9]
+    version: Literal[BodyPlaintextVersionStrings.V9]
     V9: Optional[BodyPlaintextUnsupported]
 
 
 @dataclass
 class BodyPlaintext__V10:
-    version: Literal[BodyPlaintextVersion.V10]
+    version: Literal[BodyPlaintextVersionStrings.V10]
     V10: Optional[BodyPlaintextUnsupported]
 
 
@@ -3688,12 +4465,16 @@ BodyPlaintext = Union[
 @dataclass_json
 @dataclass
 class Thread:
-    messages: List[Message] = field(metadata=config(field_name="messages"))
-    pagination: Optional[Pagination] = field(metadata=config(field_name="pagination"))
-    offline: Optional[bool] = field(metadata=config(field_name="offline"))
-    identify_failures: Optional[List[keybase1.TLFIdentifyFailure]] = field(
-        metadata=config(field_name="identify_failures")
+    messages: Optional[Optional[List[Message]]] = field(
+        default=None, metadata=config(field_name="messages")
     )
-    rate_limits: Optional[List[RateLimitRes]] = field(
-        metadata=config(field_name="ratelimits")
+    pagination: Optional[Pagination] = field(
+        default=None, metadata=config(field_name="pagination")
+    )
+    offline: Optional[bool] = field(default=None, metadata=config(field_name="offline"))
+    identify_failures: Optional[Optional[List[keybase1.TLFIdentifyFailure]]] = field(
+        default=None, metadata=config(field_name="identify_failures")
+    )
+    rate_limits: Optional[Optional[List[RateLimitRes]]] = field(
+        default=None, metadata=config(field_name="ratelimits")
     )

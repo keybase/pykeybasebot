@@ -56,6 +56,7 @@ async def kblisten(keybase_cli, options, loop=None):
 
 async def kbsubmit(keybase_cli, command, input_data=None, **kwargs):
     cmd_list = shlex.split(keybase_cli) + shlex.split(command)
+    logging.debug(f"executing command: {cmd_list}")
     process = await asyncio.create_subprocess_exec(
         *cmd_list,
         stdin=asyncio.subprocess.PIPE,
