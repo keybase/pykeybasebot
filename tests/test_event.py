@@ -6,6 +6,7 @@ from typing import Optional
 
 import pytest
 from pykeybasebot import EventType, KbEvent, Source
+from pykeybasebot.types.stellar1 import PaymentStatusStrings
 
 
 @pytest.fixture()
@@ -62,6 +63,9 @@ def test_payment(fixture_path):
     event = KbEvent.from_dict(data)
 
     assert event.type == EventType.WALLET
-    assert event.source == Source.PAYMENT
-    assert event.notification.amountDescription == "12.3400000 XLM"
-    assert event.notification.statusDescription == PaymentStatusStr.COMPLETED
+    assert event.source == Source.PAYMENT_STATUS
+    assert event.notification.summary.amount_description == "1 XLM"
+    assert (
+        event.notification.summary.status_description
+        == PaymentStatusStrings.PENDING.value
+    )
