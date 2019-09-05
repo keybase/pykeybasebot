@@ -17,7 +17,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Dict, List, Optional, Union
 
-from mashumaro import DataClassJSONMixin
+from dataclasses_json import config, dataclass_json
 from typing_extensions import Literal
 
 import gregor1
@@ -25,53 +25,61 @@ import keybase1
 import stellar1
 
 
+@dataclass_json
 @dataclass
-class RateLimitRes(DataClassJSONMixin):
-    tank: str
-    capacity: int
-    reset: int
-    gas: int
+class RateLimitRes:
+    tank: str = field(metadata=config(field_name="tank"))
+    capacity: int = field(metadata=config(field_name="capacity"))
+    reset: int = field(metadata=config(field_name="reset"))
+    gas: int = field(metadata=config(field_name="gas"))
 
 
+@dataclass_json
 @dataclass
-class ChatChannel(DataClassJSONMixin):
-    name: str
-    public: bool
-    members_type: str
-    topic_type: Optional[str]
-    topic_name: Optional[str]
+class ChatChannel:
+    name: str = field(metadata=config(field_name="name"))
+    public: bool = field(metadata=config(field_name="public"))
+    members_type: str = field(metadata=config(field_name="members_type"))
+    topic_type: Optional[str] = field(metadata=config(field_name="topic_type"))
+    topic_name: Optional[str] = field(metadata=config(field_name="topic_name"))
 
 
+@dataclass_json
 @dataclass
-class ChatMessage(DataClassJSONMixin):
-    body: str
+class ChatMessage:
+    body: str = field(metadata=config(field_name="body"))
 
 
+@dataclass_json
 @dataclass
-class MsgSender(DataClassJSONMixin):
-    uid: str
-    username: Optional[str]
-    device_id: str
-    device_name: Optional[str]
+class MsgSender:
+    uid: str = field(metadata=config(field_name="uid"))
+    username: Optional[str] = field(metadata=config(field_name="username"))
+    device_id: str = field(metadata=config(field_name="device_id"))
+    device_name: Optional[str] = field(metadata=config(field_name="device_name"))
 
 
+@dataclass_json
 @dataclass
-class UIPagination(DataClassJSONMixin):
-    next: str
-    previous: str
-    num: int
-    last: bool
+class UIPagination:
+    next: str = field(metadata=config(field_name="next"))
+    previous: str = field(metadata=config(field_name="previous"))
+    num: int = field(metadata=config(field_name="num"))
+    last: bool = field(metadata=config(field_name="last"))
 
 
+@dataclass_json
 @dataclass
-class UnverifiedInboxUIItemMetadata(DataClassJSONMixin):
-    channel_name: str
-    headline: str
-    headline_decorated: str
-    snippet: str
-    snippet_decoration: str
-    writer_names: List[str]
-    reset_participants: List[str]
+class UnverifiedInboxUIItemMetadata:
+    channel_name: str = field(metadata=config(field_name="channelName"))
+    headline: str = field(metadata=config(field_name="headline"))
+    headline_decorated: str = field(metadata=config(field_name="headlineDecorated"))
+    snippet: str = field(metadata=config(field_name="snippet"))
+    snippet_decoration: str = field(metadata=config(field_name="snippetDecoration"))
+    writer_names: List[str] = field(metadata=config(field_name="writerNames"))
+    reset_participants: List[str] = field(
+        metadata=config(field_name="resetParticipants")
+    )
 
 
 class UIParticipantType(Enum):
@@ -81,50 +89,60 @@ class UIParticipantType(Enum):
     EMAIL = "email"
 
 
+@dataclass_json
 @dataclass
-class UIChannelNameMention(DataClassJSONMixin):
-    name: str
-    conv_id: str
+class UIChannelNameMention:
+    name: str = field(metadata=config(field_name="name"))
+    conv_id: str = field(metadata=config(field_name="convID"))
 
 
+@dataclass_json
 @dataclass
-class UIAssetUrlInfo(DataClassJSONMixin):
-    preview_url: str
-    full_url: str
-    full_url_cached: bool
-    mime_type: str
-    video_duration: Optional[str]
-    inline_video_playable: bool
+class UIAssetUrlInfo:
+    preview_url: str = field(metadata=config(field_name="previewUrl"))
+    full_url: str = field(metadata=config(field_name="fullUrl"))
+    full_url_cached: bool = field(metadata=config(field_name="fullUrlCached"))
+    mime_type: str = field(metadata=config(field_name="mimeType"))
+    video_duration: Optional[str] = field(metadata=config(field_name="videoDuration"))
+    inline_video_playable: bool = field(
+        metadata=config(field_name="inlineVideoPlayable")
+    )
 
 
+@dataclass_json
 @dataclass
-class UIPaymentInfo(DataClassJSONMixin):
-    account_id: Optional[stellar1.AccountID]
-    amount_description: str
-    worth: str
-    worth_at_send_time: str
-    delta: stellar1.BalanceDelta
-    note: str
-    payment_id: stellar1.PaymentID
-    status: stellar1.PaymentStatus
-    status_description: str
-    status_detail: str
-    show_cancel: bool
-    from_username: str
-    to_username: str
-    source_amount: str
-    source_asset: stellar1.Asset
-    issuer_description: str
+class UIPaymentInfo:
+    account_id: Optional[stellar1.AccountID] = field(
+        metadata=config(field_name="accountID")
+    )
+    amount_description: str = field(metadata=config(field_name="amountDescription"))
+    worth: str = field(metadata=config(field_name="worth"))
+    worth_at_send_time: str = field(metadata=config(field_name="worthAtSendTime"))
+    delta: stellar1.BalanceDelta = field(metadata=config(field_name="delta"))
+    note: str = field(metadata=config(field_name="note"))
+    payment_id: stellar1.PaymentID = field(metadata=config(field_name="paymentID"))
+    status: stellar1.PaymentStatus = field(metadata=config(field_name="status"))
+    status_description: str = field(metadata=config(field_name="statusDescription"))
+    status_detail: str = field(metadata=config(field_name="statusDetail"))
+    show_cancel: bool = field(metadata=config(field_name="showCancel"))
+    from_username: str = field(metadata=config(field_name="fromUsername"))
+    to_username: str = field(metadata=config(field_name="toUsername"))
+    source_amount: str = field(metadata=config(field_name="sourceAmount"))
+    source_asset: stellar1.Asset = field(metadata=config(field_name="sourceAsset"))
+    issuer_description: str = field(metadata=config(field_name="issuerDescription"))
 
 
+@dataclass_json
 @dataclass
-class UIRequestInfo(DataClassJSONMixin):
-    amount: str
-    amount_description: str
-    asset: Optional[stellar1.Asset]
-    currency: Optional[stellar1.OutsideCurrencyCode]
-    worth_at_request_time: str
-    status: stellar1.RequestStatus
+class UIRequestInfo:
+    amount: str = field(metadata=config(field_name="amount"))
+    amount_description: str = field(metadata=config(field_name="amountDescription"))
+    asset: Optional[stellar1.Asset] = field(metadata=config(field_name="asset"))
+    currency: Optional[stellar1.OutsideCurrencyCode] = field(
+        metadata=config(field_name="currency")
+    )
+    worth_at_request_time: str = field(metadata=config(field_name="worthAtRequestTime"))
+    status: stellar1.RequestStatus = field(metadata=config(field_name="status"))
 
 
 class MessageUnboxedState(Enum):
@@ -134,14 +152,15 @@ class MessageUnboxedState(Enum):
     PLACEHOLDER = "placeholder"
 
 
+@dataclass_json
 @dataclass
-class UITeamMention(DataClassJSONMixin):
-    in_team: bool
-    open: bool
-    description: Optional[str]
-    num_members: Optional[int]
-    public_admins: List[str]
-    conv_id: Optional[str]
+class UITeamMention:
+    in_team: bool = field(metadata=config(field_name="inTeam"))
+    open: bool = field(metadata=config(field_name="open"))
+    description: Optional[str] = field(metadata=config(field_name="description"))
+    num_members: Optional[int] = field(metadata=config(field_name="numMembers"))
+    public_admins: List[str] = field(metadata=config(field_name="publicAdmins"))
+    conv_id: Optional[str] = field(metadata=config(field_name="convID"))
 
 
 class UITextDecorationTyp(Enum):
@@ -161,10 +180,11 @@ class UIMaybeMentionStatus(Enum):
     NOTHING = "nothing"
 
 
+@dataclass_json
 @dataclass
-class UILinkDecoration(DataClassJSONMixin):
-    display: str
-    url: str
+class UILinkDecoration:
+    display: str = field(metadata=config(field_name="display"))
+    url: str = field(metadata=config(field_name="url"))
 
 
 class UIChatThreadStatusTyp(Enum):
@@ -206,22 +226,24 @@ UIChatThreadStatus = Union[
 ]
 
 
+@dataclass_json
 @dataclass
-class UIChatPayment(DataClassJSONMixin):
-    username: str
-    full_name: str
-    xlm_amount: str
-    error: Optional[str]
-    display_amount: Optional[str]
+class UIChatPayment:
+    username: str = field(metadata=config(field_name="username"))
+    full_name: str = field(metadata=config(field_name="fullName"))
+    xlm_amount: str = field(metadata=config(field_name="xlmAmount"))
+    error: Optional[str] = field(metadata=config(field_name="error"))
+    display_amount: Optional[str] = field(metadata=config(field_name="displayAmount"))
 
 
+@dataclass_json
 @dataclass
-class GiphySearchResult(DataClassJSONMixin):
-    target_url: str
-    preview_url: str
-    preview_width: int
-    preview_height: int
-    preview_is_video: bool
+class GiphySearchResult:
+    target_url: str = field(metadata=config(field_name="targetUrl"))
+    preview_url: str = field(metadata=config(field_name="previewUrl"))
+    preview_width: int = field(metadata=config(field_name="previewWidth"))
+    preview_height: int = field(metadata=config(field_name="previewHeight"))
+    preview_is_video: bool = field(metadata=config(field_name="previewIsVideo"))
 
 
 class UICoinFlipPhase(Enum):
@@ -231,10 +253,11 @@ class UICoinFlipPhase(Enum):
     ERROR = "error"
 
 
+@dataclass_json
 @dataclass
-class UICoinFlipErrorParticipant(DataClassJSONMixin):
-    user: str
-    device: str
+class UICoinFlipErrorParticipant:
+    user: str = field(metadata=config(field_name="user"))
+    device: str = field(metadata=config(field_name="device"))
 
 
 class UICoinFlipErrorTyp(Enum):
@@ -256,26 +279,29 @@ class UICoinFlipResultTyp(Enum):
     COIN = "coin"
 
 
+@dataclass_json
 @dataclass
-class UICoinFlipHand(DataClassJSONMixin):
-    target: str
-    hand: List[int]
+class UICoinFlipHand:
+    target: str = field(metadata=config(field_name="target"))
+    hand: List[int] = field(metadata=config(field_name="hand"))
 
 
+@dataclass_json
 @dataclass
-class UICoinFlipParticipant(DataClassJSONMixin):
-    uid: str
-    device_id: str
-    username: str
-    device_name: str
-    commitment: str
-    reveal: Optional[str]
+class UICoinFlipParticipant:
+    uid: str = field(metadata=config(field_name="uid"))
+    device_id: str = field(metadata=config(field_name="deviceID"))
+    username: str = field(metadata=config(field_name="username"))
+    device_name: str = field(metadata=config(field_name="deviceName"))
+    commitment: str = field(metadata=config(field_name="commitment"))
+    reveal: Optional[str] = field(metadata=config(field_name="reveal"))
 
 
+@dataclass_json
 @dataclass
-class UICommandMarkdown(DataClassJSONMixin):
-    body: str
-    title: Optional[str]
+class UICommandMarkdown:
+    body: str = field(metadata=config(field_name="body"))
+    title: Optional[str] = field(metadata=config(field_name="title"))
 
 
 LocationWatchID = int
@@ -298,13 +324,14 @@ class UIBotCommandsUpdateStatus(Enum):
     BLANK = "blank"
 
 
+@dataclass_json
 @dataclass
-class ConversationCommand(DataClassJSONMixin):
-    description: str
-    name: str
-    usage: str
-    has_help_text: bool
-    username: Optional[str]
+class ConversationCommand:
+    description: str = field(metadata=config(field_name="description"))
+    name: str = field(metadata=config(field_name="name"))
+    usage: str = field(metadata=config(field_name="usage"))
+    has_help_text: bool = field(metadata=config(field_name="hasHelpText"))
+    username: Optional[str] = field(metadata=config(field_name="username"))
 
 
 class ConversationCommandGroupsTyp(Enum):
@@ -404,9 +431,10 @@ class GlobalAppNotificationSetting(Enum):
     DISABLETYPING = "disabletyping"
 
 
+@dataclass_json
 @dataclass
-class GlobalAppNotificationSettings(DataClassJSONMixin):
-    settings: Dict[str, bool]
+class GlobalAppNotificationSettings:
+    settings: Dict[str, bool] = field(metadata=config(field_name="settings"))
 
 
 class ConversationStatus(Enum):
@@ -418,12 +446,13 @@ class ConversationStatus(Enum):
     REPORTED = "reported"
 
 
+@dataclass_json
 @dataclass
-class KBFSPath(DataClassJSONMixin):
-    start_index: int
-    raw_path: str
-    standard_path: str
-    path_info: keybase1.KBFSPathInfo
+class KBFSPath:
+    start_index: int = field(metadata=config(field_name="startIndex"))
+    raw_path: str = field(metadata=config(field_name="rawPath"))
+    standard_path: str = field(metadata=config(field_name="standardPath"))
+    path_info: keybase1.KBFSPathInfo = field(metadata=config(field_name="pathInfo"))
 
 
 class ConversationMemberStatus(Enum):
@@ -435,99 +464,113 @@ class ConversationMemberStatus(Enum):
     NEVER_JOINED = "never_joined"
 
 
+@dataclass_json
 @dataclass
-class Pagination(DataClassJSONMixin):
-    next: bytes
-    previous: bytes
-    num: int
-    last: bool
-    force_first_page: bool
+class Pagination:
+    next: bytes = field(metadata=config(field_name="next"))
+    previous: bytes = field(metadata=config(field_name="previous"))
+    num: int = field(metadata=config(field_name="num"))
+    last: bool = field(metadata=config(field_name="last"))
+    force_first_page: bool = field(metadata=config(field_name="forceFirstPage"))
 
 
+@dataclass_json
 @dataclass
-class RateLimit(DataClassJSONMixin):
-    name: str
-    calls_remaining: int
-    window_reset: int
-    max_calls: int
+class RateLimit:
+    name: str = field(metadata=config(field_name="name"))
+    calls_remaining: int = field(metadata=config(field_name="callsRemaining"))
+    window_reset: int = field(metadata=config(field_name="windowReset"))
+    max_calls: int = field(metadata=config(field_name="maxCalls"))
 
 
+@dataclass_json
 @dataclass
-class ConversationFinalizeInfo(DataClassJSONMixin):
-    reset_user: str
-    reset_date: str
-    reset_full: str
-    reset_timestamp: gregor1.Time
+class ConversationFinalizeInfo:
+    reset_user: str = field(metadata=config(field_name="resetUser"))
+    reset_date: str = field(metadata=config(field_name="resetDate"))
+    reset_full: str = field(metadata=config(field_name="resetFull"))
+    reset_timestamp: gregor1.Time = field(metadata=config(field_name="resetTimestamp"))
 
 
+@dataclass_json
 @dataclass
-class ConversationResolveInfo(DataClassJSONMixin):
-    new_tlf_name: str
+class ConversationResolveInfo:
+    new_tlf_name: str = field(metadata=config(field_name="newTLFName"))
 
 
+@dataclass_json
 @dataclass
-class ConversationNotificationInfo(DataClassJSONMixin):
-    channel_wide: bool
-    settings: Dict[str, Dict[str, bool]]
+class ConversationNotificationInfo:
+    channel_wide: bool = field(metadata=config(field_name="channelWide"))
+    settings: Dict[str, Dict[str, bool]] = field(metadata=config(field_name="settings"))
 
 
+@dataclass_json
 @dataclass
-class ConversationCreatorInfo(DataClassJSONMixin):
-    ctime: gregor1.Time
-    uid: gregor1.UID
+class ConversationCreatorInfo:
+    ctime: gregor1.Time = field(metadata=config(field_name="ctime"))
+    uid: gregor1.UID = field(metadata=config(field_name="uid"))
 
 
+@dataclass_json
 @dataclass
-class ConversationCreatorInfoLocal(DataClassJSONMixin):
-    ctime: gregor1.Time
-    username: str
+class ConversationCreatorInfoLocal:
+    ctime: gregor1.Time = field(metadata=config(field_name="ctime"))
+    username: str = field(metadata=config(field_name="username"))
 
 
+@dataclass_json
 @dataclass
-class ConversationMinWriterRoleInfo(DataClassJSONMixin):
-    uid: gregor1.UID
-    role: keybase1.TeamRole
+class ConversationMinWriterRoleInfo:
+    uid: gregor1.UID = field(metadata=config(field_name="uid"))
+    role: keybase1.TeamRole = field(metadata=config(field_name="role"))
 
 
+@dataclass_json
 @dataclass
-class MsgEphemeralMetadata(DataClassJSONMixin):
-    l: gregor1.DurationSec
-    g: keybase1.EkGeneration
-    u: Optional[str]
+class MsgEphemeralMetadata:
+    lifetime: gregor1.DurationSec = field(metadata=config(field_name="l"))
+    generation: keybase1.EkGeneration = field(metadata=config(field_name="g"))
+    exploded_by: Optional[str] = field(metadata=config(field_name="u"))
 
 
+@dataclass_json
 @dataclass
-class EncryptedData(DataClassJSONMixin):
-    v: int
-    e: bytes
-    n: bytes
+class EncryptedData:
+    v: int = field(metadata=config(field_name="v"))
+    e: bytes = field(metadata=config(field_name="e"))
+    n: bytes = field(metadata=config(field_name="n"))
 
 
+@dataclass_json
 @dataclass
-class SignEncryptedData(DataClassJSONMixin):
-    v: int
-    e: bytes
-    n: bytes
+class SignEncryptedData:
+    v: int = field(metadata=config(field_name="v"))
+    e: bytes = field(metadata=config(field_name="e"))
+    n: bytes = field(metadata=config(field_name="n"))
 
 
+@dataclass_json
 @dataclass
-class SealedData(DataClassJSONMixin):
-    v: int
-    e: bytes
-    n: bytes
+class SealedData:
+    v: int = field(metadata=config(field_name="v"))
+    e: bytes = field(metadata=config(field_name="e"))
+    n: bytes = field(metadata=config(field_name="n"))
 
 
+@dataclass_json
 @dataclass
-class SignatureInfo(DataClassJSONMixin):
-    v: int
-    s: bytes
-    k: bytes
+class SignatureInfo:
+    v: int = field(metadata=config(field_name="v"))
+    s: bytes = field(metadata=config(field_name="s"))
+    k: bytes = field(metadata=config(field_name="k"))
 
 
+@dataclass_json
 @dataclass
-class MerkleRoot(DataClassJSONMixin):
-    seqno: int
-    hash: bytes
+class MerkleRoot:
+    seqno: int = field(metadata=config(field_name="seqno"))
+    hash: bytes = field(metadata=config(field_name="hash"))
 
 
 class InboxResType(Enum):
@@ -543,24 +586,28 @@ class RetentionPolicyType(Enum):
     EPHEMERAL = "ephemeral"
 
 
+@dataclass_json
 @dataclass
-class RpRetain(DataClassJSONMixin):
+class RpRetain:
     pass
 
 
+@dataclass_json
 @dataclass
-class RpExpire(DataClassJSONMixin):
-    age: gregor1.DurationSec
+class RpExpire:
+    age: gregor1.DurationSec = field(metadata=config(field_name="age"))
 
 
+@dataclass_json
 @dataclass
-class RpInherit(DataClassJSONMixin):
+class RpInherit:
     pass
 
 
+@dataclass_json
 @dataclass
-class RpEphemeral(DataClassJSONMixin):
-    age: gregor1.DurationSec
+class RpEphemeral:
+    age: gregor1.DurationSec = field(metadata=config(field_name="age"))
 
 
 class GetThreadReason(Enum):
@@ -583,47 +630,54 @@ class ReIndexingMode(Enum):
     POSTSEARCH_SYNC = "postsearch_sync"
 
 
+@dataclass_json
 @dataclass
-class EmptyStruct(DataClassJSONMixin):
+class EmptyStruct:
     pass
 
 
+@dataclass_json
 @dataclass
-class ChatSearchMatch(DataClassJSONMixin):
-    start_index: int
-    end_index: int
-    match: str
+class ChatSearchMatch:
+    start_index: int = field(metadata=config(field_name="startIndex"))
+    end_index: int = field(metadata=config(field_name="endIndex"))
+    match: str = field(metadata=config(field_name="match"))
 
 
+@dataclass_json
 @dataclass
-class ChatSearchInboxDone(DataClassJSONMixin):
-    num_hits: int
-    num_convs: int
-    percent_indexed: int
-    delegated: bool
+class ChatSearchInboxDone:
+    num_hits: int = field(metadata=config(field_name="numHits"))
+    num_convs: int = field(metadata=config(field_name="numConvs"))
+    percent_indexed: int = field(metadata=config(field_name="percentIndexed"))
+    delegated: bool = field(metadata=config(field_name="delegated"))
 
 
+@dataclass_json
 @dataclass
-class ChatSearchIndexStatus(DataClassJSONMixin):
-    percent_indexed: int
+class ChatSearchIndexStatus:
+    percent_indexed: int = field(metadata=config(field_name="percentIndexed"))
 
 
+@dataclass_json
 @dataclass
-class AssetMetadataImage(DataClassJSONMixin):
-    width: int
-    height: int
+class AssetMetadataImage:
+    width: int = field(metadata=config(field_name="width"))
+    height: int = field(metadata=config(field_name="height"))
 
 
+@dataclass_json
 @dataclass
-class AssetMetadataVideo(DataClassJSONMixin):
-    width: int
-    height: int
-    duration_ms: int
+class AssetMetadataVideo:
+    width: int = field(metadata=config(field_name="width"))
+    height: int = field(metadata=config(field_name="height"))
+    duration_ms: int = field(metadata=config(field_name="durationMs"))
 
 
+@dataclass_json
 @dataclass
-class AssetMetadataAudio(DataClassJSONMixin):
-    duration_ms: int
+class AssetMetadataAudio:
+    duration_ms: int = field(metadata=config(field_name="durationMs"))
 
 
 class AssetMetadataType(Enum):
@@ -643,11 +697,12 @@ class BotCommandsAdvertisementTyp(Enum):
     TLFID_CONVS = "tlfid_convs"
 
 
+@dataclass_json
 @dataclass
-class TeamMember(DataClassJSONMixin):
-    uid: gregor1.UID
-    role: keybase1.TeamRole
-    status: keybase1.TeamMemberStatus
+class TeamMember:
+    uid: gregor1.UID = field(metadata=config(field_name="uid"))
+    role: keybase1.TeamRole = field(metadata=config(field_name="role"))
+    status: keybase1.TeamMemberStatus = field(metadata=config(field_name="status"))
 
 
 VersionKind = str
@@ -673,44 +728,51 @@ class TextPaymentResult__SENT:
 TextPaymentResult = Union[TextPaymentResult__ERROR, TextPaymentResult__SENT]
 
 
+@dataclass_json
 @dataclass
-class KnownUserMention(DataClassJSONMixin):
-    text: str
-    uid: gregor1.UID
+class KnownUserMention:
+    text: str = field(metadata=config(field_name="text"))
+    uid: gregor1.UID = field(metadata=config(field_name="uid"))
 
 
+@dataclass_json
 @dataclass
-class KnownTeamMention(DataClassJSONMixin):
-    name: str
-    channel: str
+class KnownTeamMention:
+    name: str = field(metadata=config(field_name="name"))
+    channel: str = field(metadata=config(field_name="channel"))
 
 
+@dataclass_json
 @dataclass
-class MaybeMention(DataClassJSONMixin):
-    name: str
-    channel: str
+class MaybeMention:
+    name: str = field(metadata=config(field_name="name"))
+    channel: str = field(metadata=config(field_name="channel"))
 
 
+@dataclass_json
 @dataclass
-class Coordinate(DataClassJSONMixin):
-    lat: float
-    lon: float
-    accuracy: float
+class Coordinate:
+    lat: float = field(metadata=config(field_name="lat"))
+    lon: float = field(metadata=config(field_name="lon"))
+    accuracy: float = field(metadata=config(field_name="accuracy"))
 
 
+@dataclass_json
 @dataclass
-class LiveLocation(DataClassJSONMixin):
-    end_time: gregor1.Time
+class LiveLocation:
+    end_time: gregor1.Time = field(metadata=config(field_name="endTime"))
 
 
+@dataclass_json
 @dataclass
-class MessageConversationMetadata(DataClassJSONMixin):
-    conversation_title: str
+class MessageConversationMetadata:
+    conversation_title: str = field(metadata=config(field_name="conversationTitle"))
 
 
+@dataclass_json
 @dataclass
-class MessageHeadline(DataClassJSONMixin):
-    headline: str
+class MessageHeadline:
+    headline: str = field(metadata=config(field_name="headline"))
 
 
 class MessageSystemType(Enum):
@@ -724,81 +786,96 @@ class MessageSystemType(Enum):
     BULKADDTOCONV = "bulkaddtoconv"
 
 
+@dataclass_json
 @dataclass
-class MessageSystemAddedToTeam(DataClassJSONMixin):
-    team: str
-    adder: str
-    addee: str
-    owners: List[str]
-    admins: List[str]
-    writers: List[str]
-    readers: List[str]
-    bots: List[str]
-    restricted_bots: List[str]
+class MessageSystemAddedToTeam:
+    team: str = field(metadata=config(field_name="team"))
+    adder: str = field(metadata=config(field_name="adder"))
+    addee: str = field(metadata=config(field_name="addee"))
+    owners: List[str] = field(metadata=config(field_name="owners"))
+    admins: List[str] = field(metadata=config(field_name="admins"))
+    writers: List[str] = field(metadata=config(field_name="writers"))
+    readers: List[str] = field(metadata=config(field_name="readers"))
+    bots: List[str] = field(metadata=config(field_name="bots"))
+    restricted_bots: List[str] = field(metadata=config(field_name="restrictedBots"))
 
 
+@dataclass_json
 @dataclass
-class MessageSystemInviteAddedToTeam(DataClassJSONMixin):
-    team: str
-    inviter: str
-    invitee: str
-    adder: str
-    invite_type: keybase1.TeamInviteCategory
+class MessageSystemInviteAddedToTeam:
+    team: str = field(metadata=config(field_name="team"))
+    inviter: str = field(metadata=config(field_name="inviter"))
+    invitee: str = field(metadata=config(field_name="invitee"))
+    adder: str = field(metadata=config(field_name="adder"))
+    invite_type: keybase1.TeamInviteCategory = field(
+        metadata=config(field_name="inviteType")
+    )
 
 
+@dataclass_json
 @dataclass
-class MessageSystemComplexTeam(DataClassJSONMixin):
-    team: str
+class MessageSystemComplexTeam:
+    team: str = field(metadata=config(field_name="team"))
 
 
+@dataclass_json
 @dataclass
-class MessageSystemCreateTeam(DataClassJSONMixin):
-    team: str
-    creator: str
+class MessageSystemCreateTeam:
+    team: str = field(metadata=config(field_name="team"))
+    creator: str = field(metadata=config(field_name="creator"))
 
 
+@dataclass_json
 @dataclass
-class MessageSystemGitPush(DataClassJSONMixin):
-    team: str
-    pusher: str
-    repo_name: str
-    repo_id: keybase1.RepoID
-    refs: List[keybase1.GitRefMetadata]
-    push_type: keybase1.GitPushType
-    previous_repo_name: str
+class MessageSystemGitPush:
+    team: str = field(metadata=config(field_name="team"))
+    pusher: str = field(metadata=config(field_name="pusher"))
+    repo_name: str = field(metadata=config(field_name="repoName"))
+    repo_id: keybase1.RepoID = field(metadata=config(field_name="repoID"))
+    refs: List[keybase1.GitRefMetadata] = field(metadata=config(field_name="refs"))
+    push_type: keybase1.GitPushType = field(metadata=config(field_name="pushType"))
+    previous_repo_name: str = field(metadata=config(field_name="previousRepoName"))
 
 
+@dataclass_json
 @dataclass
-class MessageSystemChangeAvatar(DataClassJSONMixin):
-    team: str
-    user: str
+class MessageSystemChangeAvatar:
+    team: str = field(metadata=config(field_name="team"))
+    user: str = field(metadata=config(field_name="user"))
 
 
+@dataclass_json
 @dataclass
-class MessageSystemBulkAddToConv(DataClassJSONMixin):
-    usernames: List[str]
+class MessageSystemBulkAddToConv:
+    usernames: List[str] = field(metadata=config(field_name="usernames"))
 
 
+@dataclass_json
 @dataclass
-class MessageJoin(DataClassJSONMixin):
-    joiners: List[str]
-    leavers: List[str]
+class MessageJoin:
+    joiners: List[str] = field(metadata=config(field_name="joiners"))
+    leavers: List[str] = field(metadata=config(field_name="leavers"))
 
 
+@dataclass_json
 @dataclass
-class MessageLeave(DataClassJSONMixin):
+class MessageLeave:
     pass
 
 
+@dataclass_json
 @dataclass
-class MessageSendPayment(DataClassJSONMixin):
-    payment_id: stellar1.PaymentID
+class MessageSendPayment:
+    payment_id: stellar1.PaymentID = field(metadata=config(field_name="paymentID"))
 
 
+@dataclass_json
 @dataclass
-class MessageRequestPayment(DataClassJSONMixin):
-    request_id: stellar1.KeybaseRequestID
-    note: str
+class MessageRequestPayment:
+    request_id: stellar1.KeybaseRequestID = field(
+        metadata=config(field_name="requestID")
+    )
+    note: str = field(metadata=config(field_name="note"))
 
 
 class OutboxStateType(Enum):
@@ -831,9 +908,10 @@ class HeaderPlaintextVersion(Enum):
     V10 = "v10"
 
 
+@dataclass_json
 @dataclass
-class HeaderPlaintextMetaInfo(DataClassJSONMixin):
-    crit: bool
+class HeaderPlaintextMetaInfo:
+    crit: bool = field(metadata=config(field_name="crit"))
 
 
 class BodyPlaintextVersion(Enum):
@@ -849,9 +927,10 @@ class BodyPlaintextVersion(Enum):
     V10 = "v10"
 
 
+@dataclass_json
 @dataclass
-class BodyPlaintextMetaInfo(DataClassJSONMixin):
-    crit: bool
+class BodyPlaintextMetaInfo:
+    crit: bool = field(metadata=config(field_name="crit"))
 
 
 class MessageUnboxedErrorType(Enum):
@@ -863,18 +942,20 @@ class MessageUnboxedErrorType(Enum):
     PAIRWISE_MISSING = "pairwise_missing"
 
 
+@dataclass_json
 @dataclass
-class UnreadFirstNumLimit(DataClassJSONMixin):
-    num_read: int
-    at_least: int
-    at_most: int
+class UnreadFirstNumLimit:
+    num_read: int = field(metadata=config(field_name="NumRead"))
+    at_least: int = field(metadata=config(field_name="AtLeast"))
+    at_most: int = field(metadata=config(field_name="AtMost"))
 
 
+@dataclass_json
 @dataclass
-class ConversationLocalParticipant(DataClassJSONMixin):
-    username: str
-    fullname: Optional[str]
-    contact_name: Optional[str]
+class ConversationLocalParticipant:
+    username: str = field(metadata=config(field_name="username"))
+    fullname: Optional[str] = field(metadata=config(field_name="fullname"))
+    contact_name: Optional[str] = field(metadata=config(field_name="contactName"))
 
 
 class ConversationErrorType(Enum):
@@ -887,20 +968,22 @@ class ConversationErrorType(Enum):
     NONE = "none"
 
 
+@dataclass_json
 @dataclass
-class ConversationErrorRekey(DataClassJSONMixin):
-    tlf_name: str
-    tlf_public: bool
-    rekeyers: List[str]
-    writer_names: List[str]
-    reader_names: List[str]
+class ConversationErrorRekey:
+    tlf_name: str = field(metadata=config(field_name="tlfName"))
+    tlf_public: bool = field(metadata=config(field_name="tlfPublic"))
+    rekeyers: List[str] = field(metadata=config(field_name="rekeyers"))
+    writer_names: List[str] = field(metadata=config(field_name="writerNames"))
+    reader_names: List[str] = field(metadata=config(field_name="readerNames"))
 
 
+@dataclass_json
 @dataclass
-class ConversationMinWriterRoleInfoLocal(DataClassJSONMixin):
-    changed_by: str
-    cannot_write: bool
-    role: keybase1.TeamRole
+class ConversationMinWriterRoleInfoLocal:
+    changed_by: str = field(metadata=config(field_name="changedBy"))
+    cannot_write: bool = field(metadata=config(field_name="cannotWrite"))
+    role: keybase1.TeamRole = field(metadata=config(field_name="role"))
 
 
 class MessageIDControlMode(Enum):
@@ -1002,11 +1085,12 @@ class GalleryItemTyp(Enum):
     DOC = "doc"
 
 
+@dataclass_json
 @dataclass
-class UserBotExtendedDescription(DataClassJSONMixin):
-    title: str
-    desktop_body: str
-    mobile_body: str
+class UserBotExtendedDescription:
+    title: str = field(metadata=config(field_name="title"))
+    desktop_body: str = field(metadata=config(field_name="desktop_body"))
+    mobile_body: str = field(metadata=config(field_name="mobile_body"))
 
 
 class ChatActivitySource(Enum):
@@ -1030,13 +1114,14 @@ class ChatActivityType(Enum):
     MESSAGES_UPDATED = "messages_updated"
 
 
+@dataclass_json
 @dataclass
-class TyperInfo(DataClassJSONMixin):
-    uid: keybase1.UID
-    username: str
-    device_id: keybase1.DeviceID
-    device_name: str
-    device_type: str
+class TyperInfo:
+    uid: keybase1.UID = field(metadata=config(field_name="uid"))
+    username: str = field(metadata=config(field_name="username"))
+    device_id: keybase1.DeviceID = field(metadata=config(field_name="deviceID"))
+    device_name: str = field(metadata=config(field_name="deviceName"))
+    device_type: str = field(metadata=config(field_name="deviceType"))
 
 
 class StaleUpdateType(Enum):
@@ -1059,21 +1144,25 @@ class ChannelMention(Enum):
     HERE = "here"
 
 
+@dataclass_json
 @dataclass
-class S3Params(DataClassJSONMixin):
-    bucket: str
-    object_key: str
-    access_key: str
-    acl: str
-    region_name: str
-    region_endpoint: str
-    region_bucket_endpoint: str
+class S3Params:
+    bucket: str = field(metadata=config(field_name="bucket"))
+    object_key: str = field(metadata=config(field_name="objectKey"))
+    access_key: str = field(metadata=config(field_name="accessKey"))
+    acl: str = field(metadata=config(field_name="acl"))
+    region_name: str = field(metadata=config(field_name="regionName"))
+    region_endpoint: str = field(metadata=config(field_name="regionEndpoint"))
+    region_bucket_endpoint: str = field(
+        metadata=config(field_name="regionBucketEndpoint")
+    )
 
 
+@dataclass_json
 @dataclass
-class ServerCacheVers(DataClassJSONMixin):
-    inbox_vers: int
-    bodies_vers: int
+class ServerCacheVers:
+    inbox_vers: int = field(metadata=config(field_name="inboxVers"))
+    bodies_vers: int = field(metadata=config(field_name="bodiesVers"))
 
 
 class SyncAllProtVers(Enum):
@@ -1140,34 +1229,39 @@ class UnfurlType(Enum):
     MAPS = "maps"
 
 
+@dataclass_json
 @dataclass
-class UnfurlVideo(DataClassJSONMixin):
-    url: str
-    mime_type: str
-    height: int
-    width: int
+class UnfurlVideo:
+    url: str = field(metadata=config(field_name="url"))
+    mime_type: str = field(metadata=config(field_name="mimeType"))
+    height: int = field(metadata=config(field_name="height"))
+    width: int = field(metadata=config(field_name="width"))
 
 
+@dataclass_json
 @dataclass
-class UnfurlYoutubeRaw(DataClassJSONMixin):
+class UnfurlYoutubeRaw:
     pass
 
 
+@dataclass_json
 @dataclass
-class UnfurlYoutube(DataClassJSONMixin):
+class UnfurlYoutube:
     pass
 
 
+@dataclass_json
 @dataclass
-class UnfurlImageDisplay(DataClassJSONMixin):
-    url: str
-    height: int
-    width: int
-    is_video: bool
+class UnfurlImageDisplay:
+    url: str = field(metadata=config(field_name="url"))
+    height: int = field(metadata=config(field_name="height"))
+    width: int = field(metadata=config(field_name="width"))
+    is_video: bool = field(metadata=config(field_name="isVideo"))
 
 
+@dataclass_json
 @dataclass
-class UnfurlYoutubeDisplay(DataClassJSONMixin):
+class UnfurlYoutubeDisplay:
     pass
 
 
@@ -1177,57 +1271,81 @@ class UnfurlMode(Enum):
     WHITELISTED = "whitelisted"
 
 
+@dataclass_json
 @dataclass
-class MsgFlipContent(DataClassJSONMixin):
-    text: str
-    game_id: str
-    flip_conv_id: str
-    user_mentions: List[KnownUserMention]
-    team_mentions: List[KnownTeamMention]
+class MsgFlipContent:
+    text: str = field(metadata=config(field_name="text"))
+    game_id: str = field(metadata=config(field_name="game_id"))
+    flip_conv_id: str = field(metadata=config(field_name="flip_conv_id"))
+    user_mentions: List[KnownUserMention] = field(
+        metadata=config(field_name="user_mentions")
+    )
+    team_mentions: List[KnownTeamMention] = field(
+        metadata=config(field_name="team_mentions")
+    )
 
 
+@dataclass_json
 @dataclass
-class ConvSummary(DataClassJSONMixin):
-    id: str
-    channel: ChatChannel
-    unread: bool
-    active_at: int
-    active_at_ms: int
-    member_status: str
-    reset_users: Optional[List[str]]
-    finalize_info: Optional[ConversationFinalizeInfo]
-    supersedes: Optional[List[str]]
-    superseded_by: Optional[List[str]]
-    error: Optional[str]
+class ConvSummary:
+    id: str = field(metadata=config(field_name="id"))
+    channel: ChatChannel = field(metadata=config(field_name="channel"))
+    unread: bool = field(metadata=config(field_name="unread"))
+    active_at: int = field(metadata=config(field_name="active_at"))
+    active_at_ms: int = field(metadata=config(field_name="active_at_ms"))
+    member_status: str = field(metadata=config(field_name="member_status"))
+    reset_users: Optional[List[str]] = field(metadata=config(field_name="reset_users"))
+    finalize_info: Optional[ConversationFinalizeInfo] = field(
+        metadata=config(field_name="finalize_info")
+    )
+    supersedes: Optional[List[str]] = field(metadata=config(field_name="supersedes"))
+    superseded_by: Optional[List[str]] = field(
+        metadata=config(field_name="superseded_by")
+    )
+    error: Optional[str] = field(metadata=config(field_name="error"))
 
 
+@dataclass_json
 @dataclass
-class SendRes(DataClassJSONMixin):
-    message: str
-    id: Optional[MessageID]
-    outbox_id: Optional[OutboxID]
-    identify_failures: Optional[List[keybase1.TLFIdentifyFailure]]
-    ratelimits: Optional[List[RateLimitRes]]
+class SendRes:
+    message: str = field(metadata=config(field_name="message"))
+    message_id: Optional[MessageID] = field(metadata=config(field_name="id"))
+    outbox_id: Optional[OutboxID] = field(metadata=config(field_name="outbox_id"))
+    identify_failures: Optional[List[keybase1.TLFIdentifyFailure]] = field(
+        metadata=config(field_name="identify_failures")
+    )
+    rate_limits: Optional[List[RateLimitRes]] = field(
+        metadata=config(field_name="ratelimits")
+    )
 
 
+@dataclass_json
 @dataclass
-class NewConvRes(DataClassJSONMixin):
-    id: str
-    identify_failures: Optional[List[keybase1.TLFIdentifyFailure]]
-    ratelimits: Optional[List[RateLimitRes]]
+class NewConvRes:
+    id: str = field(metadata=config(field_name="id"))
+    identify_failures: Optional[List[keybase1.TLFIdentifyFailure]] = field(
+        metadata=config(field_name="identify_failures")
+    )
+    rate_limits: Optional[List[RateLimitRes]] = field(
+        metadata=config(field_name="ratelimits")
+    )
 
 
+@dataclass_json
 @dataclass
-class EmptyRes(DataClassJSONMixin):
-    ratelimits: Optional[List[RateLimitRes]]
+class EmptyRes:
+    rate_limits: Optional[List[RateLimitRes]] = field(
+        metadata=config(field_name="ratelimits")
+    )
 
 
+@dataclass_json
 @dataclass
-class UIParticipant(DataClassJSONMixin):
-    type: UIParticipantType
-    assertion: str
-    full_name: Optional[str]
-    contact_name: Optional[str]
+class UIParticipant:
+    type: UIParticipantType = field(metadata=config(field_name="type"))
+    assertion: str = field(metadata=config(field_name="assertion"))
+    full_name: Optional[str] = field(metadata=config(field_name="fullName"))
+    contact_name: Optional[str] = field(metadata=config(field_name="contactName"))
 
 
 @dataclass
@@ -1262,30 +1380,36 @@ UIMaybeMentionInfo = Union[
 ]
 
 
+@dataclass_json
 @dataclass
-class UIChatSearchConvHit(DataClassJSONMixin):
-    conv_id: str
-    team_type: TeamType
-    name: str
-    mtime: gregor1.Time
+class UIChatSearchConvHit:
+    conv_id: str = field(metadata=config(field_name="convID"))
+    team_type: TeamType = field(metadata=config(field_name="teamType"))
+    name: str = field(metadata=config(field_name="name"))
+    mtime: gregor1.Time = field(metadata=config(field_name="mtime"))
 
 
+@dataclass_json
 @dataclass
-class UIChatPaymentSummary(DataClassJSONMixin):
-    xlm_total: str
-    display_total: str
-    payments: List[UIChatPayment]
+class UIChatPaymentSummary:
+    xlm_total: str = field(metadata=config(field_name="xlmTotal"))
+    display_total: str = field(metadata=config(field_name="displayTotal"))
+    payments: List[UIChatPayment] = field(metadata=config(field_name="payments"))
 
 
+@dataclass_json
 @dataclass
-class GiphySearchResults(DataClassJSONMixin):
-    results: List[GiphySearchResult]
-    gallery_url: str
+class GiphySearchResults:
+    results: List[GiphySearchResult] = field(metadata=config(field_name="results"))
+    gallery_url: str = field(metadata=config(field_name="galleryUrl"))
 
 
+@dataclass_json
 @dataclass
-class UICoinFlipAbsenteeError(DataClassJSONMixin):
-    absentees: List[UICoinFlipErrorParticipant]
+class UICoinFlipAbsenteeError:
+    absentees: List[UICoinFlipErrorParticipant] = field(
+        metadata=config(field_name="absentees")
+    )
 
 
 @dataclass
@@ -1327,129 +1451,157 @@ UICoinFlipResult = Union[
 ]
 
 
+@dataclass_json
 @dataclass
-class ConversationCommandGroupsCustom(DataClassJSONMixin):
-    commands: List[ConversationCommand]
+class ConversationCommandGroupsCustom:
+    commands: List[ConversationCommand] = field(metadata=config(field_name="commands"))
 
 
+@dataclass_json
 @dataclass
-class InboxVersInfo(DataClassJSONMixin):
-    uid: gregor1.UID
-    vers: InboxVers
+class InboxVersInfo:
+    uid: gregor1.UID = field(metadata=config(field_name="uid"))
+    vers: InboxVers = field(metadata=config(field_name="vers"))
 
 
+@dataclass_json
 @dataclass
-class ConversationMember(DataClassJSONMixin):
-    uid: gregor1.UID
-    conv_id: ConversationID
-    topic_type: TopicType
+class ConversationMember:
+    uid: gregor1.UID = field(metadata=config(field_name="uid"))
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    topic_type: TopicType = field(metadata=config(field_name="topicType"))
 
 
+@dataclass_json
 @dataclass
-class ConversationIDMessageIDPair(DataClassJSONMixin):
-    conv_id: ConversationID
-    msg_id: MessageID
+class ConversationIDMessageIDPair:
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    msg_id: MessageID = field(metadata=config(field_name="msgID"))
 
 
+@dataclass_json
 @dataclass
-class ChannelNameMention(DataClassJSONMixin):
-    conv_id: ConversationID
-    topic_name: str
+class ChannelNameMention:
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    topic_name: str = field(metadata=config(field_name="topicName"))
 
 
+@dataclass_json
 @dataclass
-class GetInboxQuery(DataClassJSONMixin):
-    conv_id: Optional[ConversationID]
-    topic_type: Optional[TopicType]
-    tlf_id: Optional[TLFID]
-    tlf_visibility: Optional[keybase1.TLFVisibility]
-    before: Optional[gregor1.Time]
-    after: Optional[gregor1.Time]
-    one_chat_type_per_tlf: Optional[bool]
-    topic_name: Optional[str]
-    status: List[ConversationStatus]
-    member_status: List[ConversationMemberStatus]
-    existences: List[ConversationExistence]
-    members_types: List[ConversationMembersType]
-    conv_i_ds: List[ConversationID]
-    unread_only: bool
-    read_only: bool
-    compute_active_list: bool
-    summarize_max_msgs: bool
-    skip_bg_loads: bool
+class GetInboxQuery:
+    conv_id: Optional[ConversationID] = field(metadata=config(field_name="convID"))
+    topic_type: Optional[TopicType] = field(metadata=config(field_name="topicType"))
+    tlf_id: Optional[TLFID] = field(metadata=config(field_name="tlfID"))
+    tlf_visibility: Optional[keybase1.TLFVisibility] = field(
+        metadata=config(field_name="tlfVisibility")
+    )
+    before: Optional[gregor1.Time] = field(metadata=config(field_name="before"))
+    after: Optional[gregor1.Time] = field(metadata=config(field_name="after"))
+    one_chat_type_per_tlf: Optional[bool] = field(
+        metadata=config(field_name="oneChatTypePerTLF")
+    )
+    topic_name: Optional[str] = field(metadata=config(field_name="topicName"))
+    status: List[ConversationStatus] = field(metadata=config(field_name="status"))
+    member_status: List[ConversationMemberStatus] = field(
+        metadata=config(field_name="memberStatus")
+    )
+    existences: List[ConversationExistence] = field(
+        metadata=config(field_name="existences")
+    )
+    members_types: List[ConversationMembersType] = field(
+        metadata=config(field_name="membersTypes")
+    )
+    conv_i_ds: List[ConversationID] = field(metadata=config(field_name="convIDs"))
+    unread_only: bool = field(metadata=config(field_name="unreadOnly"))
+    read_only: bool = field(metadata=config(field_name="readOnly"))
+    compute_active_list: bool = field(metadata=config(field_name="computeActiveList"))
+    summarize_max_msgs: bool = field(metadata=config(field_name="summarizeMaxMsgs"))
+    skip_bg_loads: bool = field(metadata=config(field_name="skipBgLoads"))
 
 
+@dataclass_json
 @dataclass
-class ConversationIDTriple(DataClassJSONMixin):
-    tlfid: TLFID
-    topic_type: TopicType
-    topic_id: TopicID
+class ConversationIDTriple:
+    tlfid: TLFID = field(metadata=config(field_name="tlfid"))
+    topic_type: TopicType = field(metadata=config(field_name="topicType"))
+    topic_id: TopicID = field(metadata=config(field_name="topicID"))
 
 
+@dataclass_json
 @dataclass
-class Expunge(DataClassJSONMixin):
-    upto: MessageID
-    basis: MessageID
+class Expunge:
+    upto: MessageID = field(metadata=config(field_name="upto"))
+    basis: MessageID = field(metadata=config(field_name="basis"))
 
 
+@dataclass_json
 @dataclass
-class ConversationReaderInfo(DataClassJSONMixin):
-    mtime: gregor1.Time
-    read_msgid: MessageID
-    max_msgid: MessageID
-    status: ConversationMemberStatus
+class ConversationReaderInfo:
+    mtime: gregor1.Time = field(metadata=config(field_name="mtime"))
+    read_msgid: MessageID = field(metadata=config(field_name="readMsgid"))
+    max_msgid: MessageID = field(metadata=config(field_name="maxMsgid"))
+    status: ConversationMemberStatus = field(metadata=config(field_name="status"))
 
 
+@dataclass_json
 @dataclass
-class ConversationSettings(DataClassJSONMixin):
-    mwr: Optional[ConversationMinWriterRoleInfo]
+class ConversationSettings:
+    min_writer_role_info: Optional[ConversationMinWriterRoleInfo] = field(
+        metadata=config(field_name="mwr")
+    )
 
 
+@dataclass_json
 @dataclass
-class MessageSummary(DataClassJSONMixin):
-    msg_id: MessageID
-    message_type: MessageType
-    tlf_name: str
-    tlf_public: bool
-    ctime: gregor1.Time
+class MessageSummary:
+    msg_id: MessageID = field(metadata=config(field_name="msgID"))
+    message_type: MessageType = field(metadata=config(field_name="messageType"))
+    tlf_name: str = field(metadata=config(field_name="tlfName"))
+    tlf_public: bool = field(metadata=config(field_name="tlfPublic"))
+    ctime: gregor1.Time = field(metadata=config(field_name="ctime"))
 
 
+@dataclass_json
 @dataclass
-class Reaction(DataClassJSONMixin):
-    ctime: gregor1.Time
-    reaction_msg_id: MessageID
+class Reaction:
+    ctime: gregor1.Time = field(metadata=config(field_name="ctime"))
+    reaction_msg_id: MessageID = field(metadata=config(field_name="reactionMsgID"))
 
 
+@dataclass_json
 @dataclass
-class MessageServerHeader(DataClassJSONMixin):
-    message_id: MessageID
-    superseded_by: MessageID
-    r: List[MessageID]
-    u: List[MessageID]
-    replies: List[MessageID]
-    ctime: gregor1.Time
-    n: gregor1.Time
-    rt: Optional[gregor1.Time]
+class MessageServerHeader:
+    message_id: MessageID = field(metadata=config(field_name="messageID"))
+    superseded_by: MessageID = field(metadata=config(field_name="supersededBy"))
+    reaction_i_ds: List[MessageID] = field(metadata=config(field_name="r"))
+    unfurl_i_ds: List[MessageID] = field(metadata=config(field_name="u"))
+    replies: List[MessageID] = field(metadata=config(field_name="replies"))
+    ctime: gregor1.Time = field(metadata=config(field_name="ctime"))
+    now: gregor1.Time = field(metadata=config(field_name="n"))
+    rtime: Optional[gregor1.Time] = field(metadata=config(field_name="rt"))
 
 
+@dataclass_json
 @dataclass
-class MessagePreviousPointer(DataClassJSONMixin):
-    id: MessageID
-    hash: Hash
+class MessagePreviousPointer:
+    id: MessageID = field(metadata=config(field_name="id"))
+    hash: Hash = field(metadata=config(field_name="hash"))
 
 
+@dataclass_json
 @dataclass
-class OutboxInfo(DataClassJSONMixin):
-    prev: MessageID
-    compose_time: gregor1.Time
+class OutboxInfo:
+    prev: MessageID = field(metadata=config(field_name="prev"))
+    compose_time: gregor1.Time = field(metadata=config(field_name="composeTime"))
 
 
+@dataclass_json
 @dataclass
-class EphemeralPurgeInfo(DataClassJSONMixin):
-    c: ConversationID
-    a: bool
-    n: gregor1.Time
-    e: MessageID
+class EphemeralPurgeInfo:
+    conv_id: ConversationID = field(metadata=config(field_name="c"))
+    is_active: bool = field(metadata=config(field_name="a"))
+    next_purge_time: gregor1.Time = field(metadata=config(field_name="n"))
+    min_unexploded_id: MessageID = field(metadata=config(field_name="e"))
 
 
 @dataclass
@@ -1484,24 +1636,27 @@ RetentionPolicy = Union[
 ]
 
 
+@dataclass_json
 @dataclass
-class SearchOpts(DataClassJSONMixin):
-    is_regex: bool
-    sent_by: str
-    sent_to: str
-    match_mentions: bool
-    sent_before: gregor1.Time
-    sent_after: gregor1.Time
-    max_hits: int
-    max_messages: int
-    before_context: int
-    after_context: int
-    initial_pagination: Optional[Pagination]
-    reindex_mode: ReIndexingMode
-    max_convs_searched: int
-    max_convs_hit: int
-    conv_id: Optional[ConversationID]
-    max_name_convs: int
+class SearchOpts:
+    is_regex: bool = field(metadata=config(field_name="isRegex"))
+    sent_by: str = field(metadata=config(field_name="sentBy"))
+    sent_to: str = field(metadata=config(field_name="sentTo"))
+    match_mentions: bool = field(metadata=config(field_name="matchMentions"))
+    sent_before: gregor1.Time = field(metadata=config(field_name="sentBefore"))
+    sent_after: gregor1.Time = field(metadata=config(field_name="sentAfter"))
+    max_hits: int = field(metadata=config(field_name="maxHits"))
+    max_messages: int = field(metadata=config(field_name="maxMessages"))
+    before_context: int = field(metadata=config(field_name="beforeContext"))
+    after_context: int = field(metadata=config(field_name="afterContext"))
+    initial_pagination: Optional[Pagination] = field(
+        metadata=config(field_name="initialPagination")
+    )
+    reindex_mode: ReIndexingMode = field(metadata=config(field_name="reindexMode"))
+    max_convs_searched: int = field(metadata=config(field_name="maxConvsSearched"))
+    max_convs_hit: int = field(metadata=config(field_name="maxConvsHit"))
+    conv_id: Optional[ConversationID] = field(metadata=config(field_name="convID"))
+    max_name_convs: int = field(metadata=config(field_name="maxNameConvs"))
 
 
 @dataclass
@@ -1525,517 +1680,660 @@ class AssetMetadata__AUDIO:
 AssetMetadata = Union[AssetMetadata__IMAGE, AssetMetadata__VIDEO, AssetMetadata__AUDIO]
 
 
+@dataclass_json
 @dataclass
-class UnreadUpdate(DataClassJSONMixin):
-    conv_id: ConversationID
-    unread_messages: int
-    unread_notifying_messages: Dict[str, int]
-    diff: bool
+class UnreadUpdate:
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    unread_messages: int = field(metadata=config(field_name="unreadMessages"))
+    unread_notifying_messages: Dict[str, int] = field(
+        metadata=config(field_name="unreadNotifyingMessages")
+    )
+    compat_unread_messages: int = field(metadata=config(field_name="UnreadMessages"))
+    diff: bool = field(metadata=config(field_name="diff"))
 
 
+@dataclass_json
 @dataclass
-class TLFFinalizeUpdate(DataClassJSONMixin):
-    finalize_info: ConversationFinalizeInfo
-    conv_i_ds: List[ConversationID]
-    inbox_vers: InboxVers
+class TLFFinalizeUpdate:
+    finalize_info: ConversationFinalizeInfo = field(
+        metadata=config(field_name="finalizeInfo")
+    )
+    conv_i_ds: List[ConversationID] = field(metadata=config(field_name="convIDs"))
+    inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
 
 
+@dataclass_json
 @dataclass
-class TLFResolveUpdate(DataClassJSONMixin):
-    conv_id: ConversationID
-    inbox_vers: InboxVers
+class TLFResolveUpdate:
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
 
 
+@dataclass_json
 @dataclass
-class RemoteUserTypingUpdate(DataClassJSONMixin):
-    uid: gregor1.UID
-    device_id: gregor1.DeviceID
-    conv_id: ConversationID
-    typing: bool
+class RemoteUserTypingUpdate:
+    uid: gregor1.UID = field(metadata=config(field_name="uid"))
+    device_id: gregor1.DeviceID = field(metadata=config(field_name="deviceID"))
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    typing: bool = field(metadata=config(field_name="typing"))
 
 
+@dataclass_json
 @dataclass
-class ConversationUpdate(DataClassJSONMixin):
-    conv_id: ConversationID
-    existence: ConversationExistence
+class ConversationUpdate:
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    existence: ConversationExistence = field(metadata=config(field_name="existence"))
 
 
+@dataclass_json
 @dataclass
-class TeamChannelUpdate(DataClassJSONMixin):
-    team_id: TLFID
+class TeamChannelUpdate:
+    team_id: TLFID = field(metadata=config(field_name="teamID"))
 
 
+@dataclass_json
 @dataclass
-class KBFSImpteamUpgradeUpdate(DataClassJSONMixin):
-    conv_id: ConversationID
-    inbox_vers: InboxVers
-    topic_type: TopicType
+class KBFSImpteamUpgradeUpdate:
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
+    topic_type: TopicType = field(metadata=config(field_name="topicType"))
 
 
+@dataclass_json
 @dataclass
-class SubteamRenameUpdate(DataClassJSONMixin):
-    conv_i_ds: List[ConversationID]
-    inbox_vers: InboxVers
+class SubteamRenameUpdate:
+    conv_i_ds: List[ConversationID] = field(metadata=config(field_name="convIDs"))
+    inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
 
 
+@dataclass_json
 @dataclass
-class TextPayment(DataClassJSONMixin):
-    username: str
-    payment_text: str
-    result: TextPaymentResult
+class TextPayment:
+    username: str = field(metadata=config(field_name="username"))
+    payment_text: str = field(metadata=config(field_name="paymentText"))
+    result: TextPaymentResult = field(metadata=config(field_name="result"))
 
 
+@dataclass_json
 @dataclass
-class MessageEdit(DataClassJSONMixin):
-    message_id: MessageID
-    body: str
-    user_mentions: List[KnownUserMention]
-    team_mentions: List[KnownTeamMention]
+class MessageEdit:
+    message_id: MessageID = field(metadata=config(field_name="messageID"))
+    body: str = field(metadata=config(field_name="body"))
+    user_mentions: List[KnownUserMention] = field(
+        metadata=config(field_name="userMentions")
+    )
+    team_mentions: List[KnownTeamMention] = field(
+        metadata=config(field_name="teamMentions")
+    )
 
 
+@dataclass_json
 @dataclass
-class MessageDelete(DataClassJSONMixin):
-    message_i_ds: List[MessageID]
+class MessageDelete:
+    message_i_ds: List[MessageID] = field(metadata=config(field_name="messageIDs"))
 
 
+@dataclass_json
 @dataclass
-class MessageFlip(DataClassJSONMixin):
-    text: str
-    game_id: FlipGameID
-    flip_conv_id: ConversationID
-    user_mentions: List[KnownUserMention]
-    team_mentions: List[KnownTeamMention]
+class MessageFlip:
+    text: str = field(metadata=config(field_name="text"))
+    game_id: FlipGameID = field(metadata=config(field_name="gameID"))
+    flip_conv_id: ConversationID = field(metadata=config(field_name="flipConvID"))
+    user_mentions: List[KnownUserMention] = field(
+        metadata=config(field_name="userMentions")
+    )
+    team_mentions: List[KnownTeamMention] = field(
+        metadata=config(field_name="teamMentions")
+    )
 
 
+@dataclass_json
 @dataclass
-class MessagePin(DataClassJSONMixin):
-    msg_id: MessageID
+class MessagePin:
+    msg_id: MessageID = field(metadata=config(field_name="msgID"))
 
 
+@dataclass_json
 @dataclass
-class MessageDeleteHistory(DataClassJSONMixin):
-    upto: MessageID
+class MessageDeleteHistory:
+    upto: MessageID = field(metadata=config(field_name="upto"))
 
 
+@dataclass_json
 @dataclass
-class MessageReaction(DataClassJSONMixin):
-    m: MessageID
-    b: str
+class MessageReaction:
+    message_id: MessageID = field(metadata=config(field_name="m"))
+    body: str = field(metadata=config(field_name="b"))
 
 
+@dataclass_json
 @dataclass
-class SenderPrepareOptions(DataClassJSONMixin):
-    skip_topic_name_state: bool
-    reply_to: Optional[MessageID]
+class SenderPrepareOptions:
+    skip_topic_name_state: bool = field(
+        metadata=config(field_name="skipTopicNameState")
+    )
+    reply_to: Optional[MessageID] = field(metadata=config(field_name="replyTo"))
 
 
+@dataclass_json
 @dataclass
-class SenderSendOptions(DataClassJSONMixin):
-    join_mentions_as: Optional[ConversationMemberStatus]
+class SenderSendOptions:
+    join_mentions_as: Optional[ConversationMemberStatus] = field(
+        metadata=config(field_name="joinMentionsAs")
+    )
 
 
+@dataclass_json
 @dataclass
-class OutboxStateError(DataClassJSONMixin):
-    message: str
-    typ: OutboxErrorType
+class OutboxStateError:
+    message: str = field(metadata=config(field_name="message"))
+    typ: OutboxErrorType = field(metadata=config(field_name="typ"))
 
 
+@dataclass_json
 @dataclass
-class HeaderPlaintextUnsupported(DataClassJSONMixin):
-    mi: HeaderPlaintextMetaInfo
+class HeaderPlaintextUnsupported:
+    mi: HeaderPlaintextMetaInfo = field(metadata=config(field_name="mi"))
 
 
+@dataclass_json
 @dataclass
-class BodyPlaintextUnsupported(DataClassJSONMixin):
-    mi: BodyPlaintextMetaInfo
+class BodyPlaintextUnsupported:
+    mi: BodyPlaintextMetaInfo = field(metadata=config(field_name="mi"))
 
 
+@dataclass_json
 @dataclass
-class MessageUnboxedError(DataClassJSONMixin):
-    err_type: MessageUnboxedErrorType
-    err_msg: str
-    internal_err_msg: str
-    version_kind: VersionKind
-    version_number: int
-    is_critical: bool
-    sender_username: str
-    sender_device_name: str
-    sender_device_type: str
-    message_id: MessageID
-    message_type: MessageType
-    ctime: gregor1.Time
-    is_ephemeral: bool
-    is_ephemeral_expired: bool
-    etime: gregor1.Time
+class MessageUnboxedError:
+    err_type: MessageUnboxedErrorType = field(metadata=config(field_name="errType"))
+    err_msg: str = field(metadata=config(field_name="errMsg"))
+    internal_err_msg: str = field(metadata=config(field_name="internalErrMsg"))
+    version_kind: VersionKind = field(metadata=config(field_name="versionKind"))
+    version_number: int = field(metadata=config(field_name="versionNumber"))
+    is_critical: bool = field(metadata=config(field_name="isCritical"))
+    sender_username: str = field(metadata=config(field_name="senderUsername"))
+    sender_device_name: str = field(metadata=config(field_name="senderDeviceName"))
+    sender_device_type: str = field(metadata=config(field_name="senderDeviceType"))
+    message_id: MessageID = field(metadata=config(field_name="messageID"))
+    message_type: MessageType = field(metadata=config(field_name="messageType"))
+    ctime: gregor1.Time = field(metadata=config(field_name="ctime"))
+    is_ephemeral: bool = field(metadata=config(field_name="isEphemeral"))
+    is_ephemeral_expired: bool = field(metadata=config(field_name="isEphemeralExpired"))
+    etime: gregor1.Time = field(metadata=config(field_name="etime"))
 
 
+@dataclass_json
 @dataclass
-class MessageUnboxedPlaceholder(DataClassJSONMixin):
-    message_id: MessageID
-    hidden: bool
+class MessageUnboxedPlaceholder:
+    message_id: MessageID = field(metadata=config(field_name="messageID"))
+    hidden: bool = field(metadata=config(field_name="hidden"))
 
 
+@dataclass_json
 @dataclass
-class ConversationSettingsLocal(DataClassJSONMixin):
-    min_writer_role_info: Optional[ConversationMinWriterRoleInfoLocal]
+class ConversationSettingsLocal:
+    min_writer_role_info: Optional[ConversationMinWriterRoleInfoLocal] = field(
+        metadata=config(field_name="minWriterRoleInfo")
+    )
 
 
+@dataclass_json
 @dataclass
-class NonblockFetchRes(DataClassJSONMixin):
-    offline: bool
-    rate_limits: List[RateLimit]
-    identify_failures: List[keybase1.TLFIdentifyFailure]
+class NonblockFetchRes:
+    offline: bool = field(metadata=config(field_name="offline"))
+    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
+    identify_failures: List[keybase1.TLFIdentifyFailure] = field(
+        metadata=config(field_name="identifyFailures")
+    )
 
 
+@dataclass_json
 @dataclass
-class MessageIDControl(DataClassJSONMixin):
-    pivot: Optional[MessageID]
-    mode: MessageIDControlMode
-    num: int
+class MessageIDControl:
+    pivot: Optional[MessageID] = field(metadata=config(field_name="pivot"))
+    mode: MessageIDControlMode = field(metadata=config(field_name="mode"))
+    num: int = field(metadata=config(field_name="num"))
 
 
+@dataclass_json
 @dataclass
-class UnreadlineRes(DataClassJSONMixin):
-    offline: bool
-    rate_limits: List[RateLimit]
-    identify_failures: List[keybase1.TLFIdentifyFailure]
-    unreadline_id: Optional[MessageID]
+class UnreadlineRes:
+    offline: bool = field(metadata=config(field_name="offline"))
+    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
+    identify_failures: List[keybase1.TLFIdentifyFailure] = field(
+        metadata=config(field_name="identifyFailures")
+    )
+    unreadline_id: Optional[MessageID] = field(
+        metadata=config(field_name="unreadlineID")
+    )
 
 
+@dataclass_json
 @dataclass
-class NameQuery(DataClassJSONMixin):
-    name: str
-    tlf_id: Optional[TLFID]
-    members_type: ConversationMembersType
+class NameQuery:
+    name: str = field(metadata=config(field_name="name"))
+    tlf_id: Optional[TLFID] = field(metadata=config(field_name="tlfID"))
+    members_type: ConversationMembersType = field(
+        metadata=config(field_name="membersType")
+    )
 
 
+@dataclass_json
 @dataclass
-class PostLocalRes(DataClassJSONMixin):
-    rate_limits: List[RateLimit]
-    message_id: MessageID
-    identify_failures: List[keybase1.TLFIdentifyFailure]
+class PostLocalRes:
+    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
+    message_id: MessageID = field(metadata=config(field_name="messageID"))
+    identify_failures: List[keybase1.TLFIdentifyFailure] = field(
+        metadata=config(field_name="identifyFailures")
+    )
 
 
+@dataclass_json
 @dataclass
-class PostLocalNonblockRes(DataClassJSONMixin):
-    rate_limits: List[RateLimit]
-    outbox_id: OutboxID
-    identify_failures: List[keybase1.TLFIdentifyFailure]
+class PostLocalNonblockRes:
+    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
+    outbox_id: OutboxID = field(metadata=config(field_name="outboxID"))
+    identify_failures: List[keybase1.TLFIdentifyFailure] = field(
+        metadata=config(field_name="identifyFailures")
+    )
 
 
+@dataclass_json
 @dataclass
-class EditTarget(DataClassJSONMixin):
-    message_id: Optional[MessageID]
-    outbox_id: Optional[OutboxID]
+class EditTarget:
+    message_id: Optional[MessageID] = field(metadata=config(field_name="messageID"))
+    outbox_id: Optional[OutboxID] = field(metadata=config(field_name="outboxID"))
 
 
+@dataclass_json
 @dataclass
-class SetConversationStatusLocalRes(DataClassJSONMixin):
-    rate_limits: List[RateLimit]
-    identify_failures: List[keybase1.TLFIdentifyFailure]
+class SetConversationStatusLocalRes:
+    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
+    identify_failures: List[keybase1.TLFIdentifyFailure] = field(
+        metadata=config(field_name="identifyFailures")
+    )
 
 
+@dataclass_json
 @dataclass
-class GetInboxSummaryForCLILocalQuery(DataClassJSONMixin):
-    topic_type: TopicType
-    after: str
-    before: str
-    visibility: keybase1.TLFVisibility
-    status: List[ConversationStatus]
-    unread_first: bool
-    unread_first_limit: UnreadFirstNumLimit
-    activity_sorted_limit: int
+class GetInboxSummaryForCLILocalQuery:
+    topic_type: TopicType = field(metadata=config(field_name="topicType"))
+    after: str = field(metadata=config(field_name="after"))
+    before: str = field(metadata=config(field_name="before"))
+    visibility: keybase1.TLFVisibility = field(metadata=config(field_name="visibility"))
+    status: List[ConversationStatus] = field(metadata=config(field_name="status"))
+    unread_first: bool = field(metadata=config(field_name="unreadFirst"))
+    unread_first_limit: UnreadFirstNumLimit = field(
+        metadata=config(field_name="unreadFirstLimit")
+    )
+    activity_sorted_limit: int = field(
+        metadata=config(field_name="activitySortedLimit")
+    )
 
 
+@dataclass_json
 @dataclass
-class DownloadAttachmentLocalRes(DataClassJSONMixin):
-    rate_limits: List[RateLimit]
-    identify_failures: List[keybase1.TLFIdentifyFailure]
+class DownloadAttachmentLocalRes:
+    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
+    identify_failures: List[keybase1.TLFIdentifyFailure] = field(
+        metadata=config(field_name="identifyFailures")
+    )
 
 
+@dataclass_json
 @dataclass
-class DownloadFileAttachmentLocalRes(DataClassJSONMixin):
-    filename: str
-    rate_limits: List[RateLimit]
-    identify_failures: List[keybase1.TLFIdentifyFailure]
+class DownloadFileAttachmentLocalRes:
+    filename: str = field(metadata=config(field_name="filename"))
+    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
+    identify_failures: List[keybase1.TLFIdentifyFailure] = field(
+        metadata=config(field_name="identifyFailures")
+    )
 
 
+@dataclass_json
 @dataclass
-class MarkAsReadLocalRes(DataClassJSONMixin):
-    offline: bool
-    rate_limits: List[RateLimit]
+class MarkAsReadLocalRes:
+    offline: bool = field(metadata=config(field_name="offline"))
+    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
 
 
+@dataclass_json
 @dataclass
-class JoinLeaveConversationLocalRes(DataClassJSONMixin):
-    offline: bool
-    rate_limits: List[RateLimit]
+class JoinLeaveConversationLocalRes:
+    offline: bool = field(metadata=config(field_name="offline"))
+    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
 
 
+@dataclass_json
 @dataclass
-class DeleteConversationLocalRes(DataClassJSONMixin):
-    offline: bool
-    rate_limits: List[RateLimit]
+class DeleteConversationLocalRes:
+    offline: bool = field(metadata=config(field_name="offline"))
+    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
 
 
+@dataclass_json
 @dataclass
-class SetAppNotificationSettingsLocalRes(DataClassJSONMixin):
-    offline: bool
-    rate_limits: List[RateLimit]
+class SetAppNotificationSettingsLocalRes:
+    offline: bool = field(metadata=config(field_name="offline"))
+    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
 
 
+@dataclass_json
 @dataclass
-class AppNotificationSettingLocal(DataClassJSONMixin):
-    device_type: keybase1.DeviceType
-    kind: NotificationKind
-    enabled: bool
+class AppNotificationSettingLocal:
+    device_type: keybase1.DeviceType = field(metadata=config(field_name="deviceType"))
+    kind: NotificationKind = field(metadata=config(field_name="kind"))
+    enabled: bool = field(metadata=config(field_name="enabled"))
 
 
+@dataclass_json
 @dataclass
-class ProfileSearchConvStats(DataClassJSONMixin):
-    err: str
-    conv_name: str
-    min_conv_id: MessageID
-    max_conv_id: MessageID
-    num_missing: int
-    num_messages: int
-    index_size_disk: int
-    index_size_mem: int
-    duration_msec: gregor1.DurationMsec
-    percent_indexed: int
+class ProfileSearchConvStats:
+    err: str = field(metadata=config(field_name="err"))
+    conv_name: str = field(metadata=config(field_name="convName"))
+    min_conv_id: MessageID = field(metadata=config(field_name="minConvID"))
+    max_conv_id: MessageID = field(metadata=config(field_name="maxConvID"))
+    num_missing: int = field(metadata=config(field_name="numMissing"))
+    num_messages: int = field(metadata=config(field_name="numMessages"))
+    index_size_disk: int = field(metadata=config(field_name="indexSizeDisk"))
+    index_size_mem: int = field(metadata=config(field_name="indexSizeMem"))
+    duration_msec: gregor1.DurationMsec = field(
+        metadata=config(field_name="durationMsec")
+    )
+    percent_indexed: int = field(metadata=config(field_name="percentIndexed"))
 
 
+@dataclass_json
 @dataclass
-class BuiltinCommandGroup(DataClassJSONMixin):
-    typ: ConversationBuiltinCommandTyp
-    commands: List[ConversationCommand]
+class BuiltinCommandGroup:
+    typ: ConversationBuiltinCommandTyp = field(metadata=config(field_name="typ"))
+    commands: List[ConversationCommand] = field(metadata=config(field_name="commands"))
 
 
+@dataclass_json
 @dataclass
-class UserBotCommandOutput(DataClassJSONMixin):
-    name: str
-    description: str
-    usage: str
-    extended_description: Optional[UserBotExtendedDescription]
-    username: str
+class UserBotCommandOutput:
+    name: str = field(metadata=config(field_name="name"))
+    description: str = field(metadata=config(field_name="description"))
+    usage: str = field(metadata=config(field_name="usage"))
+    extended_description: Optional[UserBotExtendedDescription] = field(
+        metadata=config(field_name="extended_description")
+    )
+    username: str = field(metadata=config(field_name="username"))
 
 
+@dataclass_json
 @dataclass
-class UserBotCommandInput(DataClassJSONMixin):
-    name: str
-    description: str
-    usage: str
-    extended_description: Optional[UserBotExtendedDescription]
+class UserBotCommandInput:
+    name: str = field(metadata=config(field_name="name"))
+    description: str = field(metadata=config(field_name="description"))
+    usage: str = field(metadata=config(field_name="usage"))
+    extended_description: Optional[UserBotExtendedDescription] = field(
+        metadata=config(field_name="extended_description")
+    )
 
 
+@dataclass_json
 @dataclass
-class AdvertiseBotCommandsLocalRes(DataClassJSONMixin):
-    rate_limits: List[RateLimit]
+class AdvertiseBotCommandsLocalRes:
+    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
 
 
+@dataclass_json
 @dataclass
-class ClearBotCommandsLocalRes(DataClassJSONMixin):
-    rate_limits: List[RateLimit]
+class ClearBotCommandsLocalRes:
+    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
 
 
+@dataclass_json
 @dataclass
-class PinMessageRes(DataClassJSONMixin):
-    rate_limits: List[RateLimit]
+class PinMessageRes:
+    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
 
 
+@dataclass_json
 @dataclass
-class SetAppNotificationSettingsInfo(DataClassJSONMixin):
-    conv_id: ConversationID
-    settings: ConversationNotificationInfo
+class SetAppNotificationSettingsInfo:
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    settings: ConversationNotificationInfo = field(
+        metadata=config(field_name="settings")
+    )
 
 
+@dataclass_json
 @dataclass
-class MemberInfo(DataClassJSONMixin):
-    member: str
-    status: ConversationMemberStatus
+class MemberInfo:
+    member: str = field(metadata=config(field_name="member"))
+    status: ConversationMemberStatus = field(metadata=config(field_name="status"))
 
 
+@dataclass_json
 @dataclass
-class ConvTypingUpdate(DataClassJSONMixin):
-    conv_id: ConversationID
-    typers: List[TyperInfo]
+class ConvTypingUpdate:
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    typers: List[TyperInfo] = field(metadata=config(field_name="typers"))
 
 
+@dataclass_json
 @dataclass
-class ConversationStaleUpdate(DataClassJSONMixin):
-    conv_id: ConversationID
-    update_type: StaleUpdateType
+class ConversationStaleUpdate:
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    update_type: StaleUpdateType = field(metadata=config(field_name="updateType"))
 
 
+@dataclass_json
 @dataclass
-class NewConversationRemoteRes(DataClassJSONMixin):
-    conv_id: ConversationID
-    created_complex_team: bool
-    rate_limit: Optional[RateLimit]
+class NewConversationRemoteRes:
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    created_complex_team: bool = field(metadata=config(field_name="createdComplexTeam"))
+    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
 
 
+@dataclass_json
 @dataclass
-class MarkAsReadRes(DataClassJSONMixin):
-    rate_limit: Optional[RateLimit]
+class MarkAsReadRes:
+    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
 
 
+@dataclass_json
 @dataclass
-class SetConversationStatusRes(DataClassJSONMixin):
-    rate_limit: Optional[RateLimit]
+class SetConversationStatusRes:
+    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
 
 
+@dataclass_json
 @dataclass
-class GetUnreadlineRemoteRes(DataClassJSONMixin):
-    unreadline_id: Optional[MessageID]
-    rate_limit: Optional[RateLimit]
+class GetUnreadlineRemoteRes:
+    unreadline_id: Optional[MessageID] = field(
+        metadata=config(field_name="unreadlineID")
+    )
+    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
 
 
+@dataclass_json
 @dataclass
-class JoinLeaveConversationRemoteRes(DataClassJSONMixin):
-    rate_limit: Optional[RateLimit]
+class JoinLeaveConversationRemoteRes:
+    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
 
 
+@dataclass_json
 @dataclass
-class DeleteConversationRemoteRes(DataClassJSONMixin):
-    rate_limit: Optional[RateLimit]
+class DeleteConversationRemoteRes:
+    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
 
 
+@dataclass_json
 @dataclass
-class GetMessageBeforeRes(DataClassJSONMixin):
-    msg_id: MessageID
-    rate_limit: Optional[RateLimit]
+class GetMessageBeforeRes:
+    msg_id: MessageID = field(metadata=config(field_name="msgID"))
+    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
 
 
+@dataclass_json
 @dataclass
-class SetAppNotificationSettingsRes(DataClassJSONMixin):
-    rate_limit: Optional[RateLimit]
+class SetAppNotificationSettingsRes:
+    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
 
 
+@dataclass_json
 @dataclass
-class SetRetentionRes(DataClassJSONMixin):
-    rate_limit: Optional[RateLimit]
+class SetRetentionRes:
+    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
 
 
+@dataclass_json
 @dataclass
-class SetConvMinWriterRoleRes(DataClassJSONMixin):
-    rate_limit: Optional[RateLimit]
+class SetConvMinWriterRoleRes:
+    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
 
 
+@dataclass_json
 @dataclass
-class ServerNowRes(DataClassJSONMixin):
-    rate_limit: Optional[RateLimit]
-    now: gregor1.Time
+class ServerNowRes:
+    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
+    now: gregor1.Time = field(metadata=config(field_name="now"))
 
 
+@dataclass_json
 @dataclass
-class RemoteBotCommandsAdvertisementPublic(DataClassJSONMixin):
-    conv_id: ConversationID
+class RemoteBotCommandsAdvertisementPublic:
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
 
 
+@dataclass_json
 @dataclass
-class RemoteBotCommandsAdvertisementTLFID(DataClassJSONMixin):
-    conv_id: ConversationID
-    tlf_id: TLFID
+class RemoteBotCommandsAdvertisementTLFID:
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    tlf_id: TLFID = field(metadata=config(field_name="tlfID"))
 
 
+@dataclass_json
 @dataclass
-class BotCommandConv(DataClassJSONMixin):
-    uid: gregor1.UID
-    conv_id: ConversationID
-    vers: CommandConvVers
-    mtime: gregor1.Time
+class BotCommandConv:
+    uid: gregor1.UID = field(metadata=config(field_name="uid"))
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    vers: CommandConvVers = field(metadata=config(field_name="vers"))
+    mtime: gregor1.Time = field(metadata=config(field_name="mtime"))
 
 
+@dataclass_json
 @dataclass
-class AdvertiseBotCommandsRes(DataClassJSONMixin):
-    rate_limit: Optional[RateLimit]
+class AdvertiseBotCommandsRes:
+    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
 
 
+@dataclass_json
 @dataclass
-class ClearBotCommandsRes(DataClassJSONMixin):
-    rate_limit: Optional[RateLimit]
+class ClearBotCommandsRes:
+    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
 
 
+@dataclass_json
 @dataclass
-class UnfurlGenericRaw(DataClassJSONMixin):
-    title: str
-    url: str
-    site_name: str
-    favicon_url: Optional[str]
-    image_url: Optional[str]
-    video: Optional[UnfurlVideo]
-    publish_time: Optional[int]
-    description: Optional[str]
+class UnfurlGenericRaw:
+    title: str = field(metadata=config(field_name="title"))
+    url: str = field(metadata=config(field_name="url"))
+    site_name: str = field(metadata=config(field_name="siteName"))
+    favicon_url: Optional[str] = field(metadata=config(field_name="faviconUrl"))
+    image_url: Optional[str] = field(metadata=config(field_name="imageUrl"))
+    video: Optional[UnfurlVideo] = field(metadata=config(field_name="video"))
+    publish_time: Optional[int] = field(metadata=config(field_name="publishTime"))
+    description: Optional[str] = field(metadata=config(field_name="description"))
 
 
+@dataclass_json
 @dataclass
-class UnfurlGiphyRaw(DataClassJSONMixin):
-    image_url: Optional[str]
-    video: Optional[UnfurlVideo]
-    favicon_url: Optional[str]
+class UnfurlGiphyRaw:
+    image_url: Optional[str] = field(metadata=config(field_name="imageUrl"))
+    video: Optional[UnfurlVideo] = field(metadata=config(field_name="video"))
+    favicon_url: Optional[str] = field(metadata=config(field_name="faviconUrl"))
 
 
+@dataclass_json
 @dataclass
-class UnfurlMapsRaw(DataClassJSONMixin):
-    title: str
-    url: str
-    site_name: str
-    image_url: str
-    history_image_url: Optional[str]
-    description: str
-    coord: Coordinate
-    time: gregor1.Time
-    live_location_end_time: Optional[gregor1.Time]
-    live_location_done: bool
+class UnfurlMapsRaw:
+    title: str = field(metadata=config(field_name="title"))
+    url: str = field(metadata=config(field_name="url"))
+    site_name: str = field(metadata=config(field_name="siteName"))
+    image_url: str = field(metadata=config(field_name="imageUrl"))
+    history_image_url: Optional[str] = field(
+        metadata=config(field_name="historyImageUrl")
+    )
+    description: str = field(metadata=config(field_name="description"))
+    coord: Coordinate = field(metadata=config(field_name="coord"))
+    time: gregor1.Time = field(metadata=config(field_name="time"))
+    live_location_end_time: Optional[gregor1.Time] = field(
+        metadata=config(field_name="liveLocationEndTime")
+    )
+    live_location_done: bool = field(metadata=config(field_name="liveLocationDone"))
 
 
+@dataclass_json
 @dataclass
-class UnfurlGenericMapInfo(DataClassJSONMixin):
-    coord: Coordinate
-    time: gregor1.Time
-    live_location_end_time: Optional[gregor1.Time]
-    is_live_location_done: bool
+class UnfurlGenericMapInfo:
+    coord: Coordinate = field(metadata=config(field_name="coord"))
+    time: gregor1.Time = field(metadata=config(field_name="time"))
+    live_location_end_time: Optional[gregor1.Time] = field(
+        metadata=config(field_name="liveLocationEndTime")
+    )
+    is_live_location_done: bool = field(
+        metadata=config(field_name="isLiveLocationDone")
+    )
 
 
+@dataclass_json
 @dataclass
-class UnfurlGiphyDisplay(DataClassJSONMixin):
-    favicon: Optional[UnfurlImageDisplay]
-    image: Optional[UnfurlImageDisplay]
-    video: Optional[UnfurlImageDisplay]
+class UnfurlGiphyDisplay:
+    favicon: Optional[UnfurlImageDisplay] = field(metadata=config(field_name="favicon"))
+    image: Optional[UnfurlImageDisplay] = field(metadata=config(field_name="image"))
+    video: Optional[UnfurlImageDisplay] = field(metadata=config(field_name="video"))
 
 
+@dataclass_json
 @dataclass
-class UnfurlSettings(DataClassJSONMixin):
-    mode: UnfurlMode
-    whitelist: Dict[str, bool]
+class UnfurlSettings:
+    mode: UnfurlMode = field(metadata=config(field_name="mode"))
+    whitelist: Dict[str, bool] = field(metadata=config(field_name="whitelist"))
 
 
+@dataclass_json
 @dataclass
-class UnfurlSettingsDisplay(DataClassJSONMixin):
-    mode: UnfurlMode
-    whitelist: List[str]
+class UnfurlSettingsDisplay:
+    mode: UnfurlMode = field(metadata=config(field_name="mode"))
+    whitelist: List[str] = field(metadata=config(field_name="whitelist"))
 
 
+@dataclass_json
 @dataclass
-class ChatList(DataClassJSONMixin):
-    conversations: List[ConvSummary]
-    offline: bool
-    identify_failures: Optional[List[keybase1.TLFIdentifyFailure]]
-    pagination: Optional[Pagination]
-    ratelimits: Optional[List[RateLimitRes]]
+class ChatList:
+    conversations: List[ConvSummary] = field(
+        metadata=config(field_name="conversations")
+    )
+    offline: bool = field(metadata=config(field_name="offline"))
+    identify_failures: Optional[List[keybase1.TLFIdentifyFailure]] = field(
+        metadata=config(field_name="identify_failures")
+    )
+    pagination: Optional[Pagination] = field(metadata=config(field_name="pagination"))
+    rate_limits: Optional[List[RateLimitRes]] = field(
+        metadata=config(field_name="ratelimits")
+    )
 
 
+@dataclass_json
 @dataclass
-class ListCommandsRes(DataClassJSONMixin):
-    commands: List[UserBotCommandOutput]
-    ratelimits: Optional[List[RateLimitRes]]
+class ListCommandsRes:
+    commands: List[UserBotCommandOutput] = field(metadata=config(field_name="commands"))
+    rate_limits: Optional[List[RateLimitRes]] = field(
+        metadata=config(field_name="ratelimits")
+    )
 
 
+@dataclass_json
 @dataclass
-class AdvertiseCommandAPIParam(DataClassJSONMixin):
-    type: str
-    commands: List[UserBotCommandInput]
-    team_name: Optional[str]
+class AdvertiseCommandAPIParam:
+    typ: str = field(metadata=config(field_name="type"))
+    commands: List[UserBotCommandInput] = field(metadata=config(field_name="commands"))
+    team_name: Optional[str] = field(metadata=config(field_name="team_name"))
 
 
 @dataclass
@@ -2091,10 +2389,11 @@ UITextDecoration = Union[
 ]
 
 
+@dataclass_json
 @dataclass
-class UIChatSearchConvHits(DataClassJSONMixin):
-    hits: List[UIChatSearchConvHit]
-    unread_matches: bool
+class UIChatSearchConvHits:
+    hits: List[UIChatSearchConvHit] = field(metadata=config(field_name="hits"))
+    unread_matches: bool = field(metadata=config(field_name="unreadMatches"))
 
 
 @dataclass
@@ -2182,199 +2481,266 @@ ConversationCommandGroups = Union[
 ]
 
 
+@dataclass_json
 @dataclass
-class ConversationIDMessageIDPairs(DataClassJSONMixin):
-    pairs: List[ConversationIDMessageIDPair]
+class ConversationIDMessageIDPairs:
+    pairs: List[ConversationIDMessageIDPair] = field(
+        metadata=config(field_name="pairs")
+    )
 
 
+@dataclass_json
 @dataclass
-class ReactionMap(DataClassJSONMixin):
-    reactions: Dict[str, Dict[str, Reaction]]
+class ReactionMap:
+    reactions: Dict[str, Dict[str, Reaction]] = field(
+        metadata=config(field_name="reactions")
+    )
 
 
+@dataclass_json
 @dataclass
-class MessageClientHeader(DataClassJSONMixin):
-    conv: ConversationIDTriple
-    tlf_name: str
-    tlf_public: bool
-    message_type: MessageType
-    supersedes: MessageID
-    kbfs_crypt_keys_used: Optional[bool]
-    deletes: List[MessageID]
-    prev: List[MessagePreviousPointer]
-    delete_history: Optional[MessageDeleteHistory]
-    sender: gregor1.UID
-    sender_device: gregor1.DeviceID
-    merkle_root: Optional[MerkleRoot]
-    outbox_id: Optional[OutboxID]
-    outbox_info: Optional[OutboxInfo]
-    em: Optional[MsgEphemeralMetadata]
-    pm: Dict[str, bytes]
-    b: Optional[gregor1.UID]
+class MessageClientHeader:
+    conv: ConversationIDTriple = field(metadata=config(field_name="conv"))
+    tlf_name: str = field(metadata=config(field_name="tlfName"))
+    tlf_public: bool = field(metadata=config(field_name="tlfPublic"))
+    message_type: MessageType = field(metadata=config(field_name="messageType"))
+    supersedes: MessageID = field(metadata=config(field_name="supersedes"))
+    kbfs_crypt_keys_used: Optional[bool] = field(
+        metadata=config(field_name="kbfsCryptKeysUsed")
+    )
+    deletes: List[MessageID] = field(metadata=config(field_name="deletes"))
+    prev: List[MessagePreviousPointer] = field(metadata=config(field_name="prev"))
+    delete_history: Optional[MessageDeleteHistory] = field(
+        metadata=config(field_name="deleteHistory")
+    )
+    sender: gregor1.UID = field(metadata=config(field_name="sender"))
+    sender_device: gregor1.DeviceID = field(metadata=config(field_name="senderDevice"))
+    merkle_root: Optional[MerkleRoot] = field(metadata=config(field_name="merkleRoot"))
+    outbox_id: Optional[OutboxID] = field(metadata=config(field_name="outboxID"))
+    outbox_info: Optional[OutboxInfo] = field(metadata=config(field_name="outboxInfo"))
+    ephemeral_metadata: Optional[MsgEphemeralMetadata] = field(
+        metadata=config(field_name="em")
+    )
+    pairwise_macs: Dict[str, bytes] = field(metadata=config(field_name="pm"))
+    bot_uid: Optional[gregor1.UID] = field(metadata=config(field_name="b"))
 
 
+@dataclass_json
 @dataclass
-class MessageClientHeaderVerified(DataClassJSONMixin):
-    conv: ConversationIDTriple
-    tlf_name: str
-    tlf_public: bool
-    message_type: MessageType
-    prev: List[MessagePreviousPointer]
-    sender: gregor1.UID
-    sender_device: gregor1.DeviceID
-    kbfs_crypt_keys_used: Optional[bool]
-    merkle_root: Optional[MerkleRoot]
-    outbox_id: Optional[OutboxID]
-    outbox_info: Optional[OutboxInfo]
-    em: Optional[MsgEphemeralMetadata]
-    rt: gregor1.Time
-    pm: bool
-    b: Optional[gregor1.UID]
+class MessageClientHeaderVerified:
+    conv: ConversationIDTriple = field(metadata=config(field_name="conv"))
+    tlf_name: str = field(metadata=config(field_name="tlfName"))
+    tlf_public: bool = field(metadata=config(field_name="tlfPublic"))
+    message_type: MessageType = field(metadata=config(field_name="messageType"))
+    prev: List[MessagePreviousPointer] = field(metadata=config(field_name="prev"))
+    sender: gregor1.UID = field(metadata=config(field_name="sender"))
+    sender_device: gregor1.DeviceID = field(metadata=config(field_name="senderDevice"))
+    kbfs_crypt_keys_used: Optional[bool] = field(
+        metadata=config(field_name="kbfsCryptKeysUsed")
+    )
+    merkle_root: Optional[MerkleRoot] = field(metadata=config(field_name="merkleRoot"))
+    outbox_id: Optional[OutboxID] = field(metadata=config(field_name="outboxID"))
+    outbox_info: Optional[OutboxInfo] = field(metadata=config(field_name="outboxInfo"))
+    ephemeral_metadata: Optional[MsgEphemeralMetadata] = field(
+        metadata=config(field_name="em")
+    )
+    rtime: gregor1.Time = field(metadata=config(field_name="rt"))
+    has_pairwise_macs: bool = field(metadata=config(field_name="pm"))
+    bot_uid: Optional[gregor1.UID] = field(metadata=config(field_name="b"))
 
 
+@dataclass_json
 @dataclass
-class Asset(DataClassJSONMixin):
-    filename: str
-    region: str
-    endpoint: str
-    bucket: str
-    path: str
-    size: int
-    mime_type: str
-    enc_hash: Hash
-    key: bytes
-    verify_key: bytes
-    title: str
-    nonce: bytes
-    metadata: AssetMetadata
-    tag: AssetTag
+class Asset:
+    filename: str = field(metadata=config(field_name="filename"))
+    region: str = field(metadata=config(field_name="region"))
+    endpoint: str = field(metadata=config(field_name="endpoint"))
+    bucket: str = field(metadata=config(field_name="bucket"))
+    path: str = field(metadata=config(field_name="path"))
+    size: int = field(metadata=config(field_name="size"))
+    mime_type: str = field(metadata=config(field_name="mimeType"))
+    enc_hash: Hash = field(metadata=config(field_name="encHash"))
+    key: bytes = field(metadata=config(field_name="key"))
+    verify_key: bytes = field(metadata=config(field_name="verifyKey"))
+    title: str = field(metadata=config(field_name="title"))
+    nonce: bytes = field(metadata=config(field_name="nonce"))
+    metadata: AssetMetadata = field(metadata=config(field_name="metadata"))
+    tag: AssetTag = field(metadata=config(field_name="tag"))
 
 
+@dataclass_json
 @dataclass
-class GenericPayload(DataClassJSONMixin):
-    action: str
-    inbox_vers: InboxVers
-    conv_id: ConversationID
-    topic_type: TopicType
-    unread_update: Optional[UnreadUpdate]
+class GenericPayload:
+    action: str = field(metadata=config(field_name="Action"))
+    inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    topic_type: TopicType = field(metadata=config(field_name="topicType"))
+    unread_update: Optional[UnreadUpdate] = field(
+        metadata=config(field_name="unreadUpdate")
+    )
 
 
+@dataclass_json
 @dataclass
-class NewConversationPayload(DataClassJSONMixin):
-    action: str
-    conv_id: ConversationID
-    inbox_vers: InboxVers
-    topic_type: TopicType
-    unread_update: Optional[UnreadUpdate]
+class NewConversationPayload:
+    action: str = field(metadata=config(field_name="Action"))
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
+    topic_type: TopicType = field(metadata=config(field_name="topicType"))
+    unread_update: Optional[UnreadUpdate] = field(
+        metadata=config(field_name="unreadUpdate")
+    )
 
 
+@dataclass_json
 @dataclass
-class ReadMessagePayload(DataClassJSONMixin):
-    action: str
-    conv_id: ConversationID
-    msg_id: MessageID
-    inbox_vers: InboxVers
-    topic_type: TopicType
-    unread_update: Optional[UnreadUpdate]
+class ReadMessagePayload:
+    action: str = field(metadata=config(field_name="Action"))
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    msg_id: MessageID = field(metadata=config(field_name="msgID"))
+    inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
+    topic_type: TopicType = field(metadata=config(field_name="topicType"))
+    unread_update: Optional[UnreadUpdate] = field(
+        metadata=config(field_name="unreadUpdate")
+    )
 
 
+@dataclass_json
 @dataclass
-class SetStatusPayload(DataClassJSONMixin):
-    action: str
-    conv_id: ConversationID
-    status: ConversationStatus
-    inbox_vers: InboxVers
-    topic_type: TopicType
-    unread_update: Optional[UnreadUpdate]
+class SetStatusPayload:
+    action: str = field(metadata=config(field_name="Action"))
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    status: ConversationStatus = field(metadata=config(field_name="status"))
+    inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
+    topic_type: TopicType = field(metadata=config(field_name="topicType"))
+    unread_update: Optional[UnreadUpdate] = field(
+        metadata=config(field_name="unreadUpdate")
+    )
 
 
+@dataclass_json
 @dataclass
-class TeamTypePayload(DataClassJSONMixin):
-    action: str
-    conv_id: ConversationID
-    team_type: TeamType
-    inbox_vers: InboxVers
-    topic_type: TopicType
-    unread_update: Optional[UnreadUpdate]
+class TeamTypePayload:
+    action: str = field(metadata=config(field_name="Action"))
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    team_type: TeamType = field(metadata=config(field_name="teamType"))
+    inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
+    topic_type: TopicType = field(metadata=config(field_name="topicType"))
+    unread_update: Optional[UnreadUpdate] = field(
+        metadata=config(field_name="unreadUpdate")
+    )
 
 
+@dataclass_json
 @dataclass
-class SetAppNotificationSettingsPayload(DataClassJSONMixin):
-    action: str
-    conv_id: ConversationID
-    inbox_vers: InboxVers
-    settings: ConversationNotificationInfo
-    topic_type: TopicType
-    unread_update: Optional[UnreadUpdate]
+class SetAppNotificationSettingsPayload:
+    action: str = field(metadata=config(field_name="Action"))
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
+    settings: ConversationNotificationInfo = field(
+        metadata=config(field_name="settings")
+    )
+    topic_type: TopicType = field(metadata=config(field_name="topicType"))
+    unread_update: Optional[UnreadUpdate] = field(
+        metadata=config(field_name="unreadUpdate")
+    )
 
 
+@dataclass_json
 @dataclass
-class ExpungePayload(DataClassJSONMixin):
-    action: str
-    conv_id: ConversationID
-    inbox_vers: InboxVers
-    expunge: Expunge
-    max_msgs: List[MessageSummary]
-    topic_type: TopicType
-    unread_update: Optional[UnreadUpdate]
+class ExpungePayload:
+    action: str = field(metadata=config(field_name="Action"))
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
+    expunge: Expunge = field(metadata=config(field_name="expunge"))
+    max_msgs: List[MessageSummary] = field(metadata=config(field_name="maxMsgs"))
+    topic_type: TopicType = field(metadata=config(field_name="topicType"))
+    unread_update: Optional[UnreadUpdate] = field(
+        metadata=config(field_name="unreadUpdate")
+    )
 
 
+@dataclass_json
 @dataclass
-class UpdateConversationMembership(DataClassJSONMixin):
-    inbox_vers: InboxVers
-    joined: List[ConversationMember]
-    removed: List[ConversationMember]
-    reset: List[ConversationMember]
-    previewed: List[ConversationID]
-    unread_update: Optional[UnreadUpdate]
-    unread_updates: List[UnreadUpdate]
+class UpdateConversationMembership:
+    inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
+    joined: List[ConversationMember] = field(metadata=config(field_name="joined"))
+    removed: List[ConversationMember] = field(metadata=config(field_name="removed"))
+    reset: List[ConversationMember] = field(metadata=config(field_name="reset"))
+    previewed: List[ConversationID] = field(metadata=config(field_name="previewed"))
+    unread_update: Optional[UnreadUpdate] = field(
+        metadata=config(field_name="unreadUpdate")
+    )
+    unread_updates: List[UnreadUpdate] = field(
+        metadata=config(field_name="unreadUpdates")
+    )
 
 
+@dataclass_json
 @dataclass
-class UpdateConversations(DataClassJSONMixin):
-    inbox_vers: InboxVers
-    conv_updates: List[ConversationUpdate]
+class UpdateConversations:
+    inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
+    conv_updates: List[ConversationUpdate] = field(
+        metadata=config(field_name="convUpdates")
+    )
 
 
+@dataclass_json
 @dataclass
-class SetConvRetentionUpdate(DataClassJSONMixin):
-    inbox_vers: InboxVers
-    conv_id: ConversationID
-    policy: RetentionPolicy
+class SetConvRetentionUpdate:
+    inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    policy: RetentionPolicy = field(metadata=config(field_name="policy"))
 
 
+@dataclass_json
 @dataclass
-class SetTeamRetentionUpdate(DataClassJSONMixin):
-    inbox_vers: InboxVers
-    team_id: keybase1.TeamID
-    policy: RetentionPolicy
+class SetTeamRetentionUpdate:
+    inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
+    team_id: keybase1.TeamID = field(metadata=config(field_name="teamID"))
+    policy: RetentionPolicy = field(metadata=config(field_name="policy"))
 
 
+@dataclass_json
 @dataclass
-class SetConvSettingsUpdate(DataClassJSONMixin):
-    inbox_vers: InboxVers
-    conv_id: ConversationID
-    conv_settings: Optional[ConversationSettings]
+class SetConvSettingsUpdate:
+    inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    conv_settings: Optional[ConversationSettings] = field(
+        metadata=config(field_name="convSettings")
+    )
 
 
+@dataclass_json
 @dataclass
-class MessageText(DataClassJSONMixin):
-    body: str
-    payments: List[TextPayment]
-    reply_to: Optional[MessageID]
-    reply_to_uid: Optional[gregor1.UID]
-    user_mentions: List[KnownUserMention]
-    team_mentions: List[KnownTeamMention]
-    live_location: Optional[LiveLocation]
+class MessageText:
+    body: str = field(metadata=config(field_name="body"))
+    payments: List[TextPayment] = field(metadata=config(field_name="payments"))
+    reply_to: Optional[MessageID] = field(metadata=config(field_name="replyTo"))
+    reply_to_uid: Optional[gregor1.UID] = field(
+        metadata=config(field_name="replyToUID")
+    )
+    user_mentions: List[KnownUserMention] = field(
+        metadata=config(field_name="userMentions")
+    )
+    team_mentions: List[KnownTeamMention] = field(
+        metadata=config(field_name="teamMentions")
+    )
+    live_location: Optional[LiveLocation] = field(
+        metadata=config(field_name="liveLocation")
+    )
 
 
+@dataclass_json
 @dataclass
-class MessageSystemChangeRetention(DataClassJSONMixin):
-    is_team: bool
-    is_inherit: bool
-    members_type: ConversationMembersType
-    policy: RetentionPolicy
-    user: str
+class MessageSystemChangeRetention:
+    is_team: bool = field(metadata=config(field_name="isTeam"))
+    is_inherit: bool = field(metadata=config(field_name="isInherit"))
+    members_type: ConversationMembersType = field(
+        metadata=config(field_name="membersType")
+    )
+    policy: RetentionPolicy = field(metadata=config(field_name="policy"))
+    user: str = field(metadata=config(field_name="user"))
 
 
 @dataclass
@@ -2392,113 +2758,155 @@ class OutboxState__ERROR:
 OutboxState = Union[OutboxState__SENDING, OutboxState__ERROR]
 
 
+@dataclass_json
 @dataclass
-class HeaderPlaintextV1(DataClassJSONMixin):
-    conv: ConversationIDTriple
-    tlf_name: str
-    tlf_public: bool
-    message_type: MessageType
-    prev: List[MessagePreviousPointer]
-    sender: gregor1.UID
-    sender_device: gregor1.DeviceID
-    kbfs_crypt_keys_used: Optional[bool]
-    body_hash: Hash
-    outbox_info: Optional[OutboxInfo]
-    outbox_id: Optional[OutboxID]
-    header_signature: Optional[SignatureInfo]
-    merkle_root: Optional[MerkleRoot]
-    em: Optional[MsgEphemeralMetadata]
-    b: Optional[gregor1.UID]
+class HeaderPlaintextV1:
+    conv: ConversationIDTriple = field(metadata=config(field_name="conv"))
+    tlf_name: str = field(metadata=config(field_name="tlfName"))
+    tlf_public: bool = field(metadata=config(field_name="tlfPublic"))
+    message_type: MessageType = field(metadata=config(field_name="messageType"))
+    prev: List[MessagePreviousPointer] = field(metadata=config(field_name="prev"))
+    sender: gregor1.UID = field(metadata=config(field_name="sender"))
+    sender_device: gregor1.DeviceID = field(metadata=config(field_name="senderDevice"))
+    kbfs_crypt_keys_used: Optional[bool] = field(
+        metadata=config(field_name="kbfsCryptKeysUsed")
+    )
+    body_hash: Hash = field(metadata=config(field_name="bodyHash"))
+    outbox_info: Optional[OutboxInfo] = field(metadata=config(field_name="outboxInfo"))
+    outbox_id: Optional[OutboxID] = field(metadata=config(field_name="outboxID"))
+    header_signature: Optional[SignatureInfo] = field(
+        metadata=config(field_name="headerSignature")
+    )
+    merkle_root: Optional[MerkleRoot] = field(metadata=config(field_name="merkleRoot"))
+    ephemeral_metadata: Optional[MsgEphemeralMetadata] = field(
+        metadata=config(field_name="em")
+    )
+    bot_uid: Optional[gregor1.UID] = field(metadata=config(field_name="b"))
 
 
+@dataclass_json
 @dataclass
-class GetThreadQuery(DataClassJSONMixin):
-    mark_as_read: bool
-    message_types: List[MessageType]
-    disable_resolve_supersedes: bool
-    enable_delete_placeholders: bool
-    disable_post_process_thread: bool
-    before: Optional[gregor1.Time]
-    after: Optional[gregor1.Time]
-    message_id_control: Optional[MessageIDControl]
+class GetThreadQuery:
+    mark_as_read: bool = field(metadata=config(field_name="markAsRead"))
+    message_types: List[MessageType] = field(metadata=config(field_name="messageTypes"))
+    disable_resolve_supersedes: bool = field(
+        metadata=config(field_name="disableResolveSupersedes")
+    )
+    enable_delete_placeholders: bool = field(
+        metadata=config(field_name="enableDeletePlaceholders")
+    )
+    disable_post_process_thread: bool = field(
+        metadata=config(field_name="disablePostProcessThread")
+    )
+    before: Optional[gregor1.Time] = field(metadata=config(field_name="before"))
+    after: Optional[gregor1.Time] = field(metadata=config(field_name="after"))
+    message_id_control: Optional[MessageIDControl] = field(
+        metadata=config(field_name="messageIDControl")
+    )
 
 
+@dataclass_json
 @dataclass
-class GetInboxLocalQuery(DataClassJSONMixin):
-    name: Optional[NameQuery]
-    topic_name: Optional[str]
-    conv_i_ds: List[ConversationID]
-    topic_type: Optional[TopicType]
-    tlf_visibility: Optional[keybase1.TLFVisibility]
-    before: Optional[gregor1.Time]
-    after: Optional[gregor1.Time]
-    one_chat_type_per_tlf: Optional[bool]
-    status: List[ConversationStatus]
-    member_status: List[ConversationMemberStatus]
-    unread_only: bool
-    read_only: bool
-    compute_active_list: bool
+class GetInboxLocalQuery:
+    name: Optional[NameQuery] = field(metadata=config(field_name="name"))
+    topic_name: Optional[str] = field(metadata=config(field_name="topicName"))
+    conv_i_ds: List[ConversationID] = field(metadata=config(field_name="convIDs"))
+    topic_type: Optional[TopicType] = field(metadata=config(field_name="topicType"))
+    tlf_visibility: Optional[keybase1.TLFVisibility] = field(
+        metadata=config(field_name="tlfVisibility")
+    )
+    before: Optional[gregor1.Time] = field(metadata=config(field_name="before"))
+    after: Optional[gregor1.Time] = field(metadata=config(field_name="after"))
+    one_chat_type_per_tlf: Optional[bool] = field(
+        metadata=config(field_name="oneChatTypePerTLF")
+    )
+    status: List[ConversationStatus] = field(metadata=config(field_name="status"))
+    member_status: List[ConversationMemberStatus] = field(
+        metadata=config(field_name="memberStatus")
+    )
+    unread_only: bool = field(metadata=config(field_name="unreadOnly"))
+    read_only: bool = field(metadata=config(field_name="readOnly"))
+    compute_active_list: bool = field(metadata=config(field_name="computeActiveList"))
 
 
+@dataclass_json
 @dataclass
-class MakePreviewRes(DataClassJSONMixin):
-    mime_type: str
-    preview_mime_type: Optional[str]
-    location: Optional[PreviewLocation]
-    metadata: Optional[AssetMetadata]
-    base_metadata: Optional[AssetMetadata]
+class MakePreviewRes:
+    mime_type: str = field(metadata=config(field_name="mimeType"))
+    preview_mime_type: Optional[str] = field(
+        metadata=config(field_name="previewMimeType")
+    )
+    location: Optional[PreviewLocation] = field(metadata=config(field_name="location"))
+    metadata: Optional[AssetMetadata] = field(metadata=config(field_name="metadata"))
+    base_metadata: Optional[AssetMetadata] = field(
+        metadata=config(field_name="baseMetadata")
+    )
 
 
+@dataclass_json
 @dataclass
-class StaticConfig(DataClassJSONMixin):
-    deletable_by_delete_history: List[MessageType]
-    builtin_commands: List[BuiltinCommandGroup]
+class StaticConfig:
+    deletable_by_delete_history: List[MessageType] = field(
+        metadata=config(field_name="deletableByDeleteHistory")
+    )
+    builtin_commands: List[BuiltinCommandGroup] = field(
+        metadata=config(field_name="builtinCommands")
+    )
 
 
+@dataclass_json
 @dataclass
-class AdvertiseCommandsParam(DataClassJSONMixin):
-    typ: BotCommandsAdvertisementTyp
-    commands: List[UserBotCommandInput]
-    team_name: Optional[str]
+class AdvertiseCommandsParam:
+    typ: BotCommandsAdvertisementTyp = field(metadata=config(field_name="typ"))
+    commands: List[UserBotCommandInput] = field(metadata=config(field_name="commands"))
+    team_name: Optional[str] = field(metadata=config(field_name="teamName"))
 
 
+@dataclass_json
 @dataclass
-class ListBotCommandsLocalRes(DataClassJSONMixin):
-    commands: List[UserBotCommandOutput]
-    rate_limits: List[RateLimit]
+class ListBotCommandsLocalRes:
+    commands: List[UserBotCommandOutput] = field(metadata=config(field_name="commands"))
+    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
 
 
+@dataclass_json
 @dataclass
-class MembersUpdateInfo(DataClassJSONMixin):
-    conv_id: ConversationID
-    members: List[MemberInfo]
+class MembersUpdateInfo:
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    members: List[MemberInfo] = field(metadata=config(field_name="members"))
 
 
+@dataclass_json
 @dataclass
-class ExpungeInfo(DataClassJSONMixin):
-    conv_id: ConversationID
-    expunge: Expunge
+class ExpungeInfo:
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    expunge: Expunge = field(metadata=config(field_name="expunge"))
 
 
+@dataclass_json
 @dataclass
-class PostRemoteRes(DataClassJSONMixin):
-    msg_header: MessageServerHeader
-    rate_limit: Optional[RateLimit]
+class PostRemoteRes:
+    msg_header: MessageServerHeader = field(metadata=config(field_name="msgHeader"))
+    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
 
 
+@dataclass_json
 @dataclass
-class UnreadUpdateFull(DataClassJSONMixin):
-    ignore: bool
-    inbox_vers: InboxVers
-    inbox_sync_status: SyncInboxResType
-    updates: List[UnreadUpdate]
+class UnreadUpdateFull:
+    ignore: bool = field(metadata=config(field_name="ignore"))
+    inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
+    inbox_sync_status: SyncInboxResType = field(
+        metadata=config(field_name="inboxSyncStatus")
+    )
+    updates: List[UnreadUpdate] = field(metadata=config(field_name="updates"))
 
 
+@dataclass_json
 @dataclass
-class SweepRes(DataClassJSONMixin):
-    found_task: bool
-    deleted_messages: bool
-    expunge: Expunge
+class SweepRes:
+    found_task: bool = field(metadata=config(field_name="foundTask"))
+    deleted_messages: bool = field(metadata=config(field_name="deletedMessages"))
+    expunge: Expunge = field(metadata=config(field_name="expunge"))
 
 
 @dataclass
@@ -2526,9 +2934,12 @@ RemoteBotCommandsAdvertisement = Union[
 ]
 
 
+@dataclass_json
 @dataclass
-class BotInfo(DataClassJSONMixin):
-    command_convs: List[BotCommandConv]
+class BotInfo:
+    command_convs: List[BotCommandConv] = field(
+        metadata=config(field_name="commandConvs")
+    )
 
 
 @dataclass
@@ -2560,29 +2971,41 @@ UnfurlRaw = Union[
 ]
 
 
+@dataclass_json
 @dataclass
-class UnfurlGenericDisplay(DataClassJSONMixin):
-    title: str
-    url: str
-    site_name: str
-    favicon: Optional[UnfurlImageDisplay]
-    media: Optional[UnfurlImageDisplay]
-    publish_time: Optional[int]
-    description: Optional[str]
-    map_info: Optional[UnfurlGenericMapInfo]
+class UnfurlGenericDisplay:
+    title: str = field(metadata=config(field_name="title"))
+    url: str = field(metadata=config(field_name="url"))
+    site_name: str = field(metadata=config(field_name="siteName"))
+    favicon: Optional[UnfurlImageDisplay] = field(metadata=config(field_name="favicon"))
+    media: Optional[UnfurlImageDisplay] = field(metadata=config(field_name="media"))
+    publish_time: Optional[int] = field(metadata=config(field_name="publishTime"))
+    description: Optional[str] = field(metadata=config(field_name="description"))
+    map_info: Optional[UnfurlGenericMapInfo] = field(
+        metadata=config(field_name="mapInfo")
+    )
 
 
+@dataclass_json
 @dataclass
-class UICoinFlipStatus(DataClassJSONMixin):
-    game_id: str
-    phase: UICoinFlipPhase
-    progress_text: str
-    result_text: str
-    commitment_visualization: str
-    reveal_visualization: str
-    participants: List[UICoinFlipParticipant]
-    error_info: Optional[UICoinFlipError]
-    result_info: Optional[UICoinFlipResult]
+class UICoinFlipStatus:
+    game_id: str = field(metadata=config(field_name="gameID"))
+    phase: UICoinFlipPhase = field(metadata=config(field_name="phase"))
+    progress_text: str = field(metadata=config(field_name="progressText"))
+    result_text: str = field(metadata=config(field_name="resultText"))
+    commitment_visualization: str = field(
+        metadata=config(field_name="commitmentVisualization")
+    )
+    reveal_visualization: str = field(metadata=config(field_name="revealVisualization"))
+    participants: List[UICoinFlipParticipant] = field(
+        metadata=config(field_name="participants")
+    )
+    error_info: Optional[UICoinFlipError] = field(
+        metadata=config(field_name="errorInfo")
+    )
+    result_info: Optional[UICoinFlipResult] = field(
+        metadata=config(field_name="resultInfo")
+    )
 
 
 @dataclass
@@ -2645,21 +3068,23 @@ MessageSystem = Union[
 ]
 
 
+@dataclass_json
 @dataclass
-class MessageAttachment(DataClassJSONMixin):
-    object: Asset
-    preview: Optional[Asset]
-    previews: List[Asset]
-    metadata: bytes
-    uploaded: bool
+class MessageAttachment:
+    object: Asset = field(metadata=config(field_name="object"))
+    preview: Optional[Asset] = field(metadata=config(field_name="preview"))
+    previews: List[Asset] = field(metadata=config(field_name="previews"))
+    metadata: bytes = field(metadata=config(field_name="metadata"))
+    uploaded: bool = field(metadata=config(field_name="uploaded"))
 
 
+@dataclass_json
 @dataclass
-class MessageAttachmentUploaded(DataClassJSONMixin):
-    message_id: MessageID
-    object: Asset
-    previews: List[Asset]
-    metadata: bytes
+class MessageAttachmentUploaded:
+    message_id: MessageID = field(metadata=config(field_name="messageID"))
+    object: Asset = field(metadata=config(field_name="object"))
+    previews: List[Asset] = field(metadata=config(field_name="previews"))
+    metadata: bytes = field(metadata=config(field_name="metadata"))
 
 
 @dataclass
@@ -2736,35 +3161,52 @@ HeaderPlaintext = Union[
 ]
 
 
+@dataclass_json
 @dataclass
-class PostFileAttachmentArg(DataClassJSONMixin):
-    conversation_id: ConversationID
-    tlf_name: str
-    visibility: keybase1.TLFVisibility
-    filename: str
-    title: str
-    metadata: bytes
-    identify_behavior: keybase1.TLFIdentifyBehavior
-    caller_preview: Optional[MakePreviewRes]
-    outbox_id: Optional[OutboxID]
-    ephemeral_lifetime: Optional[gregor1.DurationSec]
+class PostFileAttachmentArg:
+    conversation_id: ConversationID = field(
+        metadata=config(field_name="conversationID")
+    )
+    tlf_name: str = field(metadata=config(field_name="tlfName"))
+    visibility: keybase1.TLFVisibility = field(metadata=config(field_name="visibility"))
+    filename: str = field(metadata=config(field_name="filename"))
+    title: str = field(metadata=config(field_name="title"))
+    metadata: bytes = field(metadata=config(field_name="metadata"))
+    identify_behavior: keybase1.TLFIdentifyBehavior = field(
+        metadata=config(field_name="identifyBehavior")
+    )
+    caller_preview: Optional[MakePreviewRes] = field(
+        metadata=config(field_name="callerPreview")
+    )
+    outbox_id: Optional[OutboxID] = field(metadata=config(field_name="outboxID"))
+    ephemeral_lifetime: Optional[gregor1.DurationSec] = field(
+        metadata=config(field_name="ephemeralLifetime")
+    )
 
 
+@dataclass_json
 @dataclass
-class ReactionUpdate(DataClassJSONMixin):
-    reactions: ReactionMap
-    target_msg_id: MessageID
+class ReactionUpdate:
+    reactions: ReactionMap = field(metadata=config(field_name="reactions"))
+    target_msg_id: MessageID = field(metadata=config(field_name="targetMsgID"))
 
 
+@dataclass_json
 @dataclass
-class MessageBoxed(DataClassJSONMixin):
-    version: MessageBoxedVersion
-    server_header: Optional[MessageServerHeader]
-    client_header: MessageClientHeader
-    header_ciphertext: SealedData
-    body_ciphertext: EncryptedData
-    verify_key: bytes
-    key_generation: int
+class MessageBoxed:
+    version: MessageBoxedVersion = field(metadata=config(field_name="version"))
+    server_header: Optional[MessageServerHeader] = field(
+        metadata=config(field_name="serverHeader")
+    )
+    client_header: MessageClientHeader = field(
+        metadata=config(field_name="clientHeader")
+    )
+    header_ciphertext: SealedData = field(
+        metadata=config(field_name="headerCiphertext")
+    )
+    body_ciphertext: EncryptedData = field(metadata=config(field_name="bodyCiphertext"))
+    verify_key: bytes = field(metadata=config(field_name="verifyKey"))
+    key_generation: int = field(metadata=config(field_name="keyGeneration"))
 
 
 @dataclass
@@ -2782,23 +3224,27 @@ class BotInfoResponse__INFO:
 BotInfoResponse = Union[BotInfoResponse__UPTODATE, BotInfoResponse__INFO]
 
 
+@dataclass_json
 @dataclass
-class UnfurlGeneric(DataClassJSONMixin):
-    title: str
-    url: str
-    site_name: str
-    favicon: Optional[Asset]
-    image: Optional[Asset]
-    publish_time: Optional[int]
-    description: Optional[str]
-    map_info: Optional[UnfurlGenericMapInfo]
+class UnfurlGeneric:
+    title: str = field(metadata=config(field_name="title"))
+    url: str = field(metadata=config(field_name="url"))
+    site_name: str = field(metadata=config(field_name="siteName"))
+    favicon: Optional[Asset] = field(metadata=config(field_name="favicon"))
+    image: Optional[Asset] = field(metadata=config(field_name="image"))
+    publish_time: Optional[int] = field(metadata=config(field_name="publishTime"))
+    description: Optional[str] = field(metadata=config(field_name="description"))
+    map_info: Optional[UnfurlGenericMapInfo] = field(
+        metadata=config(field_name="mapInfo")
+    )
 
 
+@dataclass_json
 @dataclass
-class UnfurlGiphy(DataClassJSONMixin):
-    favicon: Optional[Asset]
-    image: Optional[Asset]
-    video: Optional[Asset]
+class UnfurlGiphy:
+    favicon: Optional[Asset] = field(metadata=config(field_name="favicon"))
+    image: Optional[Asset] = field(metadata=config(field_name="image"))
+    video: Optional[Asset] = field(metadata=config(field_name="video"))
 
 
 @dataclass
@@ -2824,55 +3270,70 @@ UnfurlDisplay = Union[
 ]
 
 
+@dataclass_json
 @dataclass
-class UIMessageUnfurlInfo(DataClassJSONMixin):
-    unfurl_message_id: MessageID
-    url: str
-    unfurl: UnfurlDisplay
-    is_collapsed: bool
+class UIMessageUnfurlInfo:
+    unfurl_message_id: MessageID = field(metadata=config(field_name="unfurlMessageID"))
+    url: str = field(metadata=config(field_name="url"))
+    unfurl: UnfurlDisplay = field(metadata=config(field_name="unfurl"))
+    is_collapsed: bool = field(metadata=config(field_name="isCollapsed"))
 
 
+@dataclass_json
 @dataclass
-class NewMessagePayload(DataClassJSONMixin):
-    action: str
-    conv_id: ConversationID
-    message: MessageBoxed
-    inbox_vers: InboxVers
-    topic_type: TopicType
-    unread_update: Optional[UnreadUpdate]
-    max_msgs: List[MessageSummary]
+class NewMessagePayload:
+    action: str = field(metadata=config(field_name="Action"))
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    message: MessageBoxed = field(metadata=config(field_name="message"))
+    inbox_vers: InboxVers = field(metadata=config(field_name="inboxVers"))
+    topic_type: TopicType = field(metadata=config(field_name="topicType"))
+    unread_update: Optional[UnreadUpdate] = field(
+        metadata=config(field_name="unreadUpdate")
+    )
+    max_msgs: List[MessageSummary] = field(metadata=config(field_name="maxMsgs"))
 
 
+@dataclass_json
 @dataclass
-class LoadFlipRes(DataClassJSONMixin):
-    status: UICoinFlipStatus
-    rate_limits: List[RateLimit]
-    identify_failures: List[keybase1.TLFIdentifyFailure]
+class LoadFlipRes:
+    status: UICoinFlipStatus = field(metadata=config(field_name="status"))
+    rate_limits: List[RateLimit] = field(metadata=config(field_name="rateLimits"))
+    identify_failures: List[keybase1.TLFIdentifyFailure] = field(
+        metadata=config(field_name="identifyFailures")
+    )
 
 
+@dataclass_json
 @dataclass
-class ReactionUpdateNotif(DataClassJSONMixin):
-    conv_id: ConversationID
-    user_reacjis: keybase1.UserReacjis
-    reaction_updates: List[ReactionUpdate]
+class ReactionUpdateNotif:
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    user_reacjis: keybase1.UserReacjis = field(
+        metadata=config(field_name="userReacjis")
+    )
+    reaction_updates: List[ReactionUpdate] = field(
+        metadata=config(field_name="reactionUpdates")
+    )
 
 
+@dataclass_json
 @dataclass
-class ThreadViewBoxed(DataClassJSONMixin):
-    messages: List[MessageBoxed]
-    pagination: Optional[Pagination]
+class ThreadViewBoxed:
+    messages: List[MessageBoxed] = field(metadata=config(field_name="messages"))
+    pagination: Optional[Pagination] = field(metadata=config(field_name="pagination"))
 
 
+@dataclass_json
 @dataclass
-class GetMessagesRemoteRes(DataClassJSONMixin):
-    msgs: List[MessageBoxed]
-    rate_limit: Optional[RateLimit]
+class GetMessagesRemoteRes:
+    msgs: List[MessageBoxed] = field(metadata=config(field_name="msgs"))
+    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
 
 
+@dataclass_json
 @dataclass
-class GetBotInfoRes(DataClassJSONMixin):
-    response: BotInfoResponse
-    rate_limit: Optional[RateLimit]
+class GetBotInfoRes:
+    response: BotInfoResponse = field(metadata=config(field_name="response"))
+    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
 
 
 @dataclass
@@ -2896,42 +3357,58 @@ class Unfurl__GIPHY:
 Unfurl = Union[Unfurl__GENERIC, Unfurl__YOUTUBE, Unfurl__GIPHY]
 
 
+@dataclass_json
 @dataclass
-class GetThreadRemoteRes(DataClassJSONMixin):
-    thread: ThreadViewBoxed
-    members_type: ConversationMembersType
-    visibility: keybase1.TLFVisibility
-    rate_limit: Optional[RateLimit]
+class GetThreadRemoteRes:
+    thread: ThreadViewBoxed = field(metadata=config(field_name="thread"))
+    members_type: ConversationMembersType = field(
+        metadata=config(field_name="membersType")
+    )
+    visibility: keybase1.TLFVisibility = field(metadata=config(field_name="visibility"))
+    rate_limit: Optional[RateLimit] = field(metadata=config(field_name="rateLimit"))
 
 
+@dataclass_json
 @dataclass
-class UnfurlResult(DataClassJSONMixin):
-    unfurl: Unfurl
-    url: str
+class UnfurlResult:
+    unfurl: Unfurl = field(metadata=config(field_name="unfurl"))
+    url: str = field(metadata=config(field_name="url"))
 
 
+@dataclass_json
 @dataclass
-class MessageUnfurl(DataClassJSONMixin):
-    unfurl: UnfurlResult
-    message_id: MessageID
+class MessageUnfurl:
+    unfurl: UnfurlResult = field(metadata=config(field_name="unfurl"))
+    message_id: MessageID = field(metadata=config(field_name="messageID"))
 
 
+@dataclass_json
 @dataclass
-class MsgContent(DataClassJSONMixin):
-    type: str
-    text: Optional[MessageText]
-    attachment: Optional[MessageAttachment]
-    edit: Optional[MessageEdit]
-    reaction: Optional[MessageReaction]
-    delete: Optional[MessageDelete]
-    metadata: Optional[MessageConversationMetadata]
-    headline: Optional[MessageHeadline]
-    attachment_uploaded: Optional[MessageAttachmentUploaded]
-    system: Optional[MessageSystem]
-    send_payment: Optional[MessageSendPayment]
-    request_payment: Optional[MessageRequestPayment]
-    unfurl: Optional[MessageUnfurl]
-    flip: Optional[MsgFlipContent]
+class MsgContent:
+    type_name: str = field(metadata=config(field_name="type"))
+    text: Optional[MessageText] = field(metadata=config(field_name="text"))
+    attachment: Optional[MessageAttachment] = field(
+        metadata=config(field_name="attachment")
+    )
+    edit: Optional[MessageEdit] = field(metadata=config(field_name="edit"))
+    reaction: Optional[MessageReaction] = field(metadata=config(field_name="reaction"))
+    delete: Optional[MessageDelete] = field(metadata=config(field_name="delete"))
+    metadata: Optional[MessageConversationMetadata] = field(
+        metadata=config(field_name="metadata")
+    )
+    headline: Optional[MessageHeadline] = field(metadata=config(field_name="headline"))
+    attachment_uploaded: Optional[MessageAttachmentUploaded] = field(
+        metadata=config(field_name="attachment_uploaded")
+    )
+    system: Optional[MessageSystem] = field(metadata=config(field_name="system"))
+    send_payment: Optional[MessageSendPayment] = field(
+        metadata=config(field_name="send_payment")
+    )
+    request_payment: Optional[MessageRequestPayment] = field(
+        metadata=config(field_name="request_payment")
+    )
+    unfurl: Optional[MessageUnfurl] = field(metadata=config(field_name="unfurl"))
+    flip: Optional[MsgFlipContent] = field(metadata=config(field_name="flip"))
 
 
 @dataclass
@@ -3057,61 +3534,81 @@ MessageBody = Union[
 ]
 
 
+@dataclass_json
 @dataclass
-class MsgSummary(DataClassJSONMixin):
-    id: MessageID
-    conversation_id: str
-    channel: ChatChannel
-    sender: MsgSender
-    sent_at: int
-    sent_at_ms: int
-    content: MsgContent
-    prev: List[MessagePreviousPointer]
-    unread: bool
-    revoked_device: Optional[bool]
-    offline: Optional[bool]
-    kbfs_encrypted: Optional[bool]
-    is_ephemeral: Optional[bool]
-    is_ephemeral_expired: Optional[bool]
-    e_time: Optional[gregor1.Time]
-    reactions: Optional[ReactionMap]
-    has_pairwise_macs: Optional[bool]
-    at_mention_usernames: Optional[List[str]]
-    channel_mention: Optional[str]
-    channel_name_mentions: Optional[List[UIChannelNameMention]]
+class MsgSummary:
+    id: MessageID = field(metadata=config(field_name="id"))
+    conv_id: str = field(metadata=config(field_name="conversation_id"))
+    channel: ChatChannel = field(metadata=config(field_name="channel"))
+    sender: MsgSender = field(metadata=config(field_name="sender"))
+    sent_at: int = field(metadata=config(field_name="sent_at"))
+    sent_at_ms: int = field(metadata=config(field_name="sent_at_ms"))
+    content: MsgContent = field(metadata=config(field_name="content"))
+    prev: List[MessagePreviousPointer] = field(metadata=config(field_name="prev"))
+    unread: bool = field(metadata=config(field_name="unread"))
+    revoked_device: Optional[bool] = field(metadata=config(field_name="revoked_device"))
+    offline: Optional[bool] = field(metadata=config(field_name="offline"))
+    kbfs_encrypted: Optional[bool] = field(metadata=config(field_name="kbfs_encrypted"))
+    is_ephemeral: Optional[bool] = field(metadata=config(field_name="is_ephemeral"))
+    is_ephemeral_expired: Optional[bool] = field(
+        metadata=config(field_name="is_ephemeral_expired")
+    )
+    e_time: Optional[gregor1.Time] = field(metadata=config(field_name="e_time"))
+    reactions: Optional[ReactionMap] = field(metadata=config(field_name="reactions"))
+    has_pairwise_macs: Optional[bool] = field(
+        metadata=config(field_name="has_pairwise_macs")
+    )
+    at_mention_usernames: Optional[List[str]] = field(
+        metadata=config(field_name="at_mention_usernames")
+    )
+    channel_mention: Optional[str] = field(
+        metadata=config(field_name="channel_mention")
+    )
+    channel_name_mentions: Optional[List[UIChannelNameMention]] = field(
+        metadata=config(field_name="channel_name_mentions")
+    )
 
 
+@dataclass_json
 @dataclass
-class BodyPlaintextV1(DataClassJSONMixin):
-    message_body: MessageBody
+class BodyPlaintextV1:
+    message_body: MessageBody = field(metadata=config(field_name="messageBody"))
 
 
+@dataclass_json
 @dataclass
-class BodyPlaintextV2(DataClassJSONMixin):
-    message_body: MessageBody
-    mi: BodyPlaintextMetaInfo
+class BodyPlaintextV2:
+    message_body: MessageBody = field(metadata=config(field_name="messageBody"))
+    mi: BodyPlaintextMetaInfo = field(metadata=config(field_name="mi"))
 
 
+@dataclass_json
 @dataclass
-class MessagePlaintext(DataClassJSONMixin):
-    client_header: MessageClientHeader
-    message_body: MessageBody
-    supersedes_outbox_id: Optional[OutboxID]
+class MessagePlaintext:
+    client_header: MessageClientHeader = field(
+        metadata=config(field_name="clientHeader")
+    )
+    message_body: MessageBody = field(metadata=config(field_name="messageBody"))
+    supersedes_outbox_id: Optional[OutboxID] = field(
+        metadata=config(field_name="supersedesOutboxID")
+    )
 
 
+@dataclass_json
 @dataclass
-class Message(DataClassJSONMixin):
-    msg: Optional[MsgSummary]
-    error: Optional[str]
+class Message:
+    msg: Optional[MsgSummary] = field(metadata=config(field_name="msg"))
+    error: Optional[str] = field(metadata=config(field_name="error"))
 
 
+@dataclass_json
 @dataclass
-class MsgNotification(DataClassJSONMixin):
-    type: str
-    source: str
-    msg: Optional[MsgSummary]
-    error: Optional[str]
-    pagination: Optional[UIPagination]
+class MsgNotification:
+    type: str = field(metadata=config(field_name="type"))
+    source: str = field(metadata=config(field_name="source"))
+    msg: Optional[MsgSummary] = field(metadata=config(field_name="msg"))
+    error: Optional[str] = field(metadata=config(field_name="error"))
+    pagination: Optional[UIPagination] = field(metadata=config(field_name="pagination"))
 
 
 @dataclass
@@ -3188,10 +3685,15 @@ BodyPlaintext = Union[
 ]
 
 
+@dataclass_json
 @dataclass
-class Thread(DataClassJSONMixin):
-    messages: List[Message]
-    pagination: Optional[Pagination]
-    offline: Optional[bool]
-    identify_failures: Optional[List[keybase1.TLFIdentifyFailure]]
-    ratelimits: Optional[List[RateLimitRes]]
+class Thread:
+    messages: List[Message] = field(metadata=config(field_name="messages"))
+    pagination: Optional[Pagination] = field(metadata=config(field_name="pagination"))
+    offline: Optional[bool] = field(metadata=config(field_name="offline"))
+    identify_failures: Optional[List[keybase1.TLFIdentifyFailure]] = field(
+        metadata=config(field_name="identify_failures")
+    )
+    rate_limits: Optional[List[RateLimitRes]] = field(
+        metadata=config(field_name="ratelimits")
+    )

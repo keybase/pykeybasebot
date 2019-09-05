@@ -15,7 +15,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Dict, List, Optional, Union
 
-from mashumaro import DataClassJSONMixin
+from dataclasses_json import config, dataclass_json
 from typing_extensions import Literal
 
 DurationMsec = int
@@ -31,127 +31,150 @@ SessionID = str
 SessionToken = str
 
 
+@dataclass_json
 @dataclass
-class AuthResult(DataClassJSONMixin):
-    uid: UID
-    username: str
-    sid: SessionID
-    is_admin: bool
+class AuthResult:
+    uid: UID = field(metadata=config(field_name="uid"))
+    username: str = field(metadata=config(field_name="username"))
+    sid: SessionID = field(metadata=config(field_name="sid"))
+    is_admin: bool = field(metadata=config(field_name="isAdmin"))
 
 
+@dataclass_json
 @dataclass
-class TimeOrOffset(DataClassJSONMixin):
-    time: Time
-    offset: DurationMsec
+class TimeOrOffset:
+    time: Time = field(metadata=config(field_name="time"))
+    offset: DurationMsec = field(metadata=config(field_name="offset"))
 
 
+@dataclass_json
 @dataclass
-class Metadata(DataClassJSONMixin):
-    uid: UID
-    msg_id: MsgID
-    ctime: Time
-    device_id: DeviceID
-    in_band_msg_type: int
+class Metadata:
+    uid: UID = field(metadata=config(field_name="uid"))
+    msg_id: MsgID = field(metadata=config(field_name="msgID"))
+    ctime: Time = field(metadata=config(field_name="ctime"))
+    device_id: DeviceID = field(metadata=config(field_name="deviceID"))
+    in_band_msg_type: int = field(metadata=config(field_name="inBandMsgType"))
 
 
+@dataclass_json
 @dataclass
-class ReminderID(DataClassJSONMixin):
-    uid: UID
-    msg_id: MsgID
-    seqno: int
+class ReminderID:
+    uid: UID = field(metadata=config(field_name="uid"))
+    msg_id: MsgID = field(metadata=config(field_name="msgID"))
+    seqno: int = field(metadata=config(field_name="seqno"))
 
 
+@dataclass_json
 @dataclass
-class OutOfBandMessage(DataClassJSONMixin):
-    uid: UID
-    system: System
-    body: Body
+class OutOfBandMessage:
+    uid: UID = field(metadata=config(field_name="uid"))
+    system: System = field(metadata=config(field_name="system"))
+    body: Body = field(metadata=config(field_name="body"))
 
 
+@dataclass_json
 @dataclass
-class ConnectedDevice(DataClassJSONMixin):
-    device_id: DeviceID
-    device_type: str
-    device_platform: str
-    user_agent: str
+class ConnectedDevice:
+    device_id: DeviceID = field(metadata=config(field_name="deviceID"))
+    device_type: str = field(metadata=config(field_name="deviceType"))
+    device_platform: str = field(metadata=config(field_name="devicePlatform"))
+    user_agent: str = field(metadata=config(field_name="userAgent"))
 
 
+@dataclass_json
 @dataclass
-class StateSyncMessage(DataClassJSONMixin):
-    md: Metadata
+class StateSyncMessage:
+    md: Metadata = field(metadata=config(field_name="md"))
 
 
+@dataclass_json
 @dataclass
-class MsgRange(DataClassJSONMixin):
-    end_time: TimeOrOffset
-    category: Category
-    skip_msg_i_ds: List[MsgID]
+class MsgRange:
+    end_time: TimeOrOffset = field(metadata=config(field_name="endTime"))
+    category: Category = field(metadata=config(field_name="category"))
+    skip_msg_i_ds: List[MsgID] = field(metadata=config(field_name="skipMsgIDs"))
 
 
+@dataclass_json
 @dataclass
-class Item(DataClassJSONMixin):
-    category: Category
-    dtime: TimeOrOffset
-    remind_times: List[TimeOrOffset]
-    body: Body
+class Item:
+    category: Category = field(metadata=config(field_name="category"))
+    dtime: TimeOrOffset = field(metadata=config(field_name="dtime"))
+    remind_times: List[TimeOrOffset] = field(metadata=config(field_name="remindTimes"))
+    body: Body = field(metadata=config(field_name="body"))
 
 
+@dataclass_json
 @dataclass
-class ConnectedUser(DataClassJSONMixin):
-    uid: UID
-    devices: List[ConnectedDevice]
+class ConnectedUser:
+    uid: UID = field(metadata=config(field_name="uid"))
+    devices: List[ConnectedDevice] = field(metadata=config(field_name="devices"))
 
 
+@dataclass_json
 @dataclass
-class Dismissal(DataClassJSONMixin):
-    msg_i_ds: List[MsgID]
-    ranges: List[MsgRange]
+class Dismissal:
+    msg_i_ds: List[MsgID] = field(metadata=config(field_name="msgIDs"))
+    ranges: List[MsgRange] = field(metadata=config(field_name="ranges"))
 
 
+@dataclass_json
 @dataclass
-class ItemAndMetadata(DataClassJSONMixin):
-    md: Optional[Metadata]
-    item: Optional[Item]
+class ItemAndMetadata:
+    md: Optional[Metadata] = field(metadata=config(field_name="md"))
+    item: Optional[Item] = field(metadata=config(field_name="item"))
 
 
+@dataclass_json
 @dataclass
-class State(DataClassJSONMixin):
-    items: List[ItemAndMetadata]
+class State:
+    items: List[ItemAndMetadata] = field(metadata=config(field_name="items"))
 
 
+@dataclass_json
 @dataclass
-class StateUpdateMessage(DataClassJSONMixin):
-    md: Metadata
-    creation: Optional[Item]
-    dismissal: Optional[Dismissal]
+class StateUpdateMessage:
+    md: Metadata = field(metadata=config(field_name="md"))
+    creation: Optional[Item] = field(metadata=config(field_name="creation"))
+    dismissal: Optional[Dismissal] = field(metadata=config(field_name="dismissal"))
 
 
+@dataclass_json
 @dataclass
-class Reminder(DataClassJSONMixin):
-    item: ItemAndMetadata
-    seqno: int
-    remind_time: Time
+class Reminder:
+    item: ItemAndMetadata = field(metadata=config(field_name="item"))
+    seqno: int = field(metadata=config(field_name="seqno"))
+    remind_time: Time = field(metadata=config(field_name="remindTime"))
 
 
+@dataclass_json
 @dataclass
-class InBandMessage(DataClassJSONMixin):
-    state_update: Optional[StateUpdateMessage]
-    state_sync: Optional[StateSyncMessage]
+class InBandMessage:
+    state_update: Optional[StateUpdateMessage] = field(
+        metadata=config(field_name="stateUpdate")
+    )
+    state_sync: Optional[StateSyncMessage] = field(
+        metadata=config(field_name="stateSync")
+    )
 
 
+@dataclass_json
 @dataclass
-class ReminderSet(DataClassJSONMixin):
-    reminders: List[Reminder]
-    more_reminders_ready: bool
+class ReminderSet:
+    reminders: List[Reminder] = field(metadata=config(field_name="reminders"))
+    more_reminders_ready: bool = field(metadata=config(field_name="moreRemindersReady"))
 
 
+@dataclass_json
 @dataclass
-class Message(DataClassJSONMixin):
-    oobm: Optional[OutOfBandMessage]
-    ibm: Optional[InBandMessage]
+class Message:
+    oobm: Optional[OutOfBandMessage] = field(metadata=config(field_name="oobm"))
+    ibm: Optional[InBandMessage] = field(metadata=config(field_name="ibm"))
 
 
+@dataclass_json
 @dataclass
-class SyncResult(DataClassJSONMixin):
-    msgs: List[InBandMessage]
-    hash: bytes
+class SyncResult:
+    msgs: List[InBandMessage] = field(metadata=config(field_name="msgs"))
+    hash: bytes = field(metadata=config(field_name="hash"))
