@@ -11,7 +11,8 @@ import asyncio
 import logging
 import os
 
-from pykeybasebot import Bot, EventType, PaymentStatusStr
+import pykeybasebot.types.stellar1 as stellar1
+from pykeybasebot import Bot, EventType
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -30,7 +31,10 @@ class Handler:
     async def __call__(self, bot, event):
         if event.type != EventType.WALLET:
             return
-        if event.notification.statusDescription != PaymentStatusStr.COMPLETED:
+        if (
+            event.notification.statusDescription
+            != stellar1.PaymentStatusStrings.COMPLETED.value
+        ):
             return
 
         usd = parse_usd_amount(event.notification.amountDescription)
