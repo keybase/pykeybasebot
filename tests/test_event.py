@@ -4,9 +4,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
+import pykeybasebot.types.chat1 as chat1
+import pykeybasebot.types.stellar1 as stellar1
 import pytest
 from pykeybasebot import EventType, KbEvent, Source
-from pykeybasebot.types.stellar1 import PaymentStatusStrings
 
 
 @pytest.fixture()
@@ -44,16 +45,25 @@ def fixture_path():
 #     assert reply_channel == {"name": "someoneelse,yourbot"}
 
 
-# def test_reaction(fixture_path):
-#     with open(f"{fixture_path}/reaction.json") as json_file:
-#         data = json.load(json_file)
+def test_reaction(fixture_path):
+    with open(f"{fixture_path}/reaction.json") as json_file:
+        data = json.load(json_file)
 
-#     event = KbEvent.from_dict(data)
+    print(data)
+    print(chat1.MessageType.REACTION.value)
+    event = KbEvent.from_dict(data)
+    print(event.msg.content.type_name)
 
-#     assert event.msg.content.type == ContentType.REACTION
-#     assert event.msg.content.reaction.b == ":sunglasses:"
-#     reply_channel = event.msg.channel.replyable_dict()
-#     assert reply_channel == {"name": "someoneelse,yourbot"}
+    assert event.msg.content.type_name == chat1.MessageTypeStrings.REACTION.value
+    assert event.msg.content.reaction.body == ":sunglasses:"
+    reply_channel = event.msg.channel.to_dict()
+    assert reply_channel == {
+        "name": "someoneelse,yourbot",
+        "members_type": "impteamnative",
+        "public": False,
+        "topic_name": None,
+        "topic_type": "chat",
+    }
 
 
 def test_payment(fixture_path):
@@ -67,5 +77,5 @@ def test_payment(fixture_path):
     assert event.notification.summary.amount_description == "1 XLM"
     assert (
         event.notification.summary.status_description
-        == PaymentStatusStrings.PENDING.value
+        == stellar1.PaymentStatusStrings.PENDING.value
     )
