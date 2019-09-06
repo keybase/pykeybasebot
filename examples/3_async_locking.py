@@ -47,11 +47,11 @@ class Handler:
             await alert(bot, 5, channel)
 
 
-listen_options = {"filter-channel": {"name": "nsmith9,nathunsmitty"}}
+listen_options = {"filter-channel": {"name": "yourbot,someoneelse"}}
 
 loop = asyncio.get_event_loop()
 bot = Bot(
-    username="nsmith9",
+    username="yourbot",
     paperkey=os.environ["KEYBASE_PAPERKEY"],
     handler=Handler(use_lock=False),
     loop=loop,

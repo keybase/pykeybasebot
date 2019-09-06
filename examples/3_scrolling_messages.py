@@ -29,8 +29,7 @@ def rotate(message):
 
 async def scrolling_message(message, before="", after=""):
     channel = chat1.ChatChannel(
-        # name="yourcompany.marketing", topic_name="lunchtalk", members_type="team"
-        name="nsmith9,nathunsmitty"
+        name="yourcompany.marketing", topic_name="lunchtalk", members_type="team"
     )
 
     def noop_handler(*args, **kwargs):

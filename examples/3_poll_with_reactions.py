@@ -21,9 +21,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 async def make_a_poll():
     channel = chat1.ChatChannel(
-        name="nathunsmitty,nsmith9",
-        # "topic_name": "lunchtalk",
-        # "members_type": "team",
+        name="yourcompany.marketing", topic_name="lunchtalk", members_type="team"
     )
 
     def noop_handler(*args, **kwargs):

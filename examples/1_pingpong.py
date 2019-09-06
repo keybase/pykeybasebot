@@ -29,16 +29,16 @@ class Handler:
 
 listen_options = {
     "filter-channels": [
-        {"name": "nsmith9,nathunsmitty"},
-        # {
-        #     "name": "yourcompany.marketing",
-        #     "topic_name": "lunchtalk",
-        #     "members_type": "team",
-        # },
+        {"name": "yourbot,someoneelse"},
+        {
+            "name": "yourcompany.marketing",
+            "topic_name": "lunchtalk",
+            "members_type": "team",
+        },
     ]
 }
 
 bot = Bot(
-    username="nsmith9", paperkey=os.environ["KEYBASE_PAPERKEY"], handler=Handler()
+    username="yourbot", paperkey=os.environ["KEYBASE_PAPERKEY"], handler=Handler()
 )
 asyncio.run(bot.start(listen_options))

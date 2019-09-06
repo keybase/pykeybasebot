@@ -24,7 +24,7 @@ async def handler(bot, event):
     await bot.chat.react(channel, msg_id, ":clap:")
 
 
-listen_options = {"filter-channel": {"name": "nsmith9,nathunsmitty"}}
+listen_options = {"filter-channel": {"name": "yourbot,someoneelse"}}
 
-bot = Bot(username="nsmith9", paperkey=os.environ["KEYBASE_PAPERKEY"], handler=handler)
+bot = Bot(username="yourbot", paperkey=os.environ["KEYBASE_PAPERKEY"], handler=handler)
 asyncio.run(bot.start(listen_options))

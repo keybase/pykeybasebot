@@ -82,9 +82,9 @@ class BasicBot:
 ##############################
 
 pingbot = BasicBot(
-    botname="nsmith9",
+    botname="yourbot",
     paperkey=os.environ["KEYBASE_PAPERKEY"],
-    channels=["nathunsmitty,nsmith9"],
+    channels=["nathunsmitty,yourbot"],
 )
 
 
