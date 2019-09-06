@@ -22,7 +22,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 async def alert(bot, wait_sec, channel):
     await asyncio.sleep(wait_sec)
-    await bot.chat.send(channel.to_dict(), f"waited: {wait_sec} and now... ALERT!")
+    await bot.chat.send(channel, f"waited: {wait_sec} and now... ALERT!")
 
 
 class Handler:

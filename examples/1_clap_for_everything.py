@@ -11,12 +11,12 @@ import logging
 import os
 
 import pykeybasebot.types.chat1 as chat1
-from pykeybasebot import Bot, KbEvent
+from pykeybasebot import Bot
 
 logging.basicConfig(level=logging.DEBUG)
 
 
-async def handler(bot: Bot, event: KbEvent):
+async def handler(bot, event):
     if event.msg.content.type_name != chat1.MessageTypeStrings.TEXT.value:
         return
     channel = event.msg.channel

@@ -14,6 +14,7 @@ import asyncio
 import logging
 import time
 
+import pykeybasebot.types.chat1 as chat1
 from pykeybasebot import Bot
 
 logging.basicConfig(level=logging.DEBUG)
@@ -27,11 +28,9 @@ def rotate(message):
 
 
 async def scrolling_message(message, before="", after=""):
-    channel = {
-        "name": "yourcompany.marketing",
-        "topic_name": "lunchtalk",
-        "members_type": "team",
-    }
+    channel = chat1.ChatChannel(
+        name="yourcompany.marketing", topic_name="lunchtalk", members_type="team"
+    )
 
     def noop_handler(*args, **kwargs):
         pass

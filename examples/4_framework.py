@@ -17,6 +17,7 @@ import logging
 import os
 
 import pykeybasebot
+from pykeybasebot.types import chat1
 
 logging.basicConfig(level=logging.ERROR)
 
@@ -88,7 +89,7 @@ pingbot = BasicBot(
 
 
 def is_a_ping(basic_bot, event):
-    if event.msg.content.type != pykeybasebot.ContentType.TEXT:
+    if event.msg.content.type_name != chat1.MessageTypeStrings.TEXT.value:
         return False
     return event.msg.content.text.body == "ping"
 
