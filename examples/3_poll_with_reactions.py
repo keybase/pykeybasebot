@@ -32,8 +32,8 @@ async def make_a_poll():
     # you don't need to pass in a username or paperkey if you're already logged in
     bot = Bot(handler=noop_handler)
 
-    resp = await bot.chat.send(channel, "what are y'all feeling for lunch?")
-    msg_id = resp["result"]["id"]
+    result = await bot.chat.send(channel, "what are y'all feeling for lunch?")
+    msg_id = result.message_id
 
     await asyncio.gather(
         bot.chat.react(channel, msg_id, ":burrito:"),
