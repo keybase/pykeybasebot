@@ -14,16 +14,15 @@ import asyncio
 import logging
 import os
 
-from pykeybasebot import Bot, ContentType
+import pykeybasebot.types.chat1 as chat1
+from pykeybasebot import Bot
 
 logging.basicConfig(level=logging.DEBUG)
 
 
 async def alert(bot, wait_sec, channel):
     await asyncio.sleep(wait_sec)
-    await bot.chat.send(
-        channel.replyable_dict(), f"waited: {wait_sec} and now... ALERT!"
-    )
+    await bot.chat.send(channel, f"waited: {wait_sec} and now... ALERT!")
 
 
 class Handler:
@@ -32,7 +31,7 @@ class Handler:
         self.lock = asyncio.Lock()
 
     async def __call__(self, bot, event):
-        if event.msg.content.type != ContentType.TEXT:
+        if event.msg.content.type_name != chat1.MessageTypeStrings.TEXT.value:
             return
         channel = event.msg.channel
         if event.msg.content.text.body != "trigger":

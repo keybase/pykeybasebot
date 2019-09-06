@@ -12,18 +12,19 @@ import asyncio
 import logging
 import os
 
-from pykeybasebot import Bot, ContentType
+import pykeybasebot.types.chat1 as chat1
+from pykeybasebot import Bot
 
 logging.basicConfig(level=logging.DEBUG)
 
 
 class Handler:
     async def __call__(self, bot, event):
-        if event.msg.content.type != ContentType.TEXT:
+        if event.msg.content.type_name != chat1.MessageTypeStrings.TEXT.value:
             return
         if event.msg.content.text.body == "🌴ping🌴":
             channel = event.msg.channel
-            await bot.chat.send(channel.replyable_dict(), "🍹PONG!🍹")
+            await bot.chat.send(channel, "🍹PONG!🍹")
 
 
 listen_options = {

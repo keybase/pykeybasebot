@@ -12,7 +12,7 @@ class KeybaseNotConnectedError(Exception):
     pass
 
 
-async def kblisten(keybase_cli, options, loop=None):
+async def kblisten(keybase_cli: str, options, loop=None):
     command = shlex.split(keybase_cli) + ["chat", "api-listen"]
     if options.get("local"):
         command.append("--local")
@@ -54,7 +54,7 @@ async def kblisten(keybase_cli, options, loop=None):
             pass
 
 
-async def kbsubmit(keybase_cli, command, input_data=None, **kwargs):
+async def kbsubmit(keybase_cli: str, command: str, input_data=None, **kwargs):
     cmd_list = shlex.split(keybase_cli) + shlex.split(command)
     process = await asyncio.create_subprocess_exec(
         *cmd_list,
@@ -75,6 +75,9 @@ async def kbsubmit(keybase_cli, command, input_data=None, **kwargs):
 
     response = stdout.decode("utf-8")
     try:
-        return json.loads(response)
+        parsed_response = json.loads(response)
+        if "error" in parsed_response:
+            raise Exception(parsed_response["error"])
+        return parsed_response
     except json.decoder.JSONDecodeError:
         return response

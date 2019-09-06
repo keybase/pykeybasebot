@@ -14,16 +14,15 @@ import asyncio
 import logging
 
 from pykeybasebot import Bot
+from pykeybasebot.types import chat1
 
 logging.basicConfig(level=logging.DEBUG)
 
 
 async def make_a_poll():
-    channel = {
-        "name": "yourcompany.marketing",
-        "topic_name": "lunchtalk",
-        "members_type": "team",
-    }
+    channel = chat1.ChatChannel(
+        name="yourcompany.marketing", topic_name="lunchtalk", members_type="team"
+    )
 
     def noop_handler(*args, **kwargs):
         pass
@@ -31,8 +30,8 @@ async def make_a_poll():
     # you don't need to pass in a username or paperkey if you're already logged in
     bot = Bot(handler=noop_handler)
 
-    resp = await bot.chat.send(channel, "what are y'all feeling for lunch?")
-    msg_id = resp["result"]["id"]
+    result = await bot.chat.send(channel, "what are y'all feeling for lunch?")
+    msg_id = result.message_id
 
     await asyncio.gather(
         bot.chat.react(channel, msg_id, ":burrito:"),

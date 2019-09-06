@@ -10,17 +10,18 @@ import asyncio
 import logging
 import os
 
-from pykeybasebot import Bot, ContentType
+import pykeybasebot.types.chat1 as chat1
+from pykeybasebot import Bot
 
 logging.basicConfig(level=logging.DEBUG)
 
 
 async def handler(bot, event):
-    if event.msg.content.type != ContentType.TEXT:
+    if event.msg.content.type_name != chat1.MessageTypeStrings.TEXT.value:
         return
     channel = event.msg.channel
     msg_id = event.msg.id
-    await bot.chat.react(channel.replyable_dict(), msg_id, ":clap:")
+    await bot.chat.react(channel, msg_id, ":clap:")
 
 
 listen_options = {"filter-channel": {"name": "yourbot,someoneelse"}}

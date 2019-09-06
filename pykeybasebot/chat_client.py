@@ -1,50 +1,63 @@
 import json
 
+from .types import chat1, stellar1
+
 
 class ChatClient:
     def __init__(self, bot):
         self.bot = bot
 
-    async def send(self, channel_dict, message):
+    async def send(self, channel: chat1.ChatChannel, message: str) -> chat1.SendRes:
         await self.bot.ensure_initialized()
-        return await self.execute(
+        res = await self.execute(
             {
                 "method": "send",
                 "params": {
-                    "options": {"channel": channel_dict, "message": {"body": message}}
+                    "options": {
+                        "channel": channel.to_dict(),
+                        "message": {"body": message},
+                    }
                 },
             }
         )
+        return chat1.SendRes.from_dict(res)
 
-    async def react(self, channel_dict, message_id, reaction):
+    async def react(
+        self, channel: chat1.ChatChannel, message_id: chat1.MessageID, reaction: str
+    ) -> chat1.SendRes:
         await self.bot.ensure_initialized()
-        return await self.execute(
+        res = await self.execute(
             {
                 "method": "reaction",
                 "params": {
                     "options": {
-                        "channel": channel_dict,
+                        "channel": channel.to_dict(),
                         "message_id": message_id,
                         "message": {"body": reaction},
                     }
                 },
             }
         )
+        return chat1.SendRes.from_dict(res)
 
-    async def edit(self, channel_dict, message_id, message):
+    async def edit(
+        self, channel: chat1.ChatChannel, message_id: chat1.MessageID, message: str
+    ) -> chat1.SendRes:
         await self.bot.ensure_initialized()
-        return await self.execute(
+        res = await self.execute(
             {
                 "method": "edit",
                 "params": {
                     "options": {
-                        "channel": channel_dict,
+                        "channel": channel.to_dict(),
                         "message_id": message_id,
                         "message": {"body": message},
                     }
                 },
             }
         )
+        return chat1.SendRes.from_dict(res)
 
     async def execute(self, command):
-        return await self.bot.submit("chat api", json.dumps(command).encode("utf-8"))
+        resp = await self.bot.submit("chat api", json.dumps(command).encode("utf-8"))
+        return resp["result"]
