@@ -17,9 +17,7 @@ class ChatClient:
         )
 
     async def react(self, channel_dict, message_id, reaction):
-        print("react reax")
         await self.bot.ensure_initialized()
-        print("init")
         return await self.execute(
             {
                 "method": "reaction",
@@ -49,5 +47,4 @@ class ChatClient:
         )
 
     async def execute(self, command):
-        print(json.dumps(command).encode("utf-8"))
         return await self.bot.submit("chat api", json.dumps(command).encode("utf-8"))
