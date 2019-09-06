@@ -78,9 +78,35 @@ poetry run python -m pytest
 
 Tests are admittedly weak. You could change that!
 
+### Types
+
+Most of the types the bot uses are generated from definitions defined in the [`protocol/`](https://github.com/keybase/client/tree/master/protocol) directory inside the Keybase client repo. This ensures that the types that the bot uses are consistent across bots and always up to date with the output of the API.
+
+To build the types for the Python bot, you'll need to clone the `client` repo. This requires [Go](https://golang.org/) and your [GOPATH](https://github.com/golang/go/wiki/SettingGOPATH) to be set up.
+
+```shell
+go get github.com/keybase/client/go/keybase
+```
+
+and install the necessary dependencies for compiling the protocol files. This requires [node.js](https://nodejs.org) and [Yarn](https://yarnpkg.com).
+
+```shell
+cd client/protocol
+yarn install
+```
+
+Then you can generate the types by using the provided Makefile in this repo.
+
+```shell
+cd path/to/keybase-bot
+make
+```
+
+Should you need to remove all the types for some reason, you can run `make clean`.
+
 ### Publishing
 
-Poetry can build and publish packages to PyPI. We've run into some issues with uploading to PyPI and Poetry, though, so for now we're reccomending building with Poetry and uploading with Twine.
+Poetry can build and publish packages to PyPI. We've run into some issues with uploading to PyPI and Poetry, though, so for now we're recommending building with Poetry and uploading with Twine.
 
 ```shell
 poetry build
