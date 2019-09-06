@@ -31,7 +31,6 @@ class Handler:
     async def __call__(self, bot, event):
         if event.type != EventType.WALLET:
             return
-        print(event.notification)
         if (
             event.notification.summary.status_description
             != stellar1.PaymentStatusStrings.COMPLETED.value
