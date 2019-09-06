@@ -62,7 +62,7 @@ class _botlifecycle:
 class Bot:
     def __init__(
         self,
-        handler: Callable[[Any, KbEvent], None],
+        handler,
         username: Optional[str] = None,
         paperkey: Optional[str] = None,
         loop=None,
