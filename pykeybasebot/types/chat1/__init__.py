@@ -17,11 +17,12 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Dict, List, Optional, Union
 
+from dataclasses_json import config, dataclass_json
+from typing_extensions import Literal
+
 import pykeybasebot.types.gregor1 as gregor1
 import pykeybasebot.types.keybase1 as keybase1
 import pykeybasebot.types.stellar1 as stellar1
-from dataclasses_json import config, dataclass_json
-from typing_extensions import Literal
 
 
 @dataclass_json
@@ -37,8 +38,10 @@ class RateLimitRes:
 @dataclass
 class ChatChannel:
     name: str = field(metadata=config(field_name="name"))
-    public: bool = field(metadata=config(field_name="public"))
-    members_type: str = field(metadata=config(field_name="members_type"))
+    public: Optional[bool] = field(default=None, metadata=config(field_name="public"))
+    members_type: Optional[str] = field(
+        default=None, metadata=config(field_name="members_type")
+    )
     topic_type: Optional[str] = field(
         default=None, metadata=config(field_name="topic_type")
     )
@@ -673,11 +676,15 @@ class ConversationMemberStatusStrings(Enum):
 @dataclass_json
 @dataclass
 class Pagination:
-    next: str = field(metadata=config(field_name="next"))
-    previous: str = field(metadata=config(field_name="previous"))
     num: int = field(metadata=config(field_name="num"))
-    last: bool = field(metadata=config(field_name="last"))
-    force_first_page: bool = field(metadata=config(field_name="forceFirstPage"))
+    next: Optional[str] = field(default=None, metadata=config(field_name="next"))
+    previous: Optional[str] = field(
+        default=None, metadata=config(field_name="previous")
+    )
+    last: Optional[bool] = field(default=None, metadata=config(field_name="last"))
+    force_first_page: Optional[bool] = field(
+        default=None, metadata=config(field_name="forceFirstPage")
+    )
 
 
 @dataclass_json

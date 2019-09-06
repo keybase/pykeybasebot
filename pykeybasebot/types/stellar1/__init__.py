@@ -15,9 +15,10 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Dict, List, Optional, Union
 
-import pykeybasebot.types.keybase1 as keybase1
 from dataclasses_json import config, dataclass_json
 from typing_extensions import Literal
+
+import pykeybasebot.types.keybase1 as keybase1
 
 BundleRevision = int
 
