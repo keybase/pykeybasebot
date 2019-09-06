@@ -14,16 +14,17 @@ import asyncio
 import logging
 
 from pykeybasebot import Bot
+from pykeybasebot.types import chat1
 
 logging.basicConfig(level=logging.DEBUG)
 
 
 async def make_a_poll():
-    channel = {
-        "name": "yourcompany.marketing",
-        "topic_name": "lunchtalk",
-        "members_type": "team",
-    }
+    channel = chat1.ChatChannel(
+        name="nathunsmitty,nsmith9",
+        # "topic_name": "lunchtalk",
+        # "members_type": "team",
+    )
 
     def noop_handler(*args, **kwargs):
         pass

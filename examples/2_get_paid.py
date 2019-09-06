@@ -48,6 +48,6 @@ class Handler:
 listen_options = {"wallet": True}
 
 bot = Bot(
-    username="yourbot", paperkey=os.environ["KEYBASE_PAPERKEY"], handler=Handler()
+    username="nsmith9", paperkey=os.environ["KEYBASE_PAPERKEY"], handler=Handler()
 )
 asyncio.run(bot.start(listen_options))

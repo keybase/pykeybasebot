@@ -29,7 +29,8 @@ def rotate(message):
 
 async def scrolling_message(message, before="", after=""):
     channel = chat1.ChatChannel(
-        name="yourcompany.marketing", topic_name="lunchtalk", members_type="team"
+        # name="yourcompany.marketing", topic_name="lunchtalk", members_type="team"
+        name="nsmith9,nathunsmitty"
     )
 
     def noop_handler(*args, **kwargs):
@@ -40,8 +41,8 @@ async def scrolling_message(message, before="", after=""):
         handler=noop_handler
     )
 
-    resp = await bot.chat.send(channel, f"{before}{message}{after}")
-    msg_id = resp["result"]["id"]
+    result = await bot.chat.send(channel, f"{before}{message}{after}")
+    msg_id = result.message_id
 
     while True:
         message = rotate(message)

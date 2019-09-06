@@ -76,6 +76,9 @@ async def kbsubmit(keybase_cli: str, command: str, input_data=None, **kwargs):
 
     response = stdout.decode("utf-8")
     try:
-        return json.loads(response)
+        parsed_response = json.loads(response)
+        if "error" in parsed_response:
+            raise Exception(parsed_response["error"])
+        return parsed_response
     except json.decoder.JSONDecodeError:
         return response

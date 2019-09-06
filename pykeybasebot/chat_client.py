@@ -1,16 +1,15 @@
 import json
 
-from .bot import Bot
 from .types import chat1, stellar1
 
 
 class ChatClient:
-    def __init__(self, bot: Bot):
+    def __init__(self, bot):
         self.bot = bot
 
     async def send(self, channel: chat1.ChatChannel, message: str) -> chat1.SendRes:
         await self.bot.ensure_initialized()
-        return await self.execute(
+        res = await self.execute(
             {
                 "method": "send",
                 "params": {
@@ -21,12 +20,13 @@ class ChatClient:
                 },
             }
         )
+        return chat1.SendRes.from_dict(res)
 
     async def react(
         self, channel: chat1.ChatChannel, message_id: chat1.MessageID, reaction: str
     ) -> chat1.SendRes:
         await self.bot.ensure_initialized()
-        return await self.execute(
+        res = await self.execute(
             {
                 "method": "reaction",
                 "params": {
@@ -38,12 +38,13 @@ class ChatClient:
                 },
             }
         )
+        return chat1.SendRes.from_dict(res)
 
     async def edit(
         self, channel: chat1.ChatChannel, message_id: chat1.MessageID, message: str
-    ):
+    ) -> chat1.SendRes:
         await self.bot.ensure_initialized()
-        return await self.execute(
+        res = await self.execute(
             {
                 "method": "edit",
                 "params": {
@@ -55,6 +56,8 @@ class ChatClient:
                 },
             }
         )
+        return chat1.SendRes.from_dict(res)
 
     async def execute(self, command):
-        return await self.bot.submit("chat api", json.dumps(command).encode("utf-8"))
+        resp = await self.bot.submit("chat api", json.dumps(command).encode("utf-8"))
+        return resp["result"]
