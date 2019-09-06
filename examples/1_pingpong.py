@@ -24,7 +24,7 @@ class Handler:
             return
         if event.msg.content.text.body == "🌴ping🌴":
             channel = event.msg.channel
-            await bot.chat.send(channel.to_dict(), "🍹PONG!🍹")
+            await bot.chat.send(channel, "🍹PONG!🍹")
 
 
 listen_options = {

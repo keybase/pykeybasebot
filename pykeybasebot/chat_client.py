@@ -1,29 +1,37 @@
 import json
 
+from .bot import Bot
+from .types import chat1, stellar1
+
 
 class ChatClient:
-    def __init__(self, bot):
+    def __init__(self, bot: Bot):
         self.bot = bot
 
-    async def send(self, channel_dict, message):
+    async def send(self, channel: chat1.ChatChannel, message: str) -> chat1.SendRes:
         await self.bot.ensure_initialized()
         return await self.execute(
             {
                 "method": "send",
                 "params": {
-                    "options": {"channel": channel_dict, "message": {"body": message}}
+                    "options": {
+                        "channel": channel.to_dict(),
+                        "message": {"body": message},
+                    }
                 },
             }
         )
 
-    async def react(self, channel_dict, message_id, reaction):
+    async def react(
+        self, channel: chat1.ChatChannel, message_id: chat1.MessageID, reaction: str
+    ) -> chat1.SendRes:
         await self.bot.ensure_initialized()
         return await self.execute(
             {
                 "method": "reaction",
                 "params": {
                     "options": {
-                        "channel": channel_dict,
+                        "channel": channel.to_dict(),
                         "message_id": message_id,
                         "message": {"body": reaction},
                     }
@@ -31,14 +39,16 @@ class ChatClient:
             }
         )
 
-    async def edit(self, channel_dict, message_id, message):
+    async def edit(
+        self, channel: chat1.ChatChannel, message_id: chat1.MessageID, message: str
+    ):
         await self.bot.ensure_initialized()
         return await self.execute(
             {
                 "method": "edit",
                 "params": {
                     "options": {
-                        "channel": channel_dict,
+                        "channel": channel.to_dict(),
                         "message_id": message_id,
                         "message": {"body": message},
                     }

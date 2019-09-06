@@ -11,17 +11,17 @@ import logging
 import os
 
 import pykeybasebot.types.chat1 as chat1
-from pykeybasebot import Bot
+from pykeybasebot import Bot, KbEvent
 
 logging.basicConfig(level=logging.DEBUG)
 
 
-async def handler(bot, event):
+async def handler(bot: Bot, event: KbEvent):
     if event.msg.content.type_name != chat1.MessageTypeStrings.TEXT.value:
         return
     channel = event.msg.channel
     msg_id = event.msg.id
-    await bot.chat.react(channel.to_dict(), msg_id, ":clap:")
+    await bot.chat.react(channel, msg_id, ":clap:")
 
 
 listen_options = {"filter-channel": {"name": "nsmith9,nathunsmitty"}}

@@ -3,9 +3,11 @@ import logging
 import os
 import time
 from functools import wraps
+from typing import Any, Callable, Optional
 
 from .chat_client import ChatClient
 from .cli import KeybaseNotConnectedError, kblisten, kbsubmit
+from .kbevent import KbEvent
 
 RETRY_ATTEMPTS = 100
 SLEEP_SECS_BETWEEEN_RETRIES = 1
@@ -60,13 +62,13 @@ class _botlifecycle:
 class Bot:
     def __init__(
         self,
-        handler,
-        username=None,
-        paperkey=None,
+        handler: Callable[[Any, KbEvent], None],
+        username: Optional[str] = None,
+        paperkey: Optional[str] = None,
         loop=None,
-        keybase=None,
-        home_path=None,
-        pid_file=None,
+        keybase: Optional[str] = None,
+        home_path: Optional[str] = None,
+        pid_file: Optional[str] = None,
     ):
         self.username = username
         self.paperkey = paperkey
@@ -96,7 +98,7 @@ class Bot:
         )
 
     @property
-    def keybase_cli(self):
+    def keybase_cli(self) -> str:
         command = self.keybase
         if self.home_path is not None:
             command += f" --home {self.home_path}"
