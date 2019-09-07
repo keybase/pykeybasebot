@@ -27,6 +27,6 @@ repos:
     name: mypy
     stages: [commit]
     language: system
-    entry: poetry run mypy **/*.py
+    entry: poetry run mypy ./*.py
     types: [python]
     pass_filenames: false

@@ -10,13 +10,14 @@
 import asyncio
 import logging
 import os
+import sys
 
 from pykeybasebot import Bot, EventType
 from pykeybasebot.types import chat1, stellar1
 
 logging.basicConfig(level=logging.DEBUG)
 
-if 'win32' in sys.platform:
+if "win32" in sys.platform:
     # Windows specific event-loop policy
     asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
 
@@ -36,8 +37,8 @@ class Handler:
         if event.type != EventType.WALLET:
             return
         if (
-            event.notification.summary.status_description !=
-            stellar1.PaymentStatusStrings.COMPLETED.value
+            event.notification.summary.status_description
+            != stellar1.PaymentStatusStrings.COMPLETED.value
         ):
             return
 
