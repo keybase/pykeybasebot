@@ -128,7 +128,7 @@ class Bot:
             if self.username is None:
                 self.username = actual_username
             actual_logged_in = res["LoggedIn"]
-            self._initialized = self.username == actual_username and actual_logged_in
+            self._initialized = self.username.lower() == actual_username and actual_logged_in
         return self._initialized
 
     async def _initialize(self):
@@ -143,7 +143,7 @@ class Bot:
         logging.info(oneshot_result)
         if not await self._is_initialized():
             # raise an exception because we can't authenticate
-            raise f"failed to initialize with oneshot {oneshot_result}"
+            raise Exception(f"failed to initialize with oneshot {oneshot_result}")
 
     async def teardown(self):
         if self.paperkey is not None:
