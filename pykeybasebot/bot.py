@@ -3,11 +3,10 @@ import logging
 import os
 import time
 from functools import wraps
-from typing import Any, Callable, Optional
+from typing import Optional
 
 from .chat_client import ChatClient
 from .cli import KeybaseNotConnectedError, kblisten, kbsubmit
-from .kbevent import KbEvent
 
 RETRY_ATTEMPTS = 100
 SLEEP_SECS_BETWEEEN_RETRIES = 1
@@ -128,13 +127,21 @@ class Bot:
             if self.username is None:
                 self.username = actual_username
             actual_logged_in = res["LoggedIn"]
-            self._initialized = self.username.lower() == actual_username and actual_logged_in
+            if self.username.lower() != actual_username:
+                raise Exception(
+                    f"Logged in as {actual_username} instead of {self.username}. Please logout first"
+                )
+            self._initialized = actual_logged_in
         return self._initialized
 
     async def _initialize(self):
         if await self._is_initialized():
             # already initialized. fine to bail.
             return
+
+        if self.paperkey is None:
+            raise Exception("No paperkey specified, unable to login to keybase")
+
         # login as a `oneshot` device
         env_with_paperkey = os.environ.copy()
         env_with_paperkey["KEYBASE_PAPERKEY"] = self.paperkey
