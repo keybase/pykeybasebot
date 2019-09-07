@@ -16,6 +16,10 @@ from pykeybasebot.types import chat1, stellar1
 
 logging.basicConfig(level=logging.DEBUG)
 
+if 'win32' in sys.platform:
+    # Windows specific event-loop policy
+    asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
+
 
 DollarsPerLumen = 0.06
 
@@ -32,8 +36,8 @@ class Handler:
         if event.type != EventType.WALLET:
             return
         if (
-            event.notification.summary.status_description
-            != stellar1.PaymentStatusStrings.COMPLETED.value
+            event.notification.summary.status_description !=
+            stellar1.PaymentStatusStrings.COMPLETED.value
         ):
             return
 
@@ -50,4 +54,5 @@ listen_options = {"wallet": True}
 bot = Bot(
     username="yourbot", paperkey=os.environ["KEYBASE_PAPERKEY"], handler=Handler()
 )
+
 asyncio.run(bot.start(listen_options))

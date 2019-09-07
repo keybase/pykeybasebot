@@ -18,6 +18,10 @@ from pykeybasebot.types import chat1
 
 logging.basicConfig(level=logging.DEBUG)
 
+if 'win32' in sys.platform:
+    # Windows specific event-loop policy
+    asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
+
 
 async def make_a_poll():
     channel = chat1.ChatChannel(

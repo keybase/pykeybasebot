@@ -15,6 +15,10 @@ from pykeybasebot import Bot
 
 logging.basicConfig(level=logging.DEBUG)
 
+if 'win32' in sys.platform:
+    # Windows specific event-loop policy
+    asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
+
 
 async def handler(bot, event):
     if event.msg.content.type_name != chat1.MessageTypeStrings.TEXT.value:
@@ -27,4 +31,5 @@ async def handler(bot, event):
 listen_options = {"filter-channel": {"name": "yourbot,someoneelse"}}
 
 bot = Bot(username="yourbot", paperkey=os.environ["KEYBASE_PAPERKEY"], handler=handler)
+
 asyncio.run(bot.start(listen_options))

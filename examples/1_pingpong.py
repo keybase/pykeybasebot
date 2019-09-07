@@ -17,6 +17,10 @@ from pykeybasebot import Bot
 
 logging.basicConfig(level=logging.DEBUG)
 
+if 'win32' in sys.platform:
+    # Windows specific event-loop policy
+    asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
+
 
 class Handler:
     async def __call__(self, bot, event):
@@ -41,4 +45,5 @@ listen_options = {
 bot = Bot(
     username="yourbot", paperkey=os.environ["KEYBASE_PAPERKEY"], handler=Handler()
 )
+
 asyncio.run(bot.start(listen_options))
