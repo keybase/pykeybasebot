@@ -1,6 +1,6 @@
 import json
 
-from .types import chat1, stellar1
+from .types import chat1
 
 
 class ChatClient:
@@ -52,6 +52,42 @@ class ChatClient:
                         "channel": channel.to_dict(),
                         "message_id": message_id,
                         "message": {"body": message},
+                    }
+                },
+            }
+        )
+        return chat1.SendRes.from_dict(res)
+
+    async def attach(
+        self, channel: chat1.ChatChannel, filename: str, title: str
+    ) -> chat1.SendRes:
+        await self.bot.ensure_initialized()
+        res = await self.execute(
+            {
+                "method": "attach",
+                "params": {
+                    "options": {
+                        "channel": channel.to_dict(),
+                        "filename": filename,
+                        "title": title,
+                    }
+                },
+            }
+        )
+        return chat1.SendRes.from_dict(res)
+
+    async def download(
+        self, channel: chat1.ChatChannel, message_id: int, output: str
+    ) -> chat1.SendRes:
+        await self.bot.ensure_initialized()
+        res = await self.execute(
+            {
+                "method": "download",
+                "params": {
+                    "options": {
+                        "channel": channel.to_dict(),
+                        "message_id": message_id,
+                        "output": output,
                     }
                 },
             }
