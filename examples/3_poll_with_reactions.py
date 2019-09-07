@@ -12,13 +12,14 @@
 
 import asyncio
 import logging
+import sys
 
 from pykeybasebot import Bot
 from pykeybasebot.types import chat1
 
 logging.basicConfig(level=logging.DEBUG)
 
-if 'win32' in sys.platform:
+if "win32" in sys.platform:
     # Windows specific event-loop policy
     asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
 
