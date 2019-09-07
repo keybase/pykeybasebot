@@ -19,6 +19,10 @@ from pykeybasebot import Bot
 
 logging.basicConfig(level=logging.DEBUG)
 
+if 'win32' in sys.platform:
+    # Windows specific event-loop policy
+    asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
+
 
 def rotate(message):
     """
@@ -47,7 +51,6 @@ async def scrolling_message(message, before="", after=""):
         message = rotate(message)
         await bot.chat.edit(channel, msg_id, f"{before}{message}{after}")
         time.sleep(0.5)
-
 
 asyncio.run(
     scrolling_message("There's pizza in the break room!", before="--[ `", after="` ]--")

@@ -21,6 +21,10 @@ from pykeybasebot.types import chat1
 
 logging.basicConfig(level=logging.ERROR)
 
+if 'win32' in sys.platform:
+    # Windows specific event-loop policy
+    asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
+
 
 def force_async(fn):
     from concurrent.futures import ThreadPoolExecutor
