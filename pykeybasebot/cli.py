@@ -44,13 +44,11 @@ async def kblisten(keybase_cli: str, options, loop=None):
             raise KeybaseNotConnectedError(
                 "the keybase service is probably not running"
             )
+        line = line.decode().strip()
         try:
-            yield KbEvent.from_json(line.decode().strip())
+            yield KbEvent.from_json(line)
         except json.decoder.JSONDecodeError:
-            # The first few messages that come out aren't actually valid json.
-            # They just describe the options you've selected for listening.
-            # It would probably be better only to do this `pass` for a couple
-            # seconds.
+            logging.error(f"Unable to decode JSON output: {line}")
             pass
 
 
