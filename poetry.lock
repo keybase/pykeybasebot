@@ -463,7 +463,7 @@ version = "0.6.0"
 more-itertools = "*"
 
 [metadata]
-content-hash = "e5c75ef7a5867c9cf2d9df6714819003a0da1830375ba0e9f00a02247f79b1c3"
+content-hash = "d7c99caee6a2a73116d45f1f353961edfc153b294e18839d8c81aa3b90128469"
 python-versions = "^3.7"
 
 [metadata.hashes]
