@@ -398,7 +398,7 @@ python-versions = "*"
 version = "1.4.0"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Type Hints for Python"
 name = "typing"
 optional = false
@@ -406,7 +406,7 @@ python-versions = "*"
 version = "3.7.4.1"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Backported and Experimental Type Hints for Python 3.5+"
 name = "typing-extensions"
 optional = false
@@ -463,7 +463,7 @@ version = "0.6.0"
 more-itertools = "*"
 
 [metadata]
-content-hash = "53d82bad77350310ee88cba4d27caf290791a132f6f0efa73a12a82e94c22238"
+content-hash = "d7c99caee6a2a73116d45f1f353961edfc153b294e18839d8c81aa3b90128469"
 python-versions = "^3.7"
 
 [metadata.hashes]
