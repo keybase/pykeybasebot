@@ -1,5 +1,7 @@
 # pykeybasebot
 
+![PyPI](https://img.shields.io/pypi/v/pykeybasebot)
+
 This is the officially support Keybase Python library. It is an unopinionated, simple wrapper around the Keybase CLI API for creating an interactive bot or general scripting. This library does not attempt to do intent parsing or manage state at all. You'll have to build that yourself, but with the examples, this library will hopefully make whatever you want to build much much easier `:)`.
 
 There are also similar libraries for [JavaScript](https://github.com/keybase/keybase-bot) and [Go](https://github.com/keybase/pykeybasebot).
