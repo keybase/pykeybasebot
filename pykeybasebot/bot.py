@@ -1,7 +1,6 @@
 import asyncio
 import logging
 import os
-import time
 from functools import wraps
 from typing import Optional
 
@@ -38,7 +37,7 @@ def _with_reconnect_to_keybase(keybase_bot_start_function):
                 logging.info(
                     f"RECONNECT: sleeping {SLEEP_SECS_BETWEEEN_RETRIES} seconds..."
                 )
-                time.sleep(SLEEP_SECS_BETWEEEN_RETRIES)
+                await asyncio.sleep(SLEEP_SECS_BETWEEEN_RETRIES)
 
     return wrapped_f
 
