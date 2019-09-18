@@ -13,7 +13,6 @@
 import asyncio
 import logging
 import sys
-import time
 
 import pykeybasebot.types.chat1 as chat1
 from pykeybasebot import Bot
@@ -51,7 +50,7 @@ async def scrolling_message(message, before="", after=""):
     while True:
         message = rotate(message)
         await bot.chat.edit(channel, msg_id, f"{before}{message}{after}")
-        time.sleep(0.5)
+        await asyncio.sleep(0.5)
 
 
 asyncio.run(
