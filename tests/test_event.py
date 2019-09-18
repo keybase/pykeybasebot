@@ -1,12 +1,11 @@
 import json
 import os
-from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
+
+import pytest
 
 import pykeybasebot.types.chat1 as chat1
 import pykeybasebot.types.stellar1 as stellar1
-import pytest
 from pykeybasebot import EventType, KbEvent, Source
 
 

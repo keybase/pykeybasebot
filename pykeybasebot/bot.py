@@ -126,9 +126,9 @@ class Bot:
             if self.username is None:
                 self.username = actual_username
             actual_logged_in = res["LoggedIn"]
-            if self.username.lower() != actual_username:
+            if actual_logged_in and (self.username.lower() != actual_username):
                 raise Exception(
-                    f"Logged in as {actual_username} instead of {self.username}. Please logout first"
+                    f"Logged in as {actual_username} instead of {self.username}. Please logout first."
                 )
             self._initialized = actual_logged_in
         return self._initialized

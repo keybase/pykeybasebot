@@ -75,7 +75,7 @@ Then proceed as normal.
 To run tests, type
 
 ```
-poetry run python -m pytest
+make test
 ```
 
 Tests are admittedly weak. You could change that!
@@ -101,7 +101,7 @@ Then you can generate the types by using the provided Makefile in this repo.
 
 ```shell
 cd path/to/keybase-bot
-make
+make types
 ```
 
 Should you need to remove all the types for some reason, you can run `make clean`.
