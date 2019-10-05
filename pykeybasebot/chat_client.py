@@ -1,4 +1,5 @@
 import json
+from typing import List
 
 from .types import chat1
 
@@ -6,6 +7,31 @@ from .types import chat1
 class ChatClient:
     def __init__(self, bot):
         self.bot = bot
+
+    async def list(self) -> List[chat1.ConvSummary]:
+        """
+        Lists your chats, with info on which ones have unread messages.
+        """
+        await self.bot.ensure_initialized()
+        res = await self.execute({"method": "list"})
+        chat_list = chat1.ChatList.from_dict(res)
+        return chat_list.converastions or []
+
+    async def read(self, channel: chat1.ChatChannel) -> List[chat1.MsgSummary]:
+        """
+        Reads the messages in a channel. You can read with or without marking as read.
+        """
+        await self.bot.ensure_initialized()
+        res = await self.execute(
+            {"method": "read", "params": {"options": {"channel": channel.to_dict()}}}
+        )
+        thread = chat1.Thread.from_dict(res)
+        if thread.messages is None:
+            return []
+        messages = []
+        for message in thread.messages:
+            messages.append(message.msg)
+        return messages
 
     async def send(self, channel: chat1.ChatChannel, message: str) -> chat1.SendRes:
         await self.bot.ensure_initialized()
