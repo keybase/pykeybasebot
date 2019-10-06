@@ -1,5 +1,5 @@
 import json
-from typing import List
+from typing import Dict, List
 
 from .types import chat1
 
@@ -15,7 +15,7 @@ class ChatClient:
         await self.bot.ensure_initialized()
         res = await self.execute({"method": "list"})
         chat_list = chat1.ChatList.from_dict(res)
-        return chat_list.converastions or []
+        return chat_list.conversations or []
 
     async def read(self, channel: chat1.ChatChannel) -> List[chat1.MsgSummary]:
         """
@@ -120,6 +120,6 @@ class ChatClient:
         )
         return chat1.SendRes.from_dict(res)
 
-    async def execute(self, command):
+    async def execute(self, command) -> Dict[str, str]:
         resp = await self.bot.submit("chat api", json.dumps(command).encode("utf-8"))
         return resp["result"]
