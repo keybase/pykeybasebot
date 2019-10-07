@@ -2,13 +2,13 @@
 
 Auto-generated to Python types by avdl-compiler v1.4.4 (https://github.com/keybase/node-avdl-compiler)
 Input files:
- - ../../go/src/github.com/keybase/client/protocol/avdl/stellar1/bundle.avdl
- - ../../go/src/github.com/keybase/client/protocol/avdl/stellar1/common.avdl
- - ../../go/src/github.com/keybase/client/protocol/avdl/stellar1/gregor.avdl
- - ../../go/src/github.com/keybase/client/protocol/avdl/stellar1/local.avdl
- - ../../go/src/github.com/keybase/client/protocol/avdl/stellar1/notify.avdl
- - ../../go/src/github.com/keybase/client/protocol/avdl/stellar1/remote.avdl
- - ../../go/src/github.com/keybase/client/protocol/avdl/stellar1/ui.avdl
+ - ../client/protocol/avdl/stellar1/bundle.avdl
+ - ../client/protocol/avdl/stellar1/common.avdl
+ - ../client/protocol/avdl/stellar1/gregor.avdl
+ - ../client/protocol/avdl/stellar1/local.avdl
+ - ../client/protocol/avdl/stellar1/notify.avdl
+ - ../client/protocol/avdl/stellar1/remote.avdl
+ - ../client/protocol/avdl/stellar1/ui.avdl
 """
 
 from dataclasses import dataclass, field

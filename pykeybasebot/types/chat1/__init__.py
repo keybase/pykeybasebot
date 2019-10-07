@@ -2,15 +2,15 @@
 
 Auto-generated to Python types by avdl-compiler v1.4.4 (https://github.com/keybase/node-avdl-compiler)
 Input files:
- - ../../go/src/github.com/keybase/client/protocol/avdl/chat1/api.avdl
- - ../../go/src/github.com/keybase/client/protocol/avdl/chat1/chat_ui.avdl
- - ../../go/src/github.com/keybase/client/protocol/avdl/chat1/commands.avdl
- - ../../go/src/github.com/keybase/client/protocol/avdl/chat1/common.avdl
- - ../../go/src/github.com/keybase/client/protocol/avdl/chat1/gregor.avdl
- - ../../go/src/github.com/keybase/client/protocol/avdl/chat1/local.avdl
- - ../../go/src/github.com/keybase/client/protocol/avdl/chat1/notify.avdl
- - ../../go/src/github.com/keybase/client/protocol/avdl/chat1/remote.avdl
- - ../../go/src/github.com/keybase/client/protocol/avdl/chat1/unfurl.avdl
+ - ../client/protocol/avdl/chat1/api.avdl
+ - ../client/protocol/avdl/chat1/chat_ui.avdl
+ - ../client/protocol/avdl/chat1/commands.avdl
+ - ../client/protocol/avdl/chat1/common.avdl
+ - ../client/protocol/avdl/chat1/gregor.avdl
+ - ../client/protocol/avdl/chat1/local.avdl
+ - ../client/protocol/avdl/chat1/notify.avdl
+ - ../client/protocol/avdl/chat1/remote.avdl
+ - ../client/protocol/avdl/chat1/unfurl.avdl
 """
 
 from dataclasses import dataclass, field

@@ -2,13 +2,13 @@
 
 Auto-generated to Python types by avdl-compiler v1.4.4 (https://github.com/keybase/node-avdl-compiler)
 Input files:
- - ../../go/src/github.com/keybase/client/protocol/avdl/gregor1/auth.avdl
- - ../../go/src/github.com/keybase/client/protocol/avdl/gregor1/auth_internal.avdl
- - ../../go/src/github.com/keybase/client/protocol/avdl/gregor1/auth_update.avdl
- - ../../go/src/github.com/keybase/client/protocol/avdl/gregor1/common.avdl
- - ../../go/src/github.com/keybase/client/protocol/avdl/gregor1/incoming.avdl
- - ../../go/src/github.com/keybase/client/protocol/avdl/gregor1/outgoing.avdl
- - ../../go/src/github.com/keybase/client/protocol/avdl/gregor1/remind.avdl
+ - ../client/protocol/avdl/gregor1/auth.avdl
+ - ../client/protocol/avdl/gregor1/auth_internal.avdl
+ - ../client/protocol/avdl/gregor1/auth_update.avdl
+ - ../client/protocol/avdl/gregor1/common.avdl
+ - ../client/protocol/avdl/gregor1/incoming.avdl
+ - ../client/protocol/avdl/gregor1/outgoing.avdl
+ - ../client/protocol/avdl/gregor1/remind.avdl
 """
 
 from dataclasses import dataclass, field
