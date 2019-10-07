@@ -1,21 +1,21 @@
 """stellar.1
 
-Auto-generated to Python types by avdl-compiler v1.4.1 (https://github.com/keybase/node-avdl-compiler)
+Auto-generated to Python types by avdl-compiler v1.4.4 (https://github.com/keybase/node-avdl-compiler)
 Input files:
- - ../client/protocol/avdl/stellar1/bundle.avdl
- - ../client/protocol/avdl/stellar1/common.avdl
- - ../client/protocol/avdl/stellar1/gregor.avdl
- - ../client/protocol/avdl/stellar1/local.avdl
- - ../client/protocol/avdl/stellar1/notify.avdl
- - ../client/protocol/avdl/stellar1/remote.avdl
- - ../client/protocol/avdl/stellar1/ui.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/stellar1/bundle.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/stellar1/common.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/stellar1/gregor.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/stellar1/local.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/stellar1/notify.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/stellar1/remote.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/stellar1/ui.avdl
 """
 
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Dict, List, Optional, Union
 
-from dataclasses_json import config, dataclass_json
+from dataclasses_json import DataClassJsonMixin, config
 from typing_extensions import Literal
 
 import pykeybasebot.types.keybase1 as keybase1
@@ -23,9 +23,8 @@ import pykeybasebot.types.keybase1 as keybase1
 BundleRevision = int
 
 
-@dataclass_json
 @dataclass
-class EncryptedBundle:
+class EncryptedBundle(DataClassJsonMixin):
     v: int = field(metadata=config(field_name="v"))
     e: str = field(metadata=config(field_name="e"))
     n: keybase1.BoxNonce = field(metadata=config(field_name="n"))
@@ -58,15 +57,13 @@ class BundleVersionStrings(Enum):
     V10 = "v10"
 
 
-@dataclass_json
 @dataclass
-class BundleSecretUnsupported:
+class BundleSecretUnsupported(DataClassJsonMixin):
     pass
 
 
-@dataclass_json
 @dataclass
-class EncryptedAccountBundle:
+class EncryptedAccountBundle(DataClassJsonMixin):
     v: int = field(metadata=config(field_name="v"))
     e: str = field(metadata=config(field_name="e"))
     n: keybase1.BoxNonce = field(metadata=config(field_name="n"))
@@ -99,9 +96,8 @@ class AccountBundleVersionStrings(Enum):
     V10 = "v10"
 
 
-@dataclass_json
 @dataclass
-class AccountBundleSecretUnsupported:
+class AccountBundleSecretUnsupported(DataClassJsonMixin):
     pass
 
 
@@ -116,9 +112,8 @@ KeybaseRequestID = str
 AssetCode = str
 
 
-@dataclass_json
 @dataclass
-class Asset:
+class Asset(DataClassJsonMixin):
     type: str = field(metadata=config(field_name="type"))
     code: str = field(metadata=config(field_name="code"))
     issuer: str = field(metadata=config(field_name="issuer"))
@@ -136,9 +131,8 @@ class Asset:
     auth_endpoint: str = field(metadata=config(field_name="authEndpoint"))
 
 
-@dataclass_json
 @dataclass
-class AccountReserve:
+class AccountReserve(DataClassJsonMixin):
     amount: str = field(metadata=config(field_name="amount"))
     description: str = field(metadata=config(field_name="description"))
 
@@ -193,16 +187,14 @@ class RelayDirectionStrings(Enum):
     YANK = "yank"
 
 
-@dataclass_json
 @dataclass
-class NoteRecipient:
+class NoteRecipient(DataClassJsonMixin):
     user: keybase1.UserVersion = field(metadata=config(field_name="user"))
     puk_gen: keybase1.PerUserKeyGeneration = field(metadata=config(field_name="pukGen"))
 
 
-@dataclass_json
 @dataclass
-class EncryptedRelaySecret:
+class EncryptedRelaySecret(DataClassJsonMixin):
     v: int = field(metadata=config(field_name="v"))
     e: str = field(metadata=config(field_name="e"))
     n: keybase1.BoxNonce = field(metadata=config(field_name="n"))
@@ -212,17 +204,15 @@ class EncryptedRelaySecret:
 OutsideCurrencyCode = str
 
 
-@dataclass_json
 @dataclass
-class CurrencySymbol:
+class CurrencySymbol(DataClassJsonMixin):
     symbol: str = field(metadata=config(field_name="str"))
     ambigious: bool = field(metadata=config(field_name="ambigious"))
     postfix: bool = field(metadata=config(field_name="postfix"))
 
 
-@dataclass_json
 @dataclass
-class PageCursor:
+class PageCursor(DataClassJsonMixin):
     horizon_cursor: str = field(metadata=config(field_name="horizonCursor"))
     direct_cursor: str = field(metadata=config(field_name="directCursor"))
     relay_cursor: str = field(metadata=config(field_name="relayCursor"))
@@ -306,9 +296,8 @@ class AdvancedBannerStrings(Enum):
 InflationDestinationTag = str
 
 
-@dataclass_json
 @dataclass
-class AirdropDetails:
+class AirdropDetails(DataClassJsonMixin):
     is_promoted: bool = field(metadata=config(field_name="isPromoted"))
     details: str = field(metadata=config(field_name="details"))
     disclaimer: str = field(metadata=config(field_name="disclaimer"))
@@ -317,17 +306,15 @@ class AirdropDetails:
 AirdropState = str
 
 
-@dataclass_json
 @dataclass
-class AirdropQualification:
+class AirdropQualification(DataClassJsonMixin):
     title: str = field(metadata=config(field_name="title"))
     subtitle: str = field(metadata=config(field_name="subtitle"))
     valid: bool = field(metadata=config(field_name="valid"))
 
 
-@dataclass_json
 @dataclass
-class AssetActionResultLocal:
+class AssetActionResultLocal(DataClassJsonMixin):
     external_url: Optional[str] = field(
         default=None, metadata=config(field_name="externalUrl")
     )
@@ -336,24 +323,21 @@ class AssetActionResultLocal:
     )
 
 
-@dataclass_json
 @dataclass
-class BatchPaymentError:
+class BatchPaymentError(DataClassJsonMixin):
     message: str = field(metadata=config(field_name="message"))
     code: int = field(metadata=config(field_name="code"))
 
 
-@dataclass_json
 @dataclass
-class BatchPaymentArg:
+class BatchPaymentArg(DataClassJsonMixin):
     recipient: str = field(metadata=config(field_name="recipient"))
     amount: str = field(metadata=config(field_name="amount"))
     message: str = field(metadata=config(field_name="message"))
 
 
-@dataclass_json
 @dataclass
-class PartnerUrl:
+class PartnerUrl(DataClassJsonMixin):
     url: str = field(metadata=config(field_name="url"))
     title: str = field(metadata=config(field_name="title"))
     description: str = field(metadata=config(field_name="description"))
@@ -362,9 +346,8 @@ class PartnerUrl:
     extra: str = field(metadata=config(field_name="extra"))
 
 
-@dataclass_json
 @dataclass
-class StaticConfig:
+class StaticConfig(DataClassJsonMixin):
     payment_note_max_length: int = field(
         metadata=config(field_name="paymentNoteMaxLength")
     )
@@ -379,9 +362,8 @@ class StaticConfig:
 ChatConversationID = str
 
 
-@dataclass_json
 @dataclass
-class DirectOp:
+class DirectOp(DataClassJsonMixin):
     note_b_64: str = field(metadata=config(field_name="noteB64"))
 
 
@@ -399,22 +381,19 @@ class PaymentSummaryTypeStrings(Enum):
     RELAY = "relay"
 
 
-@dataclass_json
 @dataclass
-class TimeboundsRecommendation:
+class TimeboundsRecommendation(DataClassJsonMixin):
     time_now: keybase1.UnixTime = field(metadata=config(field_name="time_now"))
     timeout: int = field(metadata=config(field_name="timeout"))
 
 
-@dataclass_json
 @dataclass
-class NetworkOptions:
+class NetworkOptions(DataClassJsonMixin):
     base_fee: int = field(metadata=config(field_name="baseFee"))
 
 
-@dataclass_json
 @dataclass
-class BundleVisibleEntryV2:
+class BundleVisibleEntryV2(DataClassJsonMixin):
     account_id: AccountID = field(metadata=config(field_name="accountID"))
     mode: AccountMode = field(metadata=config(field_name="mode"))
     is_primary: bool = field(metadata=config(field_name="isPrimary"))
@@ -424,25 +403,22 @@ class BundleVisibleEntryV2:
     enc_acct_bundle_hash: Hash = field(metadata=config(field_name="encAcctBundleHash"))
 
 
-@dataclass_json
 @dataclass
-class BundleSecretEntryV2:
+class BundleSecretEntryV2(DataClassJsonMixin):
     account_id: AccountID = field(metadata=config(field_name="accountID"))
     name: str = field(metadata=config(field_name="name"))
 
 
-@dataclass_json
 @dataclass
-class AccountBundleSecretV1:
+class AccountBundleSecretV1(DataClassJsonMixin):
     account_id: AccountID = field(metadata=config(field_name="accountID"))
     signers: Optional[Optional[List[SecretKey]]] = field(
         default=None, metadata=config(field_name="signers")
     )
 
 
-@dataclass_json
 @dataclass
-class BundleEntry:
+class BundleEntry(DataClassJsonMixin):
     account_id: AccountID = field(metadata=config(field_name="accountID"))
     mode: AccountMode = field(metadata=config(field_name="mode"))
     is_primary: bool = field(metadata=config(field_name="isPrimary"))
@@ -453,9 +429,8 @@ class BundleEntry:
     enc_acct_bundle_hash: Hash = field(metadata=config(field_name="encAcctBundleHash"))
 
 
-@dataclass_json
 @dataclass
-class AccountBundle:
+class AccountBundle(DataClassJsonMixin):
     prev: Hash = field(metadata=config(field_name="prev"))
     own_hash: Hash = field(metadata=config(field_name="ownHash"))
     account_id: AccountID = field(metadata=config(field_name="accountID"))
@@ -464,44 +439,39 @@ class AccountBundle:
     )
 
 
-@dataclass_json
 @dataclass
-class AssetListResult:
+class AssetListResult(DataClassJsonMixin):
     total_count: int = field(metadata=config(field_name="totalCount"))
     assets: Optional[Optional[List[Asset]]] = field(
         default=None, metadata=config(field_name="assets")
     )
 
 
-@dataclass_json
 @dataclass
-class Balance:
+class Balance(DataClassJsonMixin):
     asset: Asset = field(metadata=config(field_name="asset"))
     amount: str = field(metadata=config(field_name="amount"))
     limit: str = field(metadata=config(field_name="limit"))
     is_authorized: bool = field(metadata=config(field_name="isAuthorized"))
 
 
-@dataclass_json
 @dataclass
-class PaymentResult:
+class PaymentResult(DataClassJsonMixin):
     sender_account_id: AccountID = field(metadata=config(field_name="senderAccountID"))
     keybase_id: KeybaseTransactionID = field(metadata=config(field_name="keybaseID"))
     stellar_id: TransactionID = field(metadata=config(field_name="stellarID"))
     pending: bool = field(metadata=config(field_name="pending"))
 
 
-@dataclass_json
 @dataclass
-class RelayClaimResult:
+class RelayClaimResult(DataClassJsonMixin):
     claim_stellar_id: TransactionID = field(
         metadata=config(field_name="claimStellarID")
     )
 
 
-@dataclass_json
 @dataclass
-class EncryptedNote:
+class EncryptedNote(DataClassJsonMixin):
     v: int = field(metadata=config(field_name="v"))
     e: str = field(metadata=config(field_name="e"))
     n: keybase1.BoxNonce = field(metadata=config(field_name="n"))
@@ -511,45 +481,39 @@ class EncryptedNote:
     )
 
 
-@dataclass_json
 @dataclass
-class NoteContents:
+class NoteContents(DataClassJsonMixin):
     note: str = field(metadata=config(field_name="note"))
     stellar_id: TransactionID = field(metadata=config(field_name="stellarID"))
 
 
-@dataclass_json
 @dataclass
-class RelayContents:
+class RelayContents(DataClassJsonMixin):
     stellar_id: TransactionID = field(metadata=config(field_name="stellarID"))
     sk: SecretKey = field(metadata=config(field_name="sk"))
     note: str = field(metadata=config(field_name="note"))
 
 
-@dataclass_json
 @dataclass
-class OutsideExchangeRate:
+class OutsideExchangeRate(DataClassJsonMixin):
     currency: OutsideCurrencyCode = field(metadata=config(field_name="currency"))
     rate: str = field(metadata=config(field_name="rate"))
 
 
-@dataclass_json
 @dataclass
-class OutsideCurrencyDefinition:
+class OutsideCurrencyDefinition(DataClassJsonMixin):
     name: str = field(metadata=config(field_name="name"))
     symbol: CurrencySymbol = field(metadata=config(field_name="symbol"))
 
 
-@dataclass_json
 @dataclass
-class Trustline:
+class Trustline(DataClassJsonMixin):
     asset_code: AssetCode = field(metadata=config(field_name="assetCode"))
     issuer: AccountID = field(metadata=config(field_name="issuer"))
 
 
-@dataclass_json
 @dataclass
-class PaymentPath:
+class PaymentPath(DataClassJsonMixin):
     source_amount: str = field(metadata=config(field_name="sourceAmount"))
     source_amount_max: str = field(metadata=config(field_name="sourceAmountMax"))
     source_asset: Asset = field(metadata=config(field_name="sourceAsset"))
@@ -563,30 +527,26 @@ class PaymentPath:
     )
 
 
-@dataclass_json
 @dataclass
-class PaymentStatusMsg:
+class PaymentStatusMsg(DataClassJsonMixin):
     account_id: AccountID = field(metadata=config(field_name="accountID"))
     kb_tx_id: KeybaseTransactionID = field(metadata=config(field_name="kbTxID"))
     tx_id: TransactionID = field(metadata=config(field_name="txID"))
 
 
-@dataclass_json
 @dataclass
-class RequestStatusMsg:
+class RequestStatusMsg(DataClassJsonMixin):
     req_id: KeybaseRequestID = field(metadata=config(field_name="reqID"))
 
 
-@dataclass_json
 @dataclass
-class PaymentNotificationMsg:
+class PaymentNotificationMsg(DataClassJsonMixin):
     account_id: AccountID = field(metadata=config(field_name="accountID"))
     payment_id: PaymentID = field(metadata=config(field_name="paymentID"))
 
 
-@dataclass_json
 @dataclass
-class AccountAssetLocal:
+class AccountAssetLocal(DataClassJsonMixin):
     name: str = field(metadata=config(field_name="name"))
     asset_code: str = field(metadata=config(field_name="assetCode"))
     issuer_name: str = field(metadata=config(field_name="issuerName"))
@@ -615,9 +575,8 @@ class AccountAssetLocal:
     )
 
 
-@dataclass_json
 @dataclass
-class PaymentDetailsOnlyLocal:
+class PaymentDetailsOnlyLocal(DataClassJsonMixin):
     public_note: str = field(metadata=config(field_name="publicNote"))
     public_note_type: str = field(metadata=config(field_name="publicNoteType"))
     external_tx_url: str = field(metadata=config(field_name="externalTxURL"))
@@ -629,25 +588,22 @@ class PaymentDetailsOnlyLocal:
     )
 
 
-@dataclass_json
 @dataclass
-class PaymentTrustlineLocal:
+class PaymentTrustlineLocal(DataClassJsonMixin):
     asset: Asset = field(metadata=config(field_name="asset"))
     remove: bool = field(metadata=config(field_name="remove"))
 
 
-@dataclass_json
 @dataclass
-class CurrencyLocal:
+class CurrencyLocal(DataClassJsonMixin):
     description: str = field(metadata=config(field_name="description"))
     code: OutsideCurrencyCode = field(metadata=config(field_name="code"))
     symbol: str = field(metadata=config(field_name="symbol"))
     name: str = field(metadata=config(field_name="name"))
 
 
-@dataclass_json
 @dataclass
-class SendAssetChoiceLocal:
+class SendAssetChoiceLocal(DataClassJsonMixin):
     asset: Asset = field(metadata=config(field_name="asset"))
     enabled: bool = field(metadata=config(field_name="enabled"))
     left: str = field(metadata=config(field_name="left"))
@@ -655,9 +611,8 @@ class SendAssetChoiceLocal:
     subtext: str = field(metadata=config(field_name="subtext"))
 
 
-@dataclass_json
 @dataclass
-class SendBannerLocal:
+class SendBannerLocal(DataClassJsonMixin):
     level: str = field(metadata=config(field_name="level"))
     message: str = field(metadata=config(field_name="message"))
     proofs_changed: bool = field(metadata=config(field_name="proofsChanged"))
@@ -666,17 +621,15 @@ class SendBannerLocal:
     )
 
 
-@dataclass_json
 @dataclass
-class SendPaymentResLocal:
+class SendPaymentResLocal(DataClassJsonMixin):
     kb_tx_id: KeybaseTransactionID = field(metadata=config(field_name="kbTxID"))
     pending: bool = field(metadata=config(field_name="pending"))
     jump_to_chat: str = field(metadata=config(field_name="jumpToChat"))
 
 
-@dataclass_json
 @dataclass
-class RequestDetailsLocal:
+class RequestDetailsLocal(DataClassJsonMixin):
     id: KeybaseRequestID = field(metadata=config(field_name="id"))
     from_assertion: str = field(metadata=config(field_name="fromAssertion"))
     from_current_user: bool = field(metadata=config(field_name="fromCurrentUser"))
@@ -692,9 +645,8 @@ class RequestDetailsLocal:
     )
 
 
-@dataclass_json
 @dataclass
-class PredefinedInflationDestination:
+class PredefinedInflationDestination(DataClassJsonMixin):
     tag: InflationDestinationTag = field(metadata=config(field_name="tag"))
     name: str = field(metadata=config(field_name="name"))
     recommended: bool = field(metadata=config(field_name="recommended"))
@@ -702,25 +654,22 @@ class PredefinedInflationDestination:
     url: str = field(metadata=config(field_name="url"))
 
 
-@dataclass_json
 @dataclass
-class AirdropStatus:
+class AirdropStatus(DataClassJsonMixin):
     state: AirdropState = field(metadata=config(field_name="state"))
     rows: Optional[Optional[List[AirdropQualification]]] = field(
         default=None, metadata=config(field_name="rows")
     )
 
 
-@dataclass_json
 @dataclass
-class SendResultCLILocal:
+class SendResultCLILocal(DataClassJsonMixin):
     kb_tx_id: KeybaseTransactionID = field(metadata=config(field_name="kbTxID"))
     tx_id: TransactionID = field(metadata=config(field_name="txID"))
 
 
-@dataclass_json
 @dataclass
-class PaymentCLILocal:
+class PaymentCLILocal(DataClassJsonMixin):
     tx_id: TransactionID = field(metadata=config(field_name="txID"))
     time: TimeMs = field(metadata=config(field_name="time"))
     status: str = field(metadata=config(field_name="status"))
@@ -764,18 +713,16 @@ class PaymentCLILocal:
     )
 
 
-@dataclass_json
 @dataclass
-class LookupResultCLILocal:
+class LookupResultCLILocal(DataClassJsonMixin):
     account_id: AccountID = field(metadata=config(field_name="accountID"))
     username: Optional[str] = field(
         default=None, metadata=config(field_name="username")
     )
 
 
-@dataclass_json
 @dataclass
-class BatchPaymentResult:
+class BatchPaymentResult(DataClassJsonMixin):
     username: str = field(metadata=config(field_name="username"))
     start_time: TimeMs = field(metadata=config(field_name="startTime"))
     submitted_time: TimeMs = field(metadata=config(field_name="submittedTime"))
@@ -788,9 +735,8 @@ class BatchPaymentResult:
     )
 
 
-@dataclass_json
 @dataclass
-class TxDisplaySummary:
+class TxDisplaySummary(DataClassJsonMixin):
     source: AccountID = field(metadata=config(field_name="source"))
     fee: int = field(metadata=config(field_name="fee"))
     memo: str = field(metadata=config(field_name="memo"))
@@ -800,9 +746,8 @@ class TxDisplaySummary:
     )
 
 
-@dataclass_json
 @dataclass
-class SignXdrResult:
+class SignXdrResult(DataClassJsonMixin):
     singed_tx: str = field(metadata=config(field_name="singedTx"))
     account_id: AccountID = field(metadata=config(field_name="accountID"))
     submit_err: Optional[str] = field(
@@ -813,9 +758,8 @@ class SignXdrResult:
     )
 
 
-@dataclass_json
 @dataclass
-class PaymentDirectPost:
+class PaymentDirectPost(DataClassJsonMixin):
     from_device_id: keybase1.DeviceID = field(
         metadata=config(field_name="fromDeviceID")
     )
@@ -833,9 +777,8 @@ class PaymentDirectPost:
     )
 
 
-@dataclass_json
 @dataclass
-class PaymentRelayPost:
+class PaymentRelayPost(DataClassJsonMixin):
     from_device_id: keybase1.DeviceID = field(
         metadata=config(field_name="fromDeviceID")
     )
@@ -856,9 +799,8 @@ class PaymentRelayPost:
     )
 
 
-@dataclass_json
 @dataclass
-class RelayClaimPost:
+class RelayClaimPost(DataClassJsonMixin):
     keybase_id: KeybaseTransactionID = field(metadata=config(field_name="keybaseID"))
     dir: RelayDirection = field(metadata=config(field_name="dir"))
     signed_transaction: str = field(metadata=config(field_name="signedTransaction"))
@@ -867,9 +809,8 @@ class RelayClaimPost:
     )
 
 
-@dataclass_json
 @dataclass
-class PathPaymentPost:
+class PathPaymentPost(DataClassJsonMixin):
     from_device_id: keybase1.DeviceID = field(
         metadata=config(field_name="fromDeviceID")
     )
@@ -884,18 +825,16 @@ class PathPaymentPost:
     )
 
 
-@dataclass_json
 @dataclass
-class RelayOp:
+class RelayOp(DataClassJsonMixin):
     to_assertion: str = field(metadata=config(field_name="toAssertion"))
     relay_account: AccountID = field(metadata=config(field_name="relayAccount"))
     team_id: keybase1.TeamID = field(metadata=config(field_name="teamID"))
     box_b_64: str = field(metadata=config(field_name="boxB64"))
 
 
-@dataclass_json
 @dataclass
-class PaymentSummaryDirect:
+class PaymentSummaryDirect(DataClassJsonMixin):
     kb_tx_id: KeybaseTransactionID = field(metadata=config(field_name="kbTxID"))
     tx_id: TransactionID = field(metadata=config(field_name="txID"))
     tx_status: TransactionStatus = field(metadata=config(field_name="txStatus"))
@@ -936,9 +875,8 @@ class PaymentSummaryDirect:
     )
 
 
-@dataclass_json
 @dataclass
-class ClaimSummary:
+class ClaimSummary(DataClassJsonMixin):
     tx_id: TransactionID = field(metadata=config(field_name="txID"))
     tx_status: TransactionStatus = field(metadata=config(field_name="txStatus"))
     tx_err_msg: str = field(metadata=config(field_name="txErrMsg"))
@@ -947,21 +885,18 @@ class ClaimSummary:
     to: keybase1.UserVersion = field(metadata=config(field_name="to"))
 
 
-@dataclass_json
 @dataclass
-class SubmitMultiRes:
+class SubmitMultiRes(DataClassJsonMixin):
     tx_id: TransactionID = field(metadata=config(field_name="txID"))
 
 
-@dataclass_json
 @dataclass
-class AutoClaim:
+class AutoClaim(DataClassJsonMixin):
     kb_tx_id: KeybaseTransactionID = field(metadata=config(field_name="kbTxID"))
 
 
-@dataclass_json
 @dataclass
-class RequestPost:
+class RequestPost(DataClassJsonMixin):
     to_assertion: str = field(metadata=config(field_name="toAssertion"))
     amount: str = field(metadata=config(field_name="amount"))
     to_user: Optional[keybase1.UserVersion] = field(
@@ -973,9 +908,8 @@ class RequestPost:
     )
 
 
-@dataclass_json
 @dataclass
-class RequestDetails:
+class RequestDetails(DataClassJsonMixin):
     id: KeybaseRequestID = field(metadata=config(field_name="id"))
     from_user: keybase1.UserVersion = field(metadata=config(field_name="fromUser"))
     to_assertion: str = field(metadata=config(field_name="toAssertion"))
@@ -999,9 +933,8 @@ class RequestDetails:
     )
 
 
-@dataclass_json
 @dataclass
-class PaymentPathQuery:
+class PaymentPathQuery(DataClassJsonMixin):
     source: AccountID = field(metadata=config(field_name="source"))
     destination: AccountID = field(metadata=config(field_name="destination"))
     source_asset: Asset = field(metadata=config(field_name="sourceAsset"))
@@ -1009,9 +942,8 @@ class PaymentPathQuery:
     amount: str = field(metadata=config(field_name="amount"))
 
 
-@dataclass_json
 @dataclass
-class BundleVisibleV2:
+class BundleVisibleV2(DataClassJsonMixin):
     revision: BundleRevision = field(metadata=config(field_name="revision"))
     prev: Hash = field(metadata=config(field_name="prev"))
     accounts: Optional[Optional[List[BundleVisibleEntryV2]]] = field(
@@ -1019,9 +951,8 @@ class BundleVisibleV2:
     )
 
 
-@dataclass_json
 @dataclass
-class BundleSecretV2:
+class BundleSecretV2(DataClassJsonMixin):
     visible_hash: Hash = field(metadata=config(field_name="visibleHash"))
     accounts: Optional[Optional[List[BundleSecretEntryV2]]] = field(
         default=None, metadata=config(field_name="accounts")
@@ -1029,61 +960,61 @@ class BundleSecretV2:
 
 
 @dataclass
-class AccountBundleSecretVersioned__V1:
+class AccountBundleSecretVersioned__V1(DataClassJsonMixin):
     version: Literal[AccountBundleVersionStrings.V1]
     V1: Optional[AccountBundleSecretV1]
 
 
 @dataclass
-class AccountBundleSecretVersioned__V2:
+class AccountBundleSecretVersioned__V2(DataClassJsonMixin):
     version: Literal[AccountBundleVersionStrings.V2]
     V2: Optional[AccountBundleSecretUnsupported]
 
 
 @dataclass
-class AccountBundleSecretVersioned__V3:
+class AccountBundleSecretVersioned__V3(DataClassJsonMixin):
     version: Literal[AccountBundleVersionStrings.V3]
     V3: Optional[AccountBundleSecretUnsupported]
 
 
 @dataclass
-class AccountBundleSecretVersioned__V4:
+class AccountBundleSecretVersioned__V4(DataClassJsonMixin):
     version: Literal[AccountBundleVersionStrings.V4]
     V4: Optional[AccountBundleSecretUnsupported]
 
 
 @dataclass
-class AccountBundleSecretVersioned__V5:
+class AccountBundleSecretVersioned__V5(DataClassJsonMixin):
     version: Literal[AccountBundleVersionStrings.V5]
     V5: Optional[AccountBundleSecretUnsupported]
 
 
 @dataclass
-class AccountBundleSecretVersioned__V6:
+class AccountBundleSecretVersioned__V6(DataClassJsonMixin):
     version: Literal[AccountBundleVersionStrings.V6]
     V6: Optional[AccountBundleSecretUnsupported]
 
 
 @dataclass
-class AccountBundleSecretVersioned__V7:
+class AccountBundleSecretVersioned__V7(DataClassJsonMixin):
     version: Literal[AccountBundleVersionStrings.V7]
     V7: Optional[AccountBundleSecretUnsupported]
 
 
 @dataclass
-class AccountBundleSecretVersioned__V8:
+class AccountBundleSecretVersioned__V8(DataClassJsonMixin):
     version: Literal[AccountBundleVersionStrings.V8]
     V8: Optional[AccountBundleSecretUnsupported]
 
 
 @dataclass
-class AccountBundleSecretVersioned__V9:
+class AccountBundleSecretVersioned__V9(DataClassJsonMixin):
     version: Literal[AccountBundleVersionStrings.V9]
     V9: Optional[AccountBundleSecretUnsupported]
 
 
 @dataclass
-class AccountBundleSecretVersioned__V10:
+class AccountBundleSecretVersioned__V10(DataClassJsonMixin):
     version: Literal[AccountBundleVersionStrings.V10]
     V10: Optional[AccountBundleSecretUnsupported]
 
@@ -1102,9 +1033,8 @@ AccountBundleSecretVersioned = Union[
 ]
 
 
-@dataclass_json
 @dataclass
-class Bundle:
+class Bundle(DataClassJsonMixin):
     revision: BundleRevision = field(metadata=config(field_name="revision"))
     prev: Hash = field(metadata=config(field_name="prev"))
     own_hash: Hash = field(metadata=config(field_name="ownHash"))
@@ -1116,18 +1046,16 @@ class Bundle:
     )
 
 
-@dataclass_json
 @dataclass
-class StellarServerDefinitions:
+class StellarServerDefinitions(DataClassJsonMixin):
     revision: int = field(metadata=config(field_name="revision"))
     currencies: Dict[str, OutsideCurrencyDefinition] = field(
         metadata=config(field_name="currencies")
     )
 
 
-@dataclass_json
 @dataclass
-class WalletAccountLocal:
+class WalletAccountLocal(DataClassJsonMixin):
     account_id: AccountID = field(metadata=config(field_name="accountID"))
     is_default: bool = field(metadata=config(field_name="isDefault"))
     name: str = field(metadata=config(field_name="name"))
@@ -1144,9 +1072,8 @@ class WalletAccountLocal:
     can_add_trustline: bool = field(metadata=config(field_name="canAddTrustline"))
 
 
-@dataclass_json
 @dataclass
-class PaymentLocal:
+class PaymentLocal(DataClassJsonMixin):
     id: PaymentID = field(metadata=config(field_name="id"))
     tx_id: TransactionID = field(metadata=config(field_name="txID"))
     time: TimeMs = field(metadata=config(field_name="time"))
@@ -1202,15 +1129,15 @@ class PaymentLocal:
     )
 
 
-@dataclass_json
 @dataclass
-class BuildPaymentResLocal:
+class BuildPaymentResLocal(DataClassJsonMixin):
     ready_to_review: bool = field(metadata=config(field_name="readyToReview"))
     from_: AccountID = field(metadata=config(field_name="from"))
     to_err_msg: str = field(metadata=config(field_name="toErrMsg"))
     amount_err_msg: str = field(metadata=config(field_name="amountErrMsg"))
     secret_note_err_msg: str = field(metadata=config(field_name="secretNoteErrMsg"))
     public_memo_err_msg: str = field(metadata=config(field_name="publicMemoErrMsg"))
+    public_memo_override: str = field(metadata=config(field_name="publicMemoOverride"))
     worth_description: str = field(metadata=config(field_name="worthDescription"))
     worth_info: str = field(metadata=config(field_name="worthInfo"))
     worth_amount: str = field(metadata=config(field_name="worthAmount"))
@@ -1226,9 +1153,8 @@ class BuildPaymentResLocal:
     )
 
 
-@dataclass_json
 @dataclass
-class BuildRequestResLocal:
+class BuildRequestResLocal(DataClassJsonMixin):
     ready_to_request: bool = field(metadata=config(field_name="readyToRequest"))
     to_err_msg: str = field(metadata=config(field_name="toErrMsg"))
     amount_err_msg: str = field(metadata=config(field_name="amountErrMsg"))
@@ -1245,9 +1171,8 @@ class BuildRequestResLocal:
     )
 
 
-@dataclass_json
 @dataclass
-class InflationDestinationResultLocal:
+class InflationDestinationResultLocal(DataClassJsonMixin):
     self_: bool = field(metadata=config(field_name="self"))
     destination: Optional[AccountID] = field(
         default=None, metadata=config(field_name="destination")
@@ -1257,18 +1182,16 @@ class InflationDestinationResultLocal:
     )
 
 
-@dataclass_json
 @dataclass
-class RecipientTrustlinesLocal:
+class RecipientTrustlinesLocal(DataClassJsonMixin):
     recipient_type: ParticipantType = field(metadata=config(field_name="recipientType"))
     trustlines: Optional[Optional[List[Balance]]] = field(
         default=None, metadata=config(field_name="trustlines")
     )
 
 
-@dataclass_json
 @dataclass
-class PaymentPathLocal:
+class PaymentPathLocal(DataClassJsonMixin):
     source_display: str = field(metadata=config(field_name="sourceDisplay"))
     source_max_display: str = field(metadata=config(field_name="sourceMaxDisplay"))
     destination_display: str = field(metadata=config(field_name="destinationDisplay"))
@@ -1280,18 +1203,16 @@ class PaymentPathLocal:
     full_path: PaymentPath = field(metadata=config(field_name="fullPath"))
 
 
-@dataclass_json
 @dataclass
-class PaymentOrErrorCLILocal:
+class PaymentOrErrorCLILocal(DataClassJsonMixin):
     payment: Optional[PaymentCLILocal] = field(
         default=None, metadata=config(field_name="payment")
     )
     err: Optional[str] = field(default=None, metadata=config(field_name="err"))
 
 
-@dataclass_json
 @dataclass
-class OwnAccountCLILocal:
+class OwnAccountCLILocal(DataClassJsonMixin):
     account_id: AccountID = field(metadata=config(field_name="accountID"))
     is_primary: bool = field(metadata=config(field_name="isPrimary"))
     name: str = field(metadata=config(field_name="name"))
@@ -1304,9 +1225,8 @@ class OwnAccountCLILocal:
     )
 
 
-@dataclass_json
 @dataclass
-class BatchResultLocal:
+class BatchResultLocal(DataClassJsonMixin):
     start_time: TimeMs = field(metadata=config(field_name="startTime"))
     prepared_time: TimeMs = field(metadata=config(field_name="preparedTime"))
     all_submitted_time: TimeMs = field(metadata=config(field_name="allSubmittedTime"))
@@ -1344,9 +1264,8 @@ class BatchResultLocal:
     )
 
 
-@dataclass_json
 @dataclass
-class ValidateStellarURIResultLocal:
+class ValidateStellarURIResultLocal(DataClassJsonMixin):
     operation: str = field(metadata=config(field_name="operation"))
     origin_domain: str = field(metadata=config(field_name="originDomain"))
     message: str = field(metadata=config(field_name="message"))
@@ -1369,9 +1288,8 @@ class ValidateStellarURIResultLocal:
     signed: bool = field(metadata=config(field_name="signed"))
 
 
-@dataclass_json
 @dataclass
-class PaymentOp:
+class PaymentOp(DataClassJsonMixin):
     to: Optional[keybase1.UserVersion] = field(
         default=None, metadata=config(field_name="to")
     )
@@ -1381,9 +1299,8 @@ class PaymentOp:
     relay: Optional[RelayOp] = field(default=None, metadata=config(field_name="relay"))
 
 
-@dataclass_json
 @dataclass
-class PaymentSummaryStellar:
+class PaymentSummaryStellar(DataClassJsonMixin):
     tx_id: TransactionID = field(metadata=config(field_name="txID"))
     from_: AccountID = field(metadata=config(field_name="from"))
     to: AccountID = field(metadata=config(field_name="to"))
@@ -1409,9 +1326,8 @@ class PaymentSummaryStellar:
     )
 
 
-@dataclass_json
 @dataclass
-class PaymentSummaryRelay:
+class PaymentSummaryRelay(DataClassJsonMixin):
     kb_tx_id: KeybaseTransactionID = field(metadata=config(field_name="kbTxID"))
     tx_id: TransactionID = field(metadata=config(field_name="txID"))
     tx_status: TransactionStatus = field(metadata=config(field_name="txStatus"))
@@ -1445,9 +1361,8 @@ class PaymentSummaryRelay:
     )
 
 
-@dataclass_json
 @dataclass
-class AccountDetails:
+class AccountDetails(DataClassJsonMixin):
     account_id: AccountID = field(metadata=config(field_name="accountID"))
     seqno: str = field(metadata=config(field_name="seqno"))
     subentry_count: int = field(metadata=config(field_name="subentryCount"))
@@ -1468,9 +1383,8 @@ class AccountDetails:
     )
 
 
-@dataclass_json
 @dataclass
-class UIPaymentReviewed:
+class UIPaymentReviewed(DataClassJsonMixin):
     bid: BuildPaymentID = field(metadata=config(field_name="bid"))
     review_id: int = field(metadata=config(field_name="reviewID"))
     seqno: int = field(metadata=config(field_name="seqno"))
@@ -1481,61 +1395,61 @@ class UIPaymentReviewed:
 
 
 @dataclass
-class BundleSecretVersioned__V1:
+class BundleSecretVersioned__V1(DataClassJsonMixin):
     version: Literal[BundleVersionStrings.V1]
     V1: Optional[BundleSecretUnsupported]
 
 
 @dataclass
-class BundleSecretVersioned__V2:
+class BundleSecretVersioned__V2(DataClassJsonMixin):
     version: Literal[BundleVersionStrings.V2]
     V2: Optional[BundleSecretV2]
 
 
 @dataclass
-class BundleSecretVersioned__V3:
+class BundleSecretVersioned__V3(DataClassJsonMixin):
     version: Literal[BundleVersionStrings.V3]
     V3: Optional[BundleSecretUnsupported]
 
 
 @dataclass
-class BundleSecretVersioned__V4:
+class BundleSecretVersioned__V4(DataClassJsonMixin):
     version: Literal[BundleVersionStrings.V4]
     V4: Optional[BundleSecretUnsupported]
 
 
 @dataclass
-class BundleSecretVersioned__V5:
+class BundleSecretVersioned__V5(DataClassJsonMixin):
     version: Literal[BundleVersionStrings.V5]
     V5: Optional[BundleSecretUnsupported]
 
 
 @dataclass
-class BundleSecretVersioned__V6:
+class BundleSecretVersioned__V6(DataClassJsonMixin):
     version: Literal[BundleVersionStrings.V6]
     V6: Optional[BundleSecretUnsupported]
 
 
 @dataclass
-class BundleSecretVersioned__V7:
+class BundleSecretVersioned__V7(DataClassJsonMixin):
     version: Literal[BundleVersionStrings.V7]
     V7: Optional[BundleSecretUnsupported]
 
 
 @dataclass
-class BundleSecretVersioned__V8:
+class BundleSecretVersioned__V8(DataClassJsonMixin):
     version: Literal[BundleVersionStrings.V8]
     V8: Optional[BundleSecretUnsupported]
 
 
 @dataclass
-class BundleSecretVersioned__V9:
+class BundleSecretVersioned__V9(DataClassJsonMixin):
     version: Literal[BundleVersionStrings.V9]
     V9: Optional[BundleSecretUnsupported]
 
 
 @dataclass
-class BundleSecretVersioned__V10:
+class BundleSecretVersioned__V10(DataClassJsonMixin):
     version: Literal[BundleVersionStrings.V10]
     V10: Optional[BundleSecretUnsupported]
 
@@ -1554,25 +1468,22 @@ BundleSecretVersioned = Union[
 ]
 
 
-@dataclass_json
 @dataclass
-class PaymentOrErrorLocal:
+class PaymentOrErrorLocal(DataClassJsonMixin):
     payment: Optional[PaymentLocal] = field(
         default=None, metadata=config(field_name="payment")
     )
     err: Optional[str] = field(default=None, metadata=config(field_name="err"))
 
 
-@dataclass_json
 @dataclass
-class PaymentDetailsLocal:
+class PaymentDetailsLocal(DataClassJsonMixin):
     summary: PaymentLocal = field(metadata=config(field_name="summary"))
     details: PaymentDetailsOnlyLocal = field(metadata=config(field_name="details"))
 
 
-@dataclass_json
 @dataclass
-class PaymentMultiPost:
+class PaymentMultiPost(DataClassJsonMixin):
     from_device_id: keybase1.DeviceID = field(
         metadata=config(field_name="fromDeviceID")
     )
@@ -1584,19 +1495,19 @@ class PaymentMultiPost:
 
 
 @dataclass
-class PaymentSummary__STELLAR:
+class PaymentSummary__STELLAR(DataClassJsonMixin):
     typ: Literal[PaymentSummaryTypeStrings.STELLAR]
     STELLAR: Optional[PaymentSummaryStellar]
 
 
 @dataclass
-class PaymentSummary__DIRECT:
+class PaymentSummary__DIRECT(DataClassJsonMixin):
     typ: Literal[PaymentSummaryTypeStrings.DIRECT]
     DIRECT: Optional[PaymentSummaryDirect]
 
 
 @dataclass
-class PaymentSummary__RELAY:
+class PaymentSummary__RELAY(DataClassJsonMixin):
     typ: Literal[PaymentSummaryTypeStrings.RELAY]
     RELAY: Optional[PaymentSummaryRelay]
 
@@ -1606,9 +1517,8 @@ PaymentSummary = Union[
 ]
 
 
-@dataclass_json
 @dataclass
-class PaymentsPageLocal:
+class PaymentsPageLocal(DataClassJsonMixin):
     payments: Optional[Optional[List[PaymentOrErrorLocal]]] = field(
         default=None, metadata=config(field_name="payments")
     )
@@ -1620,9 +1530,8 @@ class PaymentsPageLocal:
     )
 
 
-@dataclass_json
 @dataclass
-class PaymentDetails:
+class PaymentDetails(DataClassJsonMixin):
     summary: PaymentSummary = field(metadata=config(field_name="summary"))
     memo: str = field(metadata=config(field_name="memo"))
     memo_type: str = field(metadata=config(field_name="memoType"))
@@ -1633,9 +1542,8 @@ class PaymentDetails:
     )
 
 
-@dataclass_json
 @dataclass
-class PaymentsPage:
+class PaymentsPage(DataClassJsonMixin):
     payments: Optional[Optional[List[PaymentSummary]]] = field(
         default=None, metadata=config(field_name="payments")
     )
@@ -1647,9 +1555,8 @@ class PaymentsPage:
     )
 
 
-@dataclass_json
 @dataclass
-class DetailsPlusPayments:
+class DetailsPlusPayments(DataClassJsonMixin):
     details: AccountDetails = field(metadata=config(field_name="details"))
     recent_payments: PaymentsPage = field(metadata=config(field_name="recentPayments"))
     pending_payments: Optional[Optional[List[PaymentSummary]]] = field(
