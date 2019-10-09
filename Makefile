@@ -3,7 +3,11 @@ PROTOCOL_PATH=$(GOPATH)/src/github.com/keybase/client/protocol
 AVDLC=$(PROTOCOL_PATH)/node_modules/.bin/avdlc
 
 test:
-	poetry run python -m pytest && poetry run flake8 && poetry run  black . && poetry run isort -rc .
+	poetry run mypy pykeybasebot/
+	poetry run python -m pytest
+	poetry run flake8
+	poetry run isort -rc . --check-only
+	poetry run black . --check
 
 types:
 	@mkdir -p pykeybasebot/types/{keybase1,gregor1,chat1,stellar1}/
