@@ -14,7 +14,7 @@ class ChatClient:
                 "method": "send",
                 "params": {
                     "options": {
-                        "channel": channel.to_dict(),
+                        "channel": channel,
                         "message": {"body": message},
                     }
                 },
@@ -31,7 +31,7 @@ class ChatClient:
                 "method": "reaction",
                 "params": {
                     "options": {
-                        "channel": channel.to_dict(),
+                        "channel": channel,
                         "message_id": message_id,
                         "message": {"body": reaction},
                     }
@@ -49,7 +49,7 @@ class ChatClient:
                 "method": "edit",
                 "params": {
                     "options": {
-                        "channel": channel.to_dict(),
+                        "channel": channel,
                         "message_id": message_id,
                         "message": {"body": message},
                     }
@@ -67,7 +67,7 @@ class ChatClient:
                 "method": "attach",
                 "params": {
                     "options": {
-                        "channel": channel.to_dict(),
+                        "channel": channel,
                         "filename": filename,
                         "title": title,
                     }
@@ -85,7 +85,7 @@ class ChatClient:
                 "method": "download",
                 "params": {
                     "options": {
-                        "channel": channel.to_dict(),
+                        "channel": channel,
                         "message_id": message_id,
                         "output": output,
                     }
