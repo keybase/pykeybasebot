@@ -5,6 +5,8 @@ import shlex
 
 from .kbevent import KbEvent
 
+KEYBASE_TIMEOUT_MS = 2000
+
 
 class KeybaseNotConnectedError(Exception):
     pass
@@ -61,7 +63,11 @@ async def kbsubmit(keybase_cli: str, command: str, input_data=None, **kwargs):
         stderr=asyncio.subprocess.PIPE,
         **kwargs,
     )
-    stdout, stderr = await process.communicate(input_data)
+    stdout, stderr = await asyncio.wait_for(
+        process.communicate(input_data),
+        KEYBASE_TIMEOUT_MS / 1000.0,
+        loop=kwargs.get("loop"),
+    )
 
     if process.returncode != 0:
         logging.error(f"[{command!r} exited with {process.returncode}]")
