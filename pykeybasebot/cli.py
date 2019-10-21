@@ -5,7 +5,7 @@ import shlex
 
 from .kbevent import KbEvent
 
-KEYBASE_TIMEOUT_MS = 2000
+KEYBASE_TIMEOUT_MS = 10000
 
 
 class KeybaseNotConnectedError(Exception):
@@ -56,6 +56,7 @@ async def kblisten(keybase_cli: str, options, loop=None):
 
 async def kbsubmit(keybase_cli: str, command: str, input_data=None, **kwargs):
     cmd_list = shlex.split(keybase_cli) + shlex.split(command)
+    print(" ".join(cmd_list))
     process = await asyncio.create_subprocess_exec(
         *cmd_list,
         stdin=asyncio.subprocess.PIPE,
