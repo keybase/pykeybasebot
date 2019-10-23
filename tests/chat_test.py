@@ -6,6 +6,7 @@ import tempfile
 import time
 
 from pykeybasebot import Bot
+from pykeybasebot.types import chat1
 
 import pytest
 import yaml
@@ -59,4 +60,12 @@ async def test_list():
         keybase=kb_destination,
     )
 
-    print(await bot.chat.list())
+    conversations = await bot.chat.list()
+
+    for conversation in conversations:
+        assert type(conversation) is chat1.ConvSummary
+
+
+@pytest.mark.asyncio
+async def test_read():
+    pass
