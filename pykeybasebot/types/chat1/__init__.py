@@ -17,12 +17,11 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Dict, List, Optional, Union
 
-from dataclasses_json import DataClassJsonMixin, config
-from typing_extensions import Literal
-
 import pykeybasebot.types.gregor1 as gregor1
 import pykeybasebot.types.keybase1 as keybase1
 import pykeybasebot.types.stellar1 as stellar1
+from dataclasses_json import DataClassJsonMixin, config
+from typing_extensions import Literal
 
 
 @dataclass
