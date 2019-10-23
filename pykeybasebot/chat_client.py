@@ -19,7 +19,7 @@ class ChatClient:
 
     async def read(self, channel: chat1.ChatChannel) -> List[chat1.MsgSummary]:
         """
-        Reads the messages in a channel. You can read with or without marking as read.
+        Reads the messages in a channel.
         """
         await self.bot.ensure_initialized()
         res = await self.execute(

@@ -12,7 +12,6 @@ import pytest
 import yaml
 
 
-# create temp dir
 def create_working_dir():
     with tempfile.TemporaryDirectory() as tmpdir:
         kb_location = shutil.which("keybase").strip()
