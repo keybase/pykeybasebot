@@ -26,12 +26,7 @@ class ChatClient:
             {"method": "read", "params": {"options": {"channel": channel.to_dict()}}}
         )
         thread = chat1.Thread.from_dict(res)
-        if thread.messages is None:
-            return []
-        messages = []
-        for message in thread.messages:
-            messages.append(message.msg)
-        return messages
+        return [message.msg for message in (thread.messages or [])]
 
     async def send(self, channel: chat1.ChatChannel, message: str) -> chat1.SendRes:
         await self.bot.ensure_initialized()
