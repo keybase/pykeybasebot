@@ -34,6 +34,10 @@ def channel(config):
     )
 
 
+def noop_handler(*args, **kwargs):
+    pass
+
+
 @pytest.fixture()
 async def bot(config):
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -43,6 +47,7 @@ async def bot(config):
 
         args = [kb_destination, "--home", tmpdir, "service"]
         subprocess.Popen(args)
+        # Give the service a second to start up
         time.sleep(2)
 
         bot = Bot(
@@ -55,10 +60,6 @@ async def bot(config):
         yield bot
         await bot.teardown()
         await kbsubmit(kb_destination, "ctl stop")
-
-
-def noop_handler(*args, **kwargs):
-    pass
 
 
 @pytest.mark.asyncio
