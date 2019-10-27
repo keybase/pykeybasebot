@@ -6,6 +6,7 @@ from typing import Optional
 
 from .chat_client import ChatClient
 from .cli import KeybaseNotConnectedError, kblisten, kbsubmit
+from .kvstore_client import KVStoreClient
 
 RETRY_ATTEMPTS = 100
 SLEEP_SECS_BETWEEEN_RETRIES = 1
@@ -107,6 +108,10 @@ class Bot:
     @property
     def chat(self):
         return ChatClient(self)
+
+    @property
+    def kvstore(self):
+        return KVStoreClient(self)
 
     async def ensure_initialized(self):
         if not await self._is_initialized():
