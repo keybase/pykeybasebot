@@ -3,24 +3,13 @@
 ###################################
 # WHAT IS IN THIS EXAMPLE?
 #
-# Keybase has added an encrypted key-value store intended to support
-# security-conscious bot development with persistent state. It is a place to
-# store small bits of data that are
-#   (1) encrypted for a team or user (via the user's implicit self-team: e.g.
-# alice,alice),
-#   (2) persistent across logins
-#   (3) fast and durable.
-#
-# It supports putting, getting, listing and deleting. There is also a concurrency
-# primitive, but check out the other example for that. A team has many
-# namespaces, a namespace has many entryKeys, and an entryKey has one current
-# entryValue. Namespaces and entryKeys are in cleartext, and the Keybase client
-# service will encrypt and sign the entryValue on the way in (as well as
-# decrypt and verify on the way out) so keybase servers cannot see it or lie
-# about it.
+# Keybase has added an encrypted key-value store; see 4_simple_storage.py for
+# more information.
 #
 # This example shows how you can build a simple TOTP bot that makes use of
 # the team encrypted key-value store, which we interact with using KVStoreClient.
+#
+# This example does minimal error handling and is not concurrency safe.
 ###################################
 
 import asyncio
@@ -77,8 +66,6 @@ class TotpHandler:
 
     For more information on TOTP, see https://pyotp.readthedocs.io/en/latest/,
     https://tools.ietf.org/html/rfc6238.
-
-    This example does minimal error handling.
     """
 
     MSG_PREFIX = "!totp"
@@ -223,7 +210,6 @@ class TotpHandler:
 
 
 username = "yourbot"
-team = "yourtotpbotteam"
 
 bot = Bot(
     username=username, paperkey=os.environ["KEYBASE_PAPERKEY"], handler=TotpHandler()
