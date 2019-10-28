@@ -89,6 +89,12 @@ class KVStoreClient:
         )
         return keybase1.KVListEntryResult.from_dict(res)
 
+    def is_deleted(self, res: keybase1.KVGetResult) -> bool:
+        return res.revision > 0 and res.entry_value == ""
+
+    def is_present(self, res: keybase1.KVGetResult) -> bool:
+        return res.revision > 0 and res.entry_value != ""
+
     async def execute(self, command):
         resp = await self.bot.submit("kvstore api", json.dumps(command).encode("utf-8"))
         return resp["result"]
