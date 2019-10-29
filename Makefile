@@ -14,6 +14,9 @@ test-unit:
 test-accept:
 	poetry run python -m pytest tests/acceptance
 
+
+ci: test-static test-unit
+
 test: test-static test-unit test-accept
 
 types:
