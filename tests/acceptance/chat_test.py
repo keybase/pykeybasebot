@@ -5,11 +5,11 @@ import tempfile
 import time
 from pathlib import Path
 
-from pykeybasebot import Bot, kbsubmit
-from pykeybasebot.types import chat1
-
 import pytest
 import yaml
+
+from pykeybasebot import Bot, kbsubmit
+from pykeybasebot.types import chat1
 
 
 @pytest.fixture()
