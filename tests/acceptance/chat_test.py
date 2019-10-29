@@ -1,29 +1,27 @@
-import asyncio
 import os
 import shutil
 import subprocess
 import tempfile
 import time
-
-from pykeybasebot import Bot, kbsubmit
-from pykeybasebot.types import chat1
+from pathlib import Path
 
 import pytest
 import yaml
 
-
-def create_working_dir():
-    with tempfile.TemporaryDirectory() as tmpdir:
-        kb_location = shutil.which("keybase").strip()
-        kb_destination = f"{tmpdir}/keybase"
-        shutil.copy(kb_location, kb_destination)
-        print(os.listdir(tmpdir))
+from pykeybasebot import Bot, kbsubmit
+from pykeybasebot.types import chat1
 
 
 @pytest.fixture()
-def config():
-    with open("tests/test_config.yaml") as f:
-        data = yaml.safe_load(f)
+def config_location():
+    app_dir = Path().absolute()
+    return os.path.join(app_dir, "tests/acceptance/test_config.yaml")
+
+
+@pytest.fixture()
+def config(config_location):
+    with open(config_location) as file:
+        data = yaml.safe_load(file)
         return data
 
 

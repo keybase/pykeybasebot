@@ -12,7 +12,7 @@ from pykeybasebot import EventType, KbEvent, Source
 @pytest.fixture()
 def fixture_path():
     app_dir = Path().absolute()
-    return os.path.join(app_dir, "tests/fixtures")
+    return os.path.join(app_dir, "tests/unit/fixtures")
 
 
 def test_teamchat(fixture_path):
