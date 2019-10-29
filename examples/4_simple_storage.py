@@ -113,6 +113,9 @@ class KVHandler:
             revision = int(msg[5]) if len(msg) == 6 else None
             if action == KVMsg.PUT.value:
                 try:
+                    # note: if revision=None, the server does a get (to get
+                    # the latest revision number) then a put (with revision
+                    # number + 1). this operation is not atomic.
                     res = await bot.kvstore.put(
                         team, namespace, key, value, revision=revision
                     )
@@ -122,13 +125,10 @@ class KVHandler:
                 return
 
 
-username = "user3"  # "yourbot"
+username = "yourbot"
 
 bot = Bot(
-    username=username,
-    paperkey=os.environ["KEYBASE_PAPERKEY"],
-    handler=KVHandler(),
-    keybase="/home/user/Documents/repos/go/src/github.com/keybase/client/go/keybase/keybase",
+    username=username, paperkey=os.environ["KEYBASE_PAPERKEY"], handler=KVHandler()
 )
 
 asyncio.run(bot.start({}))
