@@ -5,11 +5,11 @@ import tempfile
 import time
 from pathlib import Path
 
-import pytest
-import yaml
-
 from pykeybasebot import Bot, kbsubmit
 from pykeybasebot.types import chat1
+
+import pytest
+import yaml
 
 
 @pytest.fixture()
@@ -37,7 +37,7 @@ def noop_handler(*args, **kwargs):
 
 
 @pytest.fixture()
-async def bot(config):
+async def setup_bot(config):
     with tempfile.TemporaryDirectory() as tmpdir:
         kb_location = shutil.which("keybase").strip()
         kb_destination = f"{tmpdir}/keybase"
@@ -48,27 +48,35 @@ async def bot(config):
         # Give the service a second to start up
         time.sleep(2)
 
-        bot = Bot(
-            username=config["bots"]["alice"]["username"],
-            paperkey=config["bots"]["alice"]["paperkey"],
-            handler=noop_handler,
-            home_path=tmpdir,
-            keybase=kb_destination,
-        )
-        yield bot
+        bot = None
+
+        def setup_bot_with_name(name):
+            nonlocal bot
+            bot = Bot(
+                username=config["bots"][name]["username"],
+                paperkey=config["bots"][name]["paperkey"],
+                handler=noop_handler,
+                home_path=tmpdir,
+                keybase=kb_destination,
+            )
+            return bot
+
+        yield setup_bot_with_name
         await bot.teardown()
         await kbsubmit(kb_destination, "ctl stop")
 
 
 @pytest.mark.asyncio
-async def test_list(bot):
+async def test_list(setup_bot):
+    bot = setup_bot("alice")
     conversations = await bot.chat.list()
     for conversation in conversations:
         assert type(conversation) is chat1.ConvSummary
 
 
 @pytest.mark.asyncio
-async def test_read(bot, channel):
+async def test_read(setup_bot, channel):
+    bot = setup_bot("alice")
     messages = await bot.chat.read(channel)
     for message in messages:
         assert type(message) is chat1.MsgSummary
