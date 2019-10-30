@@ -15,6 +15,22 @@ def fixture_path():
     return os.path.join(app_dir, "tests/unit/fixtures")
 
 
+def test_list(fixture_path):
+    with open(f"{fixture_path}/list_result.json") as json_file:
+        data = json.load(json_file)
+
+    chat_list = chat1.ChatList.from_dict(data)
+    print(chat_list)
+
+
+def test_read(fixture_path):
+    with open(f"{fixture_path}/read_result.json") as json_file:
+        data = json.load(json_file)
+
+    thread = chat1.Thread.from_dict(data)
+    print(thread)
+
+
 def test_teamchat(fixture_path):
     with open(f"{fixture_path}/teamchat.json") as json_file:
         data = json.load(json_file)
