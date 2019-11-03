@@ -52,7 +52,7 @@ def test_read(fixture_path):
             chat1.Message(
                 msg=chat1.MsgSummary(
                     id=3,
-                    conversation_id="00001bca4f13b0a7b81bfbc2acd7f8cf829bf53845ac87cdd8b62617d5aaa084",
+                    conv_id="00001bca4f13b0a7b81bfbc2acd7f8cf829bf53845ac87cdd8b62617d5aaa084",
                     channel=chat1.ChatChannel(
                         name="alice,bob",
                         members_type="impteamnative",
@@ -67,12 +67,12 @@ def test_read(fixture_path):
                     sent_at=1_544_140_065,
                     sent_at_ms=1_544_140_065_815,
                     content=chat1.MsgContent(
-                        type="text",
+                        type_name="text",
                         text=chat1.MessageText(
                             body="hello",
                             payments=None,
-                            userMentions=None,
-                            teamMentions=None,
+                            user_mentions=None,
+                            team_mentions=None,
                         ),
                     ),
                     prev=[
@@ -84,7 +84,10 @@ def test_read(fixture_path):
                     channel_mention="none",
                 )
             )
-        ]
+        ],
+        pagination=chat1.Pagination(
+            num=469, next="AQ==", previous="zQHV", last=True, force_first_page=None
+        ),
     )
 
 
