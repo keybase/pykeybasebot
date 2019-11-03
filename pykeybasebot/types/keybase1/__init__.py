@@ -1143,6 +1143,18 @@ class DbTypeStrings(Enum):
 DbValue = str
 
 
+class OnLoginStartupStatus(Enum):
+    UNKNOWN = 0
+    DISABLED = 1
+    ENABLED = 2
+
+
+class OnLoginStartupStatusStrings(Enum):
+    UNKNOWN = "unknown"
+    DISABLED = "disabled"
+    ENABLED = "enabled"
+
+
 @dataclass
 class FirstStepResult(DataClassJsonMixin):
     val_plus_two: int = field(metadata=config(field_name="valPlusTwo"))
@@ -2592,6 +2604,7 @@ class SubscriptionTopic(Enum):
     JOURNAL_STATUS = 1
     ONLINE_STATUS = 2
     DOWNLOAD_STATUS = 3
+    FILES_TAB_BADGE = 4
 
 
 class SubscriptionTopicStrings(Enum):
@@ -2599,6 +2612,7 @@ class SubscriptionTopicStrings(Enum):
     JOURNAL_STATUS = "journal_status"
     ONLINE_STATUS = "online_status"
     DOWNLOAD_STATUS = "download_status"
+    FILES_TAB_BADGE = "files_tab_badge"
 
 
 class PathSubscriptionTopic(Enum):
@@ -2609,6 +2623,20 @@ class PathSubscriptionTopic(Enum):
 class PathSubscriptionTopicStrings(Enum):
     CHILDREN = "children"
     STAT = "stat"
+
+
+class FilesTabBadge(Enum):
+    NONE = 0
+    UPLOADING_STUCK = 1
+    AWAITING_UPLOAD = 2
+    UPLOADING = 3
+
+
+class FilesTabBadgeStrings(Enum):
+    NONE = "none"
+    UPLOADING_STUCK = "uploading_stuck"
+    AWAITING_UPLOAD = "awaiting_upload"
+    UPLOADING = "uploading"
 
 
 class GUIViewType(Enum):
@@ -4225,6 +4253,7 @@ class TeambotKeyMetadata(DataClassJsonMixin):
     puk_generation: PerUserKeyGeneration = field(
         metadata=config(field_name="puk_generation")
     )
+    application: TeamApplication = field(metadata=config(field_name="application"))
 
 
 @dataclass
@@ -5026,13 +5055,13 @@ class BadgeState(DataClassJsonMixin):
     new_git_repo_global_unique_i_ds: Optional[Optional[List[str]]] = field(
         default=None, metadata=config(field_name="newGitRepoGlobalUniqueIDs")
     )
-    new_team_names: Optional[Optional[List[str]]] = field(
-        default=None, metadata=config(field_name="newTeamNames")
+    new_teams: Optional[Optional[List[TeamID]]] = field(
+        default=None, metadata=config(field_name="newTeams")
     )
     deleted_teams: Optional[Optional[List[DeletedTeamInfo]]] = field(
         default=None, metadata=config(field_name="deletedTeams")
     )
-    new_team_access_requests: Optional[Optional[List[str]]] = field(
+    new_team_access_requests: Optional[Optional[List[TeamID]]] = field(
         default=None, metadata=config(field_name="newTeamAccessRequests")
     )
     teams_with_reset_users: Optional[Optional[List[TeamMemberOutReset]]] = field(

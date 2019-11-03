@@ -2832,6 +2832,9 @@ class RemoteBotCommandsAdvertisementTLFID(DataClassJsonMixin):
 @dataclass
 class BotCommandConv(DataClassJsonMixin):
     uid: gregor1.UID = field(metadata=config(field_name="uid"))
+    untrusted_team_role: keybase1.TeamRole = field(
+        metadata=config(field_name="untrustedTeamRole")
+    )
     conv_id: ConversationID = field(metadata=config(field_name="convID"))
     vers: CommandConvVers = field(metadata=config(field_name="vers"))
     mtime: gregor1.Time = field(metadata=config(field_name="mtime"))

@@ -19,7 +19,7 @@ import os
 import sys
 from enum import Enum
 
-import pyotp
+import pyotp  # type: ignore
 
 from pykeybasebot import Bot, EventType
 
@@ -27,7 +27,9 @@ logging.basicConfig(level=logging.DEBUG)
 
 if "win32" in sys.platform:
     # Windows specific event-loop policy
-    asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
+    asyncio.set_event_loop_policy(
+        asyncio.WindowsProactorEventLoopPolicy()  # type: ignore
+    )
 
 
 class TotpMsg(Enum):
@@ -133,7 +135,6 @@ class TotpHandler:
                     \n`!totp {list|help}`"
                 await bot.chat.send(channel, send_msg)
                 return
-
         if len(msg) == 3:
             action, issuer = msg[1], msg[2]
             if action == TotpMsg.NOW.value:
@@ -155,7 +156,6 @@ class TotpHandler:
                 finally:
                     await bot.chat.send(channel, send_msg)
                 return
-
         if len(msg) == 4:
             action, issuer, secret = msg[1], msg[2], msg[3]
             if action == TotpMsg.ADD.value:
@@ -169,6 +169,7 @@ class TotpHandler:
                 finally:
                     await bot.chat.send(channel, send_msg)
                 return
+        await bot.chat.send(channel, "invalid !totp command")
 
 
 username = "yourbot"

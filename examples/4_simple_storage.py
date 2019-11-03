@@ -37,7 +37,9 @@ logging.basicConfig(level=logging.DEBUG)
 
 if "win32" in sys.platform:
     # Windows specific event-loop policy
-    asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
+    asyncio.set_event_loop_policy(
+        asyncio.WindowsProactorEventLoopPolicy()  # type: ignore
+    )
 
 
 class KVMsg(Enum):
@@ -45,6 +47,7 @@ class KVMsg(Enum):
     GET = "get"
     DELETE = "delete"
     LIST = "list"
+    HELP = "help"
 
 
 class KVHandler:
@@ -53,6 +56,8 @@ class KVHandler:
 
     KVHandler listens to chat messages of the form:
     `!storage put <namespace> <key> <value> (<revision>)`
+    `!storage get <namespace> <key>`
+    `!storage delete <namespace> <key> (<revision>)`
     `!storage {get|delete} <namespace> <key>`
     `!storage list`
     `!storage list <namespace>`
@@ -81,11 +86,22 @@ class KVHandler:
         if msg[0] != self.MSG_PREFIX:
             return
 
-        if len(msg) == 2 and msg[1] == KVMsg.LIST.value:
-            # !storage list
-            res = await bot.kvstore.list_namespaces(team)
-            await bot.chat.send(channel, str(res))
-            return
+        if len(msg) == 2:
+            if msg[1] == KVMsg.LIST.value:
+                # !storage list
+                res = await bot.kvstore.list_namespaces(team)
+                await bot.chat.send(channel, str(res))
+                return
+            if msg[1] == KVMsg.HELP.value:
+                # !storage help
+                send_msg = "Available commands:\
+                    \n`!storage put <namespace> <key> <value> (<revision>)`\
+                    \n`!storage get <namespace> <key>`\
+                    \n`!storage delete <namespace> <key> (<revision>)`\
+                    \n`!storage list`\
+                    \n`!storage list <namespace>`"
+                await bot.chat.send(channel, send_msg)
+                return
         if len(msg) == 3 and msg[1] == KVMsg.LIST.value:
             # !storage list <namespace>
             namespace = msg[2]
@@ -99,10 +115,15 @@ class KVHandler:
                 res = await bot.kvstore.get(team, namespace, key)
                 await bot.chat.send(channel, str(res))
                 return
+        if len(msg) == 4 or len(msg) == 5:
+            (action, namespace, key) = (msg[1], msg[2], msg[3])
+            revision = int(msg[4]) if len(msg) == 5 else None
             if action == KVMsg.DELETE.value:
-                # !storage delete <namespace> <key>
+                # !storage delete <namespace> <key> (<revision>)
                 try:
-                    res = await bot.kvstore.delete(team, namespace, key)
+                    res = await bot.kvstore.delete(
+                        team, namespace, key, revision=revision
+                    )
                     await bot.chat.send(channel, str(res))
                 except Exception as e:
                     await bot.chat.send(channel, str(e))
@@ -123,6 +144,8 @@ class KVHandler:
                 except Exception as e:
                     await bot.chat.send(channel, str(e))
                 return
+        await bot.chat.send(channel, "invalid !storage command")
+        return
 
 
 username = "yourbot"

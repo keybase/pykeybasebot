@@ -19,7 +19,9 @@ logging.basicConfig(level=logging.DEBUG)
 
 if "win32" in sys.platform:
     # Windows specific event-loop policy
-    asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
+    asyncio.set_event_loop_policy(
+        asyncio.WindowsProactorEventLoopPolicy()  # type: ignore
+    )
 
 
 class CustomClient(ChatClient):

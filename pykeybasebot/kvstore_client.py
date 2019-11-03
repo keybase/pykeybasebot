@@ -1,6 +1,7 @@
 import json
 from typing import Any, Dict, Union
 
+from .errors import DeleteNonExistentError, RevisionError
 from .types import keybase1
 
 
@@ -30,8 +31,14 @@ class KVStoreClient:
         }
         if revision:
             args["params"]["options"]["revision"] = revision
-        res = await self.execute(args)
-        return keybase1.KVPutResult.from_dict(res)
+        try:
+            res = await self.execute(args)
+            return keybase1.KVPutResult.from_dict(res)
+        except Exception as e:
+            if e.args[0]["code"] == 2760:
+                raise RevisionError(e.args[0]["message"])
+            else:
+                raise e
 
     async def delete(
         self,
@@ -49,8 +56,16 @@ class KVStoreClient:
         }
         if revision:
             args["params"]["options"]["revision"] = revision
-        res = await self.execute(args)
-        return keybase1.KVDeleteEntryResult.from_dict(res)
+        try:
+            res = await self.execute(args)
+            return keybase1.KVDeleteEntryResult.from_dict(res)
+        except Exception as e:
+            if e.args[0]["code"] == 2762:
+                raise DeleteNonExistentError(e.args[0]["message"])
+            elif e.args[0]["code"] == 2760:
+                raise RevisionError(e.args[0]["message"])
+            else:
+                raise e
 
     async def get(
         self, team: str, namespace: str, entryKey: str
