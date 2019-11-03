@@ -36,8 +36,8 @@ def test_list(fixture_path):
                     topic_name="general",
                 ),
                 unread=True,
-                active_at=1572402097,
-                active_at_ms=1572402097456,
+                active_at=1_572_402_097,
+                active_at_ms=1_572_402_097_456,
                 member_status="active",
             )
         ],
@@ -64,8 +64,8 @@ def test_read(fixture_path):
                         device_id="011e2994f419d748d751a449ae17e218",
                         device_name="alice's phone",
                     ),
-                    sent_at=1544140065,
-                    sent_at_ms=1544140065815,
+                    sent_at=1_544_140_065,
+                    sent_at_ms=1_544_140_065_815,
                     content=chat1.MsgContent(
                         type="text",
                         text=chat1.MessageText(
