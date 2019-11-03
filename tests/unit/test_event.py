@@ -15,20 +15,77 @@ def fixture_path():
     return os.path.join(app_dir, "tests/unit/fixtures")
 
 
-def test_list(fixture_path):
-    with open(f"{fixture_path}/list_result.json") as json_file:
+def get_result(path: str):
+    with open(path) as json_file:
         data = json.load(json_file)
+    return data["result"]
 
-    chat_list = chat1.ChatList.from_dict(data)
-    print(chat_list)
+
+def test_list(fixture_path):
+    result = get_result(f"{fixture_path}/list_result.json")
+    chat_list = chat1.ChatList.from_dict(result)
+    assert chat_list == chat1.ChatList(
+        offline=False,
+        conversations=[
+            chat1.ConvSummary(
+                id="0000d5ba71470610a40b4d32af53a52775cc561589525d7b21bad9ec057b6aac",
+                channel=chat1.ChatChannel(
+                    name="keybasefriends",
+                    members_type="team",
+                    topic_type="chat",
+                    topic_name="general",
+                ),
+                unread=True,
+                active_at=1572402097,
+                active_at_ms=1572402097456,
+                member_status="active",
+            )
+        ],
+    )
 
 
 def test_read(fixture_path):
-    with open(f"{fixture_path}/read_result.json") as json_file:
-        data = json.load(json_file)
-
-    thread = chat1.Thread.from_dict(data)
-    print(thread)
+    result = get_result(f"{fixture_path}/read_result.json")
+    thread = chat1.Thread.from_dict(result)
+    assert thread == chat1.Thread(
+        messages=[
+            chat1.Message(
+                msg=chat1.MsgSummary(
+                    id=3,
+                    conversation_id="00001bca4f13b0a7b81bfbc2acd7f8cf829bf53845ac87cdd8b62617d5aaa084",
+                    channel=chat1.ChatChannel(
+                        name="alice,bob",
+                        members_type="impteamnative",
+                        topic_type="chat",
+                    ),
+                    sender=chat1.MsgSender(
+                        uid="8440bf65b0e77107c12e0350fc905e19",
+                        username="alice",
+                        device_id="011e2994f419d748d751a449ae17e218",
+                        device_name="alice's phone",
+                    ),
+                    sent_at=1544140065,
+                    sent_at_ms=1544140065815,
+                    content=chat1.MsgContent(
+                        type="text",
+                        text=chat1.MessageText(
+                            body="hello",
+                            payments=None,
+                            userMentions=None,
+                            teamMentions=None,
+                        ),
+                    ),
+                    prev=[
+                        chat1.MessagePreviousPointer(
+                            id=2, hash="A40VOjV7PVK7KcGZwOL/BOhPvn/a0jWg1JUltv7OLaQ="
+                        )
+                    ],
+                    unread=False,
+                    channel_mention="none",
+                )
+            )
+        ]
+    )
 
 
 def test_teamchat(fixture_path):

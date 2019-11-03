@@ -2,19 +2,6 @@
   "result": {
     "conversations": [
       {
-        "id": "0000c05b45aa5e52bf7817d9f0f8219fa190f3feca4b1447be211347ed7d97ac",
-        "channel": {
-          "name": "stellar.public",
-          "members_type": "team",
-          "topic_type": "chat",
-          "topic_name": "general"
-        },
-        "unread": true,
-        "active_at": 1572402412,
-        "active_at_ms": 1572402412095,
-        "member_status": "active"
-      },
-      {
         "id": "0000d5ba71470610a40b4d32af53a52775cc561589525d7b21bad9ec057b6aac",
         "channel": {
           "name": "keybasefriends",
@@ -26,20 +13,8 @@
         "active_at": 1572402097,
         "active_at_ms": 1572402097456,
         "member_status": "active"
-      },
-      {
-        "id": "0000d2c4d915aa04c093a25b9496cd885ff510f4eeeacac5a7249f65d82ed0ad",
-        "channel": {
-          "name": "mkbot",
-          "members_type": "team",
-          "topic_type": "chat",
-          "topic_name": "chat"
-        },
-        "unread": false,
-        "active_at": 1572378530,
-        "active_at_ms": 1572378530086,
-        "member_status": "active"
       }
-    ]
+    ],
+    "offline": false
   }
 }
