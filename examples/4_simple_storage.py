@@ -11,8 +11,8 @@
 #   (2) persistent across logins
 #   (3) fast and durable.
 #
-# It supports putting, getting, listing and deleting. There is also a concurrency
-# primitive, but check out the other example for that. A team has many
+# It supports putting, getting, listing and deleting. There is also concurrency
+# support, but check out 4_secret_storage.py for that. A team has many
 # namespaces, a namespace has many entryKeys, and an entryKey has one current
 # entryValue. Namespaces and entryKeys are in cleartext, and the Keybase client
 # service will encrypt and sign the entryValue on the way in (as well as

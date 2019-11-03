@@ -8,10 +8,11 @@
 #
 # This example implements a simple bot to manage hackerspace tool rentals. It
 # shows one way you can easily obfuscate entryKeys (which are by default
-# not encrypted) so that no one but your team (not even Keybase) can know about
-# the names of all the cool tools you have; you can do something similar to
-# hide namespaces. Additionally this example handles concurrent writes using a cache
-# to prevent one user from unintentionally clobbering another user's rental updates.
+# not encrypted) by storing their HMACs, so that no one but your team (not even
+# Keybase) can know about the names of all the cool tools you have; you can do
+# something similar to hide namespaces. Additionally this example handles
+# concurrent writes using a cache to prevent one user from unintentionally
+# clobbering another user's rental updates.
 # ###################################
 
 import asyncio
@@ -59,7 +60,13 @@ class RentalMsg(Enum):
 class SecretKeyKVStoreClient:
     """
         Wrapper around KVStoreClient.
-        Hmacs entryKeys by a per-team, per-namespace random secret.
+        HMACs entryKeys using the passed in secret, and stores the HMAC instead
+        of the plaintext entryKey.
+
+        This approach to keeping the entryKeys private stores the plaintext entryKey
+        in the JSON entryValue under the key "_key". Listing all keys requires
+        getting each row in the (team, namespace). Also, this approach does not
+        hide memory access patterns.
     """
 
     KEY_KEY = "_key"
@@ -109,7 +116,6 @@ class SecretKeyKVStoreClient:
         self, secret: bytes, team: str, namespace: str
     ) -> keybase1.KVListEntryResult:
         res = await self.kvstore.list_entrykeys(team, namespace)
-        print(res.entry_keys)
         if res.entry_keys:
             for e in res.entry_keys:
                 if not e.entry_key.startswith("_"):
@@ -117,7 +123,6 @@ class SecretKeyKVStoreClient:
                     e.entry_key = json.loads(get_res.entry_value)[
                         self.KEY_KEY
                     ]  # modify
-        print("list_entrykeys: ", res)
         return res
 
 
@@ -132,10 +137,16 @@ class RentalHandler:
 
     It expects properly formatted commands.
 
-    It uses a cache to handle concurrent users.
-    It maintains a cache of the hmac secrets it has previously fetched (stored
-    with the special entryKey "_secret", and stores the hmac of the entryKey
-    instead of the plaintext entryKey.
+    RentalHandler uses a cache to keep track of the most recently fetched value and
+    revision for each key. To handle concurrent updates, it attempts to update
+    with the most recently fetched revision + 1; if it fails, it does a "get"
+    and updates the cache, and asks the user to retry if they still want to
+    do their update.
+
+    RentalHandler also maintains a cache of the per-team per-namespace hmac secrets
+    it has previously fetched (stored with the special entryKey "_secret"),
+    which it uses to HMAC entryKeys. RentalHandler uses the SecretKeyKVStoreClient
+    to store entryKeys' HMACs instead of the plaintext entryKeys.
    """
 
     MSG_PREFIX = "!rental"
@@ -144,12 +155,11 @@ class RentalHandler:
     SECRET_KEY = "_secret"
 
     def __init__(self):
-        # cache = {tool: {"revision": int, "info": {} or None}}
+        # self.cache = {tool: {"revision": int, "info": {} or None}}
         self.cache: Dict[Any, Any] = {}
         self.secrets: Dict[str, Dict[str, bytes]] = {}  # {team: {namespace: secret}}
 
     async def load_secret(self, bot, team, namespace):
-        print("load box box: ", self.secrets)
         if team not in self.secrets or namespace not in self.secrets[team]:
             secret = secrets.token_bytes(self.SECRET_NUM_BYTES)
             try:
@@ -157,28 +167,22 @@ class RentalHandler:
                 res: keybase1.KVPutResult = await bot.kvstore.put(
                     team, namespace, self.SECRET_KEY, bytes_to_str(secret), revision=1
                 )
-                print("PUT RESULT: ", res)
             except RevisionError:
                 res = await bot.kvstore.get(team, namespace, self.SECRET_KEY)
                 secret = str_to_bytes(res.entry_value)
-                print(">>>>gotten key: ", secret)
             if team not in self.secrets:
                 self.secrets[team] = {}
             self.secrets[team][namespace] = secret
-        print(">>>>>>>>>>>>>>>>>>")
-        print(self.secrets)
         return self.secrets[team][namespace]
 
     def update_cache(
         self, tool: str, reservations: Union[None, Dict[str, str]], revision: int
     ):
         self.cache[tool] = {"info": reservations, "revision": revision}
-        print("CACHE: ", self.cache)
 
     async def lookup(
         self, bot, team, tool, secret: Union[bytes, None]
     ) -> keybase1.KVGetResult:
-        print("TOOL :   ", tool)
         if secret is None:
             secret = await self.load_secret(bot, team, self.NAMESPACE)
         res = await SecretKeyKVStoreClient(bot.kvstore).get(
@@ -196,7 +200,7 @@ class RentalHandler:
         expected_revision = 1
         if tool in self.cache:
             # if tool already exists, propagate existing info
-            if self.cache[tool]["info"] and type(self.cache[tool]["info"]) is dict:
+            if self.cache[tool]["info"]:
                 info = self.cache[tool]["info"]
             expected_revision = self.cache[tool]["revision"] + 1
         info_str = json.dumps(info) if type(info) is dict else ""
@@ -248,7 +252,7 @@ class RentalHandler:
             info[day] = user
         else:
             # unreserve
-            info.pop(tool, None)
+            info.pop(day, None)
         try:
             res: keybase1.KVPutResult = await SecretKeyKVStoreClient(bot.kvstore).put(
                 secret, team, self.NAMESPACE, tool, json.dumps(info), expected_revision
@@ -273,8 +277,6 @@ class RentalHandler:
         return keys
 
     async def __call__(self, bot, event):
-        print("----")
-        print(event)
         members_type = event.msg.channel.members_type
         if not (
             event.type == EventType.CHAT
@@ -291,7 +293,6 @@ class RentalHandler:
         )
 
         msg = event.msg.content.text.body.split(" ")
-        print(">>>msg: ", msg)
         if msg[0] != self.MSG_PREFIX:
             return
 

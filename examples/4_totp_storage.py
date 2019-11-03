@@ -7,7 +7,7 @@
 # more information.
 #
 # This example shows how you can build a simple TOTP bot that makes use of
-# the team encrypted key-value store, which we interact with using KVStoreClient.
+# the team encrypted key-value store.
 #
 # This example does minimal error handling and is not concurrency safe.
 ###################################
