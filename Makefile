@@ -9,10 +9,10 @@ test-static:
 	poetry run black . --check
 
 test-unit:
-	poetry run python -m pytest tests/unit
+	poetry run python -m pytest tests/unit -s
 
 test-accept:
-	poetry run python -m pytest tests/acceptance
+	poetry run python -m pytest tests/acceptance -s
 
 ci: test-static test-unit
 
