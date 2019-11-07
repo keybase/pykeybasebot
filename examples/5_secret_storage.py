@@ -7,8 +7,8 @@
 # more information.
 #
 # This example implements a simple bot to manage hackerspace tool rentals. It
-# shows one way you can easily obfuscate entryKeys (which are by default
-# not encrypted) by storing their HMACs, so that no one but your team (not even
+# shows one way you can obfuscate entryKeys (which are not encrypted) by
+# storing their HMACs, so that no one but your team (not even
 # Keybase) can know about the names of all the cool tools you have; you can do
 # something similar to hide namespaces. Additionally this example handles
 # concurrent writes using a cache to prevent one user from unintentionally
@@ -39,6 +39,112 @@ if "win32" in sys.platform:
     )
 
 
+class CachedBot(Bot):
+    """
+        Custom bot maintains a cache of secrets for
+        SecretKeyKVStoreClients.
+    """
+
+    @property
+    def secret_kvstore(self):
+        if not hasattr(self, "secret"):
+            # secrets = {team: {namespace: secret}}
+            self.secrets: Dict[str, Dict[str, bytes]] = {}
+        return SecretKeyKVStoreClient(self)
+
+
+class SecretKeyKVStoreClient(KVStoreClient):
+    """
+        A KVStoreClient that hides the entryKeys from Keybase servers.
+
+        It does so by HMACing entryKeys using a per-(team, namespace) secret,
+        and storing the HMAC instead of the plaintext entryKey. The secret
+        is not expected to change.
+
+        The plaintext entryKey is stored in the JSON entryValue under the key
+        "_key" to enable listing; listing all keys requires getting each row
+        in the (team, namespace). Also, this approach does not hide memory
+        access patterns.
+    """
+
+    KEY_KEY = "_key"
+    SECRET_KEY = "_secret"
+    SECRET_NUM_BYTES = 32
+
+    def __init__(self, bot):
+        self.secrets = bot.secrets
+        super().__init__(bot)
+
+    async def load_secret(self, team, namespace) -> bytes:
+        if team not in self.secrets or namespace not in self.secrets[team]:
+            secret = secrets.token_bytes(self.SECRET_NUM_BYTES)
+            try:
+                # we don't expect self.SECRET_KEY's revision > 0
+                await super().put(
+                    team, namespace, self.SECRET_KEY, bytes_to_str(secret), revision=1
+                )
+            except RevisionError:
+                res: keybase1.KVGetResult = await super().get(
+                    team, namespace, self.SECRET_KEY
+                )
+                secret = str_to_bytes(res.entry_value)
+            # update self.secrets (which also updates self.bot.secrets)
+            if team not in self.secrets:
+                self.secrets[team] = {}
+            self.secrets[team][namespace] = secret
+        return self.secrets[team][namespace]
+
+    async def hmac_key(self, secret: bytes, key: str) -> str:
+        return hmac.new(secret, key.encode("utf-8")).hexdigest()
+
+    async def put(
+        self,
+        team: str,
+        namespace: str,
+        entryKey: str,
+        entryValue: str,
+        revision: Union[int, None] = None,
+    ) -> keybase1.KVPutResult:
+        secret = await self.load_secret(team, namespace)
+        h = await self.hmac_key(secret, entryKey)
+        res = await super().put(team, namespace, h, entryValue, revision)
+        res.entry_key = entryKey
+        return res
+
+    async def delete(
+        self,
+        team: str,
+        namespace: str,
+        entryKey: str,
+        revision: Union[int, None] = None,
+    ) -> keybase1.KVDeleteEntryResult:
+        secret = await self.load_secret(team, namespace)
+        h = await self.hmac_key(secret, entryKey)
+        res = await super().delete(team, namespace, h, revision)
+        res.entry_key = h
+        return res
+
+    async def get(
+        self, team: str, namespace: str, entryKey: str
+    ) -> keybase1.KVGetResult:
+        secret = await self.load_secret(team, namespace)
+        h = await self.hmac_key(secret, entryKey)
+        res = await super().get(team, namespace, h)
+        res.entry_key = h
+        return res
+
+    async def list_entrykeys(
+        self, team: str, namespace: str
+    ) -> keybase1.KVListEntryResult:
+        res = await super().list_entrykeys(team, namespace)
+        if res.entry_keys:
+            for e in res.entry_keys:
+                if not e.entry_key.startswith("_"):
+                    get_res = await super().get(team, namespace, e.entry_key)
+                    e.entry_key = json.loads(get_res.entry_value)[self.KEY_KEY]
+        return res
+
+
 def bytes_to_str(x):
     return b64encode(x).decode("utf-8")
 
@@ -55,75 +161,6 @@ class RentalMsg(Enum):
     LOOKUP = "lookup"
     LIST = "list"
     HELP = "help"
-
-
-class SecretKeyKVStoreClient:
-    """
-        Wrapper around KVStoreClient.
-        HMACs entryKeys using the passed in secret, and stores the HMAC instead
-        of the plaintext entryKey.
-
-        This approach to keeping the entryKeys private stores the plaintext entryKey
-        in the JSON entryValue under the key "_key". Listing all keys requires
-        getting each row in the (team, namespace). Also, this approach does not
-        hide memory access patterns.
-    """
-
-    KEY_KEY = "_key"
-
-    def __init__(self, kvstore: KVStoreClient):
-        self.kvstore = kvstore
-
-    async def hmac_key(self, secret: bytes, key: str) -> str:
-        return hmac.new(secret, key.encode("utf-8")).hexdigest()
-
-    async def put(
-        self,
-        secret: bytes,
-        team: str,
-        namespace: str,
-        entryKey: str,
-        entryValue: str,
-        revision: Union[int, None] = None,
-    ) -> keybase1.KVPutResult:
-        h = await self.hmac_key(secret, entryKey)
-        res = await self.kvstore.put(team, namespace, h, entryValue, revision)
-        res.entry_key = entryKey
-        return res
-
-    async def delete(
-        self,
-        secret: bytes,
-        team: str,
-        namespace: str,
-        entryKey: str,
-        revision: Union[int, None] = None,
-    ) -> keybase1.KVDeleteEntryResult:
-        h = await self.hmac_key(secret, entryKey)
-        res = await self.kvstore.delete(team, namespace, h, revision)
-        res.entry_key = h
-        return res
-
-    async def get(
-        self, secret: bytes, team: str, namespace: str, entryKey: str
-    ) -> keybase1.KVGetResult:
-        h = await self.hmac_key(secret, entryKey)
-        res = await self.kvstore.get(team, namespace, h)
-        res.entry_key = h
-        return res
-
-    async def list_entrykeys(
-        self, secret: bytes, team: str, namespace: str
-    ) -> keybase1.KVListEntryResult:
-        res = await self.kvstore.list_entrykeys(team, namespace)
-        if res.entry_keys:
-            for e in res.entry_keys:
-                if not e.entry_key.startswith("_"):
-                    get_res = await self.kvstore.get(team, namespace, e.entry_key)
-                    e.entry_key = json.loads(get_res.entry_value)[
-                        self.KEY_KEY
-                    ]  # modify
-        return res
 
 
 class RentalHandler:
@@ -151,43 +188,18 @@ class RentalHandler:
 
     MSG_PREFIX = "!rental"
     NAMESPACE = "rental"
-    SECRET_NUM_BYTES = 32
-    SECRET_KEY = "_secret"
 
     def __init__(self):
         # self.cache = {tool: {"revision": int, "info": {} or None}}
         self.cache: Dict[Any, Any] = {}
-        self.secrets: Dict[str, Dict[str, bytes]] = {}  # {team: {namespace: secret}}
-
-    async def load_secret(self, bot, team, namespace):
-        if team not in self.secrets or namespace not in self.secrets[team]:
-            secret = secrets.token_bytes(self.SECRET_NUM_BYTES)
-            try:
-                # we don't expect self.SECRET_KEY's revision > 0
-                res: keybase1.KVPutResult = await bot.kvstore.put(
-                    team, namespace, self.SECRET_KEY, bytes_to_str(secret), revision=1
-                )
-            except RevisionError:
-                res = await bot.kvstore.get(team, namespace, self.SECRET_KEY)
-                secret = str_to_bytes(res.entry_value)
-            if team not in self.secrets:
-                self.secrets[team] = {}
-            self.secrets[team][namespace] = secret
-        return self.secrets[team][namespace]
 
     def update_cache(
         self, tool: str, reservations: Union[None, Dict[str, str]], revision: int
     ):
         self.cache[tool] = {"info": reservations, "revision": revision}
 
-    async def lookup(
-        self, bot, team, tool, secret: Union[bytes, None]
-    ) -> keybase1.KVGetResult:
-        if secret is None:
-            secret = await self.load_secret(bot, team, self.NAMESPACE)
-        res = await SecretKeyKVStoreClient(bot.kvstore).get(
-            secret, team, self.NAMESPACE, tool
-        )
+    async def lookup(self, bot, team, tool) -> keybase1.KVGetResult:
+        res = await bot.secret_kvstore.get(team, self.NAMESPACE, tool)
         info = json.loads(res.entry_value) if res.entry_value != "" else None
         self.update_cache(tool, info, res.revision)
         return res
@@ -195,7 +207,6 @@ class RentalHandler:
     async def add(
         self, bot, team, tool
     ) -> Union[keybase1.KVPutResult, keybase1.KVGetResult]:
-        secret = await self.load_secret(bot, team, self.NAMESPACE)
         info = {SecretKeyKVStoreClient.KEY_KEY: tool}
         expected_revision = 1
         if tool in self.cache:
@@ -205,43 +216,41 @@ class RentalHandler:
             expected_revision = self.cache[tool]["revision"] + 1
         info_str = json.dumps(info) if type(info) is dict else ""
         try:
-            res: keybase1.KVPutResult = await SecretKeyKVStoreClient(bot.kvstore).put(
-                secret, team, self.NAMESPACE, tool, info_str, expected_revision
+            res: keybase1.KVPutResult = await bot.secret_kvstore.put(
+                team, self.NAMESPACE, tool, info_str, expected_revision
             )
             self.update_cache(tool, info, res.revision)
             return res  # successful put. return KVPUtResult
         except RevisionError:
             # refresh cached value
-            curr_info = await self.lookup(bot, team, tool, secret=secret)
+            curr_info = await self.lookup(bot, team, tool)
             return curr_info  # failed put. return KVGetResult.
 
     async def remove(
         self, bot, team, tool
     ) -> Union[keybase1.KVDeleteEntryResult, keybase1.KVGetResult, None]:
-        secret = await self.load_secret(bot, team, self.NAMESPACE)
         expected_revision = 1
         if tool in self.cache:
             expected_revision = self.cache[tool]["revision"] + 1
         try:
-            res: keybase1.KVDeleteEntryResult = await SecretKeyKVStoreClient(
-                bot.kvstore
-            ).delete(secret, team, self.NAMESPACE, tool, expected_revision)
+            res: keybase1.KVDeleteEntryResult = await bot.secret_kvstore.delete(
+                team, self.NAMESPACE, tool, expected_revision
+            )
             self.update_cache(tool, None, res.revision)
             return res  # successful delete. return KVDeleteEntryResult
         except RevisionError:
             # refresh cached value
-            curr_info = await self.lookup(bot, team, tool, secret=secret)
+            curr_info = await self.lookup(bot, team, tool)
             return curr_info  # failed put. return KVGetResult.
         except DeleteNonExistentError:
             # refresh cached value
-            curr_info = await self.lookup(bot, team, tool, secret=secret)
+            curr_info = await self.lookup(bot, team, tool)
             return None  # was already deleted. return None.
 
     async def update_reservation(
         self, bot, team, user, tool, day, reserve=True
     ) -> Union[keybase1.KVPutResult, keybase1.KVGetResult]:
         # note: if you reserve or unreserve a not-added or deleted tool, it will add the tool
-        secret = await self.load_secret(bot, team, self.NAMESPACE)
         info = {SecretKeyKVStoreClient.KEY_KEY: tool}
         expected_revision = 1
         if tool in self.cache:
@@ -254,21 +263,18 @@ class RentalHandler:
             # unreserve
             info.pop(day, None)
         try:
-            res: keybase1.KVPutResult = await SecretKeyKVStoreClient(bot.kvstore).put(
-                secret, team, self.NAMESPACE, tool, json.dumps(info), expected_revision
+            res: keybase1.KVPutResult = await bot.secret_kvstore.put(
+                team, self.NAMESPACE, tool, json.dumps(info), expected_revision
             )
             self.update_cache(tool, info, res.revision)
             return res  # successful put. return KVPUtResult
         except RevisionError:
             # refresh cached value
-            curr_info = await self.lookup(bot, team, tool, secret=None)
+            curr_info = await self.lookup(bot, team, tool)
             return curr_info  # failed put. return KVGetResult.
 
     async def list_tools(self, bot, team) -> List[str]:
-        secret = await self.load_secret(bot, team, self.NAMESPACE)
-        res = await SecretKeyKVStoreClient(bot.kvstore).list_entrykeys(
-            secret, team, self.NAMESPACE
-        )
+        res = await bot.secret_kvstore.list_entrykeys(team, self.NAMESPACE)
         keys = (
             [e.entry_key for e in res.entry_keys if not e.entry_key.startswith("_")]
             if res.entry_keys
@@ -289,69 +295,103 @@ class RentalHandler:
 
         # support teams and implicit self teams
         team = (
-            channel.name if members_type == "team" else "{0},{0}".format(channel.name)
+            channel.name
+            if members_type == "team" or channel.name != user
+            else "{0},{0}".format(channel.name)
         )
 
-        msg = event.msg.content.text.body.split(" ")
-        if msg[0] != self.MSG_PREFIX:
+        msg = ""
+        try:
+            msg = event.msg.content.text.body.strip().split(" ")
+        except AttributeError:
             return
 
+        if len(msg) < 2 or msg[0] != self.MSG_PREFIX:
+            return
+
+        action = msg[1]
+        if action == RentalMsg.HELP.value:
+            return await self.handle_help(bot, event, channel, team, msg, action)
+        if action == RentalMsg.LIST.value:
+            return await self.handle_list(bot, event, channel, team, msg, action)
+        if action == RentalMsg.LOOKUP.value:
+            return await self.handle_lookup(bot, event, channel, team, msg, action)
+        if action == RentalMsg.ADD.value:
+            return await self.handle_add(bot, event, channel, team, msg, action)
+        if action == RentalMsg.REMOVE.value:
+            return await self.handle_remove(bot, event, channel, team, msg, action)
+        if action == RentalMsg.RESERVE.value or action == RentalMsg.UNRESERVE.value:
+            return await self.handle_reserve(
+                bot, event, channel, team, msg, action, user
+            )
+        await bot.chat.send(channel, "invalid !rental command")
+        return
+
+    async def handle_help(self, bot, event, channel, team, msg, action):
         if len(msg) == 2:
-            if msg[1] == RentalMsg.LIST.value:
-                # !rental list
-                send_msg = await self.list_tools(bot, team)
-                await bot.chat.send(channel, str(send_msg))
-                return
-            if msg[1] == RentalMsg.HELP.value:
-                # !rental help
-                send_msg = "Available commands:\
+            # !rental help
+            send_msg = "Available commands:\
                     \n`!rental {reserve|unreserve} <tool> <YYYY-MM-DD>`\
                     \n`!rental {lookup|add|remove} <tool>`\
                     \n`!rental list` // lists all tools"
-                await bot.chat.send(channel, send_msg)
-                return
+            await bot.chat.send(channel, send_msg)
+            return
+
+    async def handle_list(self, bot, event, channel, team, msg, action):
+        if len(msg) == 2:
+            # !rental list
+            send_msg = await self.list_tools(bot, team)
+            await bot.chat.send(channel, str(send_msg))
+            return
+
+    async def handle_lookup(self, bot, event, channel, team, msg, action):
         if len(msg) == 3:
-            (action, tool) = (msg[1], msg[2])
-            if action == RentalMsg.LOOKUP.value:
-                # !rental lookup <tool>  // lists info for all not-past days that tool is reserved
-                res = await self.lookup(bot, team, tool, None)
-                send_msg = (
-                    res.entry_value
-                    if len(res.entry_value) > 0
-                    else "Entry does not exist."
+            tool = msg[2]
+            # !rental lookup <tool>
+            res = await self.lookup(bot, team, tool)
+            send_msg = (
+                res.entry_value if len(res.entry_value) > 0 else "Entry does not exist."
+            )
+            await bot.chat.send(channel, send_msg)
+            return
+
+    async def handle_add(self, bot, event, channel, team, msg, action):
+        if len(msg) == 3:
+            # !rental add <tool>
+            tool = msg[2]
+            res = await self.add(bot, team, tool)
+            if type(res) == keybase1.KVGetResult:
+                send_msg = "Failed to write. Cache updated; try again to confirm write? Most recently fetched entry: {}.".format(
+                    res
                 )
                 await bot.chat.send(channel, send_msg)
-                return
-            if action == RentalMsg.ADD.value:
-                res = await self.add(bot, team, tool)
-                if type(res) == keybase1.KVGetResult:
-                    send_msg = "Failed to write. Cache updated; try again to confirm write? Most recently fetched entry: {}.".format(
-                        res
-                    )
-                    await bot.chat.send(channel, send_msg)
-                elif type(res) == keybase1.KVPutResult:
-                    send_msg = "Successfully updated: {}".format(res)
-                    await bot.chat.send(channel, send_msg)
-                return
-            if action == RentalMsg.REMOVE.value:
-                res = await self.remove(bot, team, tool)
-                if type(res) == keybase1.KVGetResult:
-                    send_msg = "Failed to write. Cache updated; try again to confirm write? Most recently fetched entry: {}.".format(
-                        res
-                    )
-                    await bot.chat.send(channel, send_msg)
-                elif type(res) == keybase1.KVDeleteEntryResult:
-                    send_msg = "Successfully updated: {}".format(res)
-                    await bot.chat.send(channel, send_msg)
-                elif res is None:
-                    send_msg = "Value already does not exist."
-                    await bot.chat.send(channel, send_msg)
-                return
-        if len(msg) == 4 and (
-            msg[1] == RentalMsg.RESERVE.value or msg[1] == RentalMsg.UNRESERVE.value
-        ):
-            (action, tool, day) = (msg[1], msg[2], msg[3])
+            elif type(res) == keybase1.KVPutResult:
+                send_msg = "Successfully updated: {}".format(res)
+                await bot.chat.send(channel, send_msg)
+            return
+
+    async def handle_remove(self, bot, event, channel, team, msg, action):
+        if len(msg) == 3:
+            # !rental remove <tool>
+            tool = msg[2]
+            res = await self.remove(bot, team, tool)
+            if type(res) == keybase1.KVGetResult:
+                send_msg = "Failed to write. Cache updated; try again to confirm write? Most recently fetched entry: {}.".format(
+                    res
+                )
+                await bot.chat.send(channel, send_msg)
+            elif type(res) == keybase1.KVDeleteEntryResult:
+                send_msg = "Successfully updated: {}".format(res)
+                await bot.chat.send(channel, send_msg)
+            elif res is None:
+                send_msg = "Value already does not exist."
+                await bot.chat.send(channel, send_msg)
+            return
+
+    async def handle_reserve(self, bot, event, channel, team, msg, action, user):
+        if len(msg) == 4:
             # !rental {reserve|unreserve} <tool> <YYYY-MM-DD>
+            tool, day = msg[2], msg[3]
             res = await self.update_reservation(
                 bot, team, user, tool, day, reserve=(action == RentalMsg.RESERVE.value)
             )
@@ -364,13 +404,11 @@ class RentalHandler:
                 send_msg = "Successfully updated: {}".format(res)
                 await bot.chat.send(channel, send_msg)
             return
-        await bot.chat.send(channel, "invalid !rental command")
-        return
 
 
 username = "yourbot"
 
-bot = Bot(
+bot = CachedBot(
     username=username, paperkey=os.environ["KEYBASE_PAPERKEY"], handler=RentalHandler()
 )
 

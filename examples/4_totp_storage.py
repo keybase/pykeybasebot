@@ -3,13 +3,11 @@
 ###################################
 # WHAT IS IN THIS EXAMPLE?
 #
-# Keybase has added an encrypted key-value store; see 4_simple_storage.py for
+# Keybase has added an encrypted key-value store; see 3_simple_storage.py for
 # more information.
 #
 # This example shows how you can build a simple TOTP bot that makes use of
 # the team encrypted key-value store.
-#
-# This example does minimal error handling and is not concurrency safe.
 ###################################
 
 import asyncio
@@ -110,72 +108,102 @@ class TotpHandler:
             return
 
         channel = event.msg.channel
+        user = event.msg.sender.username
 
         # support teams and implicit self teams
         team = (
-            channel.name if members_type == "team" else "{0},{0}".format(channel.name)
+            channel.name
+            if members_type == "team" or channel.name != user
+            else "{0},{0}".format(channel.name)
         )
 
-        msg = event.msg.content.text.body.split(" ")
-        if len(msg) == 0 or msg[0] != self.MSG_PREFIX:
+        msg = ""
+        try:
+            msg = event.msg.content.text.body.strip().split(" ")
+        except AttributeError:
             return
 
+        if len(msg) < 2 or msg[0] != self.MSG_PREFIX:
+            return
+
+        action = msg[1]
+        if action == TotpMsg.HELP.value:
+            return await self.handle_help(bot, event, channel, team, msg, action)
+        if action == TotpMsg.LIST.value:
+            return await self.handle_list(bot, event, channel, team, msg, action)
+        if action == TotpMsg.NOW.value:
+            return await self.handle_now(bot, event, channel, team, msg, action)
+        if action == TotpMsg.ADD.value:
+            return await self.handle_add(bot, event, channel, team, msg, action)
+        if action == TotpMsg.REMOVE.value:
+            return await self.handle_remove(bot, event, channel, team, msg, action)
+        await bot.chat.send(channel, "invalid !totp command")
+        return
+
+    async def handle_help(self, bot, event, channel, team, msg, action):
         if len(msg) == 2:
-            action = msg[1]
-            if action == TotpMsg.LIST.value:
-                # chat: "!totp list"
-                ns = await self.list(bot, team)
-                await bot.chat.send(channel, str(ns))
-                return
-            if action == TotpMsg.HELP.value:
-                # chat: "!totp help"
-                send_msg = "Available commands:\
+            # chat: "!totp help"
+            send_msg = "Available commands:\
                     \n`!totp add <issuer> <secret>`\
                     \n`!totp {now|remove} <issuer>`\
                     \n`!totp {list|help}`"
-                await bot.chat.send(channel, send_msg)
-                return
+            await bot.chat.send(channel, send_msg)
+            return
+
+    async def handle_list(self, bot, event, channel, team, msg, action):
+        if len(msg) == 2:
+            # chat: "!totp list"
+            ns = await self.list(bot, team)
+            await bot.chat.send(channel, str(ns))
+            return
+
+    async def handle_now(self, bot, event, channel, team, msg, action):
         if len(msg) == 3:
-            action, issuer = msg[1], msg[2]
-            if action == TotpMsg.NOW.value:
-                # chat: "!totp now <issuer>"
-                send_msg = "Error getting current TOTP for {}".format(issuer)
-                code = await self.now(bot, team, issuer)
-                if code:
-                    send_msg = "Current TOTP for {}: {}".format(issuer, code)
-                await bot.chat.send(channel, send_msg)
-                return
-            if action == TotpMsg.REMOVE.value:
-                # chat: "!totp remove <issuer>"
-                send_msg = "No keys to remove for {}".format(issuer)
-                try:
-                    await self.remove(bot, team, issuer)
-                    send_msg = "Removed TOTP keys for {}".format(issuer)
-                except Exception as e:
-                    print(e)
-                finally:
-                    await bot.chat.send(channel, send_msg)
-                return
+            # chat: "!totp now <issuer>"
+            issuer = msg[2]
+            send_msg = "Error getting current TOTP for {}".format(issuer)
+            code = await self.now(bot, team, issuer)
+            if code:
+                send_msg = "Current TOTP for {}: {}".format(issuer, code)
+            await bot.chat.send(channel, send_msg)
+            return
+
+    async def handle_add(self, bot, event, channel, team, msg, action):
         if len(msg) == 4:
-            action, issuer, secret = msg[1], msg[2], msg[3]
-            if action == TotpMsg.ADD.value:
-                # chat: "!totp add <issuer>"
-                send_msg = "Error adding TOTP for {0}".format(issuer)
-                try:
-                    await self.add(bot, team, issuer, secret)
-                    send_msg = "TOTP added for {}".format(issuer)
-                except Exception as e:
-                    print(e)
-                finally:
-                    await bot.chat.send(channel, send_msg)
-                return
-        await bot.chat.send(channel, "invalid !totp command")
+            issuer, secret = msg[2], msg[3]
+            # chat: "!totp add <issuer>"
+            send_msg = "Error adding TOTP for {0}".format(issuer)
+            try:
+                await self.add(bot, team, issuer, secret)
+                send_msg = "TOTP added for {}".format(issuer)
+            except Exception as e:
+                print(e)
+            finally:
+                await bot.chat.send(channel, send_msg)
+            return
+
+    async def handle_remove(self, bot, event, channel, team, msg, action):
+        if len(msg) == 3:
+            issuer = msg[2]
+            # chat: "!totp remove <issuer>"
+            send_msg = "No keys to remove for {}".format(issuer)
+            try:
+                await self.remove(bot, team, issuer)
+                send_msg = "Removed TOTP keys for {}".format(issuer)
+            except Exception as e:
+                print(e)
+            finally:
+                await bot.chat.send(channel, send_msg)
+            return
 
 
 username = "yourbot"
 
 bot = Bot(
-    username=username, paperkey=os.environ["KEYBASE_PAPERKEY"], handler=TotpHandler()
+    username=username,
+    paperkey=os.environ["KEYBASE_PAPERKEY"],
+    handler=TotpHandler(),
+    keybase="/home/user/Documents/repos/go/src/github.com/keybase/client/go/keybase/bot/keybase",
 )
 
 asyncio.run(bot.start({}))

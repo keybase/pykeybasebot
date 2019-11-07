@@ -1,3 +1,6 @@
+from typing import Union
+
+
 class Error(Exception):
     def __init__(self, msg: str):
         self.msg = msg
@@ -7,8 +10,22 @@ class Error(Exception):
 
 
 class RevisionError(Error):
-    pass
+    CODE = 2760
 
 
 class DeleteNonExistentError(Error):
-    pass
+    CODE = 2762
+
+
+def try_to_error(e: Exception) -> Union[Exception, Error]:
+    """
+        Try to convert Exception presumably from kbsubmit()
+        (from CLI response json) into our custom Error types.
+    """
+    if e.args[0]["code"] == RevisionError.CODE:
+        return RevisionError(e.args[0]["message"])
+    elif e.args[0]["code"] == DeleteNonExistentError.CODE:
+        return DeleteNonExistentError(e.args[0]["message"])
+    else:
+        # return original exception
+        return e
