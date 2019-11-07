@@ -86,19 +86,19 @@ class KVHandler:
 
         action = msg[1]
         if action == KVMsg.HELP.value:
-            return await self.handle_help(bot, event, channel, team, msg, action)
+            return await self.handle_help(bot, channel, team, msg, action)
         if action == KVMsg.LIST.value:
-            return await self.handle_list(bot, event, channel, team, msg, action)
+            return await self.handle_list(bot, channel, team, msg, action)
         if action == KVMsg.GET.value:
-            return await self.handle_get(bot, event, channel, team, msg, action)
+            return await self.handle_get(bot, channel, team, msg, action)
         if action == KVMsg.PUT.value:
-            return await self.handle_put(bot, event, channel, team, msg, action)
+            return await self.handle_put(bot, channel, team, msg, action)
         if action == KVMsg.DELETE.value:
-            return await self.handle_delete(bot, event, channel, team, msg, action)
+            return await self.handle_delete(bot, channel, team, msg, action)
         await bot.chat.send(channel, "invalid !storage command")
         return
 
-    async def handle_help(self, bot, event, channel, team, msg, action):
+    async def handle_help(self, bot, channel, team, msg, action):
         if len(msg) == 2:
             # !storage help
             send_msg = "Available commands:\
@@ -110,7 +110,7 @@ class KVHandler:
             await bot.chat.send(channel, send_msg)
             return
 
-    async def handle_list(self, bot, event, channel, team, msg, action):
+    async def handle_list(self, bot, channel, team, msg, action):
         if len(msg) == 2:
             # !storage list
             res = await bot.kvstore.list_namespaces(team)
@@ -123,7 +123,7 @@ class KVHandler:
             await bot.chat.send(channel, str(res))
             return
 
-    async def handle_get(self, bot, event, channel, team, msg, action):
+    async def handle_get(self, bot, channel, team, msg, action):
         if len(msg) == 4:
             namespace, key = msg[2], msg[3]
             # !storage get <namespace> <key>
@@ -131,7 +131,7 @@ class KVHandler:
             await bot.chat.send(channel, str(res))
             return
 
-    async def handle_put(self, bot, event, channel, team, msg, action):
+    async def handle_put(self, bot, channel, team, msg, action):
         if len(msg) == 5 or len(msg) == 6:
             # !storage put <namespace> <key> <value> (<revision>)
             namespace, key, value = msg[2], msg[3], msg[4]
@@ -151,7 +151,7 @@ class KVHandler:
                 await bot.chat.send(channel, str(e))
             return
 
-    async def handle_delete(self, bot, event, channel, team, msg, action):
+    async def handle_delete(self, bot, channel, team, msg, action):
         if len(msg) == 4 or len(msg) == 5:
             # !storage delete <namespace> <key> (<revision>)
             namespace, key = msg[2], msg[3]

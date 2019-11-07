@@ -123,19 +123,19 @@ class TotpHandler:
 
         action = msg[1]
         if action == TotpMsg.HELP.value:
-            return await self.handle_help(bot, event, channel, team, msg, action)
+            return await self.handle_help(bot, channel, team, msg, action)
         if action == TotpMsg.LIST.value:
-            return await self.handle_list(bot, event, channel, team, msg, action)
+            return await self.handle_list(bot, channel, team, msg, action)
         if action == TotpMsg.NOW.value:
-            return await self.handle_now(bot, event, channel, team, msg, action)
+            return await self.handle_now(bot, channel, team, msg, action)
         if action == TotpMsg.ADD.value:
-            return await self.handle_add(bot, event, channel, team, msg, action)
+            return await self.handle_add(bot, channel, team, msg, action)
         if action == TotpMsg.REMOVE.value:
-            return await self.handle_remove(bot, event, channel, team, msg, action)
+            return await self.handle_remove(bot, channel, team, msg, action)
         await bot.chat.send(channel, "invalid !totp command")
         return
 
-    async def handle_help(self, bot, event, channel, team, msg, action):
+    async def handle_help(self, bot, channel, team, msg, action):
         if len(msg) == 2:
             # chat: "!totp help"
             send_msg = "Available commands:\
@@ -145,14 +145,14 @@ class TotpHandler:
             await bot.chat.send(channel, send_msg)
             return
 
-    async def handle_list(self, bot, event, channel, team, msg, action):
+    async def handle_list(self, bot, channel, team, msg, action):
         if len(msg) == 2:
             # chat: "!totp list"
             ns = await self.list(bot, team)
             await bot.chat.send(channel, str(ns))
             return
 
-    async def handle_now(self, bot, event, channel, team, msg, action):
+    async def handle_now(self, bot, channel, team, msg, action):
         if len(msg) == 3:
             # chat: "!totp now <issuer>"
             issuer = msg[2]
@@ -163,7 +163,7 @@ class TotpHandler:
             await bot.chat.send(channel, send_msg)
             return
 
-    async def handle_add(self, bot, event, channel, team, msg, action):
+    async def handle_add(self, bot, channel, team, msg, action):
         if len(msg) == 4:
             issuer, secret = msg[2], msg[3]
             # chat: "!totp add <issuer>"
@@ -177,7 +177,7 @@ class TotpHandler:
                 await bot.chat.send(channel, send_msg)
             return
 
-    async def handle_remove(self, bot, event, channel, team, msg, action):
+    async def handle_remove(self, bot, channel, team, msg, action):
         if len(msg) == 3:
             issuer = msg[2]
             # chat: "!totp remove <issuer>"

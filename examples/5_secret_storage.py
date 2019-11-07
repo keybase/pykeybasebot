@@ -310,23 +310,21 @@ class RentalHandler:
 
         action = msg[1]
         if action == RentalMsg.HELP.value:
-            return await self.handle_help(bot, event, channel, team, msg, action)
+            return await self.handle_help(bot, channel, team, msg, action)
         if action == RentalMsg.LIST.value:
-            return await self.handle_list(bot, event, channel, team, msg, action)
+            return await self.handle_list(bot, channel, team, msg, action)
         if action == RentalMsg.LOOKUP.value:
-            return await self.handle_lookup(bot, event, channel, team, msg, action)
+            return await self.handle_lookup(bot, channel, team, msg, action)
         if action == RentalMsg.ADD.value:
-            return await self.handle_add(bot, event, channel, team, msg, action)
+            return await self.handle_add(bot, channel, team, msg, action)
         if action == RentalMsg.REMOVE.value:
-            return await self.handle_remove(bot, event, channel, team, msg, action)
+            return await self.handle_remove(bot, channel, team, msg, action)
         if action == RentalMsg.RESERVE.value or action == RentalMsg.UNRESERVE.value:
-            return await self.handle_reserve(
-                bot, event, channel, team, msg, action, user
-            )
+            return await self.handle_reserve(bot, channel, team, msg, action, user)
         await bot.chat.send(channel, "invalid !rental command")
         return
 
-    async def handle_help(self, bot, event, channel, team, msg, action):
+    async def handle_help(self, bot, channel, team, msg, action):
         if len(msg) == 2:
             # !rental help
             send_msg = "Available commands:\
@@ -336,14 +334,14 @@ class RentalHandler:
             await bot.chat.send(channel, send_msg)
             return
 
-    async def handle_list(self, bot, event, channel, team, msg, action):
+    async def handle_list(self, bot, channel, team, msg, action):
         if len(msg) == 2:
             # !rental list
             send_msg = await self.list_tools(bot, team)
             await bot.chat.send(channel, str(send_msg))
             return
 
-    async def handle_lookup(self, bot, event, channel, team, msg, action):
+    async def handle_lookup(self, bot, channel, team, msg, action):
         if len(msg) == 3:
             tool = msg[2]
             # !rental lookup <tool>
@@ -354,7 +352,7 @@ class RentalHandler:
             await bot.chat.send(channel, send_msg)
             return
 
-    async def handle_add(self, bot, event, channel, team, msg, action):
+    async def handle_add(self, bot, channel, team, msg, action):
         if len(msg) == 3:
             # !rental add <tool>
             tool = msg[2]
@@ -369,7 +367,7 @@ class RentalHandler:
                 await bot.chat.send(channel, send_msg)
             return
 
-    async def handle_remove(self, bot, event, channel, team, msg, action):
+    async def handle_remove(self, bot, channel, team, msg, action):
         if len(msg) == 3:
             # !rental remove <tool>
             tool = msg[2]
@@ -387,7 +385,7 @@ class RentalHandler:
                 await bot.chat.send(channel, send_msg)
             return
 
-    async def handle_reserve(self, bot, event, channel, team, msg, action, user):
+    async def handle_reserve(self, bot, channel, team, msg, action, user):
         if len(msg) == 4:
             # !rental {reserve|unreserve} <tool> <YYYY-MM-DD>
             tool, day = msg[2], msg[3]
