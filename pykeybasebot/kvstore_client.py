@@ -1,7 +1,7 @@
 import json
 from typing import Any, Dict, Union
 
-from .errors import try_to_error
+from .errors import disambiguate_error
 from .types import keybase1
 
 
@@ -35,7 +35,7 @@ class KVStoreClient:
             res = await self.execute(args)
             return keybase1.KVPutResult.from_dict(res)
         except Exception as e:
-            raise try_to_error(e)
+            raise disambiguate_error(e)
 
     async def delete(
         self,
@@ -57,7 +57,7 @@ class KVStoreClient:
             res = await self.execute(args)
             return keybase1.KVDeleteEntryResult.from_dict(res)
         except Exception as e:
-            raise try_to_error(e)
+            raise disambiguate_error(e)
 
     async def get(
         self, team: str, namespace: str, entryKey: str

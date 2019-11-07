@@ -17,7 +17,7 @@ class DeleteNonExistentError(Error):
     CODE = 2762
 
 
-def try_to_error(e: Exception) -> Union[Exception, Error]:
+def disambiguate_error(e: Exception) -> Union[Exception, Error]:
     """
         Try to convert Exception presumably from kbsubmit()
         (from CLI response json) into our custom Error types.

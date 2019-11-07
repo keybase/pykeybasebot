@@ -58,13 +58,19 @@ class SecretKeyKVStoreClient(KVStoreClient):
         A KVStoreClient that hides the entryKeys from Keybase servers.
 
         It does so by HMACing entryKeys using a per-(team, namespace) secret,
-        and storing the HMAC instead of the plaintext entryKey. The secret
-        is not expected to change.
+        and storing the HMAC instead of the plaintext entryKey. This approach
+        does not handle any secret rotation, and does not expect the secret to
+        change.
 
         The plaintext entryKey is stored in the JSON entryValue under the key
         "_key" to enable listing; listing all keys requires getting each row
-        in the (team, namespace). Also, this approach does not hide memory
-        access patterns.
+        in the (team, namespace).
+
+        This approach does not hide memory access patterns. Also, Keybase
+        servers prevent a removed team member from continuing to access a team's
+        data, but if that were somehow bypassed*, a former team member who still
+        knows the HMAC secret can check for the presence of specific entryKeys
+        (*but you probably have bigger issues to deal with in that case...).
     """
 
     KEY_KEY = "_key"
@@ -94,8 +100,9 @@ class SecretKeyKVStoreClient(KVStoreClient):
             self.secrets[team][namespace] = secret
         return self.secrets[team][namespace]
 
-    async def hmac_key(self, secret: bytes, key: str) -> str:
-        return hmac.new(secret, key.encode("utf-8")).hexdigest()
+    async def hmac_key(self, team, namespace, entryKey) -> str:
+        secret = await self.load_secret(team, namespace)
+        return hmac.new(secret, entryKey.encode("utf-8")).hexdigest()
 
     async def put(
         self,
@@ -105,8 +112,7 @@ class SecretKeyKVStoreClient(KVStoreClient):
         entryValue: str,
         revision: Union[int, None] = None,
     ) -> keybase1.KVPutResult:
-        secret = await self.load_secret(team, namespace)
-        h = await self.hmac_key(secret, entryKey)
+        h = await self.hmac_key(team, namespace, entryKey)
         res = await super().put(team, namespace, h, entryValue, revision)
         res.entry_key = entryKey
         return res
@@ -118,8 +124,7 @@ class SecretKeyKVStoreClient(KVStoreClient):
         entryKey: str,
         revision: Union[int, None] = None,
     ) -> keybase1.KVDeleteEntryResult:
-        secret = await self.load_secret(team, namespace)
-        h = await self.hmac_key(secret, entryKey)
+        h = await self.hmac_key(team, namespace, entryKey)
         res = await super().delete(team, namespace, h, revision)
         res.entry_key = h
         return res
@@ -127,8 +132,7 @@ class SecretKeyKVStoreClient(KVStoreClient):
     async def get(
         self, team: str, namespace: str, entryKey: str
     ) -> keybase1.KVGetResult:
-        secret = await self.load_secret(team, namespace)
-        h = await self.hmac_key(secret, entryKey)
+        h = await self.hmac_key(team, namespace, entryKey)
         res = await super().get(team, namespace, h)
         res.entry_key = h
         return res
@@ -284,21 +288,16 @@ class RentalHandler:
 
     async def __call__(self, bot, event):
         members_type = event.msg.channel.members_type
-        if not (
-            event.type == EventType.CHAT
-            and (members_type == "team" or members_type == "impteamnative")
-        ):
+        if not event.type == EventType.CHAT:
             return
 
         channel = event.msg.channel
         user = event.msg.sender.username
 
         # support teams and implicit self teams
-        team = (
-            channel.name
-            if members_type == "team" or channel.name != user
-            else "{0},{0}".format(channel.name)
-        )
+        team = channel.name
+        if members_type == "impteamnative" and channel.name == user:
+            team = "{0},{0}".format(channel.name)
 
         msg = ""
         try:

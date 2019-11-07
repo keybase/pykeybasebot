@@ -64,21 +64,16 @@ class KVHandler:
 
     async def __call__(self, bot, event):
         members_type = event.msg.channel.members_type
-        if not (
-            event.type == EventType.CHAT
-            and (members_type == "team" or members_type == "impteamnative")
-        ):
+        if not event.type == EventType.CHAT:
             return
 
         channel = event.msg.channel
         user = event.msg.sender.username
 
         # support teams and implicit self teams
-        team = (
-            channel.name
-            if members_type == "team" or channel.name != user
-            else "{0},{0}".format(channel.name)
-        )
+        team = channel.name
+        if members_type == "impteamnative" and channel.name == user:
+            team = "{0},{0}".format(channel.name)
 
         msg = ""
         try:
