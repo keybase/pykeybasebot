@@ -50,7 +50,7 @@ class TotpHandler:
     `!totp {list|help}`
 
     For each provisioned key, the handler stores in the namespace "totp" one
-    row, with the key "<issuer" and the json blob value "{"secret": <16 char base32
+    row, with the key "<issuer>" and the json blob value "{"secret": <16 char base32
     secret>}".
 
     This Keybase bot can be used in place of MFA apps like Google Authenticator and Authy
@@ -166,7 +166,7 @@ class TotpHandler:
     async def handle_add(self, bot, channel, team, msg, action):
         if len(msg) == 4:
             issuer, secret = msg[2], msg[3]
-            # chat: "!totp add <issuer>"
+            # chat: "!totp add <issuer> <secret>"
             send_msg = "Error adding TOTP for {0}".format(issuer)
             try:
                 await self.add(bot, team, issuer, secret)
@@ -195,10 +195,7 @@ class TotpHandler:
 username = "yourbot"
 
 bot = Bot(
-    username=username,
-    paperkey=os.environ["KEYBASE_PAPERKEY"],
-    handler=TotpHandler(),
-    keybase="/home/user/Documents/repos/go/src/github.com/keybase/client/go/keybase/bot/keybase",
+    username=username, paperkey=os.environ["KEYBASE_PAPERKEY"], handler=TotpHandler()
 )
 
 asyncio.run(bot.start({}))

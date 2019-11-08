@@ -62,9 +62,8 @@ class SecretKeyKVStoreClient(KVStoreClient):
         does not handle any secret rotation, and does not expect the secret to
         change.
 
-        The plaintext entryKey is stored in the JSON entryValue under the key
-        "_key" to enable listing; listing all keys requires getting each row
-        in the (team, namespace).
+        The plaintext entryKey is stored in it's corresponding JSON entryValue
+        under the key "_key" to enable listing.
 
         This approach does not hide memory access patterns. Also, Keybase
         servers prevent a removed team member from continuing to access a team's
