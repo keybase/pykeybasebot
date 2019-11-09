@@ -195,6 +195,13 @@ class RentalHandler:
     def __init__(self):
         # self.cache = {tool: {"revision": int, "info": {} or None}}
         self.cache: Dict[Any, Any] = {}
+        self.handlers = {
+            RentalMsg.HELP.value: self.handle_help,
+            RentalMsg.LIST.value: self.handle_list,
+            RentalMsg.ADD.value: self.handle_add,
+            RentalMsg.REMOVE.value: self.handle_remove,
+            RentalMsg.LOOKUP.value: self.handle_lookup,
+        }
 
     def update_cache(
         self, tool: str, reservations: Union[None, Dict[str, str]], revision: int
@@ -308,16 +315,8 @@ class RentalHandler:
             return
 
         action = msg[1]
-        if action == RentalMsg.HELP.value:
-            return await self.handle_help(bot, channel, team, msg, action)
-        if action == RentalMsg.LIST.value:
-            return await self.handle_list(bot, channel, team, msg, action)
-        if action == RentalMsg.LOOKUP.value:
-            return await self.handle_lookup(bot, channel, team, msg, action)
-        if action == RentalMsg.ADD.value:
-            return await self.handle_add(bot, channel, team, msg, action)
-        if action == RentalMsg.REMOVE.value:
-            return await self.handle_remove(bot, channel, team, msg, action)
+        if action in self.handlers:
+            return await self.handlers[action](bot, channel, team, msg, action)
         if action == RentalMsg.RESERVE.value or action == RentalMsg.UNRESERVE.value:
             return await self.handle_reserve(bot, channel, team, msg, action, user)
         await bot.chat.send(channel, "invalid !rental command")

@@ -71,6 +71,15 @@ class TotpHandler:
     MSG_PREFIX = "!totp"
     NAMESPACE = "totp"
 
+    def __init__(self):
+        self.handlers = {
+            TotpMsg.HELP.value: self.handle_help,
+            TotpMsg.LIST.value: self.handle_list,
+            TotpMsg.ADD.value: self.handle_add,
+            TotpMsg.REMOVE.value: self.handle_remove,
+            TotpMsg.NOW.value: self.handle_now,
+        }
+
     def to_json(self, secret):
         return {"secret": secret}
 
@@ -122,16 +131,8 @@ class TotpHandler:
             return
 
         action = msg[1]
-        if action == TotpMsg.HELP.value:
-            return await self.handle_help(bot, channel, team, msg, action)
-        if action == TotpMsg.LIST.value:
-            return await self.handle_list(bot, channel, team, msg, action)
-        if action == TotpMsg.NOW.value:
-            return await self.handle_now(bot, channel, team, msg, action)
-        if action == TotpMsg.ADD.value:
-            return await self.handle_add(bot, channel, team, msg, action)
-        if action == TotpMsg.REMOVE.value:
-            return await self.handle_remove(bot, channel, team, msg, action)
+        if action in self.handlers:
+            return await self.handlers[action](bot, channel, team, msg, action)
         await bot.chat.send(channel, "invalid !totp command")
         return
 

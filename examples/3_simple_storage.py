@@ -62,6 +62,15 @@ class KVHandler:
 
     MSG_PREFIX = "!storage"
 
+    def __init__(self):
+        self.handlers = {
+            KVMsg.HELP.value: self.handle_help,
+            KVMsg.LIST.value: self.handle_list,
+            KVMsg.GET.value: self.handle_get,
+            KVMsg.PUT.value: self.handle_put,
+            KVMsg.DELETE.value: self.handle_delete,
+        }
+
     async def __call__(self, bot, event):
         members_type = event.msg.channel.members_type
         if not event.type == EventType.CHAT:
@@ -85,16 +94,8 @@ class KVHandler:
             return
 
         action = msg[1]
-        if action == KVMsg.HELP.value:
-            return await self.handle_help(bot, channel, team, msg, action)
-        if action == KVMsg.LIST.value:
-            return await self.handle_list(bot, channel, team, msg, action)
-        if action == KVMsg.GET.value:
-            return await self.handle_get(bot, channel, team, msg, action)
-        if action == KVMsg.PUT.value:
-            return await self.handle_put(bot, channel, team, msg, action)
-        if action == KVMsg.DELETE.value:
-            return await self.handle_delete(bot, channel, team, msg, action)
+        if action in self.handlers:
+            return await self.handlers[action](bot, channel, team, msg, action)
         await bot.chat.send(channel, "invalid !storage command")
         return
 
