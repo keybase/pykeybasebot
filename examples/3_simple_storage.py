@@ -25,11 +25,10 @@
 
 import asyncio
 import logging
-import os
 import sys
-from enum import Enum
 
-from pykeybasebot import Bot, EventType
+from pykeybasebot import Bot
+from pykeybasebot.errors import DeleteNonExistentError, RevisionError
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -40,138 +39,76 @@ if "win32" in sys.platform:
     )
 
 
-class KVMsg(Enum):
-    PUT = "put"
-    GET = "get"
-    DELETE = "delete"
-    LIST = "list"
-    HELP = "help"
+async def simple_user():
+    team = "yourbookclub"
+
+    def noop_handler(*args, **kwargs):
+        pass
+
+    bot = Bot(handler=noop_handler())
+
+    namespace = "current-favorites"
+    key = "Sam"
+
+    # put with default revision
+    # note: if revision=None, the server does a get (to get
+    # the latest revision number) then a put (with revision
+    # number + 1); this operation is not atomic.
+    value = "The Left Hand of Darkness"
+    res = await bot.kvstore.put(team, namespace, key, value, revision=None)
+    print("PUT: ", res)
+    rev = res.revision
+
+    # fail put
+    try:
+        res = await bot.kvstore.put(
+            team, namespace, key, "Fahrenheit 451", revision=rev
+        )
+    except RevisionError as e:
+        print("EXPECTING PUT FAIL: ", e)
+
+    # list namespaces
+    res = await bot.kvstore.list_namespaces(team)
+    print("LIST NAMESPACES: ", res)
+    assert len(res.namespaces) > 0
+
+    # list entryKeys
+    res = await bot.kvstore.list_entrykeys(team, namespace)
+    print("LIST ENTRYKEYS: ", res)
+    assert len(res.entry_keys) > 0
+
+    # get
+    res = await bot.kvstore.get(team, namespace, key)
+    print("GET: ", res)
+    assert res.entry_value == value
+
+    # fail delete
+    try:
+        res = await bot.kvstore.delete(team, namespace, key, revision=rev + 2)
+    except RevisionError as e:
+        print("EXPECTING DELETE FAIL: ", e)
+
+    # delete
+    res = await bot.kvstore.delete(team, namespace, key, revision=rev + 1)
+    print("DELETE: ", res)
+    assert res.revision == rev + 1
+
+    # fail delete
+    try:
+        res = await bot.kvstore.delete(team, namespace, key, revision=rev + 2)
+    except DeleteNonExistentError as e:
+        print("EXPECTING DELETE FAIL: ", e)
+
+    # get
+    res = await bot.kvstore.get(team, namespace, key)
+    print("GET: ", res)
+    assert res.entry_value == ""
 
 
-class KVHandler:
-    """
-    KVHandler handles commands sent via chat to use the team key-value store.
-
-    KVHandler listens to chat messages of the form:
-    `!storage put <namespace> <key> <value> (<revision>)`
-    `!storage get <namespace> <key>`
-    `!storage delete <namespace> <key> (<revision>)`
-    `!storage list`  // list namespaces
-    `!storage list <namespace>`  // list entries in namespace
-    """
-
-    MSG_PREFIX = "!storage"
-
-    def __init__(self):
-        self.handlers = {
-            KVMsg.HELP.value: self.handle_help,
-            KVMsg.LIST.value: self.handle_list,
-            KVMsg.GET.value: self.handle_get,
-            KVMsg.PUT.value: self.handle_put,
-            KVMsg.DELETE.value: self.handle_delete,
-        }
-
-    async def __call__(self, bot, event):
-        members_type = event.msg.channel.members_type
-        if not event.type == EventType.CHAT:
-            return
-
-        channel = event.msg.channel
-        user = event.msg.sender.username
-
-        # support teams and implicit self teams
-        team = channel.name
-        if members_type == "impteamnative" and channel.name == user:
-            team = "{0},{0}".format(channel.name)
-
-        msg = ""
-        try:
-            msg = event.msg.content.text.body.strip().split(" ")
-        except AttributeError:
-            return
-
-        if len(msg) < 2 or msg[0] != self.MSG_PREFIX:
-            return
-
-        action = msg[1]
-        if action in self.handlers:
-            return await self.handlers[action](bot, channel, team, msg, action)
-        await bot.chat.send(channel, "invalid !storage command")
-        return
-
-    async def handle_help(self, bot, channel, team, msg, action):
-        if len(msg) == 2:
-            # !storage help
-            send_msg = "Available commands:\
-                    \n`!storage put <namespace> <key> <value> (<revision>)`\
-                    \n`!storage get <namespace> <key>`\
-                    \n`!storage delete <namespace> <key> (<revision>)`\
-                    \n`!storage list  // list namespaces`\
-                    \n`!storage list <namespace>  // list entries in namespace`"
-            await bot.chat.send(channel, send_msg)
-            return
-
-    async def handle_list(self, bot, channel, team, msg, action):
-        if len(msg) == 2:
-            # !storage list
-            res = await bot.kvstore.list_namespaces(team)
-            await bot.chat.send(channel, str(res))
-            return
-        if len(msg) == 3:
-            # !storage list <namespace>
-            namespace = msg[2]
-            res = await bot.kvstore.list_entrykeys(team, namespace)
-            await bot.chat.send(channel, str(res))
-            return
-
-    async def handle_get(self, bot, channel, team, msg, action):
-        if len(msg) == 4:
-            namespace, key = msg[2], msg[3]
-            # !storage get <namespace> <key>
-            res = await bot.kvstore.get(team, namespace, key)
-            await bot.chat.send(channel, str(res))
-            return
-
-    async def handle_put(self, bot, channel, team, msg, action):
-        if len(msg) == 5 or len(msg) == 6:
-            # !storage put <namespace> <key> <value> (<revision>)
-            namespace, key, value = msg[2], msg[3], msg[4]
-            try:
-                revision = int(msg[5]) if len(msg) == 6 else None
-            except ValueError as e:
-                await bot.chat.send(channel, str(e))
-            try:
-                # note: if revision=None, the server does a get (to get
-                # the latest revision number) then a put (with revision
-                # number + 1); this operation is not atomic.
-                res = await bot.kvstore.put(
-                    team, namespace, key, value, revision=revision
-                )
-                await bot.chat.send(channel, str(res))
-            except Exception as e:
-                await bot.chat.send(channel, str(e))
-            return
-
-    async def handle_delete(self, bot, channel, team, msg, action):
-        if len(msg) == 4 or len(msg) == 5:
-            # !storage delete <namespace> <key> (<revision>)
-            namespace, key = msg[2], msg[3]
-            try:
-                revision = int(msg[4]) if len(msg) == 5 else None
-            except ValueError as e:
-                await bot.chat.send(channel, str(e))
-            try:
-                res = await bot.kvstore.delete(team, namespace, key, revision=revision)
-                await bot.chat.send(channel, str(res))
-            except Exception as e:
-                await bot.chat.send(channel, str(e))
-            return
+async def main():
+    print("Starting 3_simple_storage example...")
+    await simple_user()
+    print("...3_simple_storage example is complete.")
 
 
-username = "yourbot"
-
-bot = Bot(
-    username=username, paperkey=os.environ["KEYBASE_PAPERKEY"], handler=KVHandler()
-)
-
-asyncio.run(bot.start({}))
+asyncio.run(main())

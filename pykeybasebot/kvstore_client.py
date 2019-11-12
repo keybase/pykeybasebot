@@ -13,8 +13,8 @@ class KVStoreClient:
         self,
         team: str,
         namespace: str,
-        entryKey: str,
-        entryValue: str,
+        entry_key: str,
+        entry_value: str,
         revision: Union[int, None] = None,
     ) -> keybase1.KVPutResult:
         await self.bot.ensure_initialized()
@@ -24,8 +24,8 @@ class KVStoreClient:
                 "options": {
                     "team": team,
                     "namespace": namespace,
-                    "entryKey": entryKey,
-                    "entryValue": entryValue,
+                    "entryKey": entry_key,
+                    "entryValue": entry_value,
                 }
             },
         }
@@ -41,14 +41,14 @@ class KVStoreClient:
         self,
         team: str,
         namespace: str,
-        entryKey: str,
+        entry_key: str,
         revision: Union[int, None] = None,
     ) -> keybase1.KVDeleteEntryResult:
         await self.bot.ensure_initialized()
         args: Dict[str, Any] = {
             "method": "del",
             "params": {
-                "options": {"team": team, "namespace": namespace, "entryKey": entryKey}
+                "options": {"team": team, "namespace": namespace, "entryKey": entry_key}
             },
         }
         if revision:
@@ -60,7 +60,7 @@ class KVStoreClient:
             raise disambiguate_error(e)
 
     async def get(
-        self, team: str, namespace: str, entryKey: str
+        self, team: str, namespace: str, entry_key: str
     ) -> keybase1.KVGetResult:
         await self.bot.ensure_initialized()
         res = await self.execute(
@@ -70,7 +70,7 @@ class KVStoreClient:
                     "options": {
                         "team": team,
                         "namespace": namespace,
-                        "entryKey": entryKey,
+                        "entryKey": entry_key,
                     }
                 },
             }
