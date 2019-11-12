@@ -6,7 +6,7 @@
 # Keybase has added an encrypted key-value store; see 3_simple_storage.py for
 # more information.
 #
-# This example shows how you can build a simple TOTP bot that makes use of
+# This example shows how you can build a simple TOTP chat bot that makes use of
 # the team encrypted key-value store.
 ###################################
 

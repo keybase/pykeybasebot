@@ -3,7 +3,7 @@
 ###################################
 # WHAT IS IN THIS EXAMPLE?
 #
-# Keybase has added an encrypted key-value store; see 4_simple_storage.py for
+# Keybase has added an encrypted key-value store; see 3_simple_storage.py for
 # more information.
 #
 # This example implements a simple bot to manage hackerspace tool rentals. It
@@ -11,7 +11,7 @@
 # storing their HMACs, so that no one but your team (not even
 # Keybase) can know about the names of all the cool tools you have; you can do
 # something similar to hide namespaces. Additionally this example handles
-# concurrent writes using a cache to prevent one user from unintentionally
+# concurrent writes by using a cache to prevent one user from unintentionally
 # clobbering another user's rental updates.
 # ###################################
 
@@ -37,21 +37,20 @@ if "win32" in sys.platform:
     )
 
 
-class CachedBot(Bot):
+class CustomKVStoreBot(Bot):
     """
         Custom bot that has some stateful clients.
     """
 
     def __init__(self, *args, **kwargs):
-        self.secret_kvstore_client = SecretKeyKVStoreClient(self)
-        self.cached_secret_kvstore_client = CachedKVStoreClient(
-            self, self.secret_kvstore_client
-        )
+        basic_client = KVStoreClient(self)
+        secret_kvstore_client = SecretKeyKVStoreClient(basic_client)
+        self._cached_secret_kvstore_client = CachedKVStoreClient(secret_kvstore_client)
         super().__init__(*args, **kwargs)
 
     @property
-    def cached_secret_kvstore(self):
-        return self.cached_secret_kvstore_client
+    def kvstore(self):
+        return self._cached_secret_kvstore_client
 
 
 class CachedKVStoreClient:
@@ -62,7 +61,7 @@ class CachedKVStoreClient:
     the cache, and returns that "get" result.
     """
 
-    def __init__(self, bot, client):
+    def __init__(self, client):
         # self.cache = {entryKey: {"revision": int, entryValue: {} or None}}
         self.cache: Dict[Any, Any] = {}
         self.kvstore = client
@@ -95,7 +94,7 @@ class CachedKVStoreClient:
                 team, namespace, entry_key, entry_value, revision
             )
             self.update_cache(entry_key, entry_value, res.revision)
-            return res  # successful put. return KVPUtResult
+            return res  # successful put. return KVPutResult
         except RevisionError:
             # refresh cached value
             curr_info = await self.get(team, namespace, entry_key)
@@ -169,10 +168,10 @@ class SecretKeyKVStoreClient:
     SECRET_KEY = "_secret"
     SECRET_NUM_BYTES = 32
 
-    def __init__(self, bot):
+    def __init__(self, kvstore_client):
         # secrets = {team: {namespace: secret}}
         self.secrets: Dict[str, Dict[str, bytes]] = {}
-        self.kvstore: KVStoreClient = bot.kvstore
+        self.kvstore: KVStoreClient = kvstore_client
 
     async def load_secret(self, team, namespace) -> bytes:
         if team not in self.secrets or namespace not in self.secrets[team]:
@@ -244,15 +243,15 @@ class SecretKeyKVStoreClient:
         return res
 
 
-class RentalClient:
+class RentalBotClient:
     """
         Wraps a CachedKVStoreClient to expose methods to handle tool rentals.
     """
 
     NAMESPACE = "rental"
 
-    def __init__(self, kvstore: CachedKVStoreClient):
-        self.kvstore = kvstore
+    def __init__(self, bot):
+        self.kvstore = bot.kvstore
 
     async def lookup(self, team, tool) -> keybase1.KVGetResult:
         res = await self.kvstore.get(team, self.NAMESPACE, tool)
@@ -372,14 +371,14 @@ async def concurrent_rental_users(bot, rental, team, username):
 
     async def pre():
         while True:
-            res = await rental.remove("yourhackerspace", tool)
+            res = await rental.remove(team, tool)
             if type(res) == keybase1.KVDeleteEntryResult:
                 print("REMOVE: {}".format(res))
                 break
 
     async def post():
         # check that the tool has been reserved for all 5 unique dates
-        res = await rental.lookup("yourhackerspace", tool)
+        res = await rental.lookup(team, tool)
         print("LOOKUP: {}".format(res))
         assert len(json.loads(res.entry_value)) == 6  # one key is "_key"
 
@@ -404,8 +403,8 @@ async def main():
     def noop_handler(*args, **kwargs):
         pass
 
-    bot = CachedBot(handler=noop_handler(), keybase="/home/user/keybase")
-    rental = RentalClient(bot.cached_secret_kvstore)
+    bot = CustomKVStoreBot(handler=noop_handler(), keybase="/home/user/keybase")
+    rental = RentalBotClient(bot)
 
     print("...one user does some basic rental actions...")
     await rental_user(bot, rental, team, username)
