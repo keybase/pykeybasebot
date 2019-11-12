@@ -10,9 +10,11 @@
 # shows one way you can obfuscate entryKeys (which are not encrypted) by
 # storing their HMACs, so that no one but your team (not even
 # Keybase) can know about the names of all the cool tools you have; you can do
-# something similar to hide namespaces. Additionally this example handles
-# concurrent writes by using a cache to prevent one user from unintentionally
-# clobbering another user's rental updates.
+# something similar to hide namespaces.
+#
+# Additionally this example handles concurrent writes by using explicit revision
+# numbers to prevent one user from unintentionally clobbering another user's
+# rental updates.
 # ###################################
 
 import asyncio
@@ -22,7 +24,7 @@ import logging
 import secrets
 import sys
 from base64 import b64decode, b64encode
-from typing import Any, Dict, List, Union
+from typing import Dict, List, Union
 
 from pykeybasebot import Bot, KVStoreClient
 from pykeybasebot.errors import DeleteNonExistentError, RevisionError
@@ -44,42 +46,23 @@ class CustomKVStoreBot(Bot):
 
     def __init__(self, *args, **kwargs):
         basic_client = KVStoreClient(self)
-        secret_kvstore_client = SecretKeyKVStoreClient(basic_client)
-        self._cached_secret_kvstore_client = CachedKVStoreClient(secret_kvstore_client)
+        secret_kvstore_client = SecretKeyKVStoreClient(basic_client)  # is stateful
+        self._trying_secret_kvstore_client = TryingKVStoreClient(secret_kvstore_client)
         super().__init__(*args, **kwargs)
 
     @property
     def kvstore(self):
-        return self._cached_secret_kvstore_client
+        return self._trying_secret_kvstore_client
 
 
-class CachedKVStoreClient:
+class TryingKVStoreClient:
     """
-    CachedKVStoreClient uses a cache to keep track of the most recently fetched value and
-    revision for each key. To handle concurrent updates, it attempts to update with
-    the most recently fetched revision + 1; if it fails, it does a "get" and updates
-    the cache, and returns that "get" result.
+    TryingKVStoreClient tries kvstore write actions with explicit revision numbers.
+    If it fails to write, it does a "get" and returns the get result.
     """
 
     def __init__(self, client):
-        # self.cache = {entryKey: {"revision": int, entryValue: {} or None}}
-        self.cache: Dict[Any, Any] = {}
         self.kvstore = client
-
-    # note that we expect entryValues to be JSON objects
-    def update_cache(
-        self, entry_key: str, entry_value: Union[None, Dict[str, str]], revision: int
-    ):
-        self.cache[entry_key] = {"info": entry_value, "revision": revision}
-
-    # returns a copy of the cached value for a given entry_key
-    def get_cached(self, entry_key: str):
-        cached = self.cache[entry_key].copy() if entry_key in self.cache else None
-        if cached is not None:
-            cached["info"] = (
-                cached["info"].copy() if cached["info"] is not None else None
-            )
-        return cached
 
     async def put(
         self,
@@ -93,12 +76,10 @@ class CachedKVStoreClient:
             res: keybase1.KVPutResult = await self.kvstore.put(
                 team, namespace, entry_key, entry_value, revision
             )
-            self.update_cache(entry_key, entry_value, res.revision)
             return res  # successful put. return KVPutResult
         except RevisionError:
-            # refresh cached value
-            curr_info = await self.get(team, namespace, entry_key)
-            return curr_info  # failed put. return KVGetResult.
+            get = await self.get(team, namespace, entry_key)
+            return get  # failed put. return KVGetResult.
 
     async def delete(
         self,
@@ -106,29 +87,21 @@ class CachedKVStoreClient:
         namespace: str,
         entry_key: str,
         revision: Union[int, None] = None,
-    ) -> Union[keybase1.KVDeleteEntryResult, keybase1.KVGetResult, None]:
+    ) -> Union[keybase1.KVDeleteEntryResult, keybase1.KVGetResult]:
         try:
             res: keybase1.KVDeleteEntryResult = await self.kvstore.delete(
                 team, namespace, entry_key, revision
             )
-            self.update_cache(entry_key, None, res.revision)
             return res  # successful delete. return KVDeleteEntryResult
-        except RevisionError:
-            # refresh cached value
-            curr_info = await self.get(team, namespace, entry_key)
-            return curr_info  # failed put. return KVGetResult.
-        except DeleteNonExistentError:
-            # refresh cached value
-            curr_info = await self.get(team, namespace, entry_key)
-            return None  # was already deleted. return None.
+        except (RevisionError, DeleteNonExistentError):
+            get = await self.get(team, namespace, entry_key)
+            return get  # failed put. return KVGetResult.
         return res
 
     async def get(
         self, team: str, namespace: str, entry_key: str
     ) -> keybase1.KVGetResult:
         res = await self.kvstore.get(team, namespace, entry_key)
-        info = json.loads(res.entry_value) if res.entry_value != "" else None
-        self.update_cache(entry_key, info, res.revision)
         return res
 
     async def list_entrykeys(
@@ -245,7 +218,7 @@ class SecretKeyKVStoreClient:
 
 class RentalBotClient:
     """
-        Wraps a CachedKVStoreClient to expose methods to handle tool rentals.
+        Wraps a KVStoreClient to expose methods to handle tool rentals.
     """
 
     NAMESPACE = "rental"
@@ -260,14 +233,11 @@ class RentalBotClient:
     async def add(
         self, team, tool
     ) -> Union[keybase1.KVPutResult, keybase1.KVGetResult]:
-        info: Dict[str, str] = {}
-        expected_revision = 1
-        cached = self.kvstore.get_cached(tool)
-        if cached is not None:
-            # if tool already exists, propagate existing info
-            if cached["info"]:
-                info = cached["info"] if type(info) is dict else {}
-            expected_revision = cached["revision"] + 1
+        res = await self.lookup(team, tool)
+        info = (
+            json.loads(res.entry_value) if res.entry_value != "" else {}
+        )  # if tool already exists, propagate existing info
+        expected_revision = res.revision + 1
         res = await self.kvstore.put(
             team, self.NAMESPACE, tool, info, expected_revision
         )
@@ -277,28 +247,44 @@ class RentalBotClient:
         self, team, tool
     ) -> Union[keybase1.KVDeleteEntryResult, keybase1.KVGetResult, None]:
         expected_revision = 1
-        cached = self.kvstore.get_cached(tool)
-        if cached is not None:
-            expected_revision = cached["revision"] + 1
+        res = await self.lookup(team, tool)
+        expected_revision = res.revision + 1
         res = await self.kvstore.delete(team, self.NAMESPACE, tool, expected_revision)
         return res
 
-    async def update_reservation(
-        self, team, user, tool, day, reserve=True
+    async def reserve(
+        self, team, user, tool, day
     ) -> Union[keybase1.KVPutResult, keybase1.KVGetResult]:
-        # note: if you reserve or unreserve a not-added or deleted tool, it will add the tool
-        info: Dict[str, str] = {}
-        expected_revision = 1
-        cached = self.kvstore.get_cached(tool)
-        if cached is not None:
-            if cached["info"]:
-                info = cached["info"] if type(info) is dict else {}
-            expected_revision = cached["revision"] + 1
-        if reserve:
-            info[day] = user
+        """
+        reserve a tool for a given day if that day is already not reserved.
+        note: if you reserve a not-added or deleted tool, it will add the tool
+        """
+        res = await self.lookup(team, tool)
+        info = json.loads(res.entry_value) if res.entry_value != "" else {}
+        if day in info:
+            return res  # failed to put because day is already reserved.
         else:
-            # unreserve
-            info.pop(day, None)
+            info[day] = user
+        expected_revision = res.revision + 1
+        res = await self.kvstore.put(
+            team, self.NAMESPACE, tool, info, expected_revision
+        )
+        return res
+
+    async def unreserve(
+        self, team, user, tool, day
+    ) -> Union[keybase1.KVPutResult, keybase1.KVGetResult]:
+        """
+        unreserve a tool for a given day if that day is currently reserved by
+        the given user.
+        note: if you unreserve a not-added or deleted tool, it will not add the tool
+        """
+        res = await self.lookup(team, tool)
+        info = json.loads(res.entry_value) if res.entry_value != "" else {}
+        if (day not in info) or (day in info and info[day] != user):
+            # failed to put because currently not reserved, or current reserver is not user
+            return res
+        expected_revision = res.revision + 1
         res = await self.kvstore.put(
             team, self.NAMESPACE, tool, info, expected_revision
         )
@@ -314,46 +300,64 @@ class RentalBotClient:
         return keys
 
 
-async def rental_user(bot, rental, team, username):
-    res = await rental.list_tools(team)
-    print(res)
-
+async def basic_rental_users(bot, rental, team):
+    user1 = "Jo"
+    user2 = "Charlie"
+    date1 = "2044-03-12"
+    date2 = "2044-06-12"
+    date3 = "2044-06-13"
     tool = "laz0rs"
+
+    res = await rental.list_tools(team)
+    print("LIST TOOLS: ", res)
+
     res = await rental.lookup(team, tool)
     print("LOOKUP: ", res)
 
     res = await rental.add(team, tool)
     print("ADD: ", res)
+    assert type(res) == keybase1.KVPutResult
 
     res = await rental.remove(team, tool)
     print("REMOVE: ", res)
+    assert type(res) == keybase1.KVDeleteEntryResult
 
     res = await rental.add(team, tool)
     print("ADD: ", res)
+    assert type(res) == keybase1.KVPutResult
 
-    res = await rental.update_reservation(
-        team, username, tool, "2044-03-12", reserve=True
-    )
+    res = await rental.reserve(team, user1, tool, date1)
     print("RESERVE: ", res)
+    assert type(res) == keybase1.KVPutResult
 
-    res = await rental.update_reservation(
-        team, username, tool, "2044-06-12", reserve=True
-    )
+    res = await rental.reserve(team, user1, tool, date1)
+    print("EXPECTING RESERVE FAIL: ", res)
+    assert type(res) == keybase1.KVGetResult
+
+    res = await rental.reserve(team, user2, tool, date2)
     print("RESERVE: ", res)
+    assert type(res) == keybase1.KVPutResult
 
     res = await rental.lookup(team, tool)
     print("LOOKUP: ", res)
 
-    res = await rental.update_reservation(
-        team, username, tool, "2044-06-12", reserve=False
-    )
+    res = await rental.unreserve(team, user1, tool, date3)
+    print("EXPECTING UNRESERVE FAIL: ", res)
+    assert type(res) == keybase1.KVGetResult
+
+    res = await rental.unreserve(team, user1, tool, date2)
+    print("EXPECTING UNRESERVE FAIL: ", res)
+    assert type(res) == keybase1.KVGetResult
+
+    res = await rental.unreserve(team, user1, tool, date1)
     print("UNRESERVE: ", res)
+    assert type(res) == keybase1.KVPutResult
 
     res = await rental.lookup(team, tool)
     print("LOOKUP: ", res)
 
 
-async def concurrent_rental_users(bot, rental, team, username):
+async def concurrent_rental_users(bot, rental, team):
     tool = "time travel machine"
 
     async def concurrent_rental_user(user_id: int):
@@ -363,10 +367,11 @@ async def concurrent_rental_users(bot, rental, team, username):
         i = 0
         while True:
             # keep trying to reserve for user's unique date until successful
-            res = await rental.update_reservation(team, user, tool, date, reserve=True)
+            res = await rental.reserve(team, user, tool, date)
             i += 1
             print("{}, attempt {}, TRY TO RESERVE: {}".format(user, i, res))
             if type(res) == keybase1.KVPutResult:
+                # success
                 return
 
     async def pre():
@@ -398,7 +403,6 @@ async def main():
     print("Starting 5_secret_storage example...")
 
     team = "yourhackerspace"
-    username = "yourbot"
 
     def noop_handler(*args, **kwargs):
         pass
@@ -406,11 +410,11 @@ async def main():
     bot = CustomKVStoreBot(handler=noop_handler(), keybase="/home/user/keybase")
     rental = RentalBotClient(bot)
 
-    print("...one user does some basic rental actions...")
-    await rental_user(bot, rental, team, username)
+    print("...basic rental actions...")
+    await basic_rental_users(bot, rental, team)
 
     print("...multiple users try to reserve...")
-    await concurrent_rental_users(bot, rental, team, username)
+    await concurrent_rental_users(bot, rental, team)
 
     print("...5_secret_storage example is complete.")
 
