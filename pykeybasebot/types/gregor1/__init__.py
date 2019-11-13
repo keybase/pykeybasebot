@@ -1,6 +1,6 @@
 """gregor.1
 
-Auto-generated to Python types by avdl-compiler v1.4.4 (https://github.com/keybase/node-avdl-compiler)
+Auto-generated to Python types by avdl-compiler v1.4.6 (https://github.com/keybase/node-avdl-compiler)
 Input files:
  - ../client/protocol/avdl/gregor1/auth.avdl
  - ../client/protocol/avdl/gregor1/auth_internal.avdl
@@ -12,11 +12,9 @@ Input files:
 """
 
 from dataclasses import dataclass, field
-from enum import Enum
-from typing import Dict, List, Optional, Union
+from typing import List, Optional
 
 from dataclasses_json import DataClassJsonMixin, config
-from typing_extensions import Literal
 
 DurationMsec = int
 DurationSec = int

@@ -49,6 +49,16 @@ poetry install
 
 This will set up a virtualenv for you and install all the dependencies needed into it!
 
+Remember that if you're making changes to pykeybasebot and want to test them
+locally, you'll need to first uninstall previously installed pykeybasebot, 
+then install your local version:
+
+```
+pip uninstall pykeybasebot
+poetry build
+pip install ./dist/pykeybasebot-{tags}.whl
+```
+
 ### Static code analysis tools
 
 We use a few different static analysis tools to perform linting, type-checking, formatting, etc. The correct versions should be install when you run `poetry install`, but you'll probably want to configure your editor to work with:

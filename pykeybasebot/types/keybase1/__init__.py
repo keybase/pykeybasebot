@@ -1,6 +1,6 @@
 """keybase.1
 
-Auto-generated to Python types by avdl-compiler v1.4.4 (https://github.com/keybase/node-avdl-compiler)
+Auto-generated to Python types by avdl-compiler v1.4.6 (https://github.com/keybase/node-avdl-compiler)
 Input files:
  - ../client/protocol/avdl/keybase1/account.avdl
  - ../client/protocol/avdl/keybase1/airdrop.avdl
@@ -49,6 +49,7 @@ Input files:
  - ../client/protocol/avdl/keybase1/kex2provisionee.avdl
  - ../client/protocol/avdl/keybase1/kex2provisionee2.avdl
  - ../client/protocol/avdl/keybase1/kex2provisioner.avdl
+ - ../client/protocol/avdl/keybase1/kvstore.avdl
  - ../client/protocol/avdl/keybase1/log.avdl
  - ../client/protocol/avdl/keybase1/log_ui.avdl
  - ../client/protocol/avdl/keybase1/login.avdl
@@ -770,6 +771,7 @@ class StatusCode(Enum):
     SCTeamWritePermDenied = 2625
     SCTeamBadGeneration = 2636
     SCNoOp = 2638
+    SCTeamInviteBadCancel = 2645
     SCTeamInviteBadToken = 2646
     SCTeamTarDuplicate = 2663
     SCTeamTarNotFound = 2664
@@ -803,6 +805,9 @@ class StatusCode(Enum):
     SCTeamProvisionalCanKey = 2721
     SCTeamProvisionalCannotKey = 2722
     SCTeamFTLOutdated = 2736
+    SCTeamStorageWrongRevision = 2760
+    SCTeamStorageBadGeneration = 2761
+    SCTeamStorageNotFound = 2762
     SCEphemeralKeyBadGeneration = 2900
     SCEphemeralKeyUnexpectedBox = 2901
     SCEphemeralKeyMissingBox = 2902
@@ -856,6 +861,7 @@ class StatusCode(Enum):
     SCTeambotKeyGenerationExists = 3800
     SCTeambotKeyOldBoxedGeneration = 3801
     SCTeambotKeyBadGeneration = 3802
+    SCAirdropRegisterFailedMisc = 4207
 
 
 class StatusCodeStrings(Enum):
@@ -998,6 +1004,7 @@ class StatusCodeStrings(Enum):
     SCTeamWritePermDenied = "scteamwritepermdenied"
     SCTeamBadGeneration = "scteambadgeneration"
     SCNoOp = "scnoop"
+    SCTeamInviteBadCancel = "scteaminvitebadcancel"
     SCTeamInviteBadToken = "scteaminvitebadtoken"
     SCTeamTarDuplicate = "scteamtarduplicate"
     SCTeamTarNotFound = "scteamtarnotfound"
@@ -1031,6 +1038,9 @@ class StatusCodeStrings(Enum):
     SCTeamProvisionalCanKey = "scteamprovisionalcankey"
     SCTeamProvisionalCannotKey = "scteamprovisionalcannotkey"
     SCTeamFTLOutdated = "scteamftloutdated"
+    SCTeamStorageWrongRevision = "scteamstoragewrongrevision"
+    SCTeamStorageBadGeneration = "scteamstoragebadgeneration"
+    SCTeamStorageNotFound = "scteamstoragenotfound"
     SCEphemeralKeyBadGeneration = "scephemeralkeybadgeneration"
     SCEphemeralKeyUnexpectedBox = "scephemeralkeyunexpectedbox"
     SCEphemeralKeyMissingBox = "scephemeralkeymissingbox"
@@ -1084,6 +1094,7 @@ class StatusCodeStrings(Enum):
     SCTeambotKeyGenerationExists = "scteambotkeygenerationexists"
     SCTeambotKeyOldBoxedGeneration = "scteambotkeyoldboxedgeneration"
     SCTeambotKeyBadGeneration = "scteambotkeybadgeneration"
+    SCAirdropRegisterFailedMisc = "scairdropregisterfailedmisc"
 
 
 ED25519PublicKey = Optional[str]
@@ -1130,6 +1141,18 @@ class DbTypeStrings(Enum):
 
 
 DbValue = str
+
+
+class OnLoginStartupStatus(Enum):
+    UNKNOWN = 0
+    DISABLED = 1
+    ENABLED = 2
+
+
+class OnLoginStartupStatusStrings(Enum):
+    UNKNOWN = "unknown"
+    DISABLED = "disabled"
+    ENABLED = "enabled"
 
 
 @dataclass
@@ -1680,6 +1703,52 @@ CsrfToken = str
 HelloRes = str
 
 
+@dataclass
+class KVGetResult(DataClassJsonMixin):
+    team_name: str = field(metadata=config(field_name="teamName"))
+    namespace: str = field(metadata=config(field_name="namespace"))
+    entry_key: str = field(metadata=config(field_name="entryKey"))
+    entry_value: str = field(metadata=config(field_name="entryValue"))
+    revision: int = field(metadata=config(field_name="revision"))
+
+
+@dataclass
+class KVPutResult(DataClassJsonMixin):
+    team_name: str = field(metadata=config(field_name="teamName"))
+    namespace: str = field(metadata=config(field_name="namespace"))
+    entry_key: str = field(metadata=config(field_name="entryKey"))
+    revision: int = field(metadata=config(field_name="revision"))
+
+
+@dataclass
+class EncryptedKVEntry(DataClassJsonMixin):
+    v: int = field(metadata=config(field_name="v"))
+    e: str = field(metadata=config(field_name="e"))
+    n: str = field(metadata=config(field_name="n"))
+
+
+@dataclass
+class KVListNamespaceResult(DataClassJsonMixin):
+    team_name: str = field(metadata=config(field_name="teamName"))
+    namespaces: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="namespaces")
+    )
+
+
+@dataclass
+class KVListEntryKey(DataClassJsonMixin):
+    entry_key: str = field(metadata=config(field_name="entryKey"))
+    revision: int = field(metadata=config(field_name="revision"))
+
+
+@dataclass
+class KVDeleteEntryResult(DataClassJsonMixin):
+    team_name: str = field(metadata=config(field_name="teamName"))
+    namespace: str = field(metadata=config(field_name="namespace"))
+    entry_key: str = field(metadata=config(field_name="entryKey"))
+    revision: int = field(metadata=config(field_name="revision"))
+
+
 class ResetPromptType(Enum):
     COMPLETE = 0
     ENTER_NO_DEVICES = 1
@@ -1699,12 +1768,44 @@ class ResetPromptInfo(DataClassJsonMixin):
     has_wallet: bool = field(metadata=config(field_name="hasWallet"))
 
 
+class ResetPromptResponse(Enum):
+    NOTHING = 0
+    CANCEL_RESET = 1
+    CONFIRM_RESET = 2
+
+
+class ResetPromptResponseStrings(Enum):
+    NOTHING = "nothing"
+    CANCEL_RESET = "cancel_reset"
+    CONFIRM_RESET = "confirm_reset"
+
+
 class PassphraseRecoveryPromptType(Enum):
     ENCRYPTED_PGP_KEYS = 0
 
 
 class PassphraseRecoveryPromptTypeStrings(Enum):
     ENCRYPTED_PGP_KEYS = "encrypted_pgp_keys"
+
+
+class ResetMessage(Enum):
+    ENTERED_VERIFIED = 0
+    ENTERED_PASSWORDLESS = 1
+    REQUEST_VERIFIED = 2
+    NOT_COMPLETED = 3
+    CANCELED = 4
+    COMPLETED = 5
+    RESET_LINK_SENT = 6
+
+
+class ResetMessageStrings(Enum):
+    ENTERED_VERIFIED = "entered_verified"
+    ENTERED_PASSWORDLESS = "entered_passwordless"
+    REQUEST_VERIFIED = "request_verified"
+    NOT_COMPLETED = "not_completed"
+    CANCELED = "canceled"
+    COMPLETED = "completed"
+    RESET_LINK_SENT = "reset_link_sent"
 
 
 KBFSRootHash = str
@@ -1754,8 +1855,8 @@ class WalletAccountInfo(DataClassJsonMixin):
 
 @dataclass
 class NotificationChannels(DataClassJsonMixin):
+    pgp: bool = field(metadata=config(field_name="pgp"))
     session: bool = field(metadata=config(field_name="session"))
-    users: bool = field(metadata=config(field_name="users"))
     kbfs: bool = field(metadata=config(field_name="kbfs"))
     kbfsdesktop: bool = field(metadata=config(field_name="kbfsdesktop"))
     kbfslegacy: bool = field(metadata=config(field_name="kbfslegacy"))
@@ -1767,7 +1868,7 @@ class NotificationChannels(DataClassJsonMixin):
     service: bool = field(metadata=config(field_name="service"))
     app: bool = field(metadata=config(field_name="app"))
     chat: bool = field(metadata=config(field_name="chat"))
-    pgp: bool = field(metadata=config(field_name="pgp"))
+    users: bool = field(metadata=config(field_name="users"))
     kbfsrequest: bool = field(metadata=config(field_name="kbfsrequest"))
     badges: bool = field(metadata=config(field_name="badges"))
     reachability: bool = field(metadata=config(field_name="reachability"))
@@ -2119,6 +2220,7 @@ class ParamProofUsernameConfig(DataClassJsonMixin):
 class ParamProofLogoConfig(DataClassJsonMixin):
     svg_black: str = field(metadata=config(field_name="svg_black"))
     svg_full: str = field(metadata=config(field_name="svg_full"))
+    svg_white: str = field(metadata=config(field_name="svg_white"))
 
 
 @dataclass
@@ -2502,6 +2604,7 @@ class SubscriptionTopic(Enum):
     JOURNAL_STATUS = 1
     ONLINE_STATUS = 2
     DOWNLOAD_STATUS = 3
+    FILES_TAB_BADGE = 4
 
 
 class SubscriptionTopicStrings(Enum):
@@ -2509,6 +2612,7 @@ class SubscriptionTopicStrings(Enum):
     JOURNAL_STATUS = "journal_status"
     ONLINE_STATUS = "online_status"
     DOWNLOAD_STATUS = "download_status"
+    FILES_TAB_BADGE = "files_tab_badge"
 
 
 class PathSubscriptionTopic(Enum):
@@ -2519,6 +2623,20 @@ class PathSubscriptionTopic(Enum):
 class PathSubscriptionTopicStrings(Enum):
     CHILDREN = "children"
     STAT = "stat"
+
+
+class FilesTabBadge(Enum):
+    NONE = 0
+    UPLOADING_STUCK = 1
+    AWAITING_UPLOAD = 2
+    UPLOADING = 3
+
+
+class FilesTabBadgeStrings(Enum):
+    NONE = "none"
+    UPLOADING_STUCK = "uploading_stuck"
+    AWAITING_UPLOAD = "awaiting_upload"
+    UPLOADING = "uploading"
 
 
 class GUIViewType(Enum):
@@ -2569,6 +2687,7 @@ class TeamApplication(Enum):
     GIT_METADATA = 4
     SEITAN_INVITE_TOKEN = 5
     STELLAR_RELAY = 6
+    KVSTORE = 7
 
 
 class TeamApplicationStrings(Enum):
@@ -2578,6 +2697,7 @@ class TeamApplicationStrings(Enum):
     GIT_METADATA = "git_metadata"
     SEITAN_INVITE_TOKEN = "seitan_invite_token"
     STELLAR_RELAY = "stellar_relay"
+    KVSTORE = "kvstore"
 
 
 class TeamStatus(Enum):
@@ -2786,8 +2906,8 @@ ConflictGeneration = int
 
 @dataclass
 class TeamOperation(DataClassJsonMixin):
+    set_retention_policy: bool = field(metadata=config(field_name="setRetentionPolicy"))
     manage_members: bool = field(metadata=config(field_name="manageMembers"))
-    manage_subteams: bool = field(metadata=config(field_name="manageSubteams"))
     create_channel: bool = field(metadata=config(field_name="createChannel"))
     chat: bool = field(metadata=config(field_name="chat"))
     delete_channel: bool = field(metadata=config(field_name="deleteChannel"))
@@ -2801,7 +2921,7 @@ class TeamOperation(DataClassJsonMixin):
     )
     set_team_showcase: bool = field(metadata=config(field_name="setTeamShowcase"))
     set_member_showcase: bool = field(metadata=config(field_name="setMemberShowcase"))
-    set_retention_policy: bool = field(metadata=config(field_name="setRetentionPolicy"))
+    manage_subteams: bool = field(metadata=config(field_name="manageSubteams"))
     set_min_writer_role: bool = field(metadata=config(field_name="setMinWriterRole"))
     change_open_team: bool = field(metadata=config(field_name="changeOpenTeam"))
     leave_team: bool = field(metadata=config(field_name="leaveTeam"))
@@ -3106,16 +3226,16 @@ class TeamIDWithVisibility(DataClassJsonMixin):
 
 @dataclass
 class PublicKey(DataClassJsonMixin):
+    device_id: DeviceID = field(metadata=config(field_name="deviceID"))
     kid: KID = field(metadata=config(field_name="KID"))
-    pgp_fingerprint: str = field(metadata=config(field_name="PGPFingerprint"))
+    e_time: Time = field(metadata=config(field_name="eTime"))
     is_sibkey: bool = field(metadata=config(field_name="isSibkey"))
     is_eldest: bool = field(metadata=config(field_name="isEldest"))
     parent_id: str = field(metadata=config(field_name="parentID"))
-    device_id: DeviceID = field(metadata=config(field_name="deviceID"))
+    pgp_fingerprint: str = field(metadata=config(field_name="PGPFingerprint"))
     device_description: str = field(metadata=config(field_name="deviceDescription"))
     device_type: str = field(metadata=config(field_name="deviceType"))
     c_time: Time = field(metadata=config(field_name="cTime"))
-    e_time: Time = field(metadata=config(field_name="eTime"))
     is_revoked: bool = field(metadata=config(field_name="isRevoked"))
     pgp_identities: Optional[Optional[List[PGPIdentity]]] = field(
         default=None, metadata=config(field_name="PGPIdentities")
@@ -3220,14 +3340,14 @@ class ClientDetails(DataClassJsonMixin):
 
 @dataclass
 class Config(DataClassJsonMixin):
+    path: str = field(metadata=config(field_name="path"))
     server_uri: str = field(metadata=config(field_name="serverURI"))
-    socket_file: str = field(metadata=config(field_name="socketFile"))
     label: str = field(metadata=config(field_name="label"))
     run_mode: str = field(metadata=config(field_name="runMode"))
     gpg_exists: bool = field(metadata=config(field_name="gpgExists"))
     gpg_path: str = field(metadata=config(field_name="gpgPath"))
     version: str = field(metadata=config(field_name="version"))
-    path: str = field(metadata=config(field_name="path"))
+    socket_file: str = field(metadata=config(field_name="socketFile"))
     binary_realpath: str = field(metadata=config(field_name="binaryRealpath"))
     config_path: str = field(metadata=config(field_name="configPath"))
     version_short: str = field(metadata=config(field_name="versionShort"))
@@ -3675,6 +3795,22 @@ class PerUserKeyBox(DataClassJsonMixin):
 
 
 @dataclass
+class KVEntryID(DataClassJsonMixin):
+    team_id: TeamID = field(metadata=config(field_name="teamID"))
+    namespace: str = field(metadata=config(field_name="namespace"))
+    entry_key: str = field(metadata=config(field_name="entryKey"))
+
+
+@dataclass
+class KVListEntryResult(DataClassJsonMixin):
+    team_name: str = field(metadata=config(field_name="teamName"))
+    namespace: str = field(metadata=config(field_name="namespace"))
+    entry_keys: Optional[Optional[List[KVListEntryKey]]] = field(
+        default=None, metadata=config(field_name="entryKeys")
+    )
+
+
+@dataclass
 class ConfiguredAccount(DataClassJsonMixin):
     username: str = field(metadata=config(field_name="username"))
     fullname: FullName = field(metadata=config(field_name="fullname"))
@@ -3862,17 +3998,17 @@ class ParamProofJSON(DataClassJsonMixin):
 
 @dataclass
 class ParamProofServiceConfig(DataClassJsonMixin):
+    brand_color: str = field(metadata=config(field_name="brand_color"))
     version: int = field(metadata=config(field_name="version"))
-    domain: str = field(metadata=config(field_name="domain"))
     display_name: str = field(metadata=config(field_name="display_name"))
+    check_url: str = field(metadata=config(field_name="check_url"))
     description: str = field(metadata=config(field_name="description"))
     username_config: ParamProofUsernameConfig = field(
         metadata=config(field_name="username")
     )
-    brand_color: str = field(metadata=config(field_name="brand_color"))
+    domain: str = field(metadata=config(field_name="domain"))
     prefill_url: str = field(metadata=config(field_name="prefill_url"))
     profile_url: str = field(metadata=config(field_name="profile_url"))
-    check_url: str = field(metadata=config(field_name="check_url"))
     logo: Optional[ParamProofLogoConfig] = field(
         default=None, metadata=config(field_name="logo")
     )
@@ -3895,6 +4031,9 @@ class ProveParameters(DataClassJsonMixin):
     )
     logo_black: Optional[Optional[List[SizedImage]]] = field(
         default=None, metadata=config(field_name="logoBlack")
+    )
+    logo_white: Optional[Optional[List[SizedImage]]] = field(
+        default=None, metadata=config(field_name="logoWhite")
     )
 
 
@@ -4114,6 +4253,7 @@ class TeambotKeyMetadata(DataClassJsonMixin):
     puk_generation: PerUserKeyGeneration = field(
         metadata=config(field_name="puk_generation")
     )
+    application: TeamApplication = field(metadata=config(field_name="application"))
 
 
 @dataclass
@@ -4431,6 +4571,7 @@ class InterestingPerson(DataClassJsonMixin):
     uid: UID = field(metadata=config(field_name="uid"))
     username: str = field(metadata=config(field_name="username"))
     fullname: str = field(metadata=config(field_name="fullname"))
+    service_map: Dict[str, str] = field(metadata=config(field_name="serviceMap"))
 
 
 @dataclass
@@ -4440,6 +4581,11 @@ class CanLogoutRes(DataClassJsonMixin):
     passphrase_state: PassphraseState = field(
         metadata=config(field_name="passphraseState")
     )
+
+
+@dataclass
+class UserPassphraseStateMsg(DataClassJsonMixin):
+    passphrase_state: PassphraseState = field(metadata=config(field_name="state"))
 
 
 @dataclass
@@ -4553,13 +4699,13 @@ class Contact(DataClassJsonMixin):
 
 @dataclass
 class ProcessedContact(DataClassJsonMixin):
+    full_name: str = field(metadata=config(field_name="fullName"))
     contact_index: int = field(metadata=config(field_name="contactIndex"))
-    contact_name: str = field(metadata=config(field_name="contactName"))
     component: ContactComponent = field(metadata=config(field_name="component"))
     resolved: bool = field(metadata=config(field_name="resolved"))
     uid: UID = field(metadata=config(field_name="uid"))
     username: str = field(metadata=config(field_name="username"))
-    full_name: str = field(metadata=config(field_name="fullName"))
+    contact_name: str = field(metadata=config(field_name="contactName"))
     following: bool = field(metadata=config(field_name="following"))
     service_map: Dict[str, str] = field(metadata=config(field_name="serviceMap"))
     assertion: str = field(metadata=config(field_name="assertion"))
@@ -4708,48 +4854,51 @@ class HomeScreenPeopleNotificationContactMulti(DataClassJsonMixin):
 @dataclass
 class Identify3Row(DataClassJsonMixin):
     gui_id: Identify3GUIID = field(metadata=config(field_name="guiID"))
-    key: str = field(metadata=config(field_name="key"))
     value: str = field(metadata=config(field_name="value"))
     priority: int = field(metadata=config(field_name="priority"))
     site_url: str = field(metadata=config(field_name="siteURL"))
+    key: str = field(metadata=config(field_name="key"))
     proof_url: str = field(metadata=config(field_name="proofURL"))
     sig_id: SigID = field(metadata=config(field_name="sigID"))
     ctime: Time = field(metadata=config(field_name="ctime"))
     state: Identify3RowState = field(metadata=config(field_name="state"))
     color: Identify3RowColor = field(metadata=config(field_name="color"))
+    kid: Optional[KID] = field(default=None, metadata=config(field_name="kid"))
     site_icon: Optional[Optional[List[SizedImage]]] = field(
         default=None, metadata=config(field_name="siteIcon")
-    )
-    site_icon_full: Optional[Optional[List[SizedImage]]] = field(
-        default=None, metadata=config(field_name="siteIconFull")
     )
     metas: Optional[Optional[List[Identify3RowMeta]]] = field(
         default=None, metadata=config(field_name="metas")
     )
-    kid: Optional[KID] = field(default=None, metadata=config(field_name="kid"))
+    site_icon_full: Optional[Optional[List[SizedImage]]] = field(
+        default=None, metadata=config(field_name="siteIconFull")
+    )
+    site_icon_white: Optional[Optional[List[SizedImage]]] = field(
+        default=None, metadata=config(field_name="siteIconWhite")
+    )
 
 
 @dataclass
 class IdentifyOutcome(DataClassJsonMixin):
+    num_proof_failures: int = field(metadata=config(field_name="numProofFailures"))
     username: str = field(metadata=config(field_name="username"))
+    for_pgp_pull: bool = field(metadata=config(field_name="forPGPPull"))
+    track_options: TrackOptions = field(metadata=config(field_name="trackOptions"))
     track_status: TrackStatus = field(metadata=config(field_name="trackStatus"))
     num_track_failures: int = field(metadata=config(field_name="numTrackFailures"))
     num_track_changes: int = field(metadata=config(field_name="numTrackChanges"))
-    num_proof_failures: int = field(metadata=config(field_name="numProofFailures"))
-    num_revoked: int = field(metadata=config(field_name="numRevoked"))
     num_proof_successes: int = field(metadata=config(field_name="numProofSuccesses"))
-    track_options: TrackOptions = field(metadata=config(field_name="trackOptions"))
-    for_pgp_pull: bool = field(metadata=config(field_name="forPGPPull"))
+    num_revoked: int = field(metadata=config(field_name="numRevoked"))
     reason: IdentifyReason = field(metadata=config(field_name="reason"))
     status: Optional[Status] = field(default=None, metadata=config(field_name="status"))
-    warnings: Optional[Optional[List[str]]] = field(
-        default=None, metadata=config(field_name="warnings")
+    revoked: Optional[Optional[List[TrackDiff]]] = field(
+        default=None, metadata=config(field_name="revoked")
     )
     track_used: Optional[TrackSummary] = field(
         default=None, metadata=config(field_name="trackUsed")
     )
-    revoked: Optional[Optional[List[TrackDiff]]] = field(
-        default=None, metadata=config(field_name="revoked")
+    warnings: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="warnings")
     )
 
 
@@ -4789,14 +4938,14 @@ class CheckResult(DataClassJsonMixin):
 
 @dataclass
 class UserCard(DataClassJsonMixin):
+    website: str = field(metadata=config(field_name="website"))
     following: int = field(metadata=config(field_name="following"))
-    followers: int = field(metadata=config(field_name="followers"))
     uid: UID = field(metadata=config(field_name="uid"))
     full_name: str = field(metadata=config(field_name="fullName"))
     location: str = field(metadata=config(field_name="location"))
     bio: str = field(metadata=config(field_name="bio"))
     bio_decorated: str = field(metadata=config(field_name="bioDecorated"))
-    website: str = field(metadata=config(field_name="website"))
+    followers: int = field(metadata=config(field_name="followers"))
     twitter: str = field(metadata=config(field_name="twitter"))
     you_follow_them: bool = field(metadata=config(field_name="youFollowThem"))
     they_follow_you: bool = field(metadata=config(field_name="theyFollowYou"))
@@ -4890,18 +5039,15 @@ class MetadataResponse(DataClassJsonMixin):
 @dataclass
 class BadgeState(DataClassJsonMixin):
     new_tlfs: int = field(metadata=config(field_name="newTlfs"))
-    rekeys_needed: int = field(metadata=config(field_name="rekeysNeeded"))
+    reset_state: ResetState = field(metadata=config(field_name="resetState"))
     new_followers: int = field(metadata=config(field_name="newFollowers"))
     inbox_vers: int = field(metadata=config(field_name="inboxVers"))
     home_todo_items: int = field(metadata=config(field_name="homeTodoItems"))
     unverified_emails: int = field(metadata=config(field_name="unverifiedEmails"))
     unverified_phones: int = field(metadata=config(field_name="unverifiedPhones"))
-    reset_state: ResetState = field(metadata=config(field_name="resetState"))
+    rekeys_needed: int = field(metadata=config(field_name="rekeysNeeded"))
     new_devices: Optional[Optional[List[DeviceID]]] = field(
         default=None, metadata=config(field_name="newDevices")
-    )
-    revoked_devices: Optional[Optional[List[DeviceID]]] = field(
-        default=None, metadata=config(field_name="revokedDevices")
     )
     conversations: Optional[Optional[List[BadgeConversationInfo]]] = field(
         default=None, metadata=config(field_name="conversations")
@@ -4909,13 +5055,13 @@ class BadgeState(DataClassJsonMixin):
     new_git_repo_global_unique_i_ds: Optional[Optional[List[str]]] = field(
         default=None, metadata=config(field_name="newGitRepoGlobalUniqueIDs")
     )
-    new_team_names: Optional[Optional[List[str]]] = field(
-        default=None, metadata=config(field_name="newTeamNames")
+    new_teams: Optional[Optional[List[TeamID]]] = field(
+        default=None, metadata=config(field_name="newTeams")
     )
     deleted_teams: Optional[Optional[List[DeletedTeamInfo]]] = field(
         default=None, metadata=config(field_name="deletedTeams")
     )
-    new_team_access_requests: Optional[Optional[List[str]]] = field(
+    new_team_access_requests: Optional[Optional[List[TeamID]]] = field(
         default=None, metadata=config(field_name="newTeamAccessRequests")
     )
     teams_with_reset_users: Optional[Optional[List[TeamMemberOutReset]]] = field(
@@ -4923,6 +5069,9 @@ class BadgeState(DataClassJsonMixin):
     )
     unread_wallet_accounts: Optional[Optional[List[WalletAccountInfo]]] = field(
         default=None, metadata=config(field_name="unreadWalletAccounts")
+    )
+    revoked_devices: Optional[Optional[List[DeviceID]]] = field(
+        default=None, metadata=config(field_name="revokedDevices")
     )
 
 
@@ -5205,28 +5354,28 @@ class LinkTripleAndTime(DataClassJsonMixin):
 
 @dataclass
 class FastTeamSigChainState(DataClassJsonMixin):
-    id: TeamID = field(metadata=config(field_name="ID"))
-    public: bool = field(metadata=config(field_name="public"))
-    root_ancestor: TeamName = field(metadata=config(field_name="rootAncestor"))
-    name_depth: int = field(metadata=config(field_name="nameDepth"))
-    per_team_keys: Dict[str, PerTeamKey] = field(
-        metadata=config(field_name="perTeamKeys")
-    )
     per_team_key_seeds_verified: Dict[str, PerTeamKeySeed] = field(
         metadata=config(field_name="perTeamKeySeedsVerified")
     )
+    id: TeamID = field(metadata=config(field_name="ID"))
+    root_ancestor: TeamName = field(metadata=config(field_name="rootAncestor"))
+    name_depth: int = field(metadata=config(field_name="nameDepth"))
+    link_i_ds: Dict[str, LinkID] = field(metadata=config(field_name="linkIDs"))
+    per_team_keys: Dict[str, PerTeamKey] = field(
+        metadata=config(field_name="perTeamKeys")
+    )
+    public: bool = field(metadata=config(field_name="public"))
     down_pointers: Dict[str, DownPointer] = field(
         metadata=config(field_name="downPointers")
     )
     per_team_key_c_time: UnixTime = field(metadata=config(field_name="perTeamKeyCTime"))
-    link_i_ds: Dict[str, LinkID] = field(metadata=config(field_name="linkIDs"))
     merkle_info: Dict[str, MerkleRootV2] = field(
         metadata=config(field_name="merkleInfo")
     )
-    last: Optional[LinkTriple] = field(default=None, metadata=config(field_name="last"))
     last_up_pointer: Optional[UpPointer] = field(
         default=None, metadata=config(field_name="lastUpPointer")
     )
+    last: Optional[LinkTriple] = field(default=None, metadata=config(field_name="last"))
 
 
 @dataclass
@@ -5398,8 +5547,8 @@ class MemberInfo(DataClassJsonMixin):
 
 @dataclass
 class AnnotatedMemberInfo(DataClassJsonMixin):
+    role: TeamRole = field(metadata=config(field_name="role"))
     user_id: UID = field(metadata=config(field_name="uid"))
-    team_id: TeamID = field(metadata=config(field_name="team_id"))
     username: str = field(metadata=config(field_name="username"))
     full_name: str = field(metadata=config(field_name="full_name"))
     fq_name: str = field(metadata=config(field_name="fq_name"))
@@ -5408,14 +5557,14 @@ class AnnotatedMemberInfo(DataClassJsonMixin):
         metadata=config(field_name="implicit_team_display_name")
     )
     is_open_team: bool = field(metadata=config(field_name="is_open_team"))
-    role: TeamRole = field(metadata=config(field_name="role"))
+    team_id: TeamID = field(metadata=config(field_name="team_id"))
+    is_member_showcased: bool = field(metadata=config(field_name="is_member_showcased"))
     needs_puk: bool = field(metadata=config(field_name="needsPUK"))
     member_count: int = field(metadata=config(field_name="member_count"))
     eldest_seqno: Seqno = field(metadata=config(field_name="member_eldest_seqno"))
     allow_profile_promote: bool = field(
         metadata=config(field_name="allow_profile_promote")
     )
-    is_member_showcased: bool = field(metadata=config(field_name="is_member_showcased"))
     status: TeamMemberStatus = field(metadata=config(field_name="status"))
     implicit: Optional[ImplicitRole] = field(
         default=None, metadata=config(field_name="implicit")
@@ -5528,6 +5677,9 @@ class ProofSuggestion(DataClassJsonMixin):
     profile_icon: Optional[Optional[List[SizedImage]]] = field(
         default=None, metadata=config(field_name="profileIcon")
     )
+    profile_icon_white: Optional[Optional[List[SizedImage]]] = field(
+        default=None, metadata=config(field_name="profileIconWhite")
+    )
     picker_icon: Optional[Optional[List[SizedImage]]] = field(
         default=None, metadata=config(field_name="pickerIcon")
     )
@@ -5557,16 +5709,16 @@ class ReferenceCountRes(DataClassJsonMixin):
 @dataclass
 class UserPlusKeys(DataClassJsonMixin):
     uid: UID = field(metadata=config(field_name="uid"))
-    username: str = field(metadata=config(field_name="username"))
     eldest_seqno: Seqno = field(metadata=config(field_name="eldestSeqno"))
     status: StatusCode = field(metadata=config(field_name="status"))
+    username: str = field(metadata=config(field_name="username"))
     pgp_key_count: int = field(metadata=config(field_name="pgpKeyCount"))
     uvv: UserVersionVector = field(metadata=config(field_name="uvv"))
     device_keys: Optional[Optional[List[PublicKey]]] = field(
         default=None, metadata=config(field_name="deviceKeys")
     )
-    revoked_device_keys: Optional[Optional[List[RevokedKey]]] = field(
-        default=None, metadata=config(field_name="revokedDeviceKeys")
+    resets: Optional[Optional[List[ResetSummary]]] = field(
+        default=None, metadata=config(field_name="resets")
     )
     deleted_device_keys: Optional[Optional[List[PublicKey]]] = field(
         default=None, metadata=config(field_name="deletedDeviceKeys")
@@ -5574,16 +5726,16 @@ class UserPlusKeys(DataClassJsonMixin):
     per_user_keys: Optional[Optional[List[PerUserKey]]] = field(
         default=None, metadata=config(field_name="perUserKeys")
     )
-    resets: Optional[Optional[List[ResetSummary]]] = field(
-        default=None, metadata=config(field_name="resets")
+    revoked_device_keys: Optional[Optional[List[RevokedKey]]] = field(
+        default=None, metadata=config(field_name="revokedDeviceKeys")
     )
 
 
 @dataclass
 class ExtendedStatus(DataClassJsonMixin):
     standalone: bool = field(metadata=config(field_name="standalone"))
-    passphrase_stream_cached: bool = field(
-        metadata=config(field_name="passphraseStreamCached")
+    ui_router_mapping: Dict[str, int] = field(
+        metadata=config(field_name="uiRouterMapping")
     )
     tsec_cached: bool = field(metadata=config(field_name="tsecCached"))
     device_sig_key_cached: bool = field(
@@ -5597,25 +5749,18 @@ class ExtendedStatus(DataClassJsonMixin):
     stored_secret: bool = field(metadata=config(field_name="storedSecret"))
     secret_prompt_skip: bool = field(metadata=config(field_name="secretPromptSkip"))
     remember_passphrase: bool = field(metadata=config(field_name="rememberPassphrase"))
-    log_dir: str = field(metadata=config(field_name="logDir"))
-    default_username: str = field(metadata=config(field_name="defaultUsername"))
-    platform_info: PlatformInfo = field(metadata=config(field_name="platformInfo"))
     default_device_id: DeviceID = field(metadata=config(field_name="defaultDeviceID"))
-    ui_router_mapping: Dict[str, int] = field(
-        metadata=config(field_name="uiRouterMapping")
+    platform_info: PlatformInfo = field(metadata=config(field_name="platformInfo"))
+    log_dir: str = field(metadata=config(field_name="logDir"))
+    passphrase_stream_cached: bool = field(
+        metadata=config(field_name="passphraseStreamCached")
     )
-    device: Optional[Device] = field(default=None, metadata=config(field_name="device"))
-    device_err: Optional[LoadDeviceErr] = field(
-        default=None, metadata=config(field_name="deviceErr")
-    )
-    session: Optional[SessionStatus] = field(
-        default=None, metadata=config(field_name="session")
+    default_username: str = field(metadata=config(field_name="defaultUsername"))
+    local_db_stats: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="localDbStats")
     )
     provisioned_usernames: Optional[Optional[List[str]]] = field(
         default=None, metadata=config(field_name="provisionedUsernames")
-    )
-    configured_accounts: Optional[Optional[List[ConfiguredAccount]]] = field(
-        default=None, metadata=config(field_name="configuredAccounts")
     )
     clients: Optional[Optional[List[ClientStatus]]] = field(
         default=None, metadata=config(field_name="Clients")
@@ -5623,8 +5768,12 @@ class ExtendedStatus(DataClassJsonMixin):
     device_ek_names: Optional[Optional[List[str]]] = field(
         default=None, metadata=config(field_name="deviceEkNames")
     )
-    local_db_stats: Optional[Optional[List[str]]] = field(
-        default=None, metadata=config(field_name="localDbStats")
+    device_err: Optional[LoadDeviceErr] = field(
+        default=None, metadata=config(field_name="deviceErr")
+    )
+    device: Optional[Device] = field(default=None, metadata=config(field_name="device"))
+    configured_accounts: Optional[Optional[List[ConfiguredAccount]]] = field(
+        default=None, metadata=config(field_name="configuredAccounts")
     )
     local_chat_db_stats: Optional[Optional[List[str]]] = field(
         default=None, metadata=config(field_name="localChatDbStats")
@@ -5637,6 +5786,9 @@ class ExtendedStatus(DataClassJsonMixin):
     )
     cache_dir_size_info: Optional[Optional[List[DirSizeInfo]]] = field(
         default=None, metadata=config(field_name="cacheDirSizeInfo")
+    )
+    session: Optional[SessionStatus] = field(
+        default=None, metadata=config(field_name="session")
     )
 
 
@@ -5836,17 +5988,17 @@ class TeamMembersDetails(DataClassJsonMixin):
 
 @dataclass
 class FastTeamData(DataClassJsonMixin):
+    max_continuous_ptk_generation: PerTeamKeyGeneration = field(
+        metadata=config(field_name="maxContinuousPTKGeneration")
+    )
     frozen: bool = field(metadata=config(field_name="frozen"))
-    subversion: int = field(metadata=config(field_name="subversion"))
     tombstoned: bool = field(metadata=config(field_name="tombstoned"))
     name: TeamName = field(metadata=config(field_name="name"))
     chain: FastTeamSigChainState = field(metadata=config(field_name="chain"))
     per_team_key_seeds_unverified: Dict[str, PerTeamKeySeed] = field(
         metadata=config(field_name="perTeamKeySeedsUnverified")
     )
-    max_continuous_ptk_generation: PerTeamKeyGeneration = field(
-        metadata=config(field_name="maxContinuousPTKGeneration")
-    )
+    subversion: int = field(metadata=config(field_name="subversion"))
     seed_checks: Dict[str, PerTeamSeedCheck] = field(
         metadata=config(field_name="seedChecks")
     )
@@ -5899,13 +6051,13 @@ SeitanKeyAndLabel = Union[SeitanKeyAndLabel__V1, SeitanKeyAndLabel__V2]
 
 @dataclass
 class LoadTeamArg(DataClassJsonMixin):
+    force_full_reload: bool = field(metadata=config(field_name="forceFullReload"))
     id: TeamID = field(metadata=config(field_name="ID"))
-    name: str = field(metadata=config(field_name="name"))
     public: bool = field(metadata=config(field_name="public"))
     need_admin: bool = field(metadata=config(field_name="needAdmin"))
     refresh_uid_mapper: bool = field(metadata=config(field_name="refreshUIDMapper"))
     refreshers: TeamRefreshers = field(metadata=config(field_name="refreshers"))
-    force_full_reload: bool = field(metadata=config(field_name="forceFullReload"))
+    name: str = field(metadata=config(field_name="name"))
     force_repoll: bool = field(metadata=config(field_name="forceRepoll"))
     stale_ok: bool = field(metadata=config(field_name="staleOK"))
     allow_name_lookup_burst_cache: bool = field(
@@ -6031,6 +6183,9 @@ class NonUserDetails(DataClassJsonMixin):
     site_icon_full: Optional[Optional[List[SizedImage]]] = field(
         default=None, metadata=config(field_name="siteIconFull")
     )
+    site_icon_white: Optional[Optional[List[SizedImage]]] = field(
+        default=None, metadata=config(field_name="siteIconWhite")
+    )
 
 
 @dataclass
@@ -6054,12 +6209,12 @@ class UserPlusAllKeys(DataClassJsonMixin):
 
 @dataclass
 class FullStatus(DataClassJsonMixin):
+    service: KbServiceStatus = field(metadata=config(field_name="service"))
     username: str = field(metadata=config(field_name="username"))
-    config_path: str = field(metadata=config(field_name="configPath"))
     cur_status: CurrentStatus = field(metadata=config(field_name="curStatus"))
     ext_status: ExtendedStatus = field(metadata=config(field_name="extStatus"))
     client: KbClientStatus = field(metadata=config(field_name="client"))
-    service: KbServiceStatus = field(metadata=config(field_name="service"))
+    config_path: str = field(metadata=config(field_name="configPath"))
     kbfs: KBFSStatus = field(metadata=config(field_name="kbfs"))
     desktop: DesktopStatus = field(metadata=config(field_name="desktop"))
     updater: UpdaterStatus = field(metadata=config(field_name="updater"))
@@ -6201,17 +6356,17 @@ class TeamDetails(DataClassJsonMixin):
 
 @dataclass
 class HiddenTeamChain(DataClassJsonMixin):
+    last_per_team_keys: Dict[str, Seqno] = field(
+        metadata=config(field_name="lastPerTeamKeys")
+    )
     id: TeamID = field(metadata=config(field_name="id"))
-    subversion: int = field(metadata=config(field_name="subversion"))
     public: bool = field(metadata=config(field_name="public"))
     frozen: bool = field(metadata=config(field_name="frozen"))
     tombstoned: bool = field(metadata=config(field_name="tombstoned"))
     last: Seqno = field(metadata=config(field_name="last"))
     last_full: Seqno = field(metadata=config(field_name="lastFull"))
     latest_seqno_hint: Seqno = field(metadata=config(field_name="latestSeqnoHint"))
-    last_per_team_keys: Dict[str, Seqno] = field(
-        metadata=config(field_name="lastPerTeamKeys")
-    )
+    subversion: int = field(metadata=config(field_name="subversion"))
     outer: Dict[str, LinkID] = field(metadata=config(field_name="outer"))
     inner: Dict[str, HiddenTeamChainLink] = field(metadata=config(field_name="inner"))
     reader_per_team_keys: Dict[str, Seqno] = field(
@@ -6229,25 +6384,29 @@ class HiddenTeamChain(DataClassJsonMixin):
 
 @dataclass
 class TeamSigChainState(DataClassJsonMixin):
+    per_team_keys: Dict[str, PerTeamKey] = field(
+        metadata=config(field_name="perTeamKeys")
+    )
     reader: UserVersion = field(metadata=config(field_name="reader"))
-    id: TeamID = field(metadata=config(field_name="id"))
     implicit: bool = field(metadata=config(field_name="implicit"))
     public: bool = field(metadata=config(field_name="public"))
     root_ancestor: TeamName = field(metadata=config(field_name="rootAncestor"))
     name_depth: int = field(metadata=config(field_name="nameDepth"))
+    tlf_legacy_upgrade: Dict[str, TeamLegacyTLFUpgradeChainInfo] = field(
+        metadata=config(field_name="tlfLegacyUpgrade")
+    )
     last_seqno: Seqno = field(metadata=config(field_name="lastSeqno"))
     last_link_id: LinkID = field(metadata=config(field_name="lastLinkID"))
     last_high_seqno: Seqno = field(metadata=config(field_name="lastHighSeqno"))
     last_high_link_id: LinkID = field(metadata=config(field_name="lastHighLinkID"))
+    bots: Dict[str, TeamBotSettings] = field(metadata=config(field_name="bots"))
     user_log: Dict[str, Optional[List[UserLogPoint]]] = field(
         metadata=config(field_name="userLog")
     )
     subteam_log: Dict[str, Optional[List[SubteamLogPoint]]] = field(
         metadata=config(field_name="subteamLog")
     )
-    per_team_keys: Dict[str, PerTeamKey] = field(
-        metadata=config(field_name="perTeamKeys")
-    )
+    id: TeamID = field(metadata=config(field_name="id"))
     max_per_team_key_generation: PerTeamKeyGeneration = field(
         metadata=config(field_name="maxPerTeamKeyGeneration")
     )
@@ -6262,21 +6421,17 @@ class TeamSigChainState(DataClassJsonMixin):
     )
     open: bool = field(metadata=config(field_name="open"))
     open_team_join_as: TeamRole = field(metadata=config(field_name="openTeamJoinAs"))
-    bots: Dict[str, TeamBotSettings] = field(metadata=config(field_name="bots"))
-    tlf_legacy_upgrade: Dict[str, TeamLegacyTLFUpgradeChainInfo] = field(
-        metadata=config(field_name="tlfLegacyUpgrade")
-    )
     merkle_roots: Dict[str, MerkleRootV2] = field(
         metadata=config(field_name="merkleRoots")
-    )
-    name_log: Optional[Optional[List[TeamNameLogPoint]]] = field(
-        default=None, metadata=config(field_name="nameLog")
     )
     parent_id: Optional[TeamID] = field(
         default=None, metadata=config(field_name="parentID")
     )
     tlf_i_ds: Optional[Optional[List[TLFID]]] = field(
         default=None, metadata=config(field_name="tlfIDs")
+    )
+    name_log: Optional[Optional[List[TeamNameLogPoint]]] = field(
+        default=None, metadata=config(field_name="nameLog")
     )
     head_merkle: Optional[MerkleRootV2] = field(
         default=None, metadata=config(field_name="headMerkle")
@@ -6430,12 +6585,12 @@ OpDescription = Union[
 
 @dataclass
 class TeamData(DataClassJsonMixin):
+    chain: TeamSigChainState = field(metadata=config(field_name="chain"))
     subversion: int = field(metadata=config(field_name="v"))
-    frozen: bool = field(metadata=config(field_name="frozen"))
     tombstoned: bool = field(metadata=config(field_name="tombstoned"))
     secretless: bool = field(metadata=config(field_name="secretless"))
     name: TeamName = field(metadata=config(field_name="name"))
-    chain: TeamSigChainState = field(metadata=config(field_name="chain"))
+    frozen: bool = field(metadata=config(field_name="frozen"))
     per_team_key_seeds_unverified: Dict[str, PerTeamKeySeedItem] = field(
         metadata=config(field_name="perTeamKeySeedsUnverified")
     )
@@ -6471,25 +6626,25 @@ PublicKeyV2 = Union[PublicKeyV2__NACL, PublicKeyV2__PGP]
 
 @dataclass
 class UserPlusKeysV2(DataClassJsonMixin):
-    uid: UID = field(metadata=config(field_name="uid"))
-    username: str = field(metadata=config(field_name="username"))
-    eldest_seqno: Seqno = field(metadata=config(field_name="eldestSeqno"))
-    status: StatusCode = field(metadata=config(field_name="status"))
     device_keys: Dict[str, PublicKeyV2NaCl] = field(
         metadata=config(field_name="deviceKeys")
     )
-    pgp_keys: Dict[str, PublicKeyV2PGPSummary] = field(
-        metadata=config(field_name="pgpKeys")
-    )
+    uid: UID = field(metadata=config(field_name="uid"))
+    eldest_seqno: Seqno = field(metadata=config(field_name="eldestSeqno"))
+    status: StatusCode = field(metadata=config(field_name="status"))
     remote_tracks: Dict[str, RemoteTrack] = field(
         metadata=config(field_name="remoteTracks")
     )
-    unstubbed: bool = field(metadata=config(field_name="unstubbed"))
-    per_user_keys: Optional[Optional[List[PerUserKey]]] = field(
-        default=None, metadata=config(field_name="perUserKeys")
+    username: str = field(metadata=config(field_name="username"))
+    pgp_keys: Dict[str, PublicKeyV2PGPSummary] = field(
+        metadata=config(field_name="pgpKeys")
     )
+    unstubbed: bool = field(metadata=config(field_name="unstubbed"))
     stellar_account_id: Optional[str] = field(
         default=None, metadata=config(field_name="stellarAccountID")
+    )
+    per_user_keys: Optional[Optional[List[PerUserKey]]] = field(
+        default=None, metadata=config(field_name="perUserKeys")
     )
     reset: Optional[ResetSummary] = field(
         default=None, metadata=config(field_name="reset")
@@ -6696,6 +6851,14 @@ class FolderSyncConfigAndStatusWithFolder(DataClassJsonMixin):
     folder: Folder = field(metadata=config(field_name="folder"))
     config_: FolderSyncConfig = field(metadata=config(field_name="config"))
     status: FolderSyncStatus = field(metadata=config(field_name="status"))
+
+
+@dataclass
+class FolderWithFavFlags(DataClassJsonMixin):
+    folder: Folder = field(metadata=config(field_name="folder"))
+    is_favorite: bool = field(metadata=config(field_name="isFavorite"))
+    is_ignored: bool = field(metadata=config(field_name="isIgnored"))
+    is_new: bool = field(metadata=config(field_name="isNew"))
 
 
 @dataclass
