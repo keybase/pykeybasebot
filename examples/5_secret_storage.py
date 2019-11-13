@@ -24,7 +24,7 @@ import logging
 import secrets
 import sys
 from base64 import b64decode, b64encode
-from typing import Dict, List, Union
+from typing import Dict, List, Tuple, Union
 
 from pykeybasebot import Bot, KVStoreClient
 from pykeybasebot.errors import DeleteNonExistentError, RevisionError
@@ -230,65 +230,94 @@ class RentalBotClient:
         res = await self.kvstore.get(team, self.NAMESPACE, tool)
         return res
 
-    async def add(
-        self, team, tool
-    ) -> Union[keybase1.KVPutResult, keybase1.KVGetResult]:
+    async def add(self, team, tool) -> Tuple[bool, Union[keybase1.KVGetResult, None]]:
+        """
+            returns tuple
+                (whether action is successful,
+                most recent get result if applicable)
+        """
         res = await self.lookup(team, tool)
-        info = (
-            json.loads(res.entry_value) if res.entry_value != "" else {}
-        )  # if tool already exists, propagate existing info
+        if res.entry_value != "":
+            return (True, res)  # if tool already exists, return get
         expected_revision = res.revision + 1
-        res = await self.kvstore.put(
-            team, self.NAMESPACE, tool, info, expected_revision
-        )
-        return res
+        res = await self.kvstore.put(team, self.NAMESPACE, tool, {}, expected_revision)
+        if type(res) == keybase1.KVGetResult:
+            return (False, res)
+        else:
+            return (True, None)
 
     async def remove(
         self, team, tool
-    ) -> Union[keybase1.KVDeleteEntryResult, keybase1.KVGetResult, None]:
-        expected_revision = 1
+    ) -> Tuple[bool, Union[keybase1.KVGetResult, None]]:
+        """
+            returns tuple
+                (whether action is successful,
+                most recent get result if applicable)
+        """
         res = await self.lookup(team, tool)
+        if res.entry_value == "":
+            return (True, res)  # if tool already doesn't exist, return get
         expected_revision = res.revision + 1
         res = await self.kvstore.delete(team, self.NAMESPACE, tool, expected_revision)
-        return res
+        if type(res) == keybase1.KVGetResult:
+            return (False, res)
+        else:
+            return (True, None)
 
     async def reserve(
         self, team, user, tool, day
-    ) -> Union[keybase1.KVPutResult, keybase1.KVGetResult]:
+    ) -> Tuple[bool, Union[keybase1.KVGetResult, None]]:
         """
         reserve a tool for a given day if that day is already not reserved.
         note: if you reserve a not-added or deleted tool, it will add the tool
+
+        returns tuple
+                (whether action is successful,
+                most recent get result if applicable)
         """
         res = await self.lookup(team, tool)
         info = json.loads(res.entry_value) if res.entry_value != "" else {}
         if day in info:
-            return res  # failed to put because day is already reserved.
+            return (False, res)  # failed to put because day is already reserved.
         else:
             info[day] = user
         expected_revision = res.revision + 1
         res = await self.kvstore.put(
             team, self.NAMESPACE, tool, info, expected_revision
         )
-        return res
+        if type(res) == keybase1.KVGetResult:
+            return (False, res)
+        else:
+            return (True, None)
 
     async def unreserve(
         self, team, user, tool, day
-    ) -> Union[keybase1.KVPutResult, keybase1.KVGetResult]:
+    ) -> Tuple[bool, Union[keybase1.KVGetResult, None]]:
         """
         unreserve a tool for a given day if that day is currently reserved by
         the given user.
         note: if you unreserve a not-added or deleted tool, it will not add the tool
+
+        returns tuple
+                (whether action is successful,
+                most recent get result if applicable)
         """
         res = await self.lookup(team, tool)
         info = json.loads(res.entry_value) if res.entry_value != "" else {}
-        if (day not in info) or (day in info and info[day] != user):
-            # failed to put because currently not reserved, or current reserver is not user
-            return res
+        if day not in info:
+            # a noop because currently not reserved
+            return (True, res)
+        if day in info and info[day] != user:
+            # failed to put because current reserver is not user
+            return (False, res)
         expected_revision = res.revision + 1
         res = await self.kvstore.put(
             team, self.NAMESPACE, tool, info, expected_revision
         )
-        return res
+        if type(res) == keybase1.KVGetResult:
+            return (False, res)
+        else:
+            return (True, None)
 
     async def list_tools(self, team) -> List[str]:
         res = await self.kvstore.list_entrykeys(team, self.NAMESPACE)
@@ -308,50 +337,54 @@ async def basic_rental_users(bot, rental, team):
     date3 = "2044-06-13"
     tool = "laz0rs"
 
+    (ok, res) = await rental.remove(team, tool)
+    print("REMOVE: ", ok, res)
+    assert ok
+
     res = await rental.list_tools(team)
     print("LIST TOOLS: ", res)
 
     res = await rental.lookup(team, tool)
     print("LOOKUP: ", res)
 
-    res = await rental.add(team, tool)
-    print("ADD: ", res)
-    assert type(res) == keybase1.KVPutResult
+    (ok, res) = await rental.add(team, tool)
+    print("ADD: ", ok, res)
+    assert ok
 
-    res = await rental.remove(team, tool)
-    print("REMOVE: ", res)
-    assert type(res) == keybase1.KVDeleteEntryResult
+    (ok, res) = await rental.remove(team, tool)
+    print("REMOVE: ", ok, res)
+    assert ok
 
-    res = await rental.add(team, tool)
-    print("ADD: ", res)
-    assert type(res) == keybase1.KVPutResult
+    (ok, res) = await rental.add(team, tool)
+    print("ADD: ", ok, res)
+    assert ok
 
-    res = await rental.reserve(team, user1, tool, date1)
-    print("RESERVE: ", res)
-    assert type(res) == keybase1.KVPutResult
+    (ok, res) = await rental.reserve(team, user1, tool, date1)
+    print("RESERVE: ", ok, res)
+    assert ok
 
-    res = await rental.reserve(team, user1, tool, date1)
-    print("EXPECTING RESERVE FAIL: ", res)
-    assert type(res) == keybase1.KVGetResult
+    (ok, res) = await rental.reserve(team, user1, tool, date1)
+    print("EXPECTING RESERVE FAIL: ", ok, res)
+    assert not ok
 
-    res = await rental.reserve(team, user2, tool, date2)
-    print("RESERVE: ", res)
-    assert type(res) == keybase1.KVPutResult
+    (ok, res) = await rental.reserve(team, user2, tool, date2)
+    print("RESERVE: ", ok, res)
+    assert ok
 
     res = await rental.lookup(team, tool)
     print("LOOKUP: ", res)
 
-    res = await rental.unreserve(team, user1, tool, date3)
-    print("EXPECTING UNRESERVE FAIL: ", res)
-    assert type(res) == keybase1.KVGetResult
+    (ok, res) = await rental.unreserve(team, user1, tool, date3)
+    print("UNRESERVE: ", ok, res)
+    assert ok
 
-    res = await rental.unreserve(team, user1, tool, date2)
-    print("EXPECTING UNRESERVE FAIL: ", res)
-    assert type(res) == keybase1.KVGetResult
+    (ok, res) = await rental.unreserve(team, user1, tool, date2)
+    print("EXPECTING UNRESERVE FAIL: ", ok, res)
+    assert not ok
 
-    res = await rental.unreserve(team, user1, tool, date1)
-    print("UNRESERVE: ", res)
-    assert type(res) == keybase1.KVPutResult
+    (ok, res) = await rental.unreserve(team, user1, tool, date1)
+    print("UNRESERVE: ", ok, res)
+    assert ok
 
     res = await rental.lookup(team, tool)
     print("LOOKUP: ", res)
@@ -367,18 +400,18 @@ async def concurrent_rental_users(bot, rental, team):
         i = 0
         while True:
             # keep trying to reserve for user's unique date until successful
-            res = await rental.reserve(team, user, tool, date)
+            (ok, res) = await rental.reserve(team, user, tool, date)
             i += 1
-            print("{}, attempt {}, TRY TO RESERVE: {}".format(user, i, res))
-            if type(res) == keybase1.KVPutResult:
+            print("{}, attempt {}, TRY TO RESERVE: {}, {}".format(user, i, ok, res))
+            if ok:
                 # success
                 return
 
     async def pre():
         while True:
-            res = await rental.remove(team, tool)
-            if type(res) == keybase1.KVDeleteEntryResult:
-                print("REMOVE: {}".format(res))
+            (ok, res) = await rental.remove(team, tool)
+            if ok:
+                print("REMOVE: ", ok, res)
                 break
 
     async def post():
