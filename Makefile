@@ -12,11 +12,11 @@ test-unit:
 	poetry run python -m pytest tests/unit -s
 
 test-accept:
-	poetry run python -m pytest tests/acceptance -s
+	poetry run python -m pytest tests -s
 
 ci: test-static test-unit
 
-test: test-static test-unit test-accept
+test: test-static test-accept
 
 types:
 	@mkdir -p pykeybasebot/types/{keybase1,gregor1,chat1,stellar1}/
