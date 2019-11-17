@@ -2,8 +2,13 @@
 PROTOCOL_PATH=$(GOPATH)/src/github.com/keybase/client/protocol
 AVDLC=$(PROTOCOL_PATH)/node_modules/.bin/avdlc
 
-docs:
-	@echo "Need to write this TODO"
+documentation:
+	mkdir -p docs
+	touch docs/.nojekyll
+	make -C docsrc html
+	cp -a docsrc/_build/html/* docs
+	@echo "Documentation successfully built!"
+
 
 test:
 	poetry run mypy pykeybasebot/

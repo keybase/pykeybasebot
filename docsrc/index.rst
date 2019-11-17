@@ -10,7 +10,7 @@ Welcome to Python Keybase Bot's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-
+   api
 
 Indices and tables
 ==================

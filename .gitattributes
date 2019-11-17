@@ -1,1 +1,3 @@
 /pykeybasebot/types/ linguist-generated=true
+docsrc/* linguist-documentation
+docs/* linguist-documentation

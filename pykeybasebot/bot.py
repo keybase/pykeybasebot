@@ -1,3 +1,11 @@
+"""
+pykeybasebot
+============
+
+The core constructs of the bot
+
+"""
+
 import asyncio
 import logging
 import os
@@ -59,6 +67,8 @@ class _botlifecycle:
 
 
 class Bot:
+    """The main class for the bot"""
+
     def __init__(
         self,
         handler,
