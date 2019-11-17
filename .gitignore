@@ -3,3 +3,4 @@ dist/
 __pycache__/
 .mypy_cache/
 test_config.yaml
+*.egg-info

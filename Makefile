@@ -19,7 +19,10 @@ ci: test-static test-unit
 test: test-static test-accept
 
 types:
-	@mkdir -p pykeybasebot/types/{keybase1,gregor1,chat1,stellar1}/
+	@mkdir -p pykeybasebot/types/keybase1
+	@mkdir -p pykeybasebot/types/gregor1
+	@mkdir -p pykeybasebot/types/chat1
+	@mkdir -p pykeybasebot/types/stellar1
 	$(AVDLC) -b -l python -t -o pykeybasebot/types/keybase1 $(PROTOCOL_PATH)/avdl/keybase1/*.avdl
 	$(AVDLC) -b -l python -t -o pykeybasebot/types/gregor1 $(PROTOCOL_PATH)/avdl/gregor1/*.avdl
 	$(AVDLC) -b -l python -t -o pykeybasebot/types/chat1 $(PROTOCOL_PATH)/avdl/chat1/*.avdl

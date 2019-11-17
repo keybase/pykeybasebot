@@ -41,8 +41,10 @@
         "infoUrlText": "",
         "showDepositButton": false,
         "depositButtonText": "",
+        "depositReqAuth": "",
         "showWithdrawButton": false,
         "withdrawButtonText": "",
+        "withdrawReqAuth": "",
         "withdrawType": "",
         "transferServer": "",
         "authEndpoint": ""
