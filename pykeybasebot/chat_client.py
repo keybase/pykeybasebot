@@ -1,5 +1,5 @@
 import json
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from .types import chat1
 
@@ -17,7 +17,9 @@ class ChatClient:
         chat_list = chat1.ChatList.from_dict(res)
         return chat_list.conversations or []
 
-    async def read(self, channel: chat1.ChatChannel) -> List[chat1.MsgSummary]:
+    async def read(
+        self, channel: chat1.ChatChannel
+    ) -> List[Optional[chat1.MsgSummary]]:
         """
         Reads the messages in a channel.
         """
