@@ -1,3 +1,10 @@
+"""
+pykeybasebot.errors
+===================
+
+Set of custom exceptions
+
+"""
 from typing import Union
 
 

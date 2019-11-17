@@ -5,7 +5,7 @@ AVDLC=$(PROTOCOL_PATH)/node_modules/.bin/avdlc
 documentation:
 	mkdir -p docs
 	touch docs/.nojekyll
-	make -C docsrc html
+	poetry run make -C docsrc html
 	cp -a docsrc/_build/html/* docs
 	@echo "Documentation successfully built!"
 

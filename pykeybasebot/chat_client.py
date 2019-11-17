@@ -1,3 +1,10 @@
+"""
+pykeybasebot.chat_client
+========================
+
+The chat client components of pykeybasebot
+
+"""
 import json
 
 from .types import chat1

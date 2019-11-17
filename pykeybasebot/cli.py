@@ -1,3 +1,10 @@
+"""
+pykeybasebot.cli
+========================
+
+Command line related objects for the bot
+
+"""
 import asyncio
 import json
 import logging
@@ -13,6 +20,26 @@ class KeybaseNotConnectedError(Exception):
 
 
 async def kblisten(keybase_cli: str, options, loop=None):
+    """Example function with types documented in the docstring.
+
+    `PEP 484` type annotations are supported. If attribute, parameter, and
+    return types are annotated according to `PEP 484`, they do not need to be
+    included in the docstring:
+
+    Parameters
+    ----------
+    param1 : int
+        The first parameter.
+    param2 : str
+        The second parameter.
+
+    Returns
+    -------
+    bool
+        True if successful, False otherwise.
+
+
+    """
     command = shlex.split(keybase_cli) + ["chat", "api-listen"]
     if options.get("local"):
         command.append("--local")

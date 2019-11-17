@@ -18,7 +18,6 @@ exclude = ["tests/", "examples/"]
 python = "^3.7"
 dataclasses-json = "^0.3.2"
 typing-extensions = "^3.7"
-sphinx-rtd-theme = "^0.4.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.1.1"
@@ -29,6 +28,8 @@ flake8 = "^3.7"
 mypy = "^0.720.0"
 pyotp = "^2.3"
 sphinx = "^2.2"
+sphinx-rtd-theme = "^0.4.3"
+sphinx-autodoc-typehints = "^1.10"
 
 [tool.isort]
 combine_as_imports = true
