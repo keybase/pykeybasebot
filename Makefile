@@ -1,22 +1,20 @@
-.PHONY: test types clean
-PROTOCOL_PATH=$(GOPATH)/src/github.com/keybase/client/protocol
-AVDLC=$(PROTOCOL_PATH)/node_modules/.bin/avdlc
+# Minimal makefile for Sphinx documentation
+#
 
-test:
-	poetry run mypy pykeybasebot/
-	poetry run python -m pytest
-	poetry run flake8
-	poetry run isort -rc . --check-only
-	poetry run black . --check
+# You can set these variables from the command line, and also
+# from the environment for the first two.
+SPHINXOPTS    ?=
+SPHINXBUILD   ?= poetry run sphinx-build
+SOURCEDIR     = .
+BUILDDIR      = _build
 
-types:
-	@mkdir -p pykeybasebot/types/{keybase1,gregor1,chat1,stellar1}/
-	$(AVDLC) -b -l python -t -o pykeybasebot/types/keybase1 $(PROTOCOL_PATH)/avdl/keybase1/*.avdl
-	$(AVDLC) -b -l python -t -o pykeybasebot/types/gregor1 $(PROTOCOL_PATH)/avdl/gregor1/*.avdl
-	$(AVDLC) -b -l python -t -o pykeybasebot/types/chat1 $(PROTOCOL_PATH)/avdl/chat1/*.avdl
-	$(AVDLC) -b -l python -t -o pykeybasebot/types/stellar1 $(PROTOCOL_PATH)/avdl/stellar1/*.avdl
-	poetry run black pykeybasebot/types
-	poetry run isort pykeybasebot/types/**/*.py
+# Put it first so that "make" without argument is like "make help".
+help:
+	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-clean:
-	rm -rf src/types/*
+.PHONY: help Makefile
+
+# Catch-all target: route all unknown targets to Sphinx using the new
+# "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
+%: Makefile
+	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)

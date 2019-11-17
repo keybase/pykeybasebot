@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Welcome to pykeybasebot’s documentation! &#8212; pykeybasebot 0.1.6 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pykeybasebot.bot">
+<span id="welcome-to-pykeybasebot-s-documentation"></span><h1>Welcome to pykeybasebot’s documentation!<a class="headerlink" href="#module-pykeybasebot.bot" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pykeybasebot.bot.Bot">
+<em class="property">class </em><code class="sig-prename descclassname">pykeybasebot.bot.</code><code class="sig-name descname">Bot</code><span class="sig-paren">(</span><em class="sig-param">handler</em>, <em class="sig-param">username: Optional[str] = None</em>, <em class="sig-param">paperkey: Optional[str] = None</em>, <em class="sig-param">loop=None</em>, <em class="sig-param">keybase: Optional[str] = None</em>, <em class="sig-param">home_path: Optional[str] = None</em>, <em class="sig-param">pid_file: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#pykeybasebot.bot.Bot" title="Permalink to this definition">¶</a></dt>
+<dd><p>A keybase bot.</p>
+<dl class="method">
+<dt id="pykeybasebot.bot.Bot.chat">
+<em class="property">property </em><code class="sig-name descname">chat</code><a class="headerlink" href="#pykeybasebot.bot.Bot.chat" title="Permalink to this definition">¶</a></dt>
+<dd><p>The chat client of the bot.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pykeybasebot.bot.Bot.start">
+<em class="property">async </em><code class="sig-name descname">start</code><span class="sig-paren">(</span><em class="sig-param">listen_options</em><span class="sig-paren">)</span><a class="headerlink" href="#pykeybasebot.bot.Bot.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts the bot in listen mode.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pykeybasebot.bot.Bot.teardown">
+<em class="property">async </em><code class="sig-name descname">teardown</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pykeybasebot.bot.Bot.teardown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deinitializes the bot after use.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-pykeybasebot.chat_client"></span><dl class="class">
+<dt id="pykeybasebot.chat_client.ChatClient">
+<em class="property">class </em><code class="sig-prename descclassname">pykeybasebot.chat_client.</code><code class="sig-name descname">ChatClient</code><span class="sig-paren">(</span><em class="sig-param">bot</em><span class="sig-paren">)</span><a class="headerlink" href="#pykeybasebot.chat_client.ChatClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>A submodule that can perform Keybase chat operations.</p>
+<dl class="method">
+<dt id="pykeybasebot.chat_client.ChatClient.attach">
+<em class="property">async </em><code class="sig-name descname">attach</code><span class="sig-paren">(</span><em class="sig-param">channel: pykeybasebot.types.chat1.ChatChannel</em>, <em class="sig-param">filename: str</em>, <em class="sig-param">title: str</em><span class="sig-paren">)</span> &#x2192; pykeybasebot.types.chat1.SendRes<a class="headerlink" href="#pykeybasebot.chat_client.ChatClient.attach" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a file/attachment to a channel. The file must be located at <cite>filename</cite>. The title is how it will appear in chat.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pykeybasebot.chat_client.ChatClient.download">
+<em class="property">async </em><code class="sig-name descname">download</code><span class="sig-paren">(</span><em class="sig-param">channel: pykeybasebot.types.chat1.ChatChannel</em>, <em class="sig-param">message_id: int</em>, <em class="sig-param">output: str</em><span class="sig-paren">)</span> &#x2192; pykeybasebot.types.chat1.SendRes<a class="headerlink" href="#pykeybasebot.chat_client.ChatClient.download" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download an attachment to the specified output path.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pykeybasebot.chat_client.ChatClient.edit">
+<em class="property">async </em><code class="sig-name descname">edit</code><span class="sig-paren">(</span><em class="sig-param">channel: pykeybasebot.types.chat1.ChatChannel</em>, <em class="sig-param">message_id: int</em>, <em class="sig-param">message: str</em><span class="sig-paren">)</span> &#x2192; pykeybasebot.types.chat1.SendRes<a class="headerlink" href="#pykeybasebot.chat_client.ChatClient.edit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Edit a previous message sent in a channel.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pykeybasebot.chat_client.ChatClient.react">
+<em class="property">async </em><code class="sig-name descname">react</code><span class="sig-paren">(</span><em class="sig-param">channel: pykeybasebot.types.chat1.ChatChannel</em>, <em class="sig-param">message_id: int</em>, <em class="sig-param">reaction: str</em><span class="sig-paren">)</span> &#x2192; pykeybasebot.types.chat1.SendRes<a class="headerlink" href="#pykeybasebot.chat_client.ChatClient.react" title="Permalink to this definition">¶</a></dt>
+<dd><p>React to a message posted in a channel with an emoji.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pykeybasebot.chat_client.ChatClient.send">
+<em class="property">async </em><code class="sig-name descname">send</code><span class="sig-paren">(</span><em class="sig-param">channel: pykeybasebot.types.chat1.ChatChannel</em>, <em class="sig-param">message: str</em><span class="sig-paren">)</span> &#x2192; pykeybasebot.types.chat1.SendRes<a class="headerlink" href="#pykeybasebot.chat_client.ChatClient.send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a message to a chat channel.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">pykeybasebot</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Keybase Bot Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

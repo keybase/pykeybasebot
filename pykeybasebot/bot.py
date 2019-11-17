@@ -58,6 +58,8 @@ class _botlifecycle:
 
 
 class Bot:
+    """A keybase bot."""
+
     def __init__(
         self,
         handler,
@@ -82,6 +84,9 @@ class Bot:
 
     @_with_reconnect_to_keybase
     async def start(self, listen_options):
+        """
+        Starts the bot in listen mode.
+        """
         # This is the main, expected entry point.
         async with _botlifecycle(self, listen_options) as events:
             async for event in events:
@@ -106,6 +111,9 @@ class Bot:
 
     @property
     def chat(self):
+        """
+        The chat client of the bot.
+        """
         return ChatClient(self)
 
     async def ensure_initialized(self):
@@ -152,6 +160,9 @@ class Bot:
             raise Exception(f"failed to initialize with oneshot {oneshot_result}")
 
     async def teardown(self):
+        """
+        Deinitializes the bot after use.
+        """
         if self.paperkey is not None:
             # don't log out the user if they didn't use a paperkey to login
             await self.submit("logout")
