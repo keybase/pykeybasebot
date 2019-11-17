@@ -2,6 +2,9 @@
 PROTOCOL_PATH=$(GOPATH)/src/github.com/keybase/client/protocol
 AVDLC=$(PROTOCOL_PATH)/node_modules/.bin/avdlc
 
+docs:
+	@echo "Need to write this TODO"
+
 test:
 	poetry run mypy pykeybasebot/
 	poetry run python -m pytest
