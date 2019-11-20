@@ -6,4 +6,4 @@ before_install:
 install:
 - poetry install
 script:
-- make test
+- make ci

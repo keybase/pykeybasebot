@@ -5,7 +5,7 @@ import shlex
 
 from .kbevent import KbEvent
 
-KEYBASE_TIMEOUT_MS = 2000
+KEYBASE_TIMEOUT_MS = 10000
 
 
 class KeybaseNotConnectedError(Exception):

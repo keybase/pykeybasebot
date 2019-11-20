@@ -1,0 +1,48 @@
+{
+  "result": {
+    "messages": [
+      {
+        "msg": {
+          "id": 3,
+          "conversation_id": "00001bca4f13b0a7b81bfbc2acd7f8cf829bf53845ac87cdd8b62617d5aaa084",
+          "channel": {
+            "name": "alice,bob",
+            "members_type": "impteamnative",
+            "topic_type": "chat"
+          },
+          "sender": {
+            "uid": "8440bf65b0e77107c12e0350fc905e19",
+            "username": "alice",
+            "device_id": "011e2994f419d748d751a449ae17e218",
+            "device_name": "alice's phone"
+          },
+          "sent_at": 1544140065,
+          "sent_at_ms": 1544140065815,
+          "content": {
+            "type": "text",
+            "text": {
+              "body": "hello",
+              "payments": null,
+              "userMentions": null,
+              "teamMentions": null
+            }
+          },
+          "prev": [
+            {
+              "id": 2,
+              "hash": "A40VOjV7PVK7KcGZwOL/BOhPvn/a0jWg1JUltv7OLaQ="
+            }
+          ],
+          "unread": false,
+          "channel_mention": "none"
+        }
+      }
+    ],
+    "pagination": {
+      "next": "AQ==",
+      "previous": "zQHV",
+      "num": 469,
+      "last": true
+    }
+  }
+}

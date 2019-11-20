@@ -1,4 +1,5 @@
 import json
+from typing import Dict, List, Optional
 
 from .types import chat1
 
@@ -6,6 +7,28 @@ from .types import chat1
 class ChatClient:
     def __init__(self, bot):
         self.bot = bot
+
+    async def list(self) -> List[chat1.ConvSummary]:
+        """
+        Lists your chats, with info on which ones have unread messages.
+        """
+        await self.bot.ensure_initialized()
+        res = await self.execute({"method": "list"})
+        chat_list = chat1.ChatList.from_dict(res)
+        return chat_list.conversations or []
+
+    async def read(
+        self, channel: chat1.ChatChannel
+    ) -> List[Optional[chat1.MsgSummary]]:
+        """
+        Reads the messages in a channel.
+        """
+        await self.bot.ensure_initialized()
+        res = await self.execute(
+            {"method": "read", "params": {"options": {"channel": channel.to_dict()}}}
+        )
+        thread = chat1.Thread.from_dict(res)
+        return [message.msg for message in (thread.messages or [])]
 
     async def send(self, channel: chat1.ChatChannel, message: str) -> chat1.SendRes:
         await self.bot.ensure_initialized()
@@ -94,6 +117,6 @@ class ChatClient:
         )
         return chat1.SendRes.from_dict(res)
 
-    async def execute(self, command):
+    async def execute(self, command) -> Dict[str, str]:
         resp = await self.bot.submit("chat api", json.dumps(command).encode("utf-8"))
         return resp["result"]
