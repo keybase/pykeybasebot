@@ -95,7 +95,7 @@ class TryingKVStoreClient:
             return res  # successful delete. return KVDeleteEntryResult
         except (RevisionError, DeleteNonExistentError):
             get = await self.get(team, namespace, entry_key)
-            return get  # failed put. return KVGetResult.
+            return get  # failed delete. return KVGetResult.
         return res
 
     async def get(
@@ -209,10 +209,12 @@ class SecretKeyKVStoreClient:
     ) -> keybase1.KVListEntryResult:
         res = await self.kvstore.list_entrykeys(team, namespace)
         if res.entry_keys:
+            res.entry_keys = [
+                e for e in res.entry_keys if not e.entry_key.startswith("_")
+            ]
             for e in res.entry_keys:
-                if not e.entry_key.startswith("_"):
-                    get_res = await self.kvstore.get(team, namespace, e.entry_key)
-                    e.entry_key = json.loads(get_res.entry_value)[self.KEY_KEY]
+                get_res = await self.kvstore.get(team, namespace, e.entry_key)
+                e.entry_key = json.loads(get_res.entry_value)[self.KEY_KEY]
         return res
 
 
@@ -310,6 +312,8 @@ class RentalBotClient:
         if day in info and info[day] != user:
             # failed to put because current reserver is not user
             return (False, res)
+
+        info.pop(day)
         expected_revision = res.revision + 1
         res = await self.kvstore.put(
             team, self.NAMESPACE, tool, info, expected_revision
@@ -321,11 +325,7 @@ class RentalBotClient:
 
     async def list_tools(self, team) -> List[str]:
         res = await self.kvstore.list_entrykeys(team, self.NAMESPACE)
-        keys = (
-            [e.entry_key for e in res.entry_keys if not e.entry_key.startswith("_")]
-            if res.entry_keys
-            else []
-        )
+        keys = [e.entry_key for e in res.entry_keys] if res.entry_keys else []
         return keys
 
 
@@ -388,6 +388,10 @@ async def basic_rental_users(bot, rental, team):
 
     res = await rental.lookup(team, tool)
     print("LOOKUP: ", res)
+    info = json.loads(res.entry_value)
+    assert len(info) == 2
+    assert date2 in info
+    assert SecretKeyKVStoreClient.KEY_KEY in info
 
 
 async def concurrent_rental_users(bot, rental, team):
@@ -440,7 +444,7 @@ async def main():
     def noop_handler(*args, **kwargs):
         pass
 
-    bot = CustomKVStoreBot(handler=noop_handler(), keybase="/home/user/keybase")
+    bot = CustomKVStoreBot(handler=noop_handler())
     rental = RentalBotClient(bot)
 
     print("...basic rental actions...")
