@@ -4,7 +4,7 @@
 
 This is the officially support Keybase Python library. It is an unopinionated, simple wrapper around the Keybase CLI API for creating an interactive bot or general scripting. This library does not attempt to do intent parsing or manage state at all. You'll have to build that yourself, but with the examples, this library will hopefully make whatever you want to build much much easier `:)`.
 
-There are also similar libraries for [JavaScript](https://github.com/keybase/keybase-bot) and [Go](https://github.com/keybase/pykeybasebot).
+There are also similar libraries for [JavaScript](https://github.com/keybase/keybase-bot) and [Go](https://github.com/keybase/go-keybase-chat-bot).
 
 This library is very far from exhaustively covering the complete Keybase API, but it is our hope that it will be easy to add to (see chat_client.py for the pattern). It currently does reading from channels and writing messages/reactions pretty well. That's enough for the vast majority of basic functionality. Future work can add teams behavior, more wallet functionality (e.g. sending money), ...
 
