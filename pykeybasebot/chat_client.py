@@ -27,7 +27,7 @@ class ChatClient:
         await self.bot.ensure_initialized()
         read_options = {"channel": channel.to_dict()}
         if pagination is not None:
-            read_options['pagination'] = pagination.to_dict()
+            read_options["pagination"] = pagination.to_dict()
         read_request = {"method": "read", "params": {"options": read_options}}
         res = await self.execute(read_request)
         thread = chat1.Thread.from_dict(res)
