@@ -2,6 +2,7 @@ import json
 from typing import Dict, List, Optional
 
 from .types import chat1
+from .errors import ChatClientError
 
 
 class ChatClient:
@@ -119,4 +120,9 @@ class ChatClient:
 
     async def execute(self, command) -> Dict[str, str]:
         resp = await self.bot.submit("chat api", json.dumps(command).encode("utf-8"))
-        return resp["result"]
+        try:
+            return resp["result"]
+        except (TypeError, KeyError):
+            # this could happen if the running keybase client has an unexpected issue
+            full_response = json.dumps(resp).encode("utf-8")
+            raise ChatClientError(full_response)

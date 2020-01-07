@@ -17,6 +17,10 @@ class DeleteNonExistentError(Error):
     CODE = 2762
 
 
+class ChatClientError(Error):
+    pass
+
+
 def disambiguate_error(e: Exception) -> Union[Exception, Error]:
     """
         Try to convert Exception presumably from kbsubmit()
