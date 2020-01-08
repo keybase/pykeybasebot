@@ -1,6 +1,7 @@
 import json
 from typing import Dict, List, Optional
 
+from .errors import ChatClientError
 from .types import chat1
 
 
@@ -18,15 +19,17 @@ class ChatClient:
         return chat_list.conversations or []
 
     async def read(
-        self, channel: chat1.ChatChannel
+        self, channel: chat1.ChatChannel, pagination: Optional[chat1.Pagination]
     ) -> List[Optional[chat1.MsgSummary]]:
         """
         Reads the messages in a channel.
         """
         await self.bot.ensure_initialized()
-        res = await self.execute(
-            {"method": "read", "params": {"options": {"channel": channel.to_dict()}}}
-        )
+        read_options = {"channel": channel.to_dict()}
+        if pagination is not None:
+            read_options["pagination"] = pagination.to_dict()
+        read_request = {"method": "read", "params": {"options": read_options}}
+        res = await self.execute(read_request)
         thread = chat1.Thread.from_dict(res)
         return [message.msg for message in (thread.messages or [])]
 
@@ -119,4 +122,8 @@ class ChatClient:
 
     async def execute(self, command) -> Dict[str, str]:
         resp = await self.bot.submit("chat api", json.dumps(command).encode("utf-8"))
-        return resp["result"]
+        try:
+            return resp["result"]
+        except (TypeError, KeyError):
+            # this could happen if the running keybase client has an unexpected issue
+            raise ChatClientError(json.dumps(resp))

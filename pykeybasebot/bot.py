@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import os
+import re
 from functools import wraps
 from typing import Optional
 
@@ -112,6 +113,13 @@ class Bot:
     @property
     def kvstore(self):
         return KVStoreClient(self)
+
+    async def logsend(self, msg):
+        only_word_characters = re.sub(r"\W+", " ", msg)
+        command = f'log send --no-confirm --feedback "{only_word_characters}"'
+        logging.debug(f"starting a log send with message: {only_word_characters}")
+        await self.submit(command, timeout_ms=10000)
+        logging.debug(f"finished logsend")
 
     async def ensure_initialized(self):
         if not await self._is_initialized():
