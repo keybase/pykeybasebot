@@ -69,6 +69,7 @@ class Bot:
         keybase: Optional[str] = None,
         home_path: Optional[str] = None,
         pid_file: Optional[str] = None,
+        disable_typing: Optional[bool] = True,  # Disable sending/receiving typing notifications
     ):
         self.username = username
         self.paperkey = paperkey
@@ -78,6 +79,7 @@ class Bot:
         self.home_path = home_path
         self.pid_file = pid_file
         self._initialized = False
+        self.disable_typing = disable_typing
 
     def __repr__(self):
         return f"<{self.__class__.__name__}({self.handler.__class__.__name__}, username={self.username})>"
@@ -163,6 +165,9 @@ class Bot:
         if not await self._is_initialized():
             # raise an exception because we can't authenticate
             raise Exception(f"failed to initialize with oneshot {oneshot_result}")
+        await self.submit(
+            "chat notification-settings -disable-typing {self.disable_typing}"
+        )
 
     async def teardown(self):
         if self.paperkey is not None:
