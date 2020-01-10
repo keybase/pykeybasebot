@@ -165,7 +165,9 @@ class Bot:
         if not await self._is_initialized():
             # raise an exception because we can't authenticate
             raise Exception(f"failed to initialize with oneshot {oneshot_result}")
-        await self.submit("chat notification-settings -disable-typing {self.disable_typing}")
+        await self.submit(
+            "chat notification-settings -disable-typing {self.disable_typing}"
+        )
 
     async def teardown(self):
         if self.paperkey is not None:
