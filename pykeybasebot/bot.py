@@ -69,7 +69,7 @@ class Bot:
         keybase: Optional[str] = None,
         home_path: Optional[str] = None,
         pid_file: Optional[str] = None,
-        disable_typing: Optional[bool] = True,
+        disable_typing: Optional[bool] = True,  # Disable sending/receiving typing notifications
     ):
         self.username = username
         self.paperkey = paperkey
