@@ -25,8 +25,9 @@ import pykeybasebot.types.gregor1 as gregor1
 import pykeybasebot.types.keybase1 as keybase1
 import pykeybasebot.types.stellar1 as stellar1
 
-APIConvID = str
-APIGameID = str
+ConvIDStr = str
+TLFIDStr = str
+GameIDStr = str
 
 
 @dataclass
@@ -104,26 +105,9 @@ class UIInboxBigTeamRowTypStrings(Enum):
 
 
 @dataclass
-class UIInboxBigTeamChannelRow(DataClassJsonMixin):
-    conv_id: str = field(metadata=config(field_name="convID"))
-    teamname: str = field(metadata=config(field_name="teamname"))
-    channelname: str = field(metadata=config(field_name="channelname"))
-    is_muted: bool = field(metadata=config(field_name="isMuted"))
-    draft: Optional[str] = field(default=None, metadata=config(field_name="draft"))
-
-
-@dataclass
 class UIInboxBigTeamLabelRow(DataClassJsonMixin):
     name: str = field(metadata=config(field_name="name"))
     id: str = field(metadata=config(field_name="id"))
-
-
-@dataclass
-class UIInboxReselectInfo(DataClassJsonMixin):
-    old_conv_id: str = field(metadata=config(field_name="oldConvID"))
-    new_conv_id: Optional[str] = field(
-        default=None, metadata=config(field_name="newConvID")
-    )
 
 
 class UIParticipantType(Enum):
@@ -138,12 +122,6 @@ class UIParticipantTypeStrings(Enum):
     USER = "user"
     PHONENO = "phoneno"
     EMAIL = "email"
-
-
-@dataclass
-class UIChannelNameMention(DataClassJsonMixin):
-    name: str = field(metadata=config(field_name="name"))
-    conv_id: str = field(metadata=config(field_name="convID"))
 
 
 @dataclass
@@ -210,22 +188,6 @@ class MessageUnboxedStateStrings(Enum):
     OUTBOX = "outbox"
     PLACEHOLDER = "placeholder"
     JOURNEYCARD = "journeycard"
-
-
-@dataclass
-class UITeamMention(DataClassJsonMixin):
-    in_team: bool = field(metadata=config(field_name="inTeam"))
-    open: bool = field(metadata=config(field_name="open"))
-    description: Optional[str] = field(
-        default=None, metadata=config(field_name="description")
-    )
-    num_members: Optional[int] = field(
-        default=None, metadata=config(field_name="numMembers")
-    )
-    public_admins: Optional[Optional[List[str]]] = field(
-        default=None, metadata=config(field_name="publicAdmins")
-    )
-    conv_id: Optional[str] = field(default=None, metadata=config(field_name="convID"))
 
 
 class UITextDecorationTyp(Enum):
@@ -1809,8 +1771,8 @@ class UnfurlModeStrings(Enum):
 @dataclass
 class MsgFlipContent(DataClassJsonMixin):
     text: str = field(metadata=config(field_name="text"))
-    game_id: APIGameID = field(metadata=config(field_name="game_id"))
-    flip_conv_id: APIConvID = field(metadata=config(field_name="flip_conv_id"))
+    game_id: GameIDStr = field(metadata=config(field_name="game_id"))
+    flip_conv_id: ConvIDStr = field(metadata=config(field_name="flip_conv_id"))
     user_mentions: Optional[Optional[List[KnownUserMention]]] = field(
         default=None, metadata=config(field_name="user_mentions")
     )
@@ -1821,7 +1783,7 @@ class MsgFlipContent(DataClassJsonMixin):
 
 @dataclass
 class ConvSummary(DataClassJsonMixin):
-    id: APIConvID = field(metadata=config(field_name="id"))
+    id: ConvIDStr = field(metadata=config(field_name="id"))
     channel: ChatChannel = field(metadata=config(field_name="channel"))
     is_default_conv: bool = field(metadata=config(field_name="is_default_conv"))
     unread: bool = field(metadata=config(field_name="unread"))
@@ -1862,7 +1824,7 @@ class SendRes(DataClassJsonMixin):
 
 @dataclass
 class NewConvRes(DataClassJsonMixin):
-    id: APIConvID = field(metadata=config(field_name="id"))
+    id: ConvIDStr = field(metadata=config(field_name="id"))
     identify_failures: Optional[Optional[List[keybase1.TLFIdentifyFailure]]] = field(
         default=None, metadata=config(field_name="identify_failures")
     )
@@ -1880,7 +1842,7 @@ class EmptyRes(DataClassJsonMixin):
 
 @dataclass
 class ResetConvMemberAPI(DataClassJsonMixin):
-    conversation_id: APIConvID = field(metadata=config(field_name="conversationID"))
+    conversation_id: ConvIDStr = field(metadata=config(field_name="conversationID"))
     username: str = field(metadata=config(field_name="username"))
 
 
@@ -1893,7 +1855,7 @@ class GetDeviceInfoRes(DataClassJsonMixin):
 
 @dataclass
 class UIInboxSmallTeamRow(DataClassJsonMixin):
-    conv_id: str = field(metadata=config(field_name="convID"))
+    conv_id: ConvIDStr = field(metadata=config(field_name="convID"))
     name: str = field(metadata=config(field_name="name"))
     time: gregor1.Time = field(metadata=config(field_name="time"))
     snippet_decoration: SnippetDecoration = field(
@@ -1906,18 +1868,20 @@ class UIInboxSmallTeamRow(DataClassJsonMixin):
 
 
 @dataclass
-class UIInboxBigTeamRow__LABEL(DataClassJsonMixin):
-    state: Literal[UIInboxBigTeamRowTypStrings.LABEL]
-    LABEL: Optional[UIInboxBigTeamLabelRow]
+class UIInboxBigTeamChannelRow(DataClassJsonMixin):
+    conv_id: ConvIDStr = field(metadata=config(field_name="convID"))
+    teamname: str = field(metadata=config(field_name="teamname"))
+    channelname: str = field(metadata=config(field_name="channelname"))
+    is_muted: bool = field(metadata=config(field_name="isMuted"))
+    draft: Optional[str] = field(default=None, metadata=config(field_name="draft"))
 
 
 @dataclass
-class UIInboxBigTeamRow__CHANNEL(DataClassJsonMixin):
-    state: Literal[UIInboxBigTeamRowTypStrings.CHANNEL]
-    CHANNEL: Optional[UIInboxBigTeamChannelRow]
-
-
-UIInboxBigTeamRow = Union[UIInboxBigTeamRow__LABEL, UIInboxBigTeamRow__CHANNEL]
+class UIInboxReselectInfo(DataClassJsonMixin):
+    old_conv_id: ConvIDStr = field(metadata=config(field_name="oldConvID"))
+    new_conv_id: Optional[ConvIDStr] = field(
+        default=None, metadata=config(field_name="newConvID")
+    )
 
 
 @dataclass
@@ -1951,6 +1915,12 @@ class UIParticipant(DataClassJsonMixin):
 
 
 @dataclass
+class UIChannelNameMention(DataClassJsonMixin):
+    name: str = field(metadata=config(field_name="name"))
+    conv_id: ConvIDStr = field(metadata=config(field_name="convID"))
+
+
+@dataclass
 class UIMessageJourneycard(DataClassJsonMixin):
     ordinal: float = field(metadata=config(field_name="ordinal"))
     card_type: JourneycardType = field(metadata=config(field_name="cardType"))
@@ -1959,40 +1929,26 @@ class UIMessageJourneycard(DataClassJsonMixin):
 
 
 @dataclass
-class UIMaybeMentionInfo__UNKNOWN(DataClassJsonMixin):
-    status: Literal[UIMaybeMentionStatusStrings.UNKNOWN]
-    UNKNOWN: None
-
-
-@dataclass
-class UIMaybeMentionInfo__USER(DataClassJsonMixin):
-    status: Literal[UIMaybeMentionStatusStrings.USER]
-    USER: None
-
-
-@dataclass
-class UIMaybeMentionInfo__TEAM(DataClassJsonMixin):
-    status: Literal[UIMaybeMentionStatusStrings.TEAM]
-    TEAM: Optional[UITeamMention]
-
-
-@dataclass
-class UIMaybeMentionInfo__NOTHING(DataClassJsonMixin):
-    status: Literal[UIMaybeMentionStatusStrings.NOTHING]
-    NOTHING: None
-
-
-UIMaybeMentionInfo = Union[
-    UIMaybeMentionInfo__UNKNOWN,
-    UIMaybeMentionInfo__USER,
-    UIMaybeMentionInfo__TEAM,
-    UIMaybeMentionInfo__NOTHING,
-]
+class UITeamMention(DataClassJsonMixin):
+    in_team: bool = field(metadata=config(field_name="inTeam"))
+    open: bool = field(metadata=config(field_name="open"))
+    description: Optional[str] = field(
+        default=None, metadata=config(field_name="description")
+    )
+    num_members: Optional[int] = field(
+        default=None, metadata=config(field_name="numMembers")
+    )
+    public_admins: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="publicAdmins")
+    )
+    conv_id: Optional[ConvIDStr] = field(
+        default=None, metadata=config(field_name="convID")
+    )
 
 
 @dataclass
 class UIChatSearchConvHit(DataClassJsonMixin):
-    conv_id: str = field(metadata=config(field_name="convID"))
+    conv_id: ConvIDStr = field(metadata=config(field_name="convID"))
     team_type: TeamType = field(metadata=config(field_name="teamType"))
     name: str = field(metadata=config(field_name="name"))
     mtime: gregor1.Time = field(metadata=config(field_name="mtime"))
@@ -2741,6 +2697,16 @@ class PinMessageRes(DataClassJsonMixin):
 
 
 @dataclass
+class AddBotConvSearchHit(DataClassJsonMixin):
+    name: str = field(metadata=config(field_name="name"))
+    conv_id: ConversationID = field(metadata=config(field_name="convID"))
+    is_team: bool = field(metadata=config(field_name="isTeam"))
+    parts: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="parts")
+    )
+
+
+@dataclass
 class LocalMtimeUpdate(DataClassJsonMixin):
     conv_id: ConversationID = field(metadata=config(field_name="convID"))
     mtime: gregor1.Time = field(metadata=config(field_name="mtime"))
@@ -3041,20 +3007,50 @@ class GetResetConvMembersRes(DataClassJsonMixin):
 
 
 @dataclass
-class UIInboxLayout(DataClassJsonMixin):
-    total_small_teams: int = field(metadata=config(field_name="totalSmallTeams"))
-    small_teams: Optional[Optional[List[UIInboxSmallTeamRow]]] = field(
-        default=None, metadata=config(field_name="smallTeams")
-    )
-    big_teams: Optional[Optional[List[UIInboxBigTeamRow]]] = field(
-        default=None, metadata=config(field_name="bigTeams")
-    )
-    reselect_info: Optional[UIInboxReselectInfo] = field(
-        default=None, metadata=config(field_name="reselectInfo")
-    )
-    widget_list: Optional[Optional[List[UIInboxSmallTeamRow]]] = field(
-        default=None, metadata=config(field_name="widgetList")
-    )
+class UIInboxBigTeamRow__LABEL(DataClassJsonMixin):
+    state: Literal[UIInboxBigTeamRowTypStrings.LABEL]
+    LABEL: Optional[UIInboxBigTeamLabelRow]
+
+
+@dataclass
+class UIInboxBigTeamRow__CHANNEL(DataClassJsonMixin):
+    state: Literal[UIInboxBigTeamRowTypStrings.CHANNEL]
+    CHANNEL: Optional[UIInboxBigTeamChannelRow]
+
+
+UIInboxBigTeamRow = Union[UIInboxBigTeamRow__LABEL, UIInboxBigTeamRow__CHANNEL]
+
+
+@dataclass
+class UIMaybeMentionInfo__UNKNOWN(DataClassJsonMixin):
+    status: Literal[UIMaybeMentionStatusStrings.UNKNOWN]
+    UNKNOWN: None
+
+
+@dataclass
+class UIMaybeMentionInfo__USER(DataClassJsonMixin):
+    status: Literal[UIMaybeMentionStatusStrings.USER]
+    USER: None
+
+
+@dataclass
+class UIMaybeMentionInfo__TEAM(DataClassJsonMixin):
+    status: Literal[UIMaybeMentionStatusStrings.TEAM]
+    TEAM: Optional[UITeamMention]
+
+
+@dataclass
+class UIMaybeMentionInfo__NOTHING(DataClassJsonMixin):
+    status: Literal[UIMaybeMentionStatusStrings.NOTHING]
+    NOTHING: None
+
+
+UIMaybeMentionInfo = Union[
+    UIMaybeMentionInfo__UNKNOWN,
+    UIMaybeMentionInfo__USER,
+    UIMaybeMentionInfo__TEAM,
+    UIMaybeMentionInfo__NOTHING,
+]
 
 
 @dataclass
@@ -3785,8 +3781,25 @@ class UnfurlGenericDisplay(DataClassJsonMixin):
 
 
 @dataclass
+class UIInboxLayout(DataClassJsonMixin):
+    total_small_teams: int = field(metadata=config(field_name="totalSmallTeams"))
+    small_teams: Optional[Optional[List[UIInboxSmallTeamRow]]] = field(
+        default=None, metadata=config(field_name="smallTeams")
+    )
+    big_teams: Optional[Optional[List[UIInboxBigTeamRow]]] = field(
+        default=None, metadata=config(field_name="bigTeams")
+    )
+    reselect_info: Optional[UIInboxReselectInfo] = field(
+        default=None, metadata=config(field_name="reselectInfo")
+    )
+    widget_list: Optional[Optional[List[UIInboxSmallTeamRow]]] = field(
+        default=None, metadata=config(field_name="widgetList")
+    )
+
+
+@dataclass
 class UICoinFlipStatus(DataClassJsonMixin):
-    game_id: str = field(metadata=config(field_name="gameID"))
+    game_id: GameIDStr = field(metadata=config(field_name="gameID"))
     phase: UICoinFlipPhase = field(metadata=config(field_name="phase"))
     progress_text: str = field(metadata=config(field_name="progressText"))
     result_text: str = field(metadata=config(field_name="resultText"))
@@ -4374,7 +4387,7 @@ MessageBody = Union[
 @dataclass
 class MsgSummary(DataClassJsonMixin):
     id: MessageID = field(metadata=config(field_name="id"))
-    conv_id: APIConvID = field(metadata=config(field_name="conversation_id"))
+    conv_id: ConvIDStr = field(metadata=config(field_name="conversation_id"))
     channel: ChatChannel = field(metadata=config(field_name="channel"))
     sender: MsgSender = field(metadata=config(field_name="sender"))
     sent_at: int = field(metadata=config(field_name="sent_at"))

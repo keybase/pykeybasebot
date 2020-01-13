@@ -2765,12 +2765,14 @@ class AuditMode(Enum):
     STANDARD = 0
     JUST_CREATED = 1
     SKIP = 2
+    STANDARD_NO_HIDDEN = 3
 
 
 class AuditModeStrings(Enum):
     STANDARD = "standard"
     JUST_CREATED = "just_created"
     SKIP = "skip"
+    STANDARD_NO_HIDDEN = "standard_no_hidden"
 
 
 PerTeamKeyGeneration = int
@@ -2833,6 +2835,7 @@ class AuditVersion(Enum):
     V1 = 1
     V2 = 2
     V3 = 3
+    V4 = 4
 
 
 class AuditVersionStrings(Enum):
@@ -2840,6 +2843,7 @@ class AuditVersionStrings(Enum):
     V1 = "v1"
     V2 = "v2"
     V3 = "v3"
+    V4 = "v4"
 
 
 class TeamInviteCategory(Enum):
@@ -4433,6 +4437,7 @@ class Audit(DataClassJsonMixin):
     time: Time = field(metadata=config(field_name="time"))
     max_merkle_seqno: Seqno = field(metadata=config(field_name="mms"))
     max_chain_seqno: Seqno = field(metadata=config(field_name="mcs"))
+    max_hidden_seqno: Seqno = field(metadata=config(field_name="mhs"))
     max_merkle_probe: Seqno = field(metadata=config(field_name="mmp"))
 
 
@@ -4440,6 +4445,7 @@ class Audit(DataClassJsonMixin):
 class Probe(DataClassJsonMixin):
     index: int = field(metadata=config(field_name="i"))
     team_seqno: Seqno = field(metadata=config(field_name="t"))
+    team_hidden_seqno: Seqno = field(metadata=config(field_name="h"))
 
 
 @dataclass
@@ -5340,6 +5346,15 @@ class SaltpackVerifyResult(DataClassJsonMixin):
     signing_kid: KID = field(metadata=config(field_name="signingKID"))
     sender: SaltpackSender = field(metadata=config(field_name="sender"))
     plaintext: str = field(metadata=config(field_name="plaintext"))
+    verified: bool = field(metadata=config(field_name="verified"))
+
+
+@dataclass
+class SaltpackVerifyFileResult(DataClassJsonMixin):
+    signing_kid: KID = field(metadata=config(field_name="signingKID"))
+    sender: SaltpackSender = field(metadata=config(field_name="sender"))
+    verified_filename: str = field(metadata=config(field_name="verifiedFilename"))
+    verified: bool = field(metadata=config(field_name="verified"))
 
 
 @dataclass
@@ -5556,6 +5571,7 @@ class AuditHistory(DataClassJsonMixin):
     pre_probes: Dict[str, Probe] = field(metadata=config(field_name="preProbes"))
     post_probes: Dict[str, Probe] = field(metadata=config(field_name="postProbes"))
     tails: Dict[str, LinkID] = field(metadata=config(field_name="tails"))
+    hidden_tails: Dict[str, LinkID] = field(metadata=config(field_name="hiddenTails"))
     skip_until: Time = field(metadata=config(field_name="skipUntil"))
     audits: Optional[Optional[List[Audit]]] = field(
         default=None, metadata=config(field_name="audits")
@@ -6141,6 +6157,14 @@ class ProblemSet(DataClassJsonMixin):
 class SaltpackPlaintextResult(DataClassJsonMixin):
     info: SaltpackEncryptedMessageInfo = field(metadata=config(field_name="info"))
     plaintext: str = field(metadata=config(field_name="plaintext"))
+    signed: bool = field(metadata=config(field_name="signed"))
+
+
+@dataclass
+class SaltpackFileResult(DataClassJsonMixin):
+    info: SaltpackEncryptedMessageInfo = field(metadata=config(field_name="info"))
+    decrypted_filename: str = field(metadata=config(field_name="decryptedFilename"))
+    signed: bool = field(metadata=config(field_name="signed"))
 
 
 @dataclass
