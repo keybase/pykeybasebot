@@ -27,7 +27,7 @@ import pykeybasebot.types.stellar1 as stellar1
 
 ConvIDStr = str
 TLFIDStr = str
-GameIDStr = str
+FlipGameIDStr = str
 
 
 @dataclass
@@ -102,12 +102,6 @@ class UIInboxBigTeamRowTyp(Enum):
 class UIInboxBigTeamRowTypStrings(Enum):
     LABEL = "label"
     CHANNEL = "channel"
-
-
-@dataclass
-class UIInboxBigTeamLabelRow(DataClassJsonMixin):
-    name: str = field(metadata=config(field_name="name"))
-    id: str = field(metadata=config(field_name="id"))
 
 
 class UIParticipantType(Enum):
@@ -1771,7 +1765,7 @@ class UnfurlModeStrings(Enum):
 @dataclass
 class MsgFlipContent(DataClassJsonMixin):
     text: str = field(metadata=config(field_name="text"))
-    game_id: GameIDStr = field(metadata=config(field_name="game_id"))
+    game_id: FlipGameIDStr = field(metadata=config(field_name="game_id"))
     flip_conv_id: ConvIDStr = field(metadata=config(field_name="flip_conv_id"))
     user_mentions: Optional[Optional[List[KnownUserMention]]] = field(
         default=None, metadata=config(field_name="user_mentions")
@@ -1796,10 +1790,10 @@ class ConvSummary(DataClassJsonMixin):
     finalize_info: Optional[ConversationFinalizeInfo] = field(
         default=None, metadata=config(field_name="finalize_info")
     )
-    supersedes: Optional[Optional[List[str]]] = field(
+    supersedes: Optional[Optional[List[ConvIDStr]]] = field(
         default=None, metadata=config(field_name="supersedes")
     )
-    superseded_by: Optional[Optional[List[str]]] = field(
+    superseded_by: Optional[Optional[List[ConvIDStr]]] = field(
         default=None, metadata=config(field_name="superseded_by")
     )
     error: Optional[str] = field(default=None, metadata=config(field_name="error"))
@@ -1874,6 +1868,12 @@ class UIInboxBigTeamChannelRow(DataClassJsonMixin):
     channelname: str = field(metadata=config(field_name="channelname"))
     is_muted: bool = field(metadata=config(field_name="isMuted"))
     draft: Optional[str] = field(default=None, metadata=config(field_name="draft"))
+
+
+@dataclass
+class UIInboxBigTeamLabelRow(DataClassJsonMixin):
+    name: str = field(metadata=config(field_name="name"))
+    id: TLFIDStr = field(metadata=config(field_name="id"))
 
 
 @dataclass
@@ -3799,7 +3799,7 @@ class UIInboxLayout(DataClassJsonMixin):
 
 @dataclass
 class UICoinFlipStatus(DataClassJsonMixin):
-    game_id: GameIDStr = field(metadata=config(field_name="gameID"))
+    game_id: FlipGameIDStr = field(metadata=config(field_name="gameID"))
     phase: UICoinFlipPhase = field(metadata=config(field_name="phase"))
     progress_text: str = field(metadata=config(field_name="progressText"))
     result_text: str = field(metadata=config(field_name="resultText"))
