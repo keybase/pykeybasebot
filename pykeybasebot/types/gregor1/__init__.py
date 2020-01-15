@@ -12,9 +12,11 @@ Input files:
 """
 
 from dataclasses import dataclass, field
-from typing import List, Optional
+from enum import Enum
+from typing import Dict, List, Optional, Union
 
 from dataclasses_json import DataClassJsonMixin, config
+from typing_extensions import Literal
 
 DurationMsec = int
 DurationSec = int

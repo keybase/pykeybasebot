@@ -36,6 +36,7 @@ def test_list(fixture_path):
                     topic_name="general",
                 ),
                 unread=True,
+                is_default_conv=True,
                 active_at=1_572_402_097,
                 active_at_ms=1_572_402_097_456,
                 member_status="active",

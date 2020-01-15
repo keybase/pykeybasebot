@@ -114,15 +114,15 @@ AssetCode = str
 
 @dataclass
 class Asset(DataClassJsonMixin):
-    show_deposit_button: bool = field(metadata=config(field_name="showDepositButton"))
     type: str = field(metadata=config(field_name="type"))
+    code: str = field(metadata=config(field_name="code"))
     issuer: str = field(metadata=config(field_name="issuer"))
     verified_domain: str = field(metadata=config(field_name="verifiedDomain"))
     issuer_name: str = field(metadata=config(field_name="issuerName"))
     desc: str = field(metadata=config(field_name="desc"))
     info_url: str = field(metadata=config(field_name="infoUrl"))
     info_url_text: str = field(metadata=config(field_name="infoUrlText"))
-    code: str = field(metadata=config(field_name="code"))
+    show_deposit_button: bool = field(metadata=config(field_name="showDepositButton"))
     deposit_button_text: str = field(metadata=config(field_name="depositButtonText"))
     show_withdraw_button: bool = field(metadata=config(field_name="showWithdrawButton"))
     withdraw_button_text: str = field(metadata=config(field_name="withdrawButtonText"))
@@ -325,6 +325,22 @@ class AssetActionResultLocal(DataClassJsonMixin):
     )
 
 
+class PublicNoteType(Enum):
+    NONE = 0
+    TEXT = 1
+    ID = 2
+    HASH = 3
+    RETURN = 4
+
+
+class PublicNoteTypeStrings(Enum):
+    NONE = "none"
+    TEXT = "text"
+    ID = "id"
+    HASH = "hash"
+    RETURN = "return"
+
+
 @dataclass
 class BatchPaymentError(DataClassJsonMixin):
     message: str = field(metadata=config(field_name="message"))
@@ -345,6 +361,7 @@ class PartnerUrl(DataClassJsonMixin):
     description: str = field(metadata=config(field_name="description"))
     icon_filename: str = field(metadata=config(field_name="icon_filename"))
     admin_only: bool = field(metadata=config(field_name="admin_only"))
+    can_purchase: bool = field(metadata=config(field_name="can_purchase"))
     extra: str = field(metadata=config(field_name="extra"))
 
 
@@ -549,10 +566,8 @@ class PaymentNotificationMsg(DataClassJsonMixin):
 
 @dataclass
 class AccountAssetLocal(DataClassJsonMixin):
-    available_to_send_worth: str = field(
-        metadata=config(field_name="availableToSendWorth")
-    )
     name: str = field(metadata=config(field_name="name"))
+    asset_code: str = field(metadata=config(field_name="assetCode"))
     issuer_name: str = field(metadata=config(field_name="issuerName"))
     issuer_account_id: str = field(metadata=config(field_name="issuerAccountID"))
     issuer_verified_domain: str = field(
@@ -564,13 +579,15 @@ class AccountAssetLocal(DataClassJsonMixin):
     )
     worth_currency: str = field(metadata=config(field_name="worthCurrency"))
     worth: str = field(metadata=config(field_name="worth"))
-    asset_code: str = field(metadata=config(field_name="assetCode"))
-    show_withdraw_button: bool = field(metadata=config(field_name="showWithdrawButton"))
+    available_to_send_worth: str = field(
+        metadata=config(field_name="availableToSendWorth")
+    )
     desc: str = field(metadata=config(field_name="desc"))
     info_url: str = field(metadata=config(field_name="infoUrl"))
     info_url_text: str = field(metadata=config(field_name="infoUrlText"))
     show_deposit_button: bool = field(metadata=config(field_name="showDepositButton"))
     deposit_button_text: str = field(metadata=config(field_name="depositButtonText"))
+    show_withdraw_button: bool = field(metadata=config(field_name="showWithdrawButton"))
     withdraw_button_text: str = field(metadata=config(field_name="withdrawButtonText"))
     reserves: Optional[Optional[List[AccountReserve]]] = field(
         default=None, metadata=config(field_name="reserves")
@@ -632,19 +649,19 @@ class SendPaymentResLocal(DataClassJsonMixin):
 
 @dataclass
 class RequestDetailsLocal(DataClassJsonMixin):
-    amount: str = field(metadata=config(field_name="amount"))
     id: KeybaseRequestID = field(metadata=config(field_name="id"))
+    from_assertion: str = field(metadata=config(field_name="fromAssertion"))
     from_current_user: bool = field(metadata=config(field_name="fromCurrentUser"))
     to_user_type: ParticipantType = field(metadata=config(field_name="toUserType"))
     to_assertion: str = field(metadata=config(field_name="toAssertion"))
-    from_assertion: str = field(metadata=config(field_name="fromAssertion"))
-    worth_at_request_time: str = field(metadata=config(field_name="worthAtRequestTime"))
+    amount: str = field(metadata=config(field_name="amount"))
     amount_description: str = field(metadata=config(field_name="amountDescription"))
+    worth_at_request_time: str = field(metadata=config(field_name="worthAtRequestTime"))
     status: RequestStatus = field(metadata=config(field_name="status"))
+    asset: Optional[Asset] = field(default=None, metadata=config(field_name="asset"))
     currency: Optional[OutsideCurrencyCode] = field(
         default=None, metadata=config(field_name="currency")
     )
-    asset: Optional[Asset] = field(default=None, metadata=config(field_name="asset"))
 
 
 @dataclass
@@ -672,46 +689,46 @@ class SendResultCLILocal(DataClassJsonMixin):
 
 @dataclass
 class PaymentCLILocal(DataClassJsonMixin):
-    summary_advanced: str = field(metadata=config(field_name="summaryAdvanced"))
     tx_id: TransactionID = field(metadata=config(field_name="txID"))
+    time: TimeMs = field(metadata=config(field_name="time"))
     status: str = field(metadata=config(field_name="status"))
     status_detail: str = field(metadata=config(field_name="statusDetail"))
     amount: str = field(metadata=config(field_name="amount"))
     asset: Asset = field(metadata=config(field_name="asset"))
-    public_note_type: str = field(metadata=config(field_name="publicNoteType"))
-    public_note: str = field(metadata=config(field_name="publicNote"))
     source_amount_max: str = field(metadata=config(field_name="sourceAmountMax"))
     source_amount_actual: str = field(metadata=config(field_name="sourceAmountActual"))
     source_asset: Asset = field(metadata=config(field_name="sourceAsset"))
     is_advanced: bool = field(metadata=config(field_name="isAdvanced"))
-    time: TimeMs = field(metadata=config(field_name="time"))
-    unread: bool = field(metadata=config(field_name="unread"))
+    summary_advanced: str = field(metadata=config(field_name="summaryAdvanced"))
     from_stellar: AccountID = field(metadata=config(field_name="fromStellar"))
-    note_err: str = field(metadata=config(field_name="noteErr"))
     note: str = field(metadata=config(field_name="note"))
+    note_err: str = field(metadata=config(field_name="noteErr"))
+    unread: bool = field(metadata=config(field_name="unread"))
+    public_note: str = field(metadata=config(field_name="publicNote"))
+    public_note_type: str = field(metadata=config(field_name="publicNoteType"))
     fee_charged_description: str = field(
         metadata=config(field_name="feeChargedDescription")
+    )
+    display_amount: Optional[str] = field(
+        default=None, metadata=config(field_name="displayAmount")
+    )
+    display_currency: Optional[str] = field(
+        default=None, metadata=config(field_name="displayCurrency")
+    )
+    operations: Optional[Optional[List[str]]] = field(
+        default=None, metadata=config(field_name="operations")
+    )
+    to_stellar: Optional[AccountID] = field(
+        default=None, metadata=config(field_name="toStellar")
+    )
+    from_username: Optional[str] = field(
+        default=None, metadata=config(field_name="fromUsername")
     )
     to_username: Optional[str] = field(
         default=None, metadata=config(field_name="toUsername")
     )
     to_assertion: Optional[str] = field(
         default=None, metadata=config(field_name="toAssertion")
-    )
-    from_username: Optional[str] = field(
-        default=None, metadata=config(field_name="fromUsername")
-    )
-    to_stellar: Optional[AccountID] = field(
-        default=None, metadata=config(field_name="toStellar")
-    )
-    operations: Optional[Optional[List[str]]] = field(
-        default=None, metadata=config(field_name="operations")
-    )
-    display_currency: Optional[str] = field(
-        default=None, metadata=config(field_name="displayCurrency")
-    )
-    display_amount: Optional[str] = field(
-        default=None, metadata=config(field_name="displayAmount")
     )
 
 
@@ -781,7 +798,6 @@ class PaymentDirectPost(DataClassJsonMixin):
 
 @dataclass
 class PaymentRelayPost(DataClassJsonMixin):
-    display_currency: str = field(metadata=config(field_name="displayCurrency"))
     from_device_id: keybase1.DeviceID = field(
         metadata=config(field_name="fromDeviceID")
     )
@@ -789,9 +805,10 @@ class PaymentRelayPost(DataClassJsonMixin):
     relay_account: AccountID = field(metadata=config(field_name="relayAccount"))
     team_id: keybase1.TeamID = field(metadata=config(field_name="teamID"))
     display_amount: str = field(metadata=config(field_name="displayAmount"))
-    quick_return: bool = field(metadata=config(field_name="quickReturn"))
+    display_currency: str = field(metadata=config(field_name="displayCurrency"))
     box_b_64: str = field(metadata=config(field_name="boxB64"))
     signed_transaction: str = field(metadata=config(field_name="signedTransaction"))
+    quick_return: bool = field(metadata=config(field_name="quickReturn"))
     batch_id: str = field(metadata=config(field_name="batchID"))
     to: Optional[keybase1.UserVersion] = field(
         default=None, metadata=config(field_name="to")
@@ -837,8 +854,8 @@ class RelayOp(DataClassJsonMixin):
 
 @dataclass
 class PaymentSummaryDirect(DataClassJsonMixin):
-    from_display_amount: str = field(metadata=config(field_name="fromDisplayAmount"))
     kb_tx_id: KeybaseTransactionID = field(metadata=config(field_name="kbTxID"))
+    tx_id: TransactionID = field(metadata=config(field_name="txID"))
     tx_status: TransactionStatus = field(metadata=config(field_name="txStatus"))
     tx_err_msg: str = field(metadata=config(field_name="txErrMsg"))
     from_stellar: AccountID = field(metadata=config(field_name="fromStellar"))
@@ -847,13 +864,10 @@ class PaymentSummaryDirect(DataClassJsonMixin):
         metadata=config(field_name="fromDeviceID")
     )
     to_stellar: AccountID = field(metadata=config(field_name="toStellar"))
-    source_amount_actual: str = field(metadata=config(field_name="sourceAmountActual"))
     amount: str = field(metadata=config(field_name="amount"))
     asset: Asset = field(metadata=config(field_name="asset"))
-    source_amount_max: str = field(metadata=config(field_name="sourceAmountMax"))
-    from_airdrop: bool = field(metadata=config(field_name="fromAirdrop"))
     note_b_64: str = field(metadata=config(field_name="noteB64"))
-    tx_id: TransactionID = field(metadata=config(field_name="txID"))
+    from_display_amount: str = field(metadata=config(field_name="fromDisplayAmount"))
     from_display_currency: str = field(
         metadata=config(field_name="fromDisplayCurrency")
     )
@@ -865,15 +879,18 @@ class PaymentSummaryDirect(DataClassJsonMixin):
     unread: bool = field(metadata=config(field_name="unread"))
     from_primary: bool = field(metadata=config(field_name="fromPrimary"))
     batch_id: str = field(metadata=config(field_name="batchID"))
+    from_airdrop: bool = field(metadata=config(field_name="fromAirdrop"))
+    source_amount_max: str = field(metadata=config(field_name="sourceAmountMax"))
+    source_amount_actual: str = field(metadata=config(field_name="sourceAmountActual"))
     source_asset: Asset = field(metadata=config(field_name="sourceAsset"))
-    display_currency: Optional[str] = field(
-        default=None, metadata=config(field_name="displayCurrency")
+    to: Optional[keybase1.UserVersion] = field(
+        default=None, metadata=config(field_name="to")
     )
     display_amount: Optional[str] = field(
         default=None, metadata=config(field_name="displayAmount")
     )
-    to: Optional[keybase1.UserVersion] = field(
-        default=None, metadata=config(field_name="to")
+    display_currency: Optional[str] = field(
+        default=None, metadata=config(field_name="displayCurrency")
     )
 
 
@@ -913,23 +930,23 @@ class RequestPost(DataClassJsonMixin):
 @dataclass
 class RequestDetails(DataClassJsonMixin):
     id: KeybaseRequestID = field(metadata=config(field_name="id"))
-    status: RequestStatus = field(metadata=config(field_name="status"))
-    funding_kb_tx_id: KeybaseTransactionID = field(
-        metadata=config(field_name="fundingKbTxID")
-    )
+    from_user: keybase1.UserVersion = field(metadata=config(field_name="fromUser"))
     to_assertion: str = field(metadata=config(field_name="toAssertion"))
     amount: str = field(metadata=config(field_name="amount"))
-    to_display_currency: str = field(metadata=config(field_name="toDisplayCurrency"))
-    from_user: keybase1.UserVersion = field(metadata=config(field_name="fromUser"))
     from_display_amount: str = field(metadata=config(field_name="fromDisplayAmount"))
     from_display_currency: str = field(
         metadata=config(field_name="fromDisplayCurrency")
     )
     to_display_amount: str = field(metadata=config(field_name="toDisplayAmount"))
-    asset: Optional[Asset] = field(default=None, metadata=config(field_name="asset"))
+    to_display_currency: str = field(metadata=config(field_name="toDisplayCurrency"))
+    funding_kb_tx_id: KeybaseTransactionID = field(
+        metadata=config(field_name="fundingKbTxID")
+    )
+    status: RequestStatus = field(metadata=config(field_name="status"))
     to_user: Optional[keybase1.UserVersion] = field(
         default=None, metadata=config(field_name="toUser")
     )
+    asset: Optional[Asset] = field(default=None, metadata=config(field_name="asset"))
     currency: Optional[OutsideCurrencyCode] = field(
         default=None, metadata=config(field_name="currency")
     )
@@ -1058,13 +1075,13 @@ class StellarServerDefinitions(DataClassJsonMixin):
 
 @dataclass
 class WalletAccountLocal(DataClassJsonMixin):
-    account_mode: AccountMode = field(metadata=config(field_name="accountMode"))
     account_id: AccountID = field(metadata=config(field_name="accountID"))
+    is_default: bool = field(metadata=config(field_name="isDefault"))
     name: str = field(metadata=config(field_name="name"))
     balance_description: str = field(metadata=config(field_name="balanceDescription"))
     seqno: str = field(metadata=config(field_name="seqno"))
     currency_local: CurrencyLocal = field(metadata=config(field_name="currencyLocal"))
-    is_default: bool = field(metadata=config(field_name="isDefault"))
+    account_mode: AccountMode = field(metadata=config(field_name="accountMode"))
     account_mode_editable: bool = field(
         metadata=config(field_name="accountModeEditable")
     )
@@ -1076,8 +1093,9 @@ class WalletAccountLocal(DataClassJsonMixin):
 
 @dataclass
 class PaymentLocal(DataClassJsonMixin):
-    tx_id: TransactionID = field(metadata=config(field_name="txID"))
     id: PaymentID = field(metadata=config(field_name="id"))
+    tx_id: TransactionID = field(metadata=config(field_name="txID"))
+    time: TimeMs = field(metadata=config(field_name="time"))
     status_simplified: PaymentStatus = field(
         metadata=config(field_name="statusSimplified")
     )
@@ -1095,7 +1113,6 @@ class PaymentLocal(DataClassJsonMixin):
     from_account_id: AccountID = field(metadata=config(field_name="fromAccountID"))
     from_account_name: str = field(metadata=config(field_name="fromAccountName"))
     from_username: str = field(metadata=config(field_name="fromUsername"))
-    time: TimeMs = field(metadata=config(field_name="time"))
     to_account_name: str = field(metadata=config(field_name="toAccountName"))
     to_username: str = field(metadata=config(field_name="toUsername"))
     to_assertion: str = field(metadata=config(field_name="toAssertion"))
@@ -1114,34 +1131,34 @@ class PaymentLocal(DataClassJsonMixin):
     batch_id: str = field(metadata=config(field_name="batchID"))
     from_airdrop: bool = field(metadata=config(field_name="fromAirdrop"))
     is_inflation: bool = field(metadata=config(field_name="isInflation"))
-    trustline: Optional[PaymentTrustlineLocal] = field(
-        default=None, metadata=config(field_name="trustline")
+    issuer_account_id: Optional[AccountID] = field(
+        default=None, metadata=config(field_name="issuerAccountID")
+    )
+    to_account_id: Optional[AccountID] = field(
+        default=None, metadata=config(field_name="toAccountID")
     )
     operations: Optional[Optional[List[str]]] = field(
         default=None, metadata=config(field_name="operations")
     )
-    issuer_account_id: Optional[AccountID] = field(
-        default=None, metadata=config(field_name="issuerAccountID")
-    )
     inflation_source: Optional[str] = field(
         default=None, metadata=config(field_name="inflationSource")
     )
-    to_account_id: Optional[AccountID] = field(
-        default=None, metadata=config(field_name="toAccountID")
+    trustline: Optional[PaymentTrustlineLocal] = field(
+        default=None, metadata=config(field_name="trustline")
     )
 
 
 @dataclass
 class BuildPaymentResLocal(DataClassJsonMixin):
-    worth_info: str = field(metadata=config(field_name="worthInfo"))
     ready_to_review: bool = field(metadata=config(field_name="readyToReview"))
+    from_: AccountID = field(metadata=config(field_name="from"))
     to_err_msg: str = field(metadata=config(field_name="toErrMsg"))
     amount_err_msg: str = field(metadata=config(field_name="amountErrMsg"))
     secret_note_err_msg: str = field(metadata=config(field_name="secretNoteErrMsg"))
     public_memo_err_msg: str = field(metadata=config(field_name="publicMemoErrMsg"))
     public_memo_override: str = field(metadata=config(field_name="publicMemoOverride"))
     worth_description: str = field(metadata=config(field_name="worthDescription"))
-    from_: AccountID = field(metadata=config(field_name="from"))
+    worth_info: str = field(metadata=config(field_name="worthInfo"))
     worth_amount: str = field(metadata=config(field_name="worthAmount"))
     worth_currency: str = field(metadata=config(field_name="worthCurrency"))
     display_amount_xlm: str = field(metadata=config(field_name="displayAmountXLM"))
@@ -1229,23 +1246,20 @@ class OwnAccountCLILocal(DataClassJsonMixin):
 
 @dataclass
 class BatchResultLocal(DataClassJsonMixin):
-    wait_chat_duration_ms: TimeMs = field(
-        metadata=config(field_name="waitChatDurationMs")
-    )
     start_time: TimeMs = field(metadata=config(field_name="startTime"))
+    prepared_time: TimeMs = field(metadata=config(field_name="preparedTime"))
     all_submitted_time: TimeMs = field(metadata=config(field_name="allSubmittedTime"))
     all_complete_time: TimeMs = field(metadata=config(field_name="allCompleteTime"))
     end_time: TimeMs = field(metadata=config(field_name="endTime"))
-    avg_relay_duration_ms: TimeMs = field(
-        metadata=config(field_name="avgRelayDurationMs")
-    )
     overall_duration_ms: TimeMs = field(metadata=config(field_name="overallDurationMs"))
     prepare_duration_ms: TimeMs = field(metadata=config(field_name="prepareDurationMs"))
     submit_duration_ms: TimeMs = field(metadata=config(field_name="submitDurationMs"))
     wait_payments_duration_ms: TimeMs = field(
         metadata=config(field_name="waitPaymentsDurationMs")
     )
-    prepared_time: TimeMs = field(metadata=config(field_name="preparedTime"))
+    wait_chat_duration_ms: TimeMs = field(
+        metadata=config(field_name="waitChatDurationMs")
+    )
     count_success: int = field(metadata=config(field_name="countSuccess"))
     count_direct: int = field(metadata=config(field_name="countDirect"))
     count_relay: int = field(metadata=config(field_name="countRelay"))
@@ -1258,6 +1272,9 @@ class BatchResultLocal(DataClassJsonMixin):
     avg_direct_duration_ms: TimeMs = field(
         metadata=config(field_name="avgDirectDurationMs")
     )
+    avg_relay_duration_ms: TimeMs = field(
+        metadata=config(field_name="avgRelayDurationMs")
+    )
     avg_error_duration_ms: TimeMs = field(
         metadata=config(field_name="avgErrorDurationMs")
     )
@@ -1268,15 +1285,15 @@ class BatchResultLocal(DataClassJsonMixin):
 
 @dataclass
 class ValidateStellarURIResultLocal(DataClassJsonMixin):
-    asset_code: str = field(metadata=config(field_name="assetCode"))
     operation: str = field(metadata=config(field_name="operation"))
+    origin_domain: str = field(metadata=config(field_name="originDomain"))
     message: str = field(metadata=config(field_name="message"))
     callback_url: str = field(metadata=config(field_name="callbackURL"))
     xdr: str = field(metadata=config(field_name="xdr"))
     summary: TxDisplaySummary = field(metadata=config(field_name="summary"))
     recipient: str = field(metadata=config(field_name="recipient"))
     amount: str = field(metadata=config(field_name="amount"))
-    origin_domain: str = field(metadata=config(field_name="originDomain"))
+    asset_code: str = field(metadata=config(field_name="assetCode"))
     asset_issuer: str = field(metadata=config(field_name="assetIssuer"))
     memo: str = field(metadata=config(field_name="memo"))
     memo_type: str = field(metadata=config(field_name="memoType"))
@@ -1303,20 +1320,20 @@ class PaymentOp(DataClassJsonMixin):
 
 @dataclass
 class PaymentSummaryStellar(DataClassJsonMixin):
-    is_inflation: bool = field(metadata=config(field_name="isInflation"))
     tx_id: TransactionID = field(metadata=config(field_name="txID"))
+    from_: AccountID = field(metadata=config(field_name="from"))
     to: AccountID = field(metadata=config(field_name="to"))
     amount: str = field(metadata=config(field_name="amount"))
     asset: Asset = field(metadata=config(field_name="asset"))
     ctime: TimeMs = field(metadata=config(field_name="ctime"))
     cursor_token: str = field(metadata=config(field_name="cursorToken"))
     unread: bool = field(metadata=config(field_name="unread"))
-    from_: AccountID = field(metadata=config(field_name="from"))
-    summary_advanced: str = field(metadata=config(field_name="summaryAdvanced"))
+    is_inflation: bool = field(metadata=config(field_name="isInflation"))
     source_amount_max: str = field(metadata=config(field_name="sourceAmountMax"))
     source_amount_actual: str = field(metadata=config(field_name="sourceAmountActual"))
     source_asset: Asset = field(metadata=config(field_name="sourceAsset"))
     is_advanced: bool = field(metadata=config(field_name="isAdvanced"))
+    summary_advanced: str = field(metadata=config(field_name="summaryAdvanced"))
     inflation_source: Optional[str] = field(
         default=None, metadata=config(field_name="inflationSource")
     )
@@ -1330,8 +1347,8 @@ class PaymentSummaryStellar(DataClassJsonMixin):
 
 @dataclass
 class PaymentSummaryRelay(DataClassJsonMixin):
-    amount: str = field(metadata=config(field_name="amount"))
     kb_tx_id: KeybaseTransactionID = field(metadata=config(field_name="kbTxID"))
+    tx_id: TransactionID = field(metadata=config(field_name="txID"))
     tx_status: TransactionStatus = field(metadata=config(field_name="txStatus"))
     tx_err_msg: str = field(metadata=config(field_name="txErrMsg"))
     from_stellar: AccountID = field(metadata=config(field_name="fromStellar"))
@@ -1339,27 +1356,27 @@ class PaymentSummaryRelay(DataClassJsonMixin):
     from_device_id: keybase1.DeviceID = field(
         metadata=config(field_name="fromDeviceID")
     )
-    batch_id: str = field(metadata=config(field_name="batchID"))
     to_assertion: str = field(metadata=config(field_name="toAssertion"))
     relay_account: AccountID = field(metadata=config(field_name="relayAccount"))
-    tx_id: TransactionID = field(metadata=config(field_name="txID"))
-    cursor_token: str = field(metadata=config(field_name="cursorToken"))
-    team_id: keybase1.TeamID = field(metadata=config(field_name="teamID"))
+    amount: str = field(metadata=config(field_name="amount"))
     ctime: TimeMs = field(metadata=config(field_name="ctime"))
     rtime: TimeMs = field(metadata=config(field_name="rtime"))
     box_b_64: str = field(metadata=config(field_name="boxB64"))
+    team_id: keybase1.TeamID = field(metadata=config(field_name="teamID"))
+    cursor_token: str = field(metadata=config(field_name="cursorToken"))
+    batch_id: str = field(metadata=config(field_name="batchID"))
     from_airdrop: bool = field(metadata=config(field_name="fromAirdrop"))
+    to: Optional[keybase1.UserVersion] = field(
+        default=None, metadata=config(field_name="to")
+    )
+    display_amount: Optional[str] = field(
+        default=None, metadata=config(field_name="displayAmount")
+    )
     display_currency: Optional[str] = field(
         default=None, metadata=config(field_name="displayCurrency")
     )
     claim: Optional[ClaimSummary] = field(
         default=None, metadata=config(field_name="claim")
-    )
-    display_amount: Optional[str] = field(
-        default=None, metadata=config(field_name="displayAmount")
-    )
-    to: Optional[keybase1.UserVersion] = field(
-        default=None, metadata=config(field_name="to")
     )
 
 

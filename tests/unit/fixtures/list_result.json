@@ -10,6 +10,7 @@
           "topic_name": "general"
         },
         "unread": true,
+        "is_default_conv": true,
         "active_at": 1572402097,
         "active_at_ms": 1572402097456,
         "member_status": "active"
