@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pykeybasebot"
-version = "0.1.6"
+version = "0.2.0"
 description = "Officially supported Keybase python bot client library"
 authors = ["Keybase Engineering Team <alex@keyba.se>"]
 license = "BSD-3-Clause"
