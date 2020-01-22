@@ -11,24 +11,25 @@ class KVStoreClient:
 
     async def put(
         self,
-        team: str,
         namespace: str,
         entry_key: str,
         entry_value: str,
         revision: Union[int, None] = None,
+        team: Union[str, None] = None,
     ) -> keybase1.KVPutResult:
         await self.bot.ensure_initialized()
         args: Dict[str, Any] = {
             "method": "put",
             "params": {
                 "options": {
-                    "team": team,
                     "namespace": namespace,
                     "entryKey": entry_key,
                     "entryValue": entry_value,
                 }
             },
         }
+        if team:
+            args["params"]["options"]["team"] = team
         if revision:
             args["params"]["options"]["revision"] = revision
         try:
@@ -39,18 +40,18 @@ class KVStoreClient:
 
     async def delete(
         self,
-        team: str,
         namespace: str,
         entry_key: str,
         revision: Union[int, None] = None,
+        team: Union[str, None] = None,
     ) -> keybase1.KVDeleteEntryResult:
         await self.bot.ensure_initialized()
         args: Dict[str, Any] = {
             "method": "del",
-            "params": {
-                "options": {"team": team, "namespace": namespace, "entryKey": entry_key}
-            },
+            "params": {"options": {"namespace": namespace, "entryKey": entry_key}},
         }
+        if team:
+            args["params"]["options"]["team"] = team
         if revision:
             args["params"]["options"]["revision"] = revision
         try:
@@ -60,40 +61,39 @@ class KVStoreClient:
             raise disambiguate_error(e)
 
     async def get(
-        self, team: str, namespace: str, entry_key: str
+        self, namespace: str, entry_key: str, team: Union[str, None] = None
     ) -> keybase1.KVGetResult:
         await self.bot.ensure_initialized()
-        res = await self.execute(
-            {
-                "method": "get",
-                "params": {
-                    "options": {
-                        "team": team,
-                        "namespace": namespace,
-                        "entryKey": entry_key,
-                    }
-                },
-            }
-        )
+        args: Dict[str, Any] = {
+            "method": "get",
+            "params": {"options": {"namespace": namespace, "entryKey": entry_key}},
+        }
+        if team:
+            args["params"]["options"]["team"] = team
+        res = await self.execute(args)
         return keybase1.KVGetResult.from_dict(res)
 
-    async def list_namespaces(self, team: str) -> keybase1.KVListNamespaceResult:
+    async def list_namespaces(
+        self, team: Union[str, None] = None
+    ) -> keybase1.KVListNamespaceResult:
         await self.bot.ensure_initialized()
-        res = await self.execute(
-            {"method": "list", "params": {"options": {"team": team}}}
-        )
+        args: Dict[str, Any] = {"method": "list", "params": {"options": {"team": team}}}
+        if team:
+            args["params"]["options"]["team"] = team
+        res = await self.execute(args)
         return keybase1.KVListNamespaceResult.from_dict(res)
 
     async def list_entrykeys(
-        self, team: str, namespace: str
+        self, namespace: str, team: Union[str, None] = None
     ) -> keybase1.KVListEntryResult:
         await self.bot.ensure_initialized()
-        res = await self.execute(
-            {
-                "method": "list",
-                "params": {"options": {"team": team, "namespace": namespace}},
-            }
-        )
+        args: Dict[str, Any] = {
+            "method": "list",
+            "params": {"options": {"namespace": namespace}},
+        }
+        if team:
+            args["params"]["options"]["team"] = team
+        res = await self.execute(args)
         return keybase1.KVListEntryResult.from_dict(res)
 
     def is_deleted(self, res: keybase1.KVGetResult) -> bool:

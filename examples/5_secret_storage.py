@@ -15,6 +15,9 @@
 # Additionally this example handles concurrent writes by using explicit revision
 # numbers to prevent one user from unintentionally clobbering another user's
 # rental updates.
+#
+# Here we've stored the HMAC secret and other entries in the team's kvstore;
+# you could also store the entries in the bot's own kvstore (the default team).
 # ###################################
 
 import asyncio
@@ -152,7 +155,7 @@ class SecretKeyKVStoreClient:
             try:
                 # we don't expect self.SECRET_KEY's revision > 0
                 await self.kvstore.put(
-                    team, namespace, self.SECRET_KEY, bytes_to_str(secret), revision=1
+                    namespace, self.SECRET_KEY, bytes_to_str(secret), 1, team
                 )
             except RevisionError:
                 res: keybase1.KVGetResult = await self.kvstore.get(
@@ -179,7 +182,7 @@ class SecretKeyKVStoreClient:
         entry_value[SecretKeyKVStoreClient.KEY_KEY] = entry_key
         h = await self.hmac_key(team, namespace, entry_key)
         res = await self.kvstore.put(
-            team, namespace, h, json.dumps(entry_value), revision
+            namespace, h, json.dumps(entry_value), revision, team
         )
         res.entry_key = entry_key
         return res
@@ -192,7 +195,7 @@ class SecretKeyKVStoreClient:
         revision: Union[int, None] = None,
     ) -> keybase1.KVDeleteEntryResult:
         h = await self.hmac_key(team, namespace, entry_key)
-        res = await self.kvstore.delete(team, namespace, h, revision)
+        res = await self.kvstore.delete(namespace, h, revision, team)
         res.entry_key = entry_key
         return res
 
@@ -200,20 +203,20 @@ class SecretKeyKVStoreClient:
         self, team: str, namespace: str, entry_key: str
     ) -> keybase1.KVGetResult:
         h = await self.hmac_key(team, namespace, entry_key)
-        res = await self.kvstore.get(team, namespace, h)
+        res = await self.kvstore.get(namespace, h, team)
         res.entry_key = entry_key
         return res
 
     async def list_entrykeys(
         self, team: str, namespace: str
     ) -> keybase1.KVListEntryResult:
-        res = await self.kvstore.list_entrykeys(team, namespace)
+        res = await self.kvstore.list_entrykeys(namespace, team)
         if res.entry_keys:
             res.entry_keys = [
                 e for e in res.entry_keys if not e.entry_key.startswith("_")
             ]
             for e in res.entry_keys:
-                get_res = await self.kvstore.get(team, namespace, e.entry_key)
+                get_res = await self.kvstore.get(namespace, e.entry_key, team)
                 e.entry_key = json.loads(get_res.entry_value)[self.KEY_KEY]
         return res
 

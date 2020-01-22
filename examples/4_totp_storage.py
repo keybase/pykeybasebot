@@ -7,7 +7,9 @@
 # more information.
 #
 # This example shows how you can build a simple TOTP chat bot that makes use of
-# the team encrypted key-value store.
+# the team encrypted key-value store. Here we've stored the TOTP secrets in the
+# team's kvstore; you could also store the secrets in the bot's own kvstore
+# (the default team).
 ###################################
 
 import asyncio
@@ -85,22 +87,22 @@ class TotpHandler:
 
     async def add(self, bot, team, issuer, secret):
         val = json.dumps(self.to_json(secret))
-        await bot.kvstore.put(team, self.NAMESPACE, issuer, val)
+        await bot.kvstore.put(self.NAMESPACE, issuer, val, team)
 
     async def remove(self, bot, team, issuer):
         # throws exception if nothing to delete
-        await bot.kvstore.delete(team, self.NAMESPACE, issuer)
+        await bot.kvstore.delete(self.NAMESPACE, issuer, team)
 
     async def list(self, bot, team):
         # returns all TOTP entryKeys (the issuers) in this team
-        res = await bot.kvstore.list_entrykeys(team, self.NAMESPACE)
+        res = await bot.kvstore.list_entrykeys(self.NAMESPACE, team)
         if res.entry_keys:
             return [e.entry_key for e in res.entry_keys]
         else:
             return []
 
     async def now(self, bot, team, issuer):
-        res = await bot.kvstore.get(team, self.NAMESPACE, issuer)
+        res = await bot.kvstore.get(self.NAMESPACE, issuer, team)
         if bot.kvstore.is_present(res):
             # if secret is present
             secret = json.loads(res.entry_value)["secret"]
