@@ -77,6 +77,7 @@ Input files:
  - ../client/protocol/avdl/keybase1/notify_pgp.avdl
  - ../client/protocol/avdl/keybase1/notify_phone.avdl
  - ../client/protocol/avdl/keybase1/notify_runtimestats.avdl
+ - ../client/protocol/avdl/keybase1/notify_saltpack.avdl
  - ../client/protocol/avdl/keybase1/notify_service.avdl
  - ../client/protocol/avdl/keybase1/notify_session.avdl
  - ../client/protocol/avdl/keybase1/notify_team.avdl
@@ -723,6 +724,7 @@ class StatusCode(Enum):
     SCStreamNotFound = 1502
     SCStreamWrongKind = 1503
     SCStreamEOF = 1504
+    SCStreamUnknown = 1505
     SCGenericAPIError = 1600
     SCAPINetworkError = 1601
     SCTimeout = 1602
@@ -957,6 +959,7 @@ class StatusCodeStrings(Enum):
     SCStreamNotFound = "scstreamnotfound"
     SCStreamWrongKind = "scstreamwrongkind"
     SCStreamEOF = "scstreameof"
+    SCStreamUnknown = "scstreamunknown"
     SCGenericAPIError = "scgenericapierror"
     SCAPINetworkError = "scapinetworkerror"
     SCTimeout = "sctimeout"
@@ -1906,6 +1909,7 @@ class NotificationChannels(DataClassJsonMixin):
     audit: bool = field(metadata=config(field_name="audit"))
     runtimestats: bool = field(metadata=config(field_name="runtimestats"))
     featured_bots: bool = field(metadata=config(field_name="featuredBots"))
+    saltpack: bool = field(metadata=config(field_name="saltpack"))
 
 
 class StatsSeverityLevel(Enum):
@@ -1928,6 +1932,20 @@ class ProcessType(Enum):
 class ProcessTypeStrings(Enum):
     MAIN = "main"
     KBFS = "kbfs"
+
+
+class SaltpackOperationType(Enum):
+    ENCRYPT = 0
+    DECRYPT = 1
+    SIGN = 2
+    VERIFY = 3
+
+
+class SaltpackOperationTypeStrings(Enum):
+    ENCRYPT = "encrypt"
+    DECRYPT = "decrypt"
+    SIGN = "sign"
+    VERIFY = "verify"
 
 
 @dataclass
@@ -2407,12 +2425,38 @@ class SaltpackVerifyOptions(DataClassJsonMixin):
 
 
 @dataclass
+class SaltpackEncryptResult(DataClassJsonMixin):
+    used_unresolved_sbs: bool = field(metadata=config(field_name="usedUnresolvedSBS"))
+    unresolved_sbs_assertion: str = field(
+        metadata=config(field_name="unresolvedSBSAssertion")
+    )
+
+
+@dataclass
 class SaltpackFrontendEncryptOptions(DataClassJsonMixin):
     signed: bool = field(metadata=config(field_name="signed"))
     include_self: bool = field(metadata=config(field_name="includeSelf"))
     recipients: Optional[Optional[List[str]]] = field(
         default=None, metadata=config(field_name="recipients")
     )
+
+
+@dataclass
+class SaltpackEncryptStringResult(DataClassJsonMixin):
+    used_unresolved_sbs: bool = field(metadata=config(field_name="usedUnresolvedSBS"))
+    unresolved_sbs_assertion: str = field(
+        metadata=config(field_name="unresolvedSBSAssertion")
+    )
+    ciphertext: str = field(metadata=config(field_name="ciphertext"))
+
+
+@dataclass
+class SaltpackEncryptFileResult(DataClassJsonMixin):
+    used_unresolved_sbs: bool = field(metadata=config(field_name="usedUnresolvedSBS"))
+    unresolved_sbs_assertion: str = field(
+        metadata=config(field_name="unresolvedSBSAssertion")
+    )
+    filename: str = field(metadata=config(field_name="filename"))
 
 
 class SaltpackSenderType(Enum):
@@ -2642,6 +2686,9 @@ class FSSettings(DataClassJsonMixin):
     space_available_notification_threshold: int = field(
         metadata=config(field_name="spaceAvailableNotificationThreshold")
     )
+    sfmi_banner_dismissed: bool = field(
+        metadata=config(field_name="sfmiBannerDismissed")
+    )
 
 
 class SubscriptionTopic(Enum):
@@ -2651,6 +2698,7 @@ class SubscriptionTopic(Enum):
     DOWNLOAD_STATUS = 3
     FILES_TAB_BADGE = 4
     OVERALL_SYNC_STATUS = 5
+    SETTINGS = 6
 
 
 class SubscriptionTopicStrings(Enum):
@@ -2660,6 +2708,7 @@ class SubscriptionTopicStrings(Enum):
     DOWNLOAD_STATUS = "download_status"
     FILES_TAB_BADGE = "files_tab_badge"
     OVERALL_SYNC_STATUS = "overall_sync_status"
+    SETTINGS = "settings"
 
 
 class PathSubscriptionTopic(Enum):
@@ -4401,6 +4450,9 @@ class TeamMember(DataClassJsonMixin):
     role: TeamRole = field(metadata=config(field_name="role"))
     eldest_seqno: Seqno = field(metadata=config(field_name="eldestSeqno"))
     status: TeamMemberStatus = field(metadata=config(field_name="status"))
+    bot_settings: Optional[TeamBotSettings] = field(
+        default=None, metadata=config(field_name="botSettings")
+    )
 
 
 @dataclass
@@ -6599,6 +6651,7 @@ class GetRevisionsResult(DataClassJsonMixin):
 
 @dataclass
 class TeamDetails(DataClassJsonMixin):
+    name: str = field(metadata=config(field_name="name"))
     members: TeamMembersDetails = field(metadata=config(field_name="members"))
     key_generation: PerTeamKeyGeneration = field(
         metadata=config(field_name="keyGeneration")
