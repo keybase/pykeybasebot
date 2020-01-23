@@ -22,16 +22,14 @@ class KVStoreClient:
             "method": "put",
             "params": {
                 "options": {
+                    "team": team,
                     "namespace": namespace,
                     "entryKey": entry_key,
                     "entryValue": entry_value,
+                    "revision": revision,
                 }
             },
         }
-        if team:
-            args["params"]["options"]["team"] = team
-        if revision:
-            args["params"]["options"]["revision"] = revision
         try:
             res = await self.execute(args)
             return keybase1.KVPutResult.from_dict(res)
@@ -48,12 +46,15 @@ class KVStoreClient:
         await self.bot.ensure_initialized()
         args: Dict[str, Any] = {
             "method": "del",
-            "params": {"options": {"namespace": namespace, "entryKey": entry_key}},
+            "params": {
+                "options": {
+                    "team": team,
+                    "namespace": namespace,
+                    "entryKey": entry_key,
+                    "revision": revision,
+                }
+            },
         }
-        if team:
-            args["params"]["options"]["team"] = team
-        if revision:
-            args["params"]["options"]["revision"] = revision
         try:
             res = await self.execute(args)
             return keybase1.KVDeleteEntryResult.from_dict(res)
@@ -66,10 +67,10 @@ class KVStoreClient:
         await self.bot.ensure_initialized()
         args: Dict[str, Any] = {
             "method": "get",
-            "params": {"options": {"namespace": namespace, "entryKey": entry_key}},
+            "params": {
+                "options": {"team": team, "namespace": namespace, "entryKey": entry_key}
+            },
         }
-        if team:
-            args["params"]["options"]["team"] = team
         res = await self.execute(args)
         return keybase1.KVGetResult.from_dict(res)
 
@@ -77,9 +78,11 @@ class KVStoreClient:
         self, team: Union[str, None] = None
     ) -> keybase1.KVListNamespaceResult:
         await self.bot.ensure_initialized()
-        args: Dict[str, Any] = {"method": "list", "params": {"options": {"team": team}}}
-        if team:
-            args["params"]["options"]["team"] = team
+        args: Dict[str, Any] = {
+            "team": team,
+            "method": "list",
+            "params": {"options": {"team": team}},
+        }
         res = await self.execute(args)
         return keybase1.KVListNamespaceResult.from_dict(res)
 
@@ -89,10 +92,8 @@ class KVStoreClient:
         await self.bot.ensure_initialized()
         args: Dict[str, Any] = {
             "method": "list",
-            "params": {"options": {"namespace": namespace}},
+            "params": {"options": {"team": team, "namespace": namespace}},
         }
-        if team:
-            args["params"]["options"]["team"] = team
         res = await self.execute(args)
         return keybase1.KVListEntryResult.from_dict(res)
 
