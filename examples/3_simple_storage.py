@@ -40,8 +40,6 @@ if "win32" in sys.platform:
 
 
 async def simple_user():
-    team = "yourbookclub"
-
     def noop_handler(*args, **kwargs):
         pass
 
@@ -50,57 +48,58 @@ async def simple_user():
     namespace = "current-favorites"
     key = "Sam"
 
+    # using the default team, which is yourself (your implicit self-team
+    # "yourusername,yourusername")
+
     # put with default revision
     # note: if revision=None, the server does a get (to get
     # the latest revision number) then a put (with revision
     # number + 1); this operation is not atomic.
     value = "The Left Hand of Darkness"
-    res = await bot.kvstore.put(team, namespace, key, value, revision=None)
+    res = await bot.kvstore.put(namespace, key, value, revision=None)
     print("PUT: ", res)
     rev = res.revision
 
     # fail put
     try:
-        res = await bot.kvstore.put(
-            team, namespace, key, "Fahrenheit 451", revision=rev
-        )
+        res = await bot.kvstore.put(namespace, key, "Fahrenheit 451", revision=rev)
     except RevisionError as e:
         print("EXPECTING PUT FAIL: ", e)
 
     # list namespaces
-    res = await bot.kvstore.list_namespaces(team)
+    res = await bot.kvstore.list_namespaces()
     print("LIST NAMESPACES: ", res)
     assert len(res.namespaces) > 0
 
     # list entryKeys
-    res = await bot.kvstore.list_entrykeys(team, namespace)
+    res = await bot.kvstore.list_entrykeys(namespace)
     print("LIST ENTRYKEYS: ", res)
     assert len(res.entry_keys) > 0
 
     # get
-    res = await bot.kvstore.get(team, namespace, key)
+    res = await bot.kvstore.get(namespace, key)
     print("GET: ", res)
     assert res.entry_value == value
 
     # fail delete
     try:
-        res = await bot.kvstore.delete(team, namespace, key, revision=rev + 2)
+        res = await bot.kvstore.delete(namespace, key, revision=rev + 2)
     except RevisionError as e:
         print("EXPECTING DELETE FAIL: ", e)
 
     # delete
-    res = await bot.kvstore.delete(team, namespace, key, revision=rev + 1)
+    res = await bot.kvstore.delete(namespace, key, revision=rev + 1)
     print("DELETE: ", res)
     assert res.revision == rev + 1
 
     # fail delete
     try:
-        res = await bot.kvstore.delete(team, namespace, key, revision=rev + 2)
+        res = await bot.kvstore.delete(namespace, key, revision=rev + 2)
     except DeleteNonExistentError as e:
         print("EXPECTING DELETE FAIL: ", e)
 
     # get
-    res = await bot.kvstore.get(team, namespace, key)
+    res = await bot.kvstore.get(namespace, key)
     print("GET: ", res)
     assert res.entry_value == ""
 
