@@ -220,7 +220,6 @@ class UIMaybeMentionStatusStrings(Enum):
 
 @dataclass
 class UILinkDecoration(DataClassJsonMixin):
-    display: str = field(metadata=config(field_name="display"))
     url: str = field(metadata=config(field_name="url"))
     punycode: str = field(metadata=config(field_name="punycode"))
 
@@ -406,18 +405,25 @@ class UICommandStatusActionTypStrings(Enum):
     APPSETTINGS = "appsettings"
 
 
-class UIBotCommandsUpdateStatus(Enum):
+class UIBotCommandsUpdateStatusTyp(Enum):
     UPTODATE = 0
     UPDATING = 1
     FAILED = 2
     BLANK = 3
 
 
-class UIBotCommandsUpdateStatusStrings(Enum):
+class UIBotCommandsUpdateStatusTypStrings(Enum):
     UPTODATE = "uptodate"
     UPDATING = "updating"
     FAILED = "failed"
     BLANK = "blank"
+
+
+@dataclass
+class UIBotCommandsUpdateSettings(DataClassJsonMixin):
+    settings: Dict[str, keybase1.TeamBotSettings] = field(
+        metadata=config(field_name="settings")
+    )
 
 
 @dataclass
@@ -1790,13 +1796,16 @@ class ConvSummary(DataClassJsonMixin):
     finalize_info: Optional[ConversationFinalizeInfo] = field(
         default=None, metadata=config(field_name="finalize_info")
     )
-    supersedes: Optional[Optional[List[ConvIDStr]]] = field(
+    supersedes: Optional[Optional[List[str]]] = field(
         default=None, metadata=config(field_name="supersedes")
     )
-    superseded_by: Optional[Optional[List[ConvIDStr]]] = field(
+    superseded_by: Optional[Optional[List[str]]] = field(
         default=None, metadata=config(field_name="superseded_by")
     )
     error: Optional[str] = field(default=None, metadata=config(field_name="error"))
+    creator_info: Optional[ConversationCreatorInfoLocal] = field(
+        default=None, metadata=config(field_name="creator_info")
+    )
 
 
 @dataclass
@@ -2014,6 +2023,38 @@ UICoinFlipResult = Union[
     UICoinFlipResult__DECK,
     UICoinFlipResult__HANDS,
     UICoinFlipResult__COIN,
+]
+
+
+@dataclass
+class UIBotCommandsUpdateStatus__UPTODATE(DataClassJsonMixin):
+    typ: Literal[UIBotCommandsUpdateStatusTypStrings.UPTODATE]
+    UPTODATE: Optional[UIBotCommandsUpdateSettings]
+
+
+@dataclass
+class UIBotCommandsUpdateStatus__UPDATING(DataClassJsonMixin):
+    typ: Literal[UIBotCommandsUpdateStatusTypStrings.UPDATING]
+    UPDATING: None
+
+
+@dataclass
+class UIBotCommandsUpdateStatus__FAILED(DataClassJsonMixin):
+    typ: Literal[UIBotCommandsUpdateStatusTypStrings.FAILED]
+    FAILED: None
+
+
+@dataclass
+class UIBotCommandsUpdateStatus__BLANK(DataClassJsonMixin):
+    typ: Literal[UIBotCommandsUpdateStatusTypStrings.BLANK]
+    BLANK: None
+
+
+UIBotCommandsUpdateStatus = Union[
+    UIBotCommandsUpdateStatus__UPTODATE,
+    UIBotCommandsUpdateStatus__UPDATING,
+    UIBotCommandsUpdateStatus__FAILED,
+    UIBotCommandsUpdateStatus__BLANK,
 ]
 
 
