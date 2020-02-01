@@ -162,3 +162,22 @@ def test_payment(fixture_path):
         event.notification.summary.status_description
         == stellar1.PaymentStatusStrings.PENDING.value
     )
+
+
+def test_chat_conv(fixture_path):
+    with open(f"{fixture_path}/chat_conv.json") as json_file:
+        data = json.load(json_file)
+
+    event = KbEvent.from_dict(data)
+    print(event)
+    assert event.type == EventType.CHAT_CONV
+    assert not event.conv.unread
+    assert event.conv.creator_info.username == "yourbot"
+    channel = event.conv.channel.to_dict()
+    assert channel == {
+        "name": "yourcompany.marketing",
+        "topic_name": "general",
+        "members_type": "team",
+        "topic_type": "chat",
+        "public": None,
+    }

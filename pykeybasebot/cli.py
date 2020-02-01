@@ -18,6 +18,8 @@ async def kblisten(keybase_cli: str, options, loop=None):
         command.append("--local")
     if options.get("hide-exploding"):
         command.append("--hide-exploding")
+    if options.get("convs"):
+        command.append("--convs")
     if options.get("dev"):
         command.append("--dev")
     if options.get("wallet"):
