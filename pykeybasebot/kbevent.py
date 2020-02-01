@@ -29,3 +29,4 @@ class KbEvent(DataClassJsonMixin):
     msg: Optional[chat1.MsgSummary] = None
     conv: Optional[chat1.ConvSummary] = None
     notification: Optional[stellar1.PaymentDetailsLocal] = None
+    error: Optional[str] = None
