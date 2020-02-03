@@ -169,7 +169,6 @@ def test_chat_conv(fixture_path):
         data = json.load(json_file)
 
     event = KbEvent.from_dict(data)
-    print(event)
     assert event.type == EventType.CHAT_CONV
     assert not event.conv.unread
     assert event.conv.creator_info.username == "yourbot"
