@@ -35,6 +35,7 @@ listen_options = {
     "wallet": True,
     "dev": True,
     "hide-exploding": False,
+    "convs": True,
     "filter_channel": None,
     "filter_channels": None,
 }

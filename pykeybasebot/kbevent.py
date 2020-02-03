@@ -9,6 +9,7 @@ from .types import chat1, stellar1
 
 class EventType(Enum):
     CHAT = "chat"
+    CHAT_CONV = "chat_conv"
     DEV = "dev"
     WALLET = "wallet"
 
@@ -23,7 +24,9 @@ class Source(Enum):
 @dataclass
 class KbEvent(DataClassJsonMixin):
     type: EventType
-    source: Source
+    source: Optional[Source] = None
     pagination: Optional[chat1.UIPagination] = None
     msg: Optional[chat1.MsgSummary] = None
+    conv: Optional[chat1.ConvSummary] = None
     notification: Optional[stellar1.PaymentDetailsLocal] = None
+    error: Optional[str] = None

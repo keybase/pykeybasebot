@@ -1,0 +1,21 @@
+{
+  "type": "chat_conv",
+  "conv": {
+    "id": "00001bca4f13b0a7b81bfbc2acd7f8cf829bf53845ac87cdd8b62617d5aaa084",
+    "channel": {
+      "name": "yourcompany.marketing",
+      "members_type": "team",
+      "topic_type": "chat",
+      "topic_name": "general"
+    },
+    "is_default_conv": true,
+    "unread": false,
+    "active_at": 1580517289,
+    "active_at_ms": 1580517289761,
+    "member_status": "active",
+    "creator_info": {
+      "ctime": 1580517289766,
+      "username": "yourbot"
+    }
+  }
+}
