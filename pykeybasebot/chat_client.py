@@ -1,5 +1,5 @@
 import json
-from typing import Dict, List, Optional, Union, Tuple
+from typing import Dict, List, Optional, Tuple, Union
 
 from .errors import ChatClientError
 from .types import chat1
