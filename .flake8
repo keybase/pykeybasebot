@@ -5,4 +5,4 @@ max-complexity = 18
 select = B,C,E,F,W,T4,B9
 per-file-ignores =
   pykeybasebot/__init__.py:F401,F403
-exclude = pykeybasebot/types/
+exclude = pykeybasebot/types/,venv/

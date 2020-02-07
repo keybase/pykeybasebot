@@ -28,7 +28,7 @@ class ChatClient:
     async def read(
         self,
         channel: Union[chat1.ChatChannel, chat1.ConvIDStr],
-        pagination: Optional[chat1.Pagination],
+        pagination: Optional[chat1.Pagination] = None,
     ) -> List[Optional[chat1.MsgSummary]]:
         """
         Reads the messages in a channel.

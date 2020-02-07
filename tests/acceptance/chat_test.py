@@ -32,6 +32,11 @@ def channel(config):
     )
 
 
+@pytest.fixture()
+def conv_id(config):
+    return chat1.ConvIDStr(f"{config['teams']['acme']['conv_id']}")
+
+
 def noop_handler(*args, **kwargs):
     pass
 
