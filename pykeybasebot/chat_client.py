@@ -1,5 +1,5 @@
 import json
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional, Union, Tuple
 
 from .errors import ChatClientError
 from .types import chat1
@@ -10,7 +10,7 @@ class ChatClient:
     def __init__(self, bot):
         self.bot = bot
 
-    def _channel_or_conv_id(channel: Union[chat1.ChatChannel, chat1.ConvIDStr]) -> (str, Union[str, dict]):
+    def _channel_or_conv_id(self, channel: Union[chat1.ChatChannel, chat1.ConvIDStr]) -> Tuple[str, Union[str, dict]]:
         if isinstance(channel, chat1.ChatChannel):
             return "channel", channel.to_dict()
         return "conversation_id", str(channel)
@@ -114,7 +114,7 @@ class ChatClient:
         return chat1.SendRes.from_dict(res)
 
     async def download(
-        self, channel: Union[chat1.ChatChannel, Chat1.ConvIDStr], message_id: int, output: str
+        self, channel: Union[chat1.ChatChannel, chat1.ConvIDStr], message_id: int, output: str
     ) -> chat1.SendRes:
         await self.bot.ensure_initialized()
         ch_key, ch_val = self._channel_or_conv_id(channel)
