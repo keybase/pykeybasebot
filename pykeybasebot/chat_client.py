@@ -5,7 +5,6 @@ from .errors import ChatClientError
 from .types import chat1
 
 
-
 class ChatClient:
     def __init__(self, bot):
         self.bot = bot

@@ -81,6 +81,7 @@ async def test_read(setup_bot, channel):
     for message in messages:
         assert type(message) is chat1.MsgSummary
 
+
 @pytest.mark.asyncio
 async def test_read_conv_id(setup_bot, conv_id):
     bot = setup_bot("alice")
