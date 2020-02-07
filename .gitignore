@@ -4,3 +4,4 @@ __pycache__/
 .mypy_cache/
 test_config.yaml
 *.egg-info
+venv
