@@ -1,5 +1,5 @@
 import json
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple, Union
 
 from .errors import ChatClientError
 from .types import chat1
@@ -8,6 +8,13 @@ from .types import chat1
 class ChatClient:
     def __init__(self, bot):
         self.bot = bot
+
+    def _channel_or_conv_id(
+        self, channel: Union[chat1.ChatChannel, chat1.ConvIDStr]
+    ) -> Tuple[str, Union[str, dict]]:
+        if isinstance(channel, chat1.ChatChannel):
+            return "channel", channel.to_dict()
+        return "conversation_id", str(channel)
 
     async def list(self) -> List[chat1.ConvSummary]:
         """
@@ -19,13 +26,16 @@ class ChatClient:
         return chat_list.conversations or []
 
     async def read(
-        self, channel: chat1.ChatChannel, pagination: Optional[chat1.Pagination]
+        self,
+        channel: Union[chat1.ChatChannel, chat1.ConvIDStr],
+        pagination: Optional[chat1.Pagination] = None,
     ) -> List[Optional[chat1.MsgSummary]]:
         """
         Reads the messages in a channel.
         """
         await self.bot.ensure_initialized()
-        read_options = {"channel": channel.to_dict()}
+        ch_key, ch_val = self._channel_or_conv_id(channel)
+        read_options = {ch_key: ch_val}
         if pagination is not None:
             read_options["pagination"] = pagination.to_dict()
         read_request = {"method": "read", "params": {"options": read_options}}
@@ -33,31 +43,33 @@ class ChatClient:
         thread = chat1.Thread.from_dict(res)
         return [message.msg for message in (thread.messages or [])]
 
-    async def send(self, channel: chat1.ChatChannel, message: str) -> chat1.SendRes:
+    async def send(
+        self, channel: Union[chat1.ChatChannel, chat1.ConvIDStr], message: str
+    ) -> chat1.SendRes:
         await self.bot.ensure_initialized()
+        ch_key, ch_val = self._channel_or_conv_id(channel)
         res = await self.execute(
             {
                 "method": "send",
-                "params": {
-                    "options": {
-                        "channel": channel.to_dict(),
-                        "message": {"body": message},
-                    }
-                },
+                "params": {"options": {ch_key: ch_val, "message": {"body": message}}},
             }
         )
         return chat1.SendRes.from_dict(res)
 
     async def react(
-        self, channel: chat1.ChatChannel, message_id: chat1.MessageID, reaction: str
+        self,
+        channel: Union[chat1.ChatChannel, chat1.ConvIDStr],
+        message_id: chat1.MessageID,
+        reaction: str,
     ) -> chat1.SendRes:
         await self.bot.ensure_initialized()
+        ch_key, ch_val = self._channel_or_conv_id(channel)
         res = await self.execute(
             {
                 "method": "reaction",
                 "params": {
                     "options": {
-                        "channel": channel.to_dict(),
+                        ch_key: ch_val,
                         "message_id": message_id,
                         "message": {"body": reaction},
                     }
@@ -67,15 +79,19 @@ class ChatClient:
         return chat1.SendRes.from_dict(res)
 
     async def edit(
-        self, channel: chat1.ChatChannel, message_id: chat1.MessageID, message: str
+        self,
+        channel: Union[chat1.ChatChannel, chat1.ConvIDStr],
+        message_id: chat1.MessageID,
+        message: str,
     ) -> chat1.SendRes:
         await self.bot.ensure_initialized()
+        ch_key, ch_val = self._channel_or_conv_id(channel)
         res = await self.execute(
             {
                 "method": "edit",
                 "params": {
                     "options": {
-                        "channel": channel.to_dict(),
+                        ch_key: ch_val,
                         "message_id": message_id,
                         "message": {"body": message},
                     }
@@ -85,33 +101,37 @@ class ChatClient:
         return chat1.SendRes.from_dict(res)
 
     async def attach(
-        self, channel: chat1.ChatChannel, filename: str, title: str
+        self,
+        channel: Union[chat1.ChatChannel, chat1.ConvIDStr],
+        filename: str,
+        title: str,
     ) -> chat1.SendRes:
         await self.bot.ensure_initialized()
+        ch_key, ch_val = self._channel_or_conv_id(channel)
         res = await self.execute(
             {
                 "method": "attach",
                 "params": {
-                    "options": {
-                        "channel": channel.to_dict(),
-                        "filename": filename,
-                        "title": title,
-                    }
+                    "options": {ch_key: ch_val, "filename": filename, "title": title}
                 },
             }
         )
         return chat1.SendRes.from_dict(res)
 
     async def download(
-        self, channel: chat1.ChatChannel, message_id: int, output: str
+        self,
+        channel: Union[chat1.ChatChannel, chat1.ConvIDStr],
+        message_id: int,
+        output: str,
     ) -> chat1.SendRes:
         await self.bot.ensure_initialized()
+        ch_key, ch_val = self._channel_or_conv_id(channel)
         res = await self.execute(
             {
                 "method": "download",
                 "params": {
                     "options": {
-                        "channel": channel.to_dict(),
+                        ch_key: ch_val,
                         "message_id": message_id,
                         "output": output,
                     }

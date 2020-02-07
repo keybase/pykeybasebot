@@ -14,3 +14,6 @@ teams:
     name: "acme"
     # The channel to use
     topicname: "mysupercoolchannel"
+    # ConvID of the channel, if you do a `list` in chat api you can find the
+    # convID. E.g. `keybase chat api -p -m '{"method": "read", "params": {"options": {"channel": {"name":"acme", "members_type":"team", "topic_name":"mysupercoolchannel"}}}}'`
+    conv_id: "00001bca4f13b0a7b81bfbc2acd7f8cf829bf53845ac87cdd8b62617d5aaa084"

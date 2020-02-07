@@ -32,6 +32,11 @@ def channel(config):
     )
 
 
+@pytest.fixture()
+def conv_id(config):
+    return chat1.ConvIDStr(f"{config['teams']['acme']['conv_id']}")
+
+
 def noop_handler(*args, **kwargs):
     pass
 
@@ -78,5 +83,13 @@ async def test_list(setup_bot):
 async def test_read(setup_bot, channel):
     bot = setup_bot("alice")
     messages = await bot.chat.read(channel)
+    for message in messages:
+        assert type(message) is chat1.MsgSummary
+
+
+@pytest.mark.asyncio
+async def test_read_conv_id(setup_bot, conv_id):
+    bot = setup_bot("alice")
+    messages = await bot.chat.read(conv_id)
     for message in messages:
         assert type(message) is chat1.MsgSummary
