@@ -9,7 +9,9 @@ class ChatClient:
     def __init__(self, bot):
         self.bot = bot
 
-    def _channel_or_conv_id(self, channel: Union[chat1.ChatChannel, chat1.ConvIDStr]) -> Tuple[str, Union[str, dict]]:
+    def _channel_or_conv_id(
+        self, channel: Union[chat1.ChatChannel, chat1.ConvIDStr]
+    ) -> Tuple[str, Union[str, dict]]:
         if isinstance(channel, chat1.ChatChannel):
             return "channel", channel.to_dict()
         return "conversation_id", str(channel)
@@ -24,7 +26,9 @@ class ChatClient:
         return chat_list.conversations or []
 
     async def read(
-        self, channel: Union[chat1.ChatChannel, chat1.ConvIDStr], pagination: Optional[chat1.Pagination]
+        self,
+        channel: Union[chat1.ChatChannel, chat1.ConvIDStr],
+        pagination: Optional[chat1.Pagination],
     ) -> List[Optional[chat1.MsgSummary]]:
         """
         Reads the messages in a channel.
@@ -39,24 +43,24 @@ class ChatClient:
         thread = chat1.Thread.from_dict(res)
         return [message.msg for message in (thread.messages or [])]
 
-    async def send(self, channel: Union[chat1.ChatChannel, chat1.ConvIDStr], message: str) -> chat1.SendRes:
+    async def send(
+        self, channel: Union[chat1.ChatChannel, chat1.ConvIDStr], message: str
+    ) -> chat1.SendRes:
         await self.bot.ensure_initialized()
         ch_key, ch_val = self._channel_or_conv_id(channel)
         res = await self.execute(
             {
                 "method": "send",
-                "params": {
-                    "options": {
-                        ch_key: ch_val,
-                        "message": {"body": message},
-                    }
-                },
+                "params": {"options": {ch_key: ch_val, "message": {"body": message}}},
             }
         )
         return chat1.SendRes.from_dict(res)
 
     async def react(
-        self, channel: Union[chat1.ChatChannel, chat1.ConvIDStr], message_id: chat1.MessageID, reaction: str
+        self,
+        channel: Union[chat1.ChatChannel, chat1.ConvIDStr],
+        message_id: chat1.MessageID,
+        reaction: str,
     ) -> chat1.SendRes:
         await self.bot.ensure_initialized()
         ch_key, ch_val = self._channel_or_conv_id(channel)
@@ -75,7 +79,10 @@ class ChatClient:
         return chat1.SendRes.from_dict(res)
 
     async def edit(
-        self, channel: Union[chat1.ChatChannel, chat1.ConvIDStr], message_id: chat1.MessageID, message: str
+        self,
+        channel: Union[chat1.ChatChannel, chat1.ConvIDStr],
+        message_id: chat1.MessageID,
+        message: str,
     ) -> chat1.SendRes:
         await self.bot.ensure_initialized()
         ch_key, ch_val = self._channel_or_conv_id(channel)
@@ -94,7 +101,10 @@ class ChatClient:
         return chat1.SendRes.from_dict(res)
 
     async def attach(
-        self, channel: Union[chat1.ChatChannel, chat1.ConvIDStr], filename: str, title: str
+        self,
+        channel: Union[chat1.ChatChannel, chat1.ConvIDStr],
+        filename: str,
+        title: str,
     ) -> chat1.SendRes:
         await self.bot.ensure_initialized()
         ch_key, ch_val = self._channel_or_conv_id(channel)
@@ -102,18 +112,17 @@ class ChatClient:
             {
                 "method": "attach",
                 "params": {
-                    "options": {
-                        ch_key: ch_val,
-                        "filename": filename,
-                        "title": title,
-                    }
+                    "options": {ch_key: ch_val, "filename": filename, "title": title}
                 },
             }
         )
         return chat1.SendRes.from_dict(res)
 
     async def download(
-        self, channel: Union[chat1.ChatChannel, chat1.ConvIDStr], message_id: int, output: str
+        self,
+        channel: Union[chat1.ChatChannel, chat1.ConvIDStr],
+        message_id: int,
+        output: str,
     ) -> chat1.SendRes:
         await self.bot.ensure_initialized()
         ch_key, ch_val = self._channel_or_conv_id(channel)
