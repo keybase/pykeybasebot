@@ -6,7 +6,7 @@
 # This bot listens to two channels for a special text message. When
 # it sees this message, it replies in the same channel with a response.
 # This also shows sending and receiving unicode characters.
-# 
+#
 # By using the conversation id (conv_id) instead of the channel we can let restricted bots reply.
 # From a security and privacy perspective it might be wise to use restricted bots where possible (see https://keybase.io/docs/teams/design).
 ###################################
