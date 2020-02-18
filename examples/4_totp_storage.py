@@ -87,7 +87,9 @@ class TotpHandler:
 
     async def add(self, bot, team, issuer, secret):
         val = json.dumps(self.to_json(secret))
-        await bot.kvstore.put(namespace=self.NAMESPACE, entry_key=issuer, entry_value=val, team=team)
+        await bot.kvstore.put(
+            namespace=self.NAMESPACE, entry_key=issuer, entry_value=val, team=team
+        )
 
     async def remove(self, bot, team, issuer):
         # throws exception if nothing to delete
@@ -102,7 +104,9 @@ class TotpHandler:
             return []
 
     async def now(self, bot, team, issuer):
-        res = await bot.kvstore.get(namespace=self.NAMESPACE, entry_key=issuer, team=team)
+        res = await bot.kvstore.get(
+            namespace=self.NAMESPACE, entry_key=issuer, team=team
+        )
         if bot.kvstore.is_present(res):
             # if secret is present
             secret = json.loads(res.entry_value)["secret"]
