@@ -131,18 +131,18 @@ class Bot:
 
     async def _is_initialized(self):
         if not self._initialized:
-            res = await self.submit("status --json")
+            res = await self.submit("whoami --json")
             if not isinstance(res, dict):
                 logging.error(
-                    "the result of `status --json` was not a parseable json object"
+                    "the result of `whoami --json` was not a parseable json object"
                 )
                 raise KeybaseNotConnectedError(
                     f"the keybase service is probably not running: {res}"
                 )
-            actual_username = res["Username"]
+            actual_username = res.get("user", {}).get("username", "")
             if self.username is None:
                 self.username = actual_username
-            actual_logged_in = res["LoggedIn"]
+            actual_logged_in = res.get("loggedIn", False)
             if actual_logged_in and (self.username.lower() != actual_username):
                 raise Exception(
                     f"Logged in as {actual_username} instead of {self.username}. Please logout first."
