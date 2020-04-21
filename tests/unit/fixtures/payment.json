@@ -47,7 +47,8 @@
         "withdrawReqAuth": "",
         "withdrawType": "",
         "transferServer": "",
-        "authEndpoint": ""
+        "authEndpoint": "",
+        "use_sep_24": false
       },
       "sourceConvRate": "",
       "isAdvanced": false,

@@ -53,42 +53,75 @@ def test_read(fixture_path):
             chat1.Message(
                 msg=chat1.MsgSummary(
                     id=3,
-                    conv_id="00001bca4f13b0a7b81bfbc2acd7f8cf829bf53845ac87cdd8b62617d5aaa084",
                     channel=chat1.ChatChannel(
                         name="alice,bob",
+                        public=None,
                         members_type="impteamnative",
                         topic_type="chat",
+                        topic_name=None,
                     ),
                     sender=chat1.MsgSender(
                         uid="8440bf65b0e77107c12e0350fc905e19",
-                        username="alice",
                         device_id="011e2994f419d748d751a449ae17e218",
+                        username="alice",
                         device_name="alice's phone",
                     ),
                     sent_at=1_544_140_065,
                     sent_at_ms=1_544_140_065_815,
                     content=chat1.MsgContent(
                         type_name="text",
-                        text=chat1.MessageText(
+                        flip=None,
+                        attachment=None,
+                        edit=None,
+                        reaction=None,
+                        delete=None,
+                        metadata=None,
+                        text=chat1.MsgTextContent(
                             body="hello",
                             payments=None,
+                            reply_to=None,
+                            reply_to_uid=None,
                             user_mentions=None,
                             team_mentions=None,
+                            live_location=None,
+                            emojis=None,
                         ),
+                        attachment_uploaded=None,
+                        system=None,
+                        send_payment=None,
+                        request_payment=None,
+                        unfurl=None,
+                        headline=None,
                     ),
+                    unread=False,
+                    conv_id="00001bca4f13b0a7b81bfbc2acd7f8cf829bf53845ac87cdd8b62617d5aaa084",
+                    bot_info=None,
+                    revoked_device=None,
                     prev=[
                         chat1.MessagePreviousPointer(
                             id=2, hash="A40VOjV7PVK7KcGZwOL/BOhPvn/a0jWg1JUltv7OLaQ="
                         )
                     ],
-                    unread=False,
+                    kbfs_encrypted=None,
+                    is_ephemeral=None,
+                    is_ephemeral_expired=None,
+                    e_time=None,
+                    reactions=None,
+                    has_pairwise_macs=None,
+                    at_mention_usernames=None,
                     channel_mention="none",
-                )
+                    channel_name_mentions=None,
+                    offline=None,
+                ),
+                error=None,
             )
         ],
         pagination=chat1.Pagination(
             num=469, next="AQ==", previous="zQHV", last=True, force_first_page=None
         ),
+        offline=None,
+        identify_failures=None,
+        rate_limits=None,
     )
 
 

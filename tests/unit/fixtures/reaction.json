@@ -10,7 +10,8 @@
     "content": {
       "reaction": {
         "b": ":sunglasses:",
-        "m": 171
+        "m": 171,
+        "emojis": {}
       },
       "type": "reaction"
     },

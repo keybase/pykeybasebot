@@ -1,14 +1,14 @@
 """stellar.1
 
-Auto-generated to Python types by avdl-compiler v1.4.6 (https://github.com/keybase/node-avdl-compiler)
+Auto-generated to Python types by avdl-compiler v1.4.8 (https://github.com/keybase/node-avdl-compiler)
 Input files:
- - ../client/protocol/avdl/stellar1/bundle.avdl
- - ../client/protocol/avdl/stellar1/common.avdl
- - ../client/protocol/avdl/stellar1/gregor.avdl
- - ../client/protocol/avdl/stellar1/local.avdl
- - ../client/protocol/avdl/stellar1/notify.avdl
- - ../client/protocol/avdl/stellar1/remote.avdl
- - ../client/protocol/avdl/stellar1/ui.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/stellar1/bundle.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/stellar1/common.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/stellar1/gregor.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/stellar1/local.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/stellar1/notify.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/stellar1/remote.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/stellar1/ui.avdl
 """
 
 from dataclasses import dataclass, field
@@ -114,7 +114,7 @@ AssetCode = str
 
 @dataclass
 class Asset(DataClassJsonMixin):
-    show_deposit_button: bool = field(metadata=config(field_name="showDepositButton"))
+    deposit_button_text: str = field(metadata=config(field_name="depositButtonText"))
     type: str = field(metadata=config(field_name="type"))
     issuer: str = field(metadata=config(field_name="issuer"))
     verified_domain: str = field(metadata=config(field_name="verifiedDomain"))
@@ -122,8 +122,8 @@ class Asset(DataClassJsonMixin):
     desc: str = field(metadata=config(field_name="desc"))
     info_url: str = field(metadata=config(field_name="infoUrl"))
     info_url_text: str = field(metadata=config(field_name="infoUrlText"))
+    show_deposit_button: bool = field(metadata=config(field_name="showDepositButton"))
     code: str = field(metadata=config(field_name="code"))
-    deposit_button_text: str = field(metadata=config(field_name="depositButtonText"))
     show_withdraw_button: bool = field(metadata=config(field_name="showWithdrawButton"))
     withdraw_button_text: str = field(metadata=config(field_name="withdrawButtonText"))
     withdraw_type: str = field(metadata=config(field_name="withdrawType"))
@@ -131,6 +131,7 @@ class Asset(DataClassJsonMixin):
     auth_endpoint: str = field(metadata=config(field_name="authEndpoint"))
     deposit_req_auth: bool = field(metadata=config(field_name="depositReqAuth"))
     withdraw_req_auth: bool = field(metadata=config(field_name="withdrawReqAuth"))
+    use_sep_24: bool = field(metadata=config(field_name="useSep24"))
 
 
 @dataclass
@@ -431,7 +432,7 @@ class BundleSecretEntryV2(DataClassJsonMixin):
 @dataclass
 class AccountBundleSecretV1(DataClassJsonMixin):
     account_id: AccountID = field(metadata=config(field_name="accountID"))
-    signers: Optional[Optional[List[SecretKey]]] = field(
+    signers: Optional[List[SecretKey]] = field(
         default=None, metadata=config(field_name="signers")
     )
 
@@ -453,7 +454,7 @@ class AccountBundle(DataClassJsonMixin):
     prev: Hash = field(metadata=config(field_name="prev"))
     own_hash: Hash = field(metadata=config(field_name="ownHash"))
     account_id: AccountID = field(metadata=config(field_name="accountID"))
-    signers: Optional[Optional[List[SecretKey]]] = field(
+    signers: Optional[List[SecretKey]] = field(
         default=None, metadata=config(field_name="signers")
     )
 
@@ -461,7 +462,7 @@ class AccountBundle(DataClassJsonMixin):
 @dataclass
 class AssetListResult(DataClassJsonMixin):
     total_count: int = field(metadata=config(field_name="totalCount"))
-    assets: Optional[Optional[List[Asset]]] = field(
+    assets: Optional[List[Asset]] = field(
         default=None, metadata=config(field_name="assets")
     )
 
@@ -541,7 +542,7 @@ class PaymentPath(DataClassJsonMixin):
     source_insufficient_balance: str = field(
         metadata=config(field_name="sourceInsufficientBalance")
     )
-    path: Optional[Optional[List[Asset]]] = field(
+    path: Optional[List[Asset]] = field(
         default=None, metadata=config(field_name="path")
     )
 
@@ -589,7 +590,7 @@ class AccountAssetLocal(DataClassJsonMixin):
     show_deposit_button: bool = field(metadata=config(field_name="showDepositButton"))
     deposit_button_text: str = field(metadata=config(field_name="depositButtonText"))
     withdraw_button_text: str = field(metadata=config(field_name="withdrawButtonText"))
-    reserves: Optional[Optional[List[AccountReserve]]] = field(
+    reserves: Optional[List[AccountReserve]] = field(
         default=None, metadata=config(field_name="reserves")
     )
 
@@ -602,7 +603,7 @@ class PaymentDetailsOnlyLocal(DataClassJsonMixin):
     fee_charged_description: str = field(
         metadata=config(field_name="feeChargedDescription")
     )
-    path_intermediate: Optional[Optional[List[Asset]]] = field(
+    path_intermediate: Optional[List[Asset]] = field(
         default=None, metadata=config(field_name="pathIntermediate")
     )
 
@@ -676,7 +677,7 @@ class PredefinedInflationDestination(DataClassJsonMixin):
 @dataclass
 class AirdropStatus(DataClassJsonMixin):
     state: AirdropState = field(metadata=config(field_name="state"))
-    rows: Optional[Optional[List[AirdropQualification]]] = field(
+    rows: Optional[List[AirdropQualification]] = field(
         default=None, metadata=config(field_name="rows")
     )
 
@@ -721,7 +722,7 @@ class PaymentCLILocal(DataClassJsonMixin):
     to_stellar: Optional[AccountID] = field(
         default=None, metadata=config(field_name="toStellar")
     )
-    operations: Optional[Optional[List[str]]] = field(
+    operations: Optional[List[str]] = field(
         default=None, metadata=config(field_name="operations")
     )
     display_currency: Optional[str] = field(
@@ -760,7 +761,7 @@ class TxDisplaySummary(DataClassJsonMixin):
     fee: int = field(metadata=config(field_name="fee"))
     memo: str = field(metadata=config(field_name="memo"))
     memo_type: str = field(metadata=config(field_name="memoType"))
-    operations: Optional[Optional[List[str]]] = field(
+    operations: Optional[List[str]] = field(
         default=None, metadata=config(field_name="operations")
     )
 
@@ -965,7 +966,7 @@ class PaymentPathQuery(DataClassJsonMixin):
 class BundleVisibleV2(DataClassJsonMixin):
     revision: BundleRevision = field(metadata=config(field_name="revision"))
     prev: Hash = field(metadata=config(field_name="prev"))
-    accounts: Optional[Optional[List[BundleVisibleEntryV2]]] = field(
+    accounts: Optional[List[BundleVisibleEntryV2]] = field(
         default=None, metadata=config(field_name="accounts")
     )
 
@@ -973,7 +974,7 @@ class BundleVisibleV2(DataClassJsonMixin):
 @dataclass
 class BundleSecretV2(DataClassJsonMixin):
     visible_hash: Hash = field(metadata=config(field_name="visibleHash"))
-    accounts: Optional[Optional[List[BundleSecretEntryV2]]] = field(
+    accounts: Optional[List[BundleSecretEntryV2]] = field(
         default=None, metadata=config(field_name="accounts")
     )
 
@@ -1060,7 +1061,7 @@ class Bundle(DataClassJsonMixin):
     account_bundles: Dict[str, AccountBundle] = field(
         metadata=config(field_name="accountBundles")
     )
-    accounts: Optional[Optional[List[BundleEntry]]] = field(
+    accounts: Optional[List[BundleEntry]] = field(
         default=None, metadata=config(field_name="accounts")
     )
 
@@ -1134,7 +1135,7 @@ class PaymentLocal(DataClassJsonMixin):
     trustline: Optional[PaymentTrustlineLocal] = field(
         default=None, metadata=config(field_name="trustline")
     )
-    operations: Optional[Optional[List[str]]] = field(
+    operations: Optional[List[str]] = field(
         default=None, metadata=config(field_name="operations")
     )
     issuer_account_id: Optional[AccountID] = field(
@@ -1167,7 +1168,7 @@ class BuildPaymentResLocal(DataClassJsonMixin):
         metadata=config(field_name="sendingIntentionXLM")
     )
     amount_available: str = field(metadata=config(field_name="amountAvailable"))
-    banners: Optional[Optional[List[SendBannerLocal]]] = field(
+    banners: Optional[List[SendBannerLocal]] = field(
         default=None, metadata=config(field_name="banners")
     )
 
@@ -1185,7 +1186,7 @@ class BuildRequestResLocal(DataClassJsonMixin):
     sending_intention_xlm: bool = field(
         metadata=config(field_name="sendingIntentionXLM")
     )
-    banners: Optional[Optional[List[SendBannerLocal]]] = field(
+    banners: Optional[List[SendBannerLocal]] = field(
         default=None, metadata=config(field_name="banners")
     )
 
@@ -1204,7 +1205,7 @@ class InflationDestinationResultLocal(DataClassJsonMixin):
 @dataclass
 class RecipientTrustlinesLocal(DataClassJsonMixin):
     recipient_type: ParticipantType = field(metadata=config(field_name="recipientType"))
-    trustlines: Optional[Optional[List[Balance]]] = field(
+    trustlines: Optional[List[Balance]] = field(
         default=None, metadata=config(field_name="trustlines")
     )
 
@@ -1236,7 +1237,7 @@ class OwnAccountCLILocal(DataClassJsonMixin):
     is_primary: bool = field(metadata=config(field_name="isPrimary"))
     name: str = field(metadata=config(field_name="name"))
     account_mode: AccountMode = field(metadata=config(field_name="accountMode"))
-    balance: Optional[Optional[List[Balance]]] = field(
+    balance: Optional[List[Balance]] = field(
         default=None, metadata=config(field_name="balance")
     )
     exchange_rate: Optional[OutsideExchangeRate] = field(
@@ -1278,7 +1279,7 @@ class BatchResultLocal(DataClassJsonMixin):
     avg_error_duration_ms: TimeMs = field(
         metadata=config(field_name="avgErrorDurationMs")
     )
-    payments: Optional[Optional[List[BatchPaymentResult]]] = field(
+    payments: Optional[List[BatchPaymentResult]] = field(
         default=None, metadata=config(field_name="payments")
     )
 
@@ -1337,7 +1338,7 @@ class PaymentSummaryStellar(DataClassJsonMixin):
     inflation_source: Optional[str] = field(
         default=None, metadata=config(field_name="inflationSource")
     )
-    operations: Optional[Optional[List[str]]] = field(
+    operations: Optional[List[str]] = field(
         default=None, metadata=config(field_name="operations")
     )
     trustline: Optional[PaymentTrustlineLocal] = field(
@@ -1388,10 +1389,10 @@ class AccountDetails(DataClassJsonMixin):
     available: str = field(metadata=config(field_name="available"))
     unread_payments: int = field(metadata=config(field_name="unreadPayments"))
     display_currency: str = field(metadata=config(field_name="displayCurrency"))
-    balances: Optional[Optional[List[Balance]]] = field(
+    balances: Optional[List[Balance]] = field(
         default=None, metadata=config(field_name="balances")
     )
-    reserves: Optional[Optional[List[AccountReserve]]] = field(
+    reserves: Optional[List[AccountReserve]] = field(
         default=None, metadata=config(field_name="reserves")
     )
     read_transaction_id: Optional[TransactionID] = field(
@@ -1408,7 +1409,7 @@ class UIPaymentReviewed(DataClassJsonMixin):
     review_id: int = field(metadata=config(field_name="reviewID"))
     seqno: int = field(metadata=config(field_name="seqno"))
     next_button: str = field(metadata=config(field_name="nextButton"))
-    banners: Optional[Optional[List[SendBannerLocal]]] = field(
+    banners: Optional[List[SendBannerLocal]] = field(
         default=None, metadata=config(field_name="banners")
     )
 
@@ -1508,7 +1509,7 @@ class PaymentMultiPost(DataClassJsonMixin):
     )
     signed_transaction: str = field(metadata=config(field_name="signedTransaction"))
     batch_id: str = field(metadata=config(field_name="batchID"))
-    operations: Optional[Optional[List[PaymentOp]]] = field(
+    operations: Optional[List[PaymentOp]] = field(
         default=None, metadata=config(field_name="operations")
     )
 
@@ -1538,7 +1539,7 @@ PaymentSummary = Union[
 
 @dataclass
 class PaymentsPageLocal(DataClassJsonMixin):
-    payments: Optional[Optional[List[PaymentOrErrorLocal]]] = field(
+    payments: Optional[List[PaymentOrErrorLocal]] = field(
         default=None, metadata=config(field_name="payments")
     )
     cursor: Optional[PageCursor] = field(
@@ -1556,14 +1557,14 @@ class PaymentDetails(DataClassJsonMixin):
     memo_type: str = field(metadata=config(field_name="memoType"))
     external_tx_url: str = field(metadata=config(field_name="externalTxURL"))
     fee_charged: str = field(metadata=config(field_name="feeCharged"))
-    path_intermediate: Optional[Optional[List[Asset]]] = field(
+    path_intermediate: Optional[List[Asset]] = field(
         default=None, metadata=config(field_name="pathIntermediate")
     )
 
 
 @dataclass
 class PaymentsPage(DataClassJsonMixin):
-    payments: Optional[Optional[List[PaymentSummary]]] = field(
+    payments: Optional[List[PaymentSummary]] = field(
         default=None, metadata=config(field_name="payments")
     )
     cursor: Optional[PageCursor] = field(
@@ -1578,6 +1579,6 @@ class PaymentsPage(DataClassJsonMixin):
 class DetailsPlusPayments(DataClassJsonMixin):
     details: AccountDetails = field(metadata=config(field_name="details"))
     recent_payments: PaymentsPage = field(metadata=config(field_name="recentPayments"))
-    pending_payments: Optional[Optional[List[PaymentSummary]]] = field(
+    pending_payments: Optional[List[PaymentSummary]] = field(
         default=None, metadata=config(field_name="pendingPayments")
     )
