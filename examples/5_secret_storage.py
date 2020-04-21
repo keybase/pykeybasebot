@@ -18,6 +18,8 @@
 #
 # Here we've stored the HMAC secret and other entries in the team's kvstore;
 # you could also store the entries in the bot's own kvstore (the default team).
+#
+# TODO: this is currently not working exactly right. sorry.
 # ###################################
 
 import asyncio
@@ -69,15 +71,15 @@ class TryingKVStoreClient:
 
     async def put(
         self,
-        team: str,
         namespace: str,
         entry_key: str,
         entry_value: Dict[str, str],
+        team: str,
         revision: Union[int, None] = None,
     ) -> Union[keybase1.KVPutResult, keybase1.KVGetResult]:
         try:
             res: keybase1.KVPutResult = await self.kvstore.put(
-                team, namespace, entry_key, entry_value, revision
+                namespace, entry_key, entry_value, team=team, revision=revision
             )
             return res  # successful put. return KVPutResult
         except RevisionError:
@@ -86,14 +88,14 @@ class TryingKVStoreClient:
 
     async def delete(
         self,
-        team: str,
         namespace: str,
         entry_key: str,
+        team: str,
         revision: Union[int, None] = None,
     ) -> Union[keybase1.KVDeleteEntryResult, keybase1.KVGetResult]:
         try:
             res: keybase1.KVDeleteEntryResult = await self.kvstore.delete(
-                team, namespace, entry_key, revision
+                namespace=namespace, entry_key=entry_key, revision=revision, team=team
             )
             return res  # successful delete. return KVDeleteEntryResult
         except (RevisionError, DeleteNonExistentError):
@@ -102,15 +104,15 @@ class TryingKVStoreClient:
         return res
 
     async def get(
-        self, team: str, namespace: str, entry_key: str
+        self, namespace: str, entry_key: str, team: str
     ) -> keybase1.KVGetResult:
-        res = await self.kvstore.get(team, namespace, entry_key)
+        res = await self.kvstore.get(namespace, entry_key, team)
         return res
 
     async def list_entrykeys(
-        self, team: str, namespace: str
+        self, namespace: str, team: str
     ) -> keybase1.KVListEntryResult:
-        res = await self.kvstore.list_entrykeys(team, namespace)
+        res = await self.kvstore.list_entrykeys(namespace, team)
         return res
 
 
@@ -155,11 +157,15 @@ class SecretKeyKVStoreClient:
             try:
                 # we don't expect self.SECRET_KEY's revision > 0
                 await self.kvstore.put(
-                    namespace, self.SECRET_KEY, bytes_to_str(secret), 1, team
+                    namespace,
+                    self.SECRET_KEY,
+                    bytes_to_str(secret),
+                    revision=1,
+                    team=team,
                 )
             except RevisionError:
                 res: keybase1.KVGetResult = await self.kvstore.get(
-                    team, namespace, self.SECRET_KEY
+                    namespace, self.SECRET_KEY, team=team
                 )
                 secret = str_to_bytes(res.entry_value)
             if team not in self.secrets:
@@ -182,7 +188,7 @@ class SecretKeyKVStoreClient:
         entry_value[SecretKeyKVStoreClient.KEY_KEY] = entry_key
         h = await self.hmac_key(team, namespace, entry_key)
         res = await self.kvstore.put(
-            namespace, h, json.dumps(entry_value), revision, team
+            namespace, h, json.dumps(entry_value), revision=revision, team=team
         )
         res.entry_key = entry_key
         return res
@@ -195,7 +201,7 @@ class SecretKeyKVStoreClient:
         revision: Union[int, None] = None,
     ) -> keybase1.KVDeleteEntryResult:
         h = await self.hmac_key(team, namespace, entry_key)
-        res = await self.kvstore.delete(namespace, h, revision, team)
+        res = await self.kvstore.delete(namespace, h, revision=revision, team=team)
         res.entry_key = entry_key
         return res
 
@@ -203,20 +209,20 @@ class SecretKeyKVStoreClient:
         self, team: str, namespace: str, entry_key: str
     ) -> keybase1.KVGetResult:
         h = await self.hmac_key(team, namespace, entry_key)
-        res = await self.kvstore.get(namespace, h, team)
+        res = await self.kvstore.get(namespace, h, team=team)
         res.entry_key = entry_key
         return res
 
     async def list_entrykeys(
         self, team: str, namespace: str
     ) -> keybase1.KVListEntryResult:
-        res = await self.kvstore.list_entrykeys(namespace, team)
+        res = await self.kvstore.list_entrykeys(namespace, team=team)
         if res.entry_keys:
             res.entry_keys = [
                 e for e in res.entry_keys if not e.entry_key.startswith("_")
             ]
             for e in res.entry_keys:
-                get_res = await self.kvstore.get(namespace, e.entry_key, team)
+                get_res = await self.kvstore.get(namespace, e.entry_key, team=team)
                 e.entry_key = json.loads(get_res.entry_value)[self.KEY_KEY]
         return res
 
@@ -242,7 +248,7 @@ class RentalBotClient:
                 most recent get result if applicable)
         """
         res = await self.lookup(team, tool)
-        if res.entry_value != "":
+        if res.entry_value is not None:
             return (True, res)  # if tool already exists, return get
         expected_revision = res.revision + 1
         res = await self.kvstore.put(team, self.NAMESPACE, tool, {}, expected_revision)
@@ -260,10 +266,15 @@ class RentalBotClient:
                 most recent get result if applicable)
         """
         res = await self.lookup(team, tool)
-        if res.entry_value == "":
+        if res.entry_value is not None:
             return (True, res)  # if tool already doesn't exist, return get
         expected_revision = res.revision + 1
-        res = await self.kvstore.delete(team, self.NAMESPACE, tool, expected_revision)
+        res = await self.kvstore.delete(
+            namespace=self.NAMESPACE,
+            entry_key=tool,
+            revision=expected_revision,
+            team=team,
+        )
         if type(res) == keybase1.KVGetResult:
             return (False, res)
         else:
@@ -281,14 +292,14 @@ class RentalBotClient:
                 most recent get result if applicable)
         """
         res = await self.lookup(team, tool)
-        info = json.loads(res.entry_value) if res.entry_value != "" else {}
+        info = json.loads(res.entry_value) if res.entry_value is not None else {}
         if day in info:
             return (False, res)  # failed to put because day is already reserved.
         else:
             info[day] = user
         expected_revision = res.revision + 1
         res = await self.kvstore.put(
-            team, self.NAMESPACE, tool, info, expected_revision
+            self.NAMESPACE, tool, info, revision=expected_revision, team=team
         )
         if type(res) == keybase1.KVGetResult:
             return (False, res)
@@ -308,7 +319,7 @@ class RentalBotClient:
                 most recent get result if applicable)
         """
         res = await self.lookup(team, tool)
-        info = json.loads(res.entry_value) if res.entry_value != "" else {}
+        info = json.loads(res.entry_value) if res.entry_value is not None else {}
         if day not in info:
             # a noop because currently not reserved
             return (True, res)
@@ -319,7 +330,7 @@ class RentalBotClient:
         info.pop(day)
         expected_revision = res.revision + 1
         res = await self.kvstore.put(
-            team, self.NAMESPACE, tool, info, expected_revision
+            self.NAMESPACE, tool, info, revision=expected_revision, team=team
         )
         if type(res) == keybase1.KVGetResult:
             return (False, res)
@@ -327,12 +338,12 @@ class RentalBotClient:
             return (True, None)
 
     async def list_tools(self, team) -> List[str]:
-        res = await self.kvstore.list_entrykeys(team, self.NAMESPACE)
+        res = await self.kvstore.list_entrykeys(self.NAMESPACE, team=team)
         keys = [e.entry_key for e in res.entry_keys] if res.entry_keys else []
         return keys
 
 
-async def basic_rental_users(bot, rental, team):
+async def basic_rental_users(rental, team):
     user1 = "Jo"
     user2 = "Charlie"
     date1 = "2044-03-12"
@@ -451,7 +462,7 @@ async def main():
     rental = RentalBotClient(bot)
 
     print("...basic rental actions...")
-    await basic_rental_users(bot, rental, team)
+    await basic_rental_users(rental, team)
 
     print("...multiple users try to reserve...")
     await concurrent_rental_users(bot, rental, team)

@@ -51,8 +51,13 @@ async def simple_user():
     # using the default team, which is yourself (your implicit self-team
     # "yourusername,yourusername")
 
+    # get a non-existent entry
+    res = await bot.kvstore.get(namespace, key)
+    print("GET NON-EXISTENT: ", res)
+    assert res.entry_value is None
+
     # put with default revision
-    # note: if revision=None, the server does a get (to get
+    # note: if revision=None, the service does a get (to get
     # the latest revision number) then a put (with revision
     # number + 1); this operation is not atomic.
     value = "The Left Hand of Darkness"
@@ -101,7 +106,7 @@ async def simple_user():
     # get
     res = await bot.kvstore.get(namespace, key)
     print("GET: ", res)
-    assert res.entry_value == ""
+    assert res.entry_value is None
 
 
 async def main():

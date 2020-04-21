@@ -1849,8 +1849,10 @@ class KVGetResult(DataClassJsonMixin):
     team_name: str = field(metadata=config(field_name="teamName"))
     namespace: str = field(metadata=config(field_name="namespace"))
     entry_key: str = field(metadata=config(field_name="entryKey"))
-    entry_value: str = field(metadata=config(field_name="entryValue"))
     revision: int = field(metadata=config(field_name="revision"))
+    entry_value: Optional[str] = field(
+        default=None, metadata=config(field_name="entryValue")
+    )
 
 
 @dataclass
