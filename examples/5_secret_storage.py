@@ -266,7 +266,7 @@ class RentalBotClient:
                 most recent get result if applicable)
         """
         res = await self.lookup(team, tool)
-        if res.entry_value is not None:
+        if res.entry_value is None:
             return (True, res)  # if tool already doesn't exist, return get
         expected_revision = res.revision + 1
         res = await self.kvstore.delete(
@@ -408,7 +408,7 @@ async def basic_rental_users(rental, team):
     assert SecretKeyKVStoreClient.KEY_KEY in info
 
 
-async def concurrent_rental_users(bot, rental, team):
+async def concurrent_rental_users(rental, team):
     tool = "time travel machine"
 
     async def concurrent_rental_user(user_id: int):
@@ -465,7 +465,7 @@ async def main():
     await basic_rental_users(rental, team)
 
     print("...multiple users try to reserve...")
-    await concurrent_rental_users(bot, rental, team)
+    await concurrent_rental_users(rental, team)
 
     print("...5_secret_storage example is complete.")
 
