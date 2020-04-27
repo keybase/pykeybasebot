@@ -2,47 +2,78 @@
   "result": {
     "messages": [
       {
-        "msg": {
-          "id": 3,
-          "conversation_id": "00001bca4f13b0a7b81bfbc2acd7f8cf829bf53845ac87cdd8b62617d5aaa084",
-          "channel": {
-            "name": "alice,bob",
-            "members_type": "impteamnative",
-            "topic_type": "chat"
-          },
-          "sender": {
-            "uid": "8440bf65b0e77107c12e0350fc905e19",
-            "username": "alice",
-            "device_id": "011e2994f419d748d751a449ae17e218",
-            "device_name": "alice's phone"
-          },
-          "sent_at": 1544140065,
-          "sent_at_ms": 1544140065815,
-          "content": {
-            "type": "text",
-            "text": {
-              "body": "hello",
-              "payments": null,
-              "userMentions": null,
-              "teamMentions": null
-            }
-          },
-          "prev": [
-            {
-              "id": 2,
-              "hash": "A40VOjV7PVK7KcGZwOL/BOhPvn/a0jWg1JUltv7OLaQ="
-            }
-          ],
-          "unread": false,
-          "channel_mention": "none"
-        }
-      }
-    ],
-    "pagination": {
-      "next": "AQ==",
-      "previous": "zQHV",
-      "num": 469,
-      "last": true
-    }
+		"msg": {
+			"id": 3,
+			"channel": {
+				"name": "alice,bob",
+				"public": null,
+				"members_type": "impteamnative",
+				"topic_type": "chat",
+				"topic_name": null
+			},
+			"sender": {
+				"uid": "8440bf65b0e77107c12e0350fc905e19",
+				"device_id": "011e2994f419d748d751a449ae17e218",
+				"username": "alice",
+				"device_name": "alice's phone"
+			},
+			"sent_at": 1544140065,
+			"sent_at_ms": 1544140065815,
+			"content": {
+				"type": "text",
+				"flip": null,
+				"attachment": null,
+				"edit": null,
+				"reaction": null,
+				"delete": null,
+				"metadata": null,
+				"text": {
+					"body": "hello",
+					"payments": null,
+					"replyTo": null,
+					"replyToUID": null,
+					"userMentions": null,
+					"teamMentions": null,
+					"liveLocation": null,
+					"emojis": null
+				},
+				"attachment_uploaded": null,
+				"system": null,
+				"send_payment": null,
+				"request_payment": null,
+				"unfurl": null,
+				"headline": null
+			},
+			"unread": false,
+			"conversation_id": "00001bca4f13b0a7b81bfbc2acd7f8cf829bf53845ac87cdd8b62617d5aaa084",
+			"bot_info": null,
+			"revoked_device": null,
+			"prev": [{
+				"id": 2,
+				"hash": "A40VOjV7PVK7KcGZwOL/BOhPvn/a0jWg1JUltv7OLaQ="
+			}],
+			"kbfs_encrypted": null,
+			"is_ephemeral": null,
+			"is_ephemeral_expired": null,
+			"e_time": null,
+			"reactions": null,
+			"has_pairwise_macs": null,
+			"at_mention_usernames": null,
+			"channel_mention": "none",
+			"channel_name_mentions": null,
+			"offline": null
+		},
+		"error": null
+	}],
+	"pagination": {
+		"num": 469,
+		"next": "AQ==",
+		"previous": "zQHV",
+		"last": true,
+		"forceFirstPage": null
+	},
+	"offline": null,
+	"identify_failures": null,
+    "ratelimits": null
   }
 }

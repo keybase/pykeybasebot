@@ -1,14 +1,14 @@
 """gregor.1
 
-Auto-generated to Python types by avdl-compiler v1.4.6 (https://github.com/keybase/node-avdl-compiler)
+Auto-generated to Python types by avdl-compiler v1.4.8 (https://github.com/keybase/node-avdl-compiler)
 Input files:
- - ../client/protocol/avdl/gregor1/auth.avdl
- - ../client/protocol/avdl/gregor1/auth_internal.avdl
- - ../client/protocol/avdl/gregor1/auth_update.avdl
- - ../client/protocol/avdl/gregor1/common.avdl
- - ../client/protocol/avdl/gregor1/incoming.avdl
- - ../client/protocol/avdl/gregor1/outgoing.avdl
- - ../client/protocol/avdl/gregor1/remind.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/gregor1/auth.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/gregor1/auth_internal.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/gregor1/auth_update.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/gregor1/common.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/gregor1/incoming.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/gregor1/outgoing.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/gregor1/remind.avdl
 """
 
 from dataclasses import dataclass, field
@@ -85,7 +85,7 @@ class StateSyncMessage(DataClassJsonMixin):
 class MsgRange(DataClassJsonMixin):
     end_time: TimeOrOffset = field(metadata=config(field_name="endTime"))
     category: Category = field(metadata=config(field_name="category"))
-    skip_msg_i_ds: Optional[Optional[List[MsgID]]] = field(
+    skip_msg_i_ds: Optional[List[MsgID]] = field(
         default=None, metadata=config(field_name="skipMsgIDs")
     )
 
@@ -95,7 +95,7 @@ class Item(DataClassJsonMixin):
     category: Category = field(metadata=config(field_name="category"))
     dtime: TimeOrOffset = field(metadata=config(field_name="dtime"))
     body: Body = field(metadata=config(field_name="body"))
-    remind_times: Optional[Optional[List[TimeOrOffset]]] = field(
+    remind_times: Optional[List[TimeOrOffset]] = field(
         default=None, metadata=config(field_name="remindTimes")
     )
 
@@ -103,17 +103,17 @@ class Item(DataClassJsonMixin):
 @dataclass
 class ConnectedUser(DataClassJsonMixin):
     uid: UID = field(metadata=config(field_name="uid"))
-    devices: Optional[Optional[List[ConnectedDevice]]] = field(
+    devices: Optional[List[ConnectedDevice]] = field(
         default=None, metadata=config(field_name="devices")
     )
 
 
 @dataclass
 class Dismissal(DataClassJsonMixin):
-    msg_i_ds: Optional[Optional[List[MsgID]]] = field(
+    msg_i_ds: Optional[List[MsgID]] = field(
         default=None, metadata=config(field_name="msgIDs")
     )
-    ranges: Optional[Optional[List[MsgRange]]] = field(
+    ranges: Optional[List[MsgRange]] = field(
         default=None, metadata=config(field_name="ranges")
     )
 
@@ -126,7 +126,7 @@ class ItemAndMetadata(DataClassJsonMixin):
 
 @dataclass
 class State(DataClassJsonMixin):
-    items: Optional[Optional[List[ItemAndMetadata]]] = field(
+    items: Optional[List[ItemAndMetadata]] = field(
         default=None, metadata=config(field_name="items")
     )
 
@@ -162,7 +162,7 @@ class InBandMessage(DataClassJsonMixin):
 @dataclass
 class ReminderSet(DataClassJsonMixin):
     more_reminders_ready: bool = field(metadata=config(field_name="moreRemindersReady"))
-    reminders: Optional[Optional[List[Reminder]]] = field(
+    reminders: Optional[List[Reminder]] = field(
         default=None, metadata=config(field_name="reminders")
     )
 
@@ -180,6 +180,6 @@ class Message(DataClassJsonMixin):
 @dataclass
 class SyncResult(DataClassJsonMixin):
     hash: str = field(metadata=config(field_name="hash"))
-    msgs: Optional[Optional[List[InBandMessage]]] = field(
+    msgs: Optional[List[InBandMessage]] = field(
         default=None, metadata=config(field_name="msgs")
     )

@@ -1,129 +1,135 @@
 """keybase.1
 
-Auto-generated to Python types by avdl-compiler v1.4.6 (https://github.com/keybase/node-avdl-compiler)
+Auto-generated to Python types by avdl-compiler v1.4.8 (https://github.com/keybase/node-avdl-compiler)
 Input files:
- - ../client/protocol/avdl/keybase1/account.avdl
- - ../client/protocol/avdl/keybase1/airdrop.avdl
- - ../client/protocol/avdl/keybase1/apiserver.avdl
- - ../client/protocol/avdl/keybase1/appstate.avdl
- - ../client/protocol/avdl/keybase1/audit.avdl
- - ../client/protocol/avdl/keybase1/avatars.avdl
- - ../client/protocol/avdl/keybase1/backend_common.avdl
- - ../client/protocol/avdl/keybase1/badger.avdl
- - ../client/protocol/avdl/keybase1/block.avdl
- - ../client/protocol/avdl/keybase1/bot.avdl
- - ../client/protocol/avdl/keybase1/btc.avdl
- - ../client/protocol/avdl/keybase1/common.avdl
- - ../client/protocol/avdl/keybase1/config.avdl
- - ../client/protocol/avdl/keybase1/constants.avdl
- - ../client/protocol/avdl/keybase1/contacts.avdl
- - ../client/protocol/avdl/keybase1/crypto.avdl
- - ../client/protocol/avdl/keybase1/cryptocurrency.avdl
- - ../client/protocol/avdl/keybase1/ctl.avdl
- - ../client/protocol/avdl/keybase1/debugging.avdl
- - ../client/protocol/avdl/keybase1/delegate_ui_ctl.avdl
- - ../client/protocol/avdl/keybase1/device.avdl
- - ../client/protocol/avdl/keybase1/emails.avdl
- - ../client/protocol/avdl/keybase1/ephemeral.avdl
- - ../client/protocol/avdl/keybase1/favorite.avdl
- - ../client/protocol/avdl/keybase1/featured_bot.avdl
- - ../client/protocol/avdl/keybase1/fs.avdl
- - ../client/protocol/avdl/keybase1/git.avdl
- - ../client/protocol/avdl/keybase1/gpg_common.avdl
- - ../client/protocol/avdl/keybase1/gpg_ui.avdl
- - ../client/protocol/avdl/keybase1/gregor.avdl
- - ../client/protocol/avdl/keybase1/gregor_ui.avdl
- - ../client/protocol/avdl/keybase1/home.avdl
- - ../client/protocol/avdl/keybase1/home_ui.avdl
- - ../client/protocol/avdl/keybase1/identify.avdl
- - ../client/protocol/avdl/keybase1/identify3.avdl
- - ../client/protocol/avdl/keybase1/identify3_common.avdl
- - ../client/protocol/avdl/keybase1/identify3_ui.avdl
- - ../client/protocol/avdl/keybase1/identify_common.avdl
- - ../client/protocol/avdl/keybase1/identify_ui.avdl
- - ../client/protocol/avdl/keybase1/implicit_team_migration.avdl
- - ../client/protocol/avdl/keybase1/install.avdl
- - ../client/protocol/avdl/keybase1/kbfs.avdl
- - ../client/protocol/avdl/keybase1/kbfs_common.avdl
- - ../client/protocol/avdl/keybase1/kbfs_git.avdl
- - ../client/protocol/avdl/keybase1/kbfsmount.avdl
- - ../client/protocol/avdl/keybase1/kex2provisionee.avdl
- - ../client/protocol/avdl/keybase1/kex2provisionee2.avdl
- - ../client/protocol/avdl/keybase1/kex2provisioner.avdl
- - ../client/protocol/avdl/keybase1/kvstore.avdl
- - ../client/protocol/avdl/keybase1/log.avdl
- - ../client/protocol/avdl/keybase1/log_ui.avdl
- - ../client/protocol/avdl/keybase1/login.avdl
- - ../client/protocol/avdl/keybase1/login_ui.avdl
- - ../client/protocol/avdl/keybase1/logsend.avdl
- - ../client/protocol/avdl/keybase1/merkle.avdl
- - ../client/protocol/avdl/keybase1/merkle_store.avdl
- - ../client/protocol/avdl/keybase1/metadata.avdl
- - ../client/protocol/avdl/keybase1/metadata_update.avdl
- - ../client/protocol/avdl/keybase1/notify_app.avdl
- - ../client/protocol/avdl/keybase1/notify_audit.avdl
- - ../client/protocol/avdl/keybase1/notify_badges.avdl
- - ../client/protocol/avdl/keybase1/notify_can_user_perform.avdl
- - ../client/protocol/avdl/keybase1/notify_ctl.avdl
- - ../client/protocol/avdl/keybase1/notify_device_clone.avdl
- - ../client/protocol/avdl/keybase1/notify_email.avdl
- - ../client/protocol/avdl/keybase1/notify_ephemeral.avdl
- - ../client/protocol/avdl/keybase1/notify_favorites.avdl
- - ../client/protocol/avdl/keybase1/notify_featuredbots.avdl
- - ../client/protocol/avdl/keybase1/notify_fs.avdl
- - ../client/protocol/avdl/keybase1/notify_fs_request.avdl
- - ../client/protocol/avdl/keybase1/notify_keyfamily.avdl
- - ../client/protocol/avdl/keybase1/notify_paperkey.avdl
- - ../client/protocol/avdl/keybase1/notify_pgp.avdl
- - ../client/protocol/avdl/keybase1/notify_phone.avdl
- - ../client/protocol/avdl/keybase1/notify_runtimestats.avdl
- - ../client/protocol/avdl/keybase1/notify_saltpack.avdl
- - ../client/protocol/avdl/keybase1/notify_service.avdl
- - ../client/protocol/avdl/keybase1/notify_session.avdl
- - ../client/protocol/avdl/keybase1/notify_team.avdl
- - ../client/protocol/avdl/keybase1/notify_teambot.avdl
- - ../client/protocol/avdl/keybase1/notify_tracking.avdl
- - ../client/protocol/avdl/keybase1/notify_users.avdl
- - ../client/protocol/avdl/keybase1/os.avdl
- - ../client/protocol/avdl/keybase1/paperprovision.avdl
- - ../client/protocol/avdl/keybase1/passphrase_common.avdl
- - ../client/protocol/avdl/keybase1/pgp.avdl
- - ../client/protocol/avdl/keybase1/pgp_ui.avdl
- - ../client/protocol/avdl/keybase1/phone_numbers.avdl
- - ../client/protocol/avdl/keybase1/pprof.avdl
- - ../client/protocol/avdl/keybase1/process.avdl
- - ../client/protocol/avdl/keybase1/prove.avdl
- - ../client/protocol/avdl/keybase1/prove_common.avdl
- - ../client/protocol/avdl/keybase1/prove_ui.avdl
- - ../client/protocol/avdl/keybase1/provision_ui.avdl
- - ../client/protocol/avdl/keybase1/quota.avdl
- - ../client/protocol/avdl/keybase1/reachability.avdl
- - ../client/protocol/avdl/keybase1/rekey.avdl
- - ../client/protocol/avdl/keybase1/rekey_ui.avdl
- - ../client/protocol/avdl/keybase1/reset.avdl
- - ../client/protocol/avdl/keybase1/revoke.avdl
- - ../client/protocol/avdl/keybase1/saltpack.avdl
- - ../client/protocol/avdl/keybase1/saltpack_ui.avdl
- - ../client/protocol/avdl/keybase1/scanproofs.avdl
- - ../client/protocol/avdl/keybase1/secret_ui.avdl
- - ../client/protocol/avdl/keybase1/secretkeys.avdl
- - ../client/protocol/avdl/keybase1/selfprovision.avdl
- - ../client/protocol/avdl/keybase1/session.avdl
- - ../client/protocol/avdl/keybase1/signup.avdl
- - ../client/protocol/avdl/keybase1/sigs.avdl
- - ../client/protocol/avdl/keybase1/simple_fs.avdl
- - ../client/protocol/avdl/keybase1/stream_ui.avdl
- - ../client/protocol/avdl/keybase1/teambot.avdl
- - ../client/protocol/avdl/keybase1/teams.avdl
- - ../client/protocol/avdl/keybase1/teams_ui.avdl
- - ../client/protocol/avdl/keybase1/test.avdl
- - ../client/protocol/avdl/keybase1/tlf.avdl
- - ../client/protocol/avdl/keybase1/tlf_keys.avdl
- - ../client/protocol/avdl/keybase1/track.avdl
- - ../client/protocol/avdl/keybase1/ui.avdl
- - ../client/protocol/avdl/keybase1/upk.avdl
- - ../client/protocol/avdl/keybase1/user.avdl
- - ../client/protocol/avdl/keybase1/usersearch.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/account.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/airdrop.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/apiserver.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/appstate.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/audit.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/avatars.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/backend_common.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/badger.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/block.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/bot.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/btc.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/common.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/config.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/constants.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/contacts.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/crypto.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/cryptocurrency.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/ctl.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/debugging.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/delegate_ui_ctl.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/device.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/emails.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/ephemeral.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/favorite.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/featured_bot.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/fs.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/git.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/gpg_common.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/gpg_ui.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/gregor.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/gregor_ui.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/home.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/home_ui.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/identify.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/identify3.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/identify3_common.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/identify3_ui.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/identify_common.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/identify_ui.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/implicit_team_migration.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/incoming-share.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/install.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/invite_friends.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/kbfs.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/kbfs_common.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/kbfs_git.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/kbfsmount.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/kex2provisionee.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/kex2provisionee2.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/kex2provisioner.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/kvstore.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/log.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/log_ui.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/login.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/login_ui.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/logsend.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/merkle.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/merkle_store.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/metadata.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/metadata_update.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/network_stats.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/notify_app.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/notify_audit.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/notify_badges.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/notify_can_user_perform.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/notify_ctl.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/notify_device_clone.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/notify_email.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/notify_ephemeral.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/notify_favorites.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/notify_featuredbots.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/notify_fs.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/notify_fs_request.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/notify_invite_friends.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/notify_keyfamily.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/notify_paperkey.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/notify_pgp.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/notify_phone.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/notify_runtimestats.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/notify_saltpack.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/notify_service.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/notify_session.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/notify_team.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/notify_teambot.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/notify_tracking.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/notify_users.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/os.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/paperprovision.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/passphrase_common.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/pgp.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/pgp_ui.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/phone_numbers.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/pprof.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/process.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/prove.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/prove_common.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/prove_ui.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/provision_ui.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/quota.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/reachability.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/rekey.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/rekey_ui.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/reset.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/revoke.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/saltpack.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/saltpack_ui.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/scanproofs.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/secret_ui.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/secretkeys.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/selfprovision.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/session.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/signup.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/sigs.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/simple_fs.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/stream_ui.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/teambot.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/teams.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/teams_ui.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/teamsearch.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/test.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/tlf.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/tlf_keys.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/track.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/ui.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/upk.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/user.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/usersearch.avdl
+ - ../../go/src/github.com/keybase/client/protocol/avdl/keybase1/wot.avdl
 """
 
 from dataclasses import dataclass, field
@@ -239,10 +245,21 @@ class BlockPingResponse(DataClassJsonMixin):
     pass
 
 
+@dataclass
+class UsageStatRecord(DataClassJsonMixin):
+    write: int = field(metadata=config(field_name="write"))
+    archive: int = field(metadata=config(field_name="archive"))
+    read: int = field(metadata=config(field_name="read"))
+    md_write: int = field(metadata=config(field_name="mdWrite"))
+    git_write: int = field(metadata=config(field_name="gitWrite"))
+    git_archive: int = field(metadata=config(field_name="gitArchive"))
+
+
 BotToken = str
 Time = int
 UnixTime = int
 DurationSec = float
+DurationMsec = float
 
 
 @dataclass
@@ -338,6 +355,9 @@ class DeviceType(Enum):
 class DeviceTypeStrings(Enum):
     DESKTOP = "desktop"
     MOBILE = "mobile"
+
+
+DeviceTypeV2 = str
 
 
 @dataclass
@@ -469,7 +489,49 @@ class OfflineAvailabilityStrings(Enum):
     BEST_EFFORT = "best_effort"
 
 
-ReacjiSkinTone = int
+@dataclass
+class UserReacji(DataClassJsonMixin):
+    name: str = field(metadata=config(field_name="name"))
+    custom_addr: Optional[str] = field(
+        default=None, metadata=config(field_name="customAddr")
+    )
+    custom_addr_no_anim: Optional[str] = field(
+        default=None, metadata=config(field_name="customAddrNoAnim")
+    )
+
+
+class ReacjiSkinTone(Enum):
+    NONE = 0
+    SKINTONE1 = 1
+    SKINTONE2 = 2
+    SKINTONE3 = 3
+    SKINTONE4 = 4
+    SKINTONE5 = 5
+
+
+class ReacjiSkinToneStrings(Enum):
+    NONE = "none"
+    SKINTONE1 = "skintone1"
+    SKINTONE2 = "skintone2"
+    SKINTONE3 = "skintone3"
+    SKINTONE4 = "skintone4"
+    SKINTONE5 = "skintone5"
+
+
+class WotStatusType(Enum):
+    NONE = 0
+    PROPOSED = 1
+    ACCEPTED = 2
+    REJECTED = 3
+    REVOKED = 4
+
+
+class WotStatusTypeStrings(Enum):
+    NONE = "none"
+    PROPOSED = "proposed"
+    ACCEPTED = "accepted"
+    REJECTED = "rejected"
+    REVOKED = "revoked"
 
 
 @dataclass
@@ -514,6 +576,7 @@ class KbServiceStatus(DataClassJsonMixin):
     pid: str = field(metadata=config(field_name="pid"))
     log: str = field(metadata=config(field_name="log"))
     ek_log: str = field(metadata=config(field_name="ekLog"))
+    perf_log: str = field(metadata=config(field_name="perfLog"))
 
 
 @dataclass
@@ -523,6 +586,7 @@ class KBFSStatus(DataClassJsonMixin):
     running: bool = field(metadata=config(field_name="running"))
     pid: str = field(metadata=config(field_name="pid"))
     log: str = field(metadata=config(field_name="log"))
+    perf_log: str = field(metadata=config(field_name="perfLog"))
     mount: str = field(metadata=config(field_name="mount"))
 
 
@@ -546,6 +610,7 @@ class StartStatus(DataClassJsonMixin):
 @dataclass
 class GitStatus(DataClassJsonMixin):
     log: str = field(metadata=config(field_name="log"))
+    perf_log: str = field(metadata=config(field_name="perfLog"))
 
 
 LogSendID = str
@@ -555,7 +620,7 @@ LogSendID = str
 class AllProvisionedUsernames(DataClassJsonMixin):
     default_username: str = field(metadata=config(field_name="defaultUsername"))
     has_provisioned_user: bool = field(metadata=config(field_name="hasProvisionedUser"))
-    provisioned_usernames: Optional[Optional[List[str]]] = field(
+    provisioned_usernames: Optional[List[str]] = field(
         default=None, metadata=config(field_name="provisionedUsernames")
     )
 
@@ -638,6 +703,7 @@ class ProxyTypeStrings(Enum):
 class StatusCode(Enum):
     SCOk = 0
     SCInputError = 100
+    SCAssertionParseError = 101
     SCLoginRequired = 201
     SCBadSession = 202
     SCBadLoginUserNotFound = 203
@@ -660,11 +726,13 @@ class StatusCode(Enum):
     SCWrongCryptoFormat = 279
     SCDecryptionError = 280
     SCInvalidAddress = 281
+    SCWrongCryptoMsgType = 282
     SCNoSession = 283
     SCAccountReset = 290
     SCIdentifiesFailed = 295
     SCNoSpaceOnDevice = 297
     SCMerkleClientError = 299
+    SCMerkleUpdateRoot = 300
     SCBadEmail = 472
     SCRateLimit = 602
     SCBadSignupUsernameTaken = 701
@@ -695,6 +763,7 @@ class StatusCode(Enum):
     SCKeyDuplicateUpdate = 921
     SCSibkeyAlreadyExists = 922
     SCDecryptionKeyNotFound = 924
+    SCVerificationKeyNotFound = 925
     SCKeyNoPGPEncryption = 927
     SCKeyNoNaClEncryption = 928
     SCKeySyncedPGPNotFound = 929
@@ -728,6 +797,7 @@ class StatusCode(Enum):
     SCGenericAPIError = 1600
     SCAPINetworkError = 1601
     SCTimeout = 1602
+    SCKBFSClientTimeout = 1603
     SCProofError = 1701
     SCIdentificationExpired = 1702
     SCSelfNotFound = 1703
@@ -768,6 +838,8 @@ class StatusCode(Enum):
     SCChatNotInTeam = 2517
     SCChatStalePreviousState = 2518
     SCChatEphemeralRetentionPolicyViolatedError = 2519
+    SCChatUsersAlreadyInConversationError = 2520
+    SCChatBadConversationError = 2521
     SCTeamBadMembership = 2604
     SCTeamSelfNotOwner = 2607
     SCTeamNotFound = 2614
@@ -778,6 +850,7 @@ class StatusCode(Enum):
     SCNoOp = 2638
     SCTeamInviteBadCancel = 2645
     SCTeamInviteBadToken = 2646
+    SCTeamBadNameReservedDB = 2650
     SCTeamTarDuplicate = 2663
     SCTeamTarNotFound = 2664
     SCTeamMemberExists = 2665
@@ -868,11 +941,16 @@ class StatusCode(Enum):
     SCTeambotKeyOldBoxedGeneration = 3801
     SCTeambotKeyBadGeneration = 3802
     SCAirdropRegisterFailedMisc = 4207
+    SCSimpleFSNameExists = 5101
+    SCSimpleFSDirNotEmpty = 5102
+    SCSimpleFSNotExist = 5103
+    SCSimpleFSNoAccess = 5104
 
 
 class StatusCodeStrings(Enum):
     SCOk = "scok"
     SCInputError = "scinputerror"
+    SCAssertionParseError = "scassertionparseerror"
     SCLoginRequired = "scloginrequired"
     SCBadSession = "scbadsession"
     SCBadLoginUserNotFound = "scbadloginusernotfound"
@@ -895,11 +973,13 @@ class StatusCodeStrings(Enum):
     SCWrongCryptoFormat = "scwrongcryptoformat"
     SCDecryptionError = "scdecryptionerror"
     SCInvalidAddress = "scinvalidaddress"
+    SCWrongCryptoMsgType = "scwrongcryptomsgtype"
     SCNoSession = "scnosession"
     SCAccountReset = "scaccountreset"
     SCIdentifiesFailed = "scidentifiesfailed"
     SCNoSpaceOnDevice = "scnospaceondevice"
     SCMerkleClientError = "scmerkleclienterror"
+    SCMerkleUpdateRoot = "scmerkleupdateroot"
     SCBadEmail = "scbademail"
     SCRateLimit = "scratelimit"
     SCBadSignupUsernameTaken = "scbadsignupusernametaken"
@@ -930,6 +1010,7 @@ class StatusCodeStrings(Enum):
     SCKeyDuplicateUpdate = "sckeyduplicateupdate"
     SCSibkeyAlreadyExists = "scsibkeyalreadyexists"
     SCDecryptionKeyNotFound = "scdecryptionkeynotfound"
+    SCVerificationKeyNotFound = "scverificationkeynotfound"
     SCKeyNoPGPEncryption = "sckeynopgpencryption"
     SCKeyNoNaClEncryption = "sckeynonaclencryption"
     SCKeySyncedPGPNotFound = "sckeysyncedpgpnotfound"
@@ -963,6 +1044,7 @@ class StatusCodeStrings(Enum):
     SCGenericAPIError = "scgenericapierror"
     SCAPINetworkError = "scapinetworkerror"
     SCTimeout = "sctimeout"
+    SCKBFSClientTimeout = "sckbfsclienttimeout"
     SCProofError = "scprooferror"
     SCIdentificationExpired = "scidentificationexpired"
     SCSelfNotFound = "scselfnotfound"
@@ -1005,6 +1087,8 @@ class StatusCodeStrings(Enum):
     SCChatEphemeralRetentionPolicyViolatedError = (
         "scchatephemeralretentionpolicyviolatederror"
     )
+    SCChatUsersAlreadyInConversationError = "scchatusersalreadyinconversationerror"
+    SCChatBadConversationError = "scchatbadconversationerror"
     SCTeamBadMembership = "scteambadmembership"
     SCTeamSelfNotOwner = "scteamselfnotowner"
     SCTeamNotFound = "scteamnotfound"
@@ -1015,6 +1099,7 @@ class StatusCodeStrings(Enum):
     SCNoOp = "scnoop"
     SCTeamInviteBadCancel = "scteaminvitebadcancel"
     SCTeamInviteBadToken = "scteaminvitebadtoken"
+    SCTeamBadNameReservedDB = "scteambadnamereserveddb"
     SCTeamTarDuplicate = "scteamtarduplicate"
     SCTeamTarNotFound = "scteamtarnotfound"
     SCTeamMemberExists = "scteammemberexists"
@@ -1105,6 +1190,10 @@ class StatusCodeStrings(Enum):
     SCTeambotKeyOldBoxedGeneration = "scteambotkeyoldboxedgeneration"
     SCTeambotKeyBadGeneration = "scteambotkeybadgeneration"
     SCAirdropRegisterFailedMisc = "scairdropregisterfailedmisc"
+    SCSimpleFSNameExists = "scsimplefsnameexists"
+    SCSimpleFSDirNotEmpty = "scsimplefsdirnotempty"
+    SCSimpleFSNotExist = "scsimplefsnotexist"
+    SCSimpleFSNoAccess = "scsimplefsnoaccess"
 
 
 ED25519PublicKey = Optional[str]
@@ -1226,6 +1315,9 @@ class FeaturedBot(DataClassJsonMixin):
     bot_alias: str = field(metadata=config(field_name="botAlias"))
     description: str = field(metadata=config(field_name="description"))
     extended_description: str = field(metadata=config(field_name="extendedDescription"))
+    extended_description_raw: str = field(
+        metadata=config(field_name="extendedDescriptionRaw")
+    )
     bot_username: str = field(metadata=config(field_name="botUsername"))
     rank: int = field(metadata=config(field_name="rank"))
     is_promoted: bool = field(metadata=config(field_name="isPromoted"))
@@ -1588,6 +1680,20 @@ class DismissReasonTypeStrings(Enum):
     HANDLED_ELSEWHERE = "handled_elsewhere"
 
 
+class IncomingShareType(Enum):
+    FILE = 0
+    TEXT = 1
+    IMAGE = 2
+    VIDEO = 3
+
+
+class IncomingShareTypeStrings(Enum):
+    FILE = "file"
+    TEXT = "text"
+    IMAGE = "image"
+    VIDEO = "video"
+
+
 class InstallStatus(Enum):
     """
     Install status describes state of install for a component or service.
@@ -1627,6 +1733,15 @@ class FuseMountInfo(DataClassJsonMixin):
     path: str = field(metadata=config(field_name="path"))
     fstype: str = field(metadata=config(field_name="fstype"))
     output: str = field(metadata=config(field_name="output"))
+
+
+@dataclass
+class InviteCounts(DataClassJsonMixin):
+    invite_count: int = field(metadata=config(field_name="inviteCount"))
+    percentage_change: float = field(metadata=config(field_name="percentageChange"))
+    show_num_invites: bool = field(metadata=config(field_name="showNumInvites"))
+    show_fire: bool = field(metadata=config(field_name="showFire"))
+    tooltip_markdown: str = field(metadata=config(field_name="tooltipMarkdown"))
 
 
 class FSStatusCode(Enum):
@@ -1734,8 +1849,10 @@ class KVGetResult(DataClassJsonMixin):
     team_name: str = field(metadata=config(field_name="teamName"))
     namespace: str = field(metadata=config(field_name="namespace"))
     entry_key: str = field(metadata=config(field_name="entryKey"))
-    entry_value: str = field(metadata=config(field_name="entryValue"))
     revision: int = field(metadata=config(field_name="revision"))
+    entry_value: Optional[str] = field(
+        default=None, metadata=config(field_name="entryValue")
+    )
 
 
 @dataclass
@@ -1756,7 +1873,7 @@ class EncryptedKVEntry(DataClassJsonMixin):
 @dataclass
 class KVListNamespaceResult(DataClassJsonMixin):
     team_name: str = field(metadata=config(field_name="teamName"))
-    namespaces: Optional[Optional[List[str]]] = field(
+    namespaces: Optional[List[str]] = field(
         default=None, metadata=config(field_name="namespaces")
     )
 
@@ -1863,6 +1980,16 @@ class RekeyRequest(DataClassJsonMixin):
     revision: int = field(metadata=config(field_name="revision"))
 
 
+class NetworkSource(Enum):
+    LOCAL = 0
+    REMOTE = 1
+
+
+class NetworkSourceStrings(Enum):
+    LOCAL = "local"
+    REMOTE = "remote"
+
+
 ChatConversationID = str
 
 
@@ -1881,7 +2008,7 @@ class WalletAccountInfo(DataClassJsonMixin):
 
 @dataclass
 class NotificationChannels(DataClassJsonMixin):
-    kbfsrequest: bool = field(metadata=config(field_name="kbfsrequest"))
+    badges: bool = field(metadata=config(field_name="badges"))
     session: bool = field(metadata=config(field_name="session"))
     kbfs: bool = field(metadata=config(field_name="kbfs"))
     kbfsdesktop: bool = field(metadata=config(field_name="kbfsdesktop"))
@@ -1895,14 +2022,16 @@ class NotificationChannels(DataClassJsonMixin):
     app: bool = field(metadata=config(field_name="app"))
     chat: bool = field(metadata=config(field_name="chat"))
     pgp: bool = field(metadata=config(field_name="pgp"))
+    kbfsrequest: bool = field(metadata=config(field_name="kbfsrequest"))
     users: bool = field(metadata=config(field_name="users"))
-    badges: bool = field(metadata=config(field_name="badges"))
     reachability: bool = field(metadata=config(field_name="reachability"))
     team: bool = field(metadata=config(field_name="team"))
     ephemeral: bool = field(metadata=config(field_name="ephemeral"))
     teambot: bool = field(metadata=config(field_name="teambot"))
     chatkbfsedits: bool = field(metadata=config(field_name="chatkbfsedits"))
     chatdev: bool = field(metadata=config(field_name="chatdev"))
+    chatemoji: bool = field(metadata=config(field_name="chatemoji"))
+    chatemojicross: bool = field(metadata=config(field_name="chatemojicross"))
     deviceclone: bool = field(metadata=config(field_name="deviceclone"))
     chatattachments: bool = field(metadata=config(field_name="chatattachments"))
     wallet: bool = field(metadata=config(field_name="wallet"))
@@ -1932,6 +2061,28 @@ class ProcessType(Enum):
 class ProcessTypeStrings(Enum):
     MAIN = "main"
     KBFS = "kbfs"
+
+
+class PerfEventType(Enum):
+    NETWORK = 0
+    TEAMBOXAUDIT = 1
+    TEAMAUDIT = 2
+    USERCHAIN = 3
+    TEAMCHAIN = 4
+    CLEARCONV = 5
+    CLEARINBOX = 6
+    TEAMTREELOAD = 7
+
+
+class PerfEventTypeStrings(Enum):
+    NETWORK = "network"
+    TEAMBOXAUDIT = "teamboxaudit"
+    TEAMAUDIT = "teamaudit"
+    USERCHAIN = "userchain"
+    TEAMCHAIN = "teamchain"
+    CLEARCONV = "clearconv"
+    CLEARINBOX = "clearinbox"
+    TEAMTREELOAD = "teamtreeload"
 
 
 class SaltpackOperationType(Enum):
@@ -2034,7 +2185,7 @@ class PGPEncryptOptions(DataClassJsonMixin):
     no_self: bool = field(metadata=config(field_name="noSelf"))
     binary_out: bool = field(metadata=config(field_name="binaryOut"))
     key_query: str = field(metadata=config(field_name="keyQuery"))
-    recipients: Optional[Optional[List[str]]] = field(
+    recipients: Optional[List[str]] = field(
         default=None, metadata=config(field_name="recipients")
     )
 
@@ -2067,7 +2218,7 @@ class PGPQuery(DataClassJsonMixin):
 
 @dataclass
 class PGPPurgeRes(DataClassJsonMixin):
-    filenames: Optional[Optional[List[str]]] = field(
+    filenames: Optional[List[str]] = field(
         default=None, metadata=config(field_name="filenames")
     )
 
@@ -2259,13 +2410,6 @@ class ParamProofUsernameConfig(DataClassJsonMixin):
 
 
 @dataclass
-class ParamProofLogoConfig(DataClassJsonMixin):
-    svg_black: str = field(metadata=config(field_name="svg_black"))
-    svg_full: str = field(metadata=config(field_name="svg_full"))
-    svg_white: str = field(metadata=config(field_name="svg_white"))
-
-
-@dataclass
 class ServiceDisplayConfig(DataClassJsonMixin):
     creation_disabled: bool = field(metadata=config(field_name="creation_disabled"))
     priority: int = field(metadata=config(field_name="priority"))
@@ -2436,7 +2580,7 @@ class SaltpackEncryptResult(DataClassJsonMixin):
 class SaltpackFrontendEncryptOptions(DataClassJsonMixin):
     signed: bool = field(metadata=config(field_name="signed"))
     include_self: bool = field(metadata=config(field_name="includeSelf"))
-    recipients: Optional[Optional[List[str]]] = field(
+    recipients: Optional[List[str]] = field(
         default=None, metadata=config(field_name="recipients")
     )
 
@@ -2689,6 +2833,7 @@ class FSSettings(DataClassJsonMixin):
     sfmi_banner_dismissed: bool = field(
         metadata=config(field_name="sfmiBannerDismissed")
     )
+    sync_on_cellular: bool = field(metadata=config(field_name="syncOnCellular"))
 
 
 class SubscriptionTopic(Enum):
@@ -2699,6 +2844,7 @@ class SubscriptionTopic(Enum):
     FILES_TAB_BADGE = 4
     OVERALL_SYNC_STATUS = 5
     SETTINGS = 6
+    UPLOAD_STATUS = 7
 
 
 class SubscriptionTopicStrings(Enum):
@@ -2709,6 +2855,7 @@ class SubscriptionTopicStrings(Enum):
     FILES_TAB_BADGE = "files_tab_badge"
     OVERALL_SYNC_STATUS = "overall_sync_status"
     SETTINGS = "settings"
+    UPLOAD_STATUS = "upload_status"
 
 
 class PathSubscriptionTopic(Enum):
@@ -2751,6 +2898,11 @@ class GUIViewTypeStrings(Enum):
     AUDIO = "audio"
     VIDEO = "video"
     PDF = "pdf"
+
+
+@dataclass
+class SimpleFSSearchHit(DataClassJsonMixin):
+    path: str = field(metadata=config(field_name="path"))
 
 
 TeambotKeyGeneration = int
@@ -2847,6 +2999,7 @@ PerTeamSeedCheckValue = str
 PerTeamSeedCheckValuePostImage = str
 MaskB64 = str
 TeamInviteID = str
+TeamInviteMaxUses = int
 PerTeamKeySeed = Optional[str]
 
 
@@ -2903,6 +3056,7 @@ class TeamInviteCategory(Enum):
     SBS = 4
     SEITAN = 5
     PHONE = 6
+    INVITELINK = 7
 
 
 class TeamInviteCategoryStrings(Enum):
@@ -2913,10 +3067,12 @@ class TeamInviteCategoryStrings(Enum):
     SBS = "sbs"
     SEITAN = "seitan"
     PHONE = "phone"
+    INVITELINK = "invitelink"
 
 
 TeamInviteSocialNetwork = str
 TeamInviteName = str
+TeamInviteDisplayName = str
 
 
 @dataclass
@@ -2931,6 +3087,7 @@ BoxSummaryHash = str
 TeamNamePart = str
 SeitanAKey = str
 SeitanIKey = str
+SeitanIKeyInvitelink = str
 SeitanPubKey = str
 SeitanIKeyV2 = str
 
@@ -2938,19 +3095,23 @@ SeitanIKeyV2 = str
 class SeitanKeyAndLabelVersion(Enum):
     V1 = 1
     V2 = 2
+    Invitelink = 3
 
 
 class SeitanKeyAndLabelVersionStrings(Enum):
     V1 = "v1"
     V2 = "v2"
+    Invitelink = "invitelink"
 
 
 class SeitanKeyLabelType(Enum):
     SMS = 1
+    GENERIC = 2
 
 
 class SeitanKeyLabelTypeStrings(Enum):
     SMS = "sms"
+    GENERIC = "generic"
 
 
 @dataclass
@@ -2960,19 +3121,18 @@ class SeitanKeyLabelSms(DataClassJsonMixin):
 
 
 @dataclass
-class TeamJoinRequest(DataClassJsonMixin):
-    name: str = field(metadata=config(field_name="name"))
-    username: str = field(metadata=config(field_name="username"))
+class SeitanKeyLabelGeneric(DataClassJsonMixin):
+    l: str = field(metadata=config(field_name="l"))
 
 
 @dataclass
 class TeamBotSettings(DataClassJsonMixin):
     cmds: bool = field(metadata=config(field_name="cmds"))
     mentions: bool = field(metadata=config(field_name="mentions"))
-    triggers: Optional[Optional[List[str]]] = field(
+    triggers: Optional[List[str]] = field(
         default=None, metadata=config(field_name="triggers")
     )
-    convs: Optional[Optional[List[str]]] = field(
+    convs: Optional[List[str]] = field(
         default=None, metadata=config(field_name="convs")
     )
 
@@ -2992,13 +3152,7 @@ class TeamAcceptOrRequestResult(DataClassJsonMixin):
 
 @dataclass
 class BulkRes(DataClassJsonMixin):
-    invited: Optional[Optional[List[str]]] = field(
-        default=None, metadata=config(field_name="invited")
-    )
-    already_invited: Optional[Optional[List[str]]] = field(
-        default=None, metadata=config(field_name="alreadyInvited")
-    )
-    malformed: Optional[Optional[List[str]]] = field(
+    malformed: Optional[List[str]] = field(
         default=None, metadata=config(field_name="malformed")
     )
 
@@ -3008,7 +3162,7 @@ ConflictGeneration = int
 
 @dataclass
 class TeamOperation(DataClassJsonMixin):
-    set_min_writer_role: bool = field(metadata=config(field_name="setMinWriterRole"))
+    change_open_team: bool = field(metadata=config(field_name="changeOpenTeam"))
     manage_members: bool = field(metadata=config(field_name="manageMembers"))
     create_channel: bool = field(metadata=config(field_name="createChannel"))
     chat: bool = field(metadata=config(field_name="chat"))
@@ -3024,20 +3178,22 @@ class TeamOperation(DataClassJsonMixin):
     set_team_showcase: bool = field(metadata=config(field_name="setTeamShowcase"))
     set_member_showcase: bool = field(metadata=config(field_name="setMemberShowcase"))
     set_retention_policy: bool = field(metadata=config(field_name="setRetentionPolicy"))
+    set_min_writer_role: bool = field(metadata=config(field_name="setMinWriterRole"))
     manage_subteams: bool = field(metadata=config(field_name="manageSubteams"))
-    change_open_team: bool = field(metadata=config(field_name="changeOpenTeam"))
     leave_team: bool = field(metadata=config(field_name="leaveTeam"))
     join_team: bool = field(metadata=config(field_name="joinTeam"))
     set_publicity_any: bool = field(metadata=config(field_name="setPublicityAny"))
     list_first: bool = field(metadata=config(field_name="listFirst"))
     change_tars_disabled: bool = field(metadata=config(field_name="changeTarsDisabled"))
     delete_chat_history: bool = field(metadata=config(field_name="deleteChatHistory"))
+    delete_other_emojis: bool = field(metadata=config(field_name="deleteOtherEmojis"))
     delete_other_messages: bool = field(
         metadata=config(field_name="deleteOtherMessages")
     )
     delete_team: bool = field(metadata=config(field_name="deleteTeam"))
     pin_message: bool = field(metadata=config(field_name="pinMessage"))
     manage_bots: bool = field(metadata=config(field_name="manageBots"))
+    manage_emojis: bool = field(metadata=config(field_name="manageEmojis"))
 
 
 @dataclass
@@ -3070,6 +3226,30 @@ class MemberUsername(DataClassJsonMixin):
 
 
 UserTeamVersion = int
+
+
+class TeamTreeMembershipStatus(Enum):
+    OK = 0
+    ERROR = 1
+    HIDDEN = 2
+
+
+class TeamTreeMembershipStatusStrings(Enum):
+    OK = "ok"
+    ERROR = "error"
+    HIDDEN = "hidden"
+
+
+@dataclass
+class TeamTreeError(DataClassJsonMixin):
+    message: str = field(metadata=config(field_name="message"))
+    will_skip_subtree: bool = field(metadata=config(field_name="willSkipSubtree"))
+    will_skip_ancestors: bool = field(metadata=config(field_name="willSkipAncestors"))
+
+
+@dataclass
+class TeamTreeInitial(DataClassJsonMixin):
+    guid: int = field(metadata=config(field_name="guid"))
 
 
 @dataclass
@@ -3193,7 +3373,7 @@ class TrackProof(DataClassJsonMixin):
 @dataclass
 class WebProof(DataClassJsonMixin):
     hostname: str = field(metadata=config(field_name="hostname"))
-    protocols: Optional[Optional[List[str]]] = field(
+    protocols: Optional[List[str]] = field(
         default=None, metadata=config(field_name="protocols")
     )
 
@@ -3250,6 +3430,30 @@ class ImpTofuSearchResult(DataClassJsonMixin):
 
 
 @dataclass
+class EmailOrPhoneNumberSearchResult(DataClassJsonMixin):
+    input: str = field(metadata=config(field_name="input"))
+    assertion: str = field(metadata=config(field_name="assertion"))
+    assertion_value: str = field(metadata=config(field_name="assertionValue"))
+    assertion_key: str = field(metadata=config(field_name="assertionKey"))
+    found_user: bool = field(metadata=config(field_name="foundUser"))
+    username: str = field(metadata=config(field_name="username"))
+    full_name: str = field(metadata=config(field_name="fullName"))
+
+
+UsernameVerificationType = str
+
+
+class WotReactionType(Enum):
+    ACCEPT = 0
+    REJECT = 1
+
+
+class WotReactionTypeStrings(Enum):
+    ACCEPT = "accept"
+    REJECT = "reject"
+
+
+@dataclass
 class LockdownHistory(DataClassJsonMixin):
     status: bool = field(metadata=config(field_name="status"))
     creation_time: Time = field(metadata=config(field_name="ctime"))
@@ -3294,7 +3498,7 @@ class LoadAvatarsRes(DataClassJsonMixin):
 class AvatarClearCacheMsg(DataClassJsonMixin):
     name: str = field(metadata=config(field_name="name"))
     typ: AvatarUpdateType = field(metadata=config(field_name="typ"))
-    formats: Optional[Optional[List[AvatarFormat]]] = field(
+    formats: Optional[List[AvatarFormat]] = field(
         default=None, metadata=config(field_name="formats")
     )
 
@@ -3315,6 +3519,23 @@ class GetBlockRes(DataClassJsonMixin):
 
 
 @dataclass
+class GetBlockSizesRes(DataClassJsonMixin):
+    sizes: Optional[List[int]] = field(
+        default=None, metadata=config(field_name="sizes")
+    )
+    statuses: Optional[List[BlockStatus]] = field(
+        default=None, metadata=config(field_name="statuses")
+    )
+
+
+@dataclass
+class UsageStat(DataClassJsonMixin):
+    bytes: UsageStatRecord = field(metadata=config(field_name="bytes"))
+    blocks: UsageStatRecord = field(metadata=config(field_name="blocks"))
+    mtime: Time = field(metadata=config(field_name="mtime"))
+
+
+@dataclass
 class BotTokenInfo(DataClassJsonMixin):
     token: BotToken = field(metadata=config(field_name="bot_token"))
     ctime: Time = field(metadata=config(field_name="ctime"))
@@ -3325,7 +3546,7 @@ class Status(DataClassJsonMixin):
     code: int = field(metadata=config(field_name="code"))
     name: str = field(metadata=config(field_name="name"))
     desc: str = field(metadata=config(field_name="desc"))
-    fields: Optional[Optional[List[StringKVPair]]] = field(
+    fields: Optional[List[StringKVPair]] = field(
         default=None, metadata=config(field_name="fields")
     )
 
@@ -3367,10 +3588,10 @@ class PublicKey(DataClassJsonMixin):
     parent_id: str = field(metadata=config(field_name="parentID"))
     pgp_fingerprint: str = field(metadata=config(field_name="PGPFingerprint"))
     device_description: str = field(metadata=config(field_name="deviceDescription"))
-    device_type: str = field(metadata=config(field_name="deviceType"))
+    device_type: DeviceTypeV2 = field(metadata=config(field_name="deviceType"))
     c_time: Time = field(metadata=config(field_name="cTime"))
     is_revoked: bool = field(metadata=config(field_name="isRevoked"))
-    pgp_identities: Optional[Optional[List[PGPIdentity]]] = field(
+    pgp_identities: Optional[List[PGPIdentity]] = field(
         default=None, metadata=config(field_name="PGPIdentities")
     )
 
@@ -3389,7 +3610,7 @@ class User(DataClassJsonMixin):
 
 @dataclass
 class Device(DataClassJsonMixin):
-    type: str = field(metadata=config(field_name="type"))
+    type: DeviceTypeV2 = field(metadata=config(field_name="type"))
     name: str = field(metadata=config(field_name="name"))
     device_id: DeviceID = field(metadata=config(field_name="deviceID"))
     device_number_of_type: int = field(metadata=config(field_name="deviceNumberOfType"))
@@ -3456,7 +3677,7 @@ class PhoneLookupResult(DataClassJsonMixin):
 @dataclass
 class UserReacjis(DataClassJsonMixin):
     skin_tone: ReacjiSkinTone = field(metadata=config(field_name="skinTone"))
-    top_reacjis: Optional[Optional[List[str]]] = field(
+    top_reacjis: Optional[List[UserReacji]] = field(
         default=None, metadata=config(field_name="topReacjis")
     )
 
@@ -3467,9 +3688,7 @@ class ClientDetails(DataClassJsonMixin):
     client_type: ClientType = field(metadata=config(field_name="clientType"))
     desc: str = field(metadata=config(field_name="desc"))
     version: str = field(metadata=config(field_name="version"))
-    argv: Optional[Optional[List[str]]] = field(
-        default=None, metadata=config(field_name="argv")
-    )
+    argv: Optional[List[str]] = field(default=None, metadata=config(field_name="argv"))
 
 
 @dataclass
@@ -3646,7 +3865,7 @@ class FolderHandle(DataClassJsonMixin):
 @dataclass
 class FeaturedBotsRes(DataClassJsonMixin):
     is_last_page: bool = field(metadata=config(field_name="isLastPage"))
-    bots: Optional[Optional[List[FeaturedBot]]] = field(
+    bots: Optional[List[FeaturedBot]] = field(
         default=None, metadata=config(field_name="bots")
     )
 
@@ -3654,14 +3873,14 @@ class FeaturedBotsRes(DataClassJsonMixin):
 @dataclass
 class SearchRes(DataClassJsonMixin):
     is_last_page: bool = field(metadata=config(field_name="isLastPage"))
-    bots: Optional[Optional[List[FeaturedBot]]] = field(
+    bots: Optional[List[FeaturedBot]] = field(
         default=None, metadata=config(field_name="bots")
     )
 
 
 @dataclass
 class ListResult(DataClassJsonMixin):
-    files: Optional[Optional[List[File]]] = field(
+    files: Optional[List[File]] = field(
         default=None, metadata=config(field_name="files")
     )
 
@@ -3709,7 +3928,7 @@ class GPGKey(DataClassJsonMixin):
     key_id: str = field(metadata=config(field_name="keyID"))
     creation: str = field(metadata=config(field_name="creation"))
     expiration: str = field(metadata=config(field_name="expiration"))
-    identities: Optional[Optional[List[PGPIdentity]]] = field(
+    identities: Optional[List[PGPIdentity]] = field(
         default=None, metadata=config(field_name="identities")
     )
 
@@ -3783,6 +4002,12 @@ class HomeUserSummary(DataClassJsonMixin):
 class Identify3RowMeta(DataClassJsonMixin):
     color: Identify3RowColor = field(metadata=config(field_name="color"))
     label: str = field(metadata=config(field_name="label"))
+
+
+@dataclass
+class Identify3Summary(DataClassJsonMixin):
+    gui_id: Identify3GUIID = field(metadata=config(field_name="guiID"))
+    num_proofs_to_check: int = field(metadata=config(field_name="numProofsToCheck"))
 
 
 @dataclass
@@ -3860,7 +4085,7 @@ class UserTeamShowcase(DataClassJsonMixin):
     description: str = field(metadata=config(field_name="description"))
     role: TeamRole = field(metadata=config(field_name="role"))
     num_members: int = field(metadata=config(field_name="num_members"))
-    public_admins: Optional[Optional[List[str]]] = field(
+    public_admins: Optional[List[str]] = field(
         default=None, metadata=config(field_name="public_admins")
     )
 
@@ -3870,6 +4095,23 @@ class DismissReason(DataClassJsonMixin):
     type: DismissReasonType = field(metadata=config(field_name="type"))
     reason: str = field(metadata=config(field_name="reason"))
     resource: str = field(metadata=config(field_name="resource"))
+
+
+@dataclass
+class IncomingShareItem(DataClassJsonMixin):
+    type: IncomingShareType = field(metadata=config(field_name="type"))
+    original_path: str = field(metadata=config(field_name="originalPath"))
+    original_size: int = field(metadata=config(field_name="originalSize"))
+    scaled_path: Optional[str] = field(
+        default=None, metadata=config(field_name="scaledPath")
+    )
+    scaled_size: Optional[int] = field(
+        default=None, metadata=config(field_name="scaledSize")
+    )
+    thumbnail_path: Optional[str] = field(
+        default=None, metadata=config(field_name="thumbnailPath")
+    )
+    content: Optional[str] = field(default=None, metadata=config(field_name="content"))
 
 
 @dataclass
@@ -3913,7 +4155,7 @@ class FSPathSyncStatus(DataClassJsonMixin):
 @dataclass
 class FSSyncStatus(DataClassJsonMixin):
     total_syncing_bytes: int = field(metadata=config(field_name="totalSyncingBytes"))
-    syncing_paths: Optional[Optional[List[str]]] = field(
+    syncing_paths: Optional[List[str]] = field(
         default=None, metadata=config(field_name="syncingPaths")
     )
     end_estimate: Optional[Time] = field(
@@ -3956,7 +4198,7 @@ class KVEntryID(DataClassJsonMixin):
 class KVListEntryResult(DataClassJsonMixin):
     team_name: str = field(metadata=config(field_name="teamName"))
     namespace: str = field(metadata=config(field_name="namespace"))
-    entry_keys: Optional[Optional[List[KVListEntryKey]]] = field(
+    entry_keys: Optional[List[KVListEntryKey]] = field(
         default=None, metadata=config(field_name="entryKeys")
     )
 
@@ -4028,9 +4270,25 @@ class FindNextMDResponse(DataClassJsonMixin):
     kbfs_root: MerkleRoot = field(metadata=config(field_name="kbfsRoot"))
     root_seqno: Seqno = field(metadata=config(field_name="rootSeqno"))
     root_hash: HashMeta = field(metadata=config(field_name="rootHash"))
-    merkle_nodes: Optional[Optional[List[str]]] = field(
+    merkle_nodes: Optional[List[str]] = field(
         default=None, metadata=config(field_name="merkleNodes")
     )
+
+
+@dataclass
+class InstrumentationStat(DataClassJsonMixin):
+    min_dur: DurationMsec = field(metadata=config(field_name="minDur"))
+    tag: str = field(metadata=config(field_name="tag"))
+    ctime: Time = field(metadata=config(field_name="ctime"))
+    mtime: Time = field(metadata=config(field_name="mtime"))
+    avg_dur: DurationMsec = field(metadata=config(field_name="avgDur"))
+    max_dur: DurationMsec = field(metadata=config(field_name="maxDur"))
+    num_calls: int = field(metadata=config(field_name="numCalls"))
+    total_dur: DurationMsec = field(metadata=config(field_name="totalDur"))
+    avg_size: int = field(metadata=config(field_name="avgSize"))
+    max_size: int = field(metadata=config(field_name="maxSize"))
+    min_size: int = field(metadata=config(field_name="minSize"))
+    total_size: int = field(metadata=config(field_name="totalSize"))
 
 
 @dataclass
@@ -4049,9 +4307,16 @@ class ResetState(DataClassJsonMixin):
 
 
 @dataclass
+class WotUpdate(DataClassJsonMixin):
+    voucher: str = field(metadata=config(field_name="voucher"))
+    vouchee: str = field(metadata=config(field_name="vouchee"))
+    status: WotStatusType = field(metadata=config(field_name="status"))
+
+
+@dataclass
 class BadgeConversationInfo(DataClassJsonMixin):
     conv_id: ChatConversationID = field(metadata=config(field_name="convID"))
-    badge_counts: Dict[str, int] = field(metadata=config(field_name="badgeCounts"))
+    badge_count: int = field(metadata=config(field_name="badgeCount"))
     unread_messages: int = field(metadata=config(field_name="unreadMessages"))
 
 
@@ -4079,6 +4344,13 @@ class ProcessRuntimeStats(DataClassJsonMixin):
 
 
 @dataclass
+class PerfEvent(DataClassJsonMixin):
+    message: str = field(metadata=config(field_name="message"))
+    ctime: Time = field(metadata=config(field_name="ctime"))
+    event_type: PerfEventType = field(metadata=config(field_name="eventType"))
+
+
+@dataclass
 class GUIEntryFeatures(DataClassJsonMixin):
     show_typing: Feature = field(metadata=config(field_name="showTyping"))
 
@@ -4094,7 +4366,7 @@ class PGPSignOptions(DataClassJsonMixin):
 @dataclass
 class PGPCreateUids(DataClassJsonMixin):
     use_default: bool = field(metadata=config(field_name="useDefault"))
-    ids: Optional[Optional[List[PGPIdentity]]] = field(
+    ids: Optional[List[PGPIdentity]] = field(
         default=None, metadata=config(field_name="ids")
     )
 
@@ -4153,7 +4425,6 @@ class ParamProofServiceConfig(DataClassJsonMixin):
     brand_color: str = field(metadata=config(field_name="brand_color"))
     version: int = field(metadata=config(field_name="version"))
     display_name: str = field(metadata=config(field_name="display_name"))
-    check_url: str = field(metadata=config(field_name="check_url"))
     description: str = field(metadata=config(field_name="description"))
     username_config: ParamProofUsernameConfig = field(
         metadata=config(field_name="username")
@@ -4161,13 +4432,11 @@ class ParamProofServiceConfig(DataClassJsonMixin):
     domain: str = field(metadata=config(field_name="domain"))
     prefill_url: str = field(metadata=config(field_name="prefill_url"))
     profile_url: str = field(metadata=config(field_name="profile_url"))
-    logo: Optional[ParamProofLogoConfig] = field(
-        default=None, metadata=config(field_name="logo")
-    )
-    check_path: Optional[Optional[List[SelectorEntry]]] = field(
+    check_url: str = field(metadata=config(field_name="check_url"))
+    check_path: Optional[List[SelectorEntry]] = field(
         default=None, metadata=config(field_name="check_path")
     )
-    avatar_path: Optional[Optional[List[SelectorEntry]]] = field(
+    avatar_path: Optional[List[SelectorEntry]] = field(
         default=None, metadata=config(field_name="avatar_path")
     )
 
@@ -4178,13 +4447,13 @@ class ProveParameters(DataClassJsonMixin):
     subtext: str = field(metadata=config(field_name="subtext"))
     suffix: str = field(metadata=config(field_name="suffix"))
     button_label: str = field(metadata=config(field_name="buttonLabel"))
-    logo_full: Optional[Optional[List[SizedImage]]] = field(
+    logo_full: Optional[List[SizedImage]] = field(
         default=None, metadata=config(field_name="logoFull")
     )
-    logo_black: Optional[Optional[List[SizedImage]]] = field(
+    logo_black: Optional[List[SizedImage]] = field(
         default=None, metadata=config(field_name="logoBlack")
     )
-    logo_white: Optional[Optional[List[SizedImage]]] = field(
+    logo_white: Optional[List[SizedImage]] = field(
         default=None, metadata=config(field_name="logoWhite")
     )
 
@@ -4207,10 +4476,10 @@ class TLF(DataClassJsonMixin):
     id: TLFID = field(metadata=config(field_name="id"))
     name: str = field(metadata=config(field_name="name"))
     is_private: bool = field(metadata=config(field_name="isPrivate"))
-    writers: Optional[Optional[List[str]]] = field(
+    writers: Optional[List[str]] = field(
         default=None, metadata=config(field_name="writers")
     )
-    readers: Optional[Optional[List[str]]] = field(
+    readers: Optional[List[str]] = field(
         default=None, metadata=config(field_name="readers")
     )
 
@@ -4238,23 +4507,24 @@ class ResetPrev(DataClassJsonMixin):
 
 @dataclass
 class SaltpackEncryptOptions(DataClassJsonMixin):
+    use_paper_keys: bool = field(metadata=config(field_name="usePaperKeys"))
+    use_kbfs_keys_only_for_testing: bool = field(
+        metadata=config(field_name="useKBFSKeysOnlyForTesting")
+    )
     authenticity_type: AuthenticityType = field(
         metadata=config(field_name="authenticityType")
     )
     use_entity_keys: bool = field(metadata=config(field_name="useEntityKeys"))
     use_device_keys: bool = field(metadata=config(field_name="useDeviceKeys"))
-    use_paper_keys: bool = field(metadata=config(field_name="usePaperKeys"))
+    no_force_poll: bool = field(metadata=config(field_name="noForcePoll"))
     no_self_encrypt: bool = field(metadata=config(field_name="noSelfEncrypt"))
     binary: bool = field(metadata=config(field_name="binary"))
     saltpack_version: int = field(metadata=config(field_name="saltpackVersion"))
-    use_kbfs_keys_only_for_testing: bool = field(
-        metadata=config(field_name="useKBFSKeysOnlyForTesting")
-    )
-    recipients: Optional[Optional[List[str]]] = field(
-        default=None, metadata=config(field_name="recipients")
-    )
-    team_recipients: Optional[Optional[List[str]]] = field(
+    team_recipients: Optional[List[str]] = field(
         default=None, metadata=config(field_name="teamRecipients")
+    )
+    recipients: Optional[List[str]] = field(
+        default=None, metadata=config(field_name="recipients")
     )
 
 
@@ -4262,6 +4532,7 @@ class SaltpackEncryptOptions(DataClassJsonMixin):
 class SaltpackSender(DataClassJsonMixin):
     uid: UID = field(metadata=config(field_name="uid"))
     username: str = field(metadata=config(field_name="username"))
+    fullname: str = field(metadata=config(field_name="fullname"))
     sender_type: SaltpackSenderType = field(metadata=config(field_name="senderType"))
 
 
@@ -4374,7 +4645,7 @@ class OpProgress(DataClassJsonMixin):
 @dataclass
 class FolderSyncConfig(DataClassJsonMixin):
     mode: FolderSyncMode = field(metadata=config(field_name="mode"))
-    paths: Optional[Optional[List[str]]] = field(
+    paths: Optional[List[str]] = field(
         default=None, metadata=config(field_name="paths")
     )
 
@@ -4395,6 +4666,21 @@ class GUIFileContext(DataClassJsonMixin):
     view_type: GUIViewType = field(metadata=config(field_name="viewType"))
     content_type: str = field(metadata=config(field_name="contentType"))
     url: str = field(metadata=config(field_name="url"))
+
+
+@dataclass
+class SimpleFSSearchResults(DataClassJsonMixin):
+    next_result: int = field(metadata=config(field_name="nextResult"))
+    hits: Optional[List[SimpleFSSearchHit]] = field(
+        default=None, metadata=config(field_name="hits")
+    )
+
+
+@dataclass
+class IndexProgressRecord(DataClassJsonMixin):
+    end_estimate: Time = field(metadata=config(field_name="endEstimate"))
+    bytes_total: int = field(metadata=config(field_name="bytesTotal"))
+    bytes_so_far: int = field(metadata=config(field_name="bytesSoFar"))
 
 
 @dataclass
@@ -4453,6 +4739,20 @@ class TeamMember(DataClassJsonMixin):
     bot_settings: Optional[TeamBotSettings] = field(
         default=None, metadata=config(field_name="botSettings")
     )
+
+
+@dataclass
+class TeamMemberRole(DataClassJsonMixin):
+    uid: UID = field(metadata=config(field_name="uid"))
+    username: str = field(metadata=config(field_name="username"))
+    full_name: FullName = field(metadata=config(field_name="fullName"))
+    role: TeamRole = field(metadata=config(field_name="role"))
+
+
+@dataclass
+class TeamUsedInvite(DataClassJsonMixin):
+    invite_id: TeamInviteID = field(metadata=config(field_name="inviteID"))
+    uv: UserVersionPercentForm = field(metadata=config(field_name="uv"))
 
 
 @dataclass
@@ -4545,7 +4845,7 @@ class TeamNameLogPoint(DataClassJsonMixin):
 
 @dataclass
 class TeamName(DataClassJsonMixin):
-    parts: Optional[Optional[List[TeamNamePart]]] = field(
+    parts: Optional[List[TeamNamePart]] = field(
         default=None, metadata=config(field_name="parts")
     )
 
@@ -4576,7 +4876,7 @@ class TeamChangeRow(DataClassJsonMixin):
         metadata=config(field_name="latest_hidden_seqno")
     )
     latest_offchain_seqno: Seqno = field(
-        metadata=config(field_name="latest_offchain_seqno")
+        metadata=config(field_name="latest_offchain_version")
     )
     implicit_team: bool = field(metadata=config(field_name="implicit_team"))
     misc: bool = field(metadata=config(field_name="misc"))
@@ -4614,7 +4914,13 @@ class SeitanKeyLabel__SMS(DataClassJsonMixin):
     SMS: Optional[SeitanKeyLabelSms]
 
 
-SeitanKeyLabel = Union[SeitanKeyLabel__SMS]
+@dataclass
+class SeitanKeyLabel__GENERIC(DataClassJsonMixin):
+    t: Literal[SeitanKeyLabelTypeStrings.GENERIC]
+    GENERIC: Optional[SeitanKeyLabelGeneric]
+
+
+SeitanKeyLabel = Union[SeitanKeyLabel__SMS, SeitanKeyLabel__GENERIC]
 
 
 @dataclass
@@ -4637,6 +4943,14 @@ class TeamKBFSKeyRefresher(DataClassJsonMixin):
 class ImplicitRole(DataClassJsonMixin):
     role: TeamRole = field(metadata=config(field_name="role"))
     ancestor: TeamID = field(metadata=config(field_name="ancestor"))
+
+
+@dataclass
+class TeamJoinRequest(DataClassJsonMixin):
+    name: str = field(metadata=config(field_name="name"))
+    username: str = field(metadata=config(field_name="username"))
+    full_name: FullName = field(metadata=config(field_name="fullName"))
+    ctime: UnixTime = field(metadata=config(field_name="ctime"))
 
 
 @dataclass
@@ -4666,11 +4980,31 @@ class TeamShowcase(DataClassJsonMixin):
 
 @dataclass
 class UserRolePair(DataClassJsonMixin):
-    assertion_or_email: str = field(metadata=config(field_name="assertionOrEmail"))
+    assertion: str = field(metadata=config(field_name="assertion"))
     role: TeamRole = field(metadata=config(field_name="role"))
     bot_settings: Optional[TeamBotSettings] = field(
         default=None, metadata=config(field_name="botSettings")
     )
+
+
+@dataclass
+class TeamMemberToRemove(DataClassJsonMixin):
+    username: str = field(metadata=config(field_name="username"))
+    email: str = field(metadata=config(field_name="email"))
+    invite_id: TeamInviteID = field(metadata=config(field_name="inviteID"))
+    allow_inaction: bool = field(metadata=config(field_name="allowInaction"))
+
+
+@dataclass
+class UntrustedTeamExistsResult(DataClassJsonMixin):
+    exists: bool = field(metadata=config(field_name="exists"))
+    status: StatusCode = field(metadata=config(field_name="status"))
+
+
+@dataclass
+class Invitelink(DataClassJsonMixin):
+    ikey: SeitanIKeyInvitelink = field(metadata=config(field_name="ikey"))
+    url: str = field(metadata=config(field_name="url"))
 
 
 @dataclass
@@ -4688,6 +5022,36 @@ class TeamRolePair(DataClassJsonMixin):
 @dataclass
 class UserTeamVersionUpdate(DataClassJsonMixin):
     version: UserTeamVersion = field(metadata=config(field_name="version"))
+
+
+@dataclass
+class TeamTreeMembershipValue(DataClassJsonMixin):
+    role: TeamRole = field(metadata=config(field_name="role"))
+    team_id: TeamID = field(metadata=config(field_name="teamID"))
+    join_time: Optional[Time] = field(
+        default=None, metadata=config(field_name="joinTime")
+    )
+
+
+@dataclass
+class TeamTreeMembershipsDoneResult(DataClassJsonMixin):
+    expected_count: int = field(metadata=config(field_name="expectedCount"))
+    target_team_id: TeamID = field(metadata=config(field_name="targetTeamID"))
+    target_username: str = field(metadata=config(field_name="targetUsername"))
+    guid: int = field(metadata=config(field_name="guid"))
+
+
+@dataclass
+class TeamSearchItem(DataClassJsonMixin):
+    id: TeamID = field(metadata=config(field_name="id"))
+    name: str = field(metadata=config(field_name="name"))
+    member_count: int = field(metadata=config(field_name="memberCount"))
+    last_active: Time = field(metadata=config(field_name="lastActive"))
+    is_demoted: bool = field(metadata=config(field_name="isDemoted"))
+    in_team: bool = field(metadata=config(field_name="inTeam"))
+    description: Optional[str] = field(
+        default=None, metadata=config(field_name="description")
+    )
 
 
 @dataclass
@@ -4717,6 +5081,16 @@ class SigChainLocation(DataClassJsonMixin):
 
 
 @dataclass
+class UserSummary(DataClassJsonMixin):
+    uid: UID = field(metadata=config(field_name="uid"))
+    username: str = field(metadata=config(field_name="username"))
+    full_name: str = field(metadata=config(field_name="fullName"))
+    link_id: Optional[LinkID] = field(
+        default=None, metadata=config(field_name="linkID")
+    )
+
+
+@dataclass
 class Email(DataClassJsonMixin):
     email: EmailAddress = field(metadata=config(field_name="email"))
     is_verified: bool = field(metadata=config(field_name="isVerified"))
@@ -4725,16 +5099,6 @@ class Email(DataClassJsonMixin):
     last_verify_email_date: UnixTime = field(
         metadata=config(field_name="lastVerifyEmailDate")
     )
-
-
-@dataclass
-class UserSummary2(DataClassJsonMixin):
-    uid: UID = field(metadata=config(field_name="uid"))
-    username: str = field(metadata=config(field_name="username"))
-    thumbnail: str = field(metadata=config(field_name="thumbnail"))
-    full_name: str = field(metadata=config(field_name="fullName"))
-    is_follower: bool = field(metadata=config(field_name="isFollower"))
-    is_followee: bool = field(metadata=config(field_name="isFollowee"))
 
 
 @dataclass
@@ -4827,9 +5191,19 @@ class APIUserServiceSummary(DataClassJsonMixin):
 
 
 @dataclass
+class WotProof(DataClassJsonMixin):
+    proof_type: ProofType = field(metadata=config(field_name="proof_type"))
+    name: str = field(metadata=config(field_name="name,omitempty"))
+    username: str = field(metadata=config(field_name="username,omitempty"))
+    protocol: str = field(metadata=config(field_name="protocol,omitempty"))
+    hostname: str = field(metadata=config(field_name="hostname,omitempty"))
+    domain: str = field(metadata=config(field_name="domain,omitempty"))
+
+
+@dataclass
 class GetLockdownResponse(DataClassJsonMixin):
     status: bool = field(metadata=config(field_name="status"))
-    history: Optional[Optional[List[LockdownHistory]]] = field(
+    history: Optional[List[LockdownHistory]] = field(
         default=None, metadata=config(field_name="history")
     )
 
@@ -4842,7 +5216,7 @@ class ContactSettings(DataClassJsonMixin):
     allow_good_teams: bool = field(metadata=config(field_name="allow_good_teams"))
     enabled: bool = field(metadata=config(field_name="enabled"))
     version: Optional[int] = field(default=None, metadata=config(field_name="version"))
-    teams: Optional[Optional[List[TeamContactSettings]]] = field(
+    teams: Optional[List[TeamContactSettings]] = field(
         default=None, metadata=config(field_name="teams")
     )
 
@@ -4858,6 +5232,12 @@ class BlockReference(DataClassJsonMixin):
 class BlockIdCount(DataClassJsonMixin):
     id: BlockIdCombo = field(metadata=config(field_name="id"))
     live_count: int = field(metadata=config(field_name="liveCount"))
+
+
+@dataclass
+class FolderUsageStat(DataClassJsonMixin):
+    folder_id: str = field(metadata=config(field_name="folderID"))
+    stats: UsageStat = field(metadata=config(field_name="stats"))
 
 
 @dataclass
@@ -4879,6 +5259,7 @@ class CurrentStatus(DataClassJsonMixin):
     registered: bool = field(metadata=config(field_name="registered"))
     logged_in: bool = field(metadata=config(field_name="loggedIn"))
     session_is_valid: bool = field(metadata=config(field_name="sessionIsValid"))
+    device_name: str = field(metadata=config(field_name="deviceName"))
     user: Optional[User] = field(default=None, metadata=config(field_name="user"))
 
 
@@ -4909,7 +5290,7 @@ class BootstrapStatus(DataClassJsonMixin):
 @dataclass
 class Contact(DataClassJsonMixin):
     name: str = field(metadata=config(field_name="name"))
-    components: Optional[Optional[List[ContactComponent]]] = field(
+    components: Optional[List[ContactComponent]] = field(
         default=None, metadata=config(field_name="components")
     )
 
@@ -5046,7 +5427,7 @@ class GitRefMetadata(DataClassJsonMixin):
         metadata=config(field_name="moreCommitsAvailable")
     )
     is_delete: bool = field(metadata=config(field_name="isDelete"))
-    commits: Optional[Optional[List[GitCommit]]] = field(
+    commits: Optional[List[GitCommit]] = field(
         default=None, metadata=config(field_name="commits")
     )
 
@@ -5061,9 +5442,16 @@ HomeScreenTodoExt = Union[HomeScreenTodoExt__VERIFY_ALL_EMAIL]
 
 
 @dataclass
+class HomeScreenPeopleNotificationFollowed(DataClassJsonMixin):
+    follow_time: Time = field(metadata=config(field_name="followTime"))
+    followed_back: bool = field(metadata=config(field_name="followedBack"))
+    user: UserSummary = field(metadata=config(field_name="user"))
+
+
+@dataclass
 class HomeScreenPeopleNotificationContactMulti(DataClassJsonMixin):
     num_others: int = field(metadata=config(field_name="numOthers"))
-    contacts: Optional[Optional[List[HomeScreenPeopleNotificationContact]]] = field(
+    contacts: Optional[List[HomeScreenPeopleNotificationContact]] = field(
         default=None, metadata=config(field_name="contacts")
     )
 
@@ -5080,18 +5468,21 @@ class Identify3Row(DataClassJsonMixin):
     ctime: Time = field(metadata=config(field_name="ctime"))
     state: Identify3RowState = field(metadata=config(field_name="state"))
     color: Identify3RowColor = field(metadata=config(field_name="color"))
-    kid: Optional[KID] = field(default=None, metadata=config(field_name="kid"))
-    site_icon: Optional[Optional[List[SizedImage]]] = field(
-        default=None, metadata=config(field_name="siteIcon")
+    site_icon_darkmode: Optional[List[SizedImage]] = field(
+        default=None, metadata=config(field_name="siteIconDarkmode")
     )
-    metas: Optional[Optional[List[Identify3RowMeta]]] = field(
-        default=None, metadata=config(field_name="metas")
-    )
-    site_icon_full: Optional[Optional[List[SizedImage]]] = field(
+    site_icon_full: Optional[List[SizedImage]] = field(
         default=None, metadata=config(field_name="siteIconFull")
     )
-    site_icon_white: Optional[Optional[List[SizedImage]]] = field(
-        default=None, metadata=config(field_name="siteIconWhite")
+    kid: Optional[KID] = field(default=None, metadata=config(field_name="kid"))
+    metas: Optional[List[Identify3RowMeta]] = field(
+        default=None, metadata=config(field_name="metas")
+    )
+    site_icon: Optional[List[SizedImage]] = field(
+        default=None, metadata=config(field_name="siteIcon")
+    )
+    site_icon_full_darkmode: Optional[List[SizedImage]] = field(
+        default=None, metadata=config(field_name="siteIconFullDarkmode")
     )
 
 
@@ -5108,13 +5499,13 @@ class IdentifyOutcome(DataClassJsonMixin):
     num_revoked: int = field(metadata=config(field_name="numRevoked"))
     reason: IdentifyReason = field(metadata=config(field_name="reason"))
     status: Optional[Status] = field(default=None, metadata=config(field_name="status"))
-    revoked: Optional[Optional[List[TrackDiff]]] = field(
+    revoked: Optional[List[TrackDiff]] = field(
         default=None, metadata=config(field_name="revoked")
     )
     track_used: Optional[TrackSummary] = field(
         default=None, metadata=config(field_name="trackUsed")
     )
-    warnings: Optional[Optional[List[str]]] = field(
+    warnings: Optional[List[str]] = field(
         default=None, metadata=config(field_name="warnings")
     )
 
@@ -5155,24 +5546,26 @@ class CheckResult(DataClassJsonMixin):
 
 @dataclass
 class UserCard(DataClassJsonMixin):
-    twitter: str = field(metadata=config(field_name="twitter"))
-    following: int = field(metadata=config(field_name="following"))
+    website: str = field(metadata=config(field_name="website"))
+    unverified_num_following: int = field(
+        metadata=config(field_name="unverifiedNumFollowing")
+    )
     uid: UID = field(metadata=config(field_name="uid"))
     full_name: str = field(metadata=config(field_name="fullName"))
     location: str = field(metadata=config(field_name="location"))
     bio: str = field(metadata=config(field_name="bio"))
     bio_decorated: str = field(metadata=config(field_name="bioDecorated"))
-    website: str = field(metadata=config(field_name="website"))
-    followers: int = field(metadata=config(field_name="followers"))
-    you_follow_them: bool = field(metadata=config(field_name="youFollowThem"))
-    they_follow_you: bool = field(metadata=config(field_name="theyFollowYou"))
+    unverified_num_followers: int = field(
+        metadata=config(field_name="unverifiedNumFollowers")
+    )
+    twitter: str = field(metadata=config(field_name="twitter"))
     blocked: bool = field(metadata=config(field_name="blocked"))
     registered_for_airdrop: bool = field(
         metadata=config(field_name="registeredForAirdrop")
     )
     stellar_hidden: bool = field(metadata=config(field_name="stellarHidden"))
     hid_from_followers: bool = field(metadata=config(field_name="hidFromFollowers"))
-    team_showcase: Optional[Optional[List[UserTeamShowcase]]] = field(
+    team_showcase: Optional[List[UserTeamShowcase]] = field(
         default=None, metadata=config(field_name="teamShowcase")
     )
 
@@ -5199,7 +5592,7 @@ class FuseStatus(DataClassJsonMixin):
     install_status: InstallStatus = field(metadata=config(field_name="installStatus"))
     install_action: InstallAction = field(metadata=config(field_name="installAction"))
     status: Status = field(metadata=config(field_name="status"))
-    mount_infos: Optional[Optional[List[FuseMountInfo]]] = field(
+    mount_infos: Optional[List[FuseMountInfo]] = field(
         default=None, metadata=config(field_name="mountInfos")
     )
 
@@ -5214,10 +5607,10 @@ class ComponentResult(DataClassJsonMixin):
 @dataclass
 class FSFolderWriterEditHistory(DataClassJsonMixin):
     writer_name: str = field(metadata=config(field_name="writerName"))
-    edits: Optional[Optional[List[FSFolderWriterEdit]]] = field(
+    edits: Optional[List[FSFolderWriterEdit]] = field(
         default=None, metadata=config(field_name="edits")
     )
-    deletes: Optional[Optional[List[FSFolderWriterEdit]]] = field(
+    deletes: Optional[List[FSFolderWriterEdit]] = field(
         default=None, metadata=config(field_name="deletes")
     )
 
@@ -5250,7 +5643,7 @@ class MerkleRootAndTime(DataClassJsonMixin):
 @dataclass
 class MetadataResponse(DataClassJsonMixin):
     folder_id: str = field(metadata=config(field_name="folderID"))
-    md_blocks: Optional[Optional[List[MDBlock]]] = field(
+    md_blocks: Optional[List[MDBlock]] = field(
         default=None, metadata=config(field_name="mdBlocks")
     )
 
@@ -5264,33 +5657,38 @@ class BadgeState(DataClassJsonMixin):
     home_todo_items: int = field(metadata=config(field_name="homeTodoItems"))
     unverified_emails: int = field(metadata=config(field_name="unverifiedEmails"))
     unverified_phones: int = field(metadata=config(field_name="unverifiedPhones"))
-    rekeys_needed: int = field(metadata=config(field_name="rekeysNeeded"))
-    new_devices: Optional[Optional[List[DeviceID]]] = field(
-        default=None, metadata=config(field_name="newDevices")
+    small_team_badge_count: int = field(
+        metadata=config(field_name="smallTeamBadgeCount")
     )
-    conversations: Optional[Optional[List[BadgeConversationInfo]]] = field(
+    big_team_badge_count: int = field(metadata=config(field_name="bigTeamBadgeCount"))
+    new_team_access_request_count: int = field(
+        metadata=config(field_name="newTeamAccessRequestCount")
+    )
+    rekeys_needed: int = field(metadata=config(field_name="rekeysNeeded"))
+    wot_updates: Dict[str, WotUpdate] = field(metadata=config(field_name="wotUpdates"))
+    conversations: Optional[List[BadgeConversationInfo]] = field(
         default=None, metadata=config(field_name="conversations")
     )
-    new_git_repo_global_unique_i_ds: Optional[Optional[List[str]]] = field(
+    new_git_repo_global_unique_i_ds: Optional[List[str]] = field(
         default=None, metadata=config(field_name="newGitRepoGlobalUniqueIDs")
     )
-    new_teams: Optional[Optional[List[TeamID]]] = field(
+    new_teams: Optional[List[TeamID]] = field(
         default=None, metadata=config(field_name="newTeams")
     )
-    deleted_teams: Optional[Optional[List[DeletedTeamInfo]]] = field(
+    deleted_teams: Optional[List[DeletedTeamInfo]] = field(
         default=None, metadata=config(field_name="deletedTeams")
     )
-    new_team_access_requests: Optional[Optional[List[TeamID]]] = field(
-        default=None, metadata=config(field_name="newTeamAccessRequests")
-    )
-    teams_with_reset_users: Optional[Optional[List[TeamMemberOutReset]]] = field(
+    teams_with_reset_users: Optional[List[TeamMemberOutReset]] = field(
         default=None, metadata=config(field_name="teamsWithResetUsers")
     )
-    unread_wallet_accounts: Optional[Optional[List[WalletAccountInfo]]] = field(
+    unread_wallet_accounts: Optional[List[WalletAccountInfo]] = field(
         default=None, metadata=config(field_name="unreadWalletAccounts")
     )
-    revoked_devices: Optional[Optional[List[DeviceID]]] = field(
+    revoked_devices: Optional[List[DeviceID]] = field(
         default=None, metadata=config(field_name="revokedDevices")
+    )
+    new_devices: Optional[List[DeviceID]] = field(
+        default=None, metadata=config(field_name="newDevices")
     )
 
 
@@ -5300,11 +5698,14 @@ class RuntimeStats(DataClassJsonMixin):
     selective_sync_active: bool = field(
         metadata=config(field_name="selectiveSyncActive")
     )
-    process_stats: Optional[Optional[List[ProcessRuntimeStats]]] = field(
+    process_stats: Optional[List[ProcessRuntimeStats]] = field(
         default=None, metadata=config(field_name="processStats")
     )
-    db_stats: Optional[Optional[List[DbStats]]] = field(
+    db_stats: Optional[List[DbStats]] = field(
         default=None, metadata=config(field_name="dbStats")
+    )
+    perf_events: Optional[List[PerfEvent]] = field(
+        default=None, metadata=config(field_name="perfEvents")
     )
 
 
@@ -5326,13 +5727,16 @@ class PGPSigVerification(DataClassJsonMixin):
     verified: bool = field(metadata=config(field_name="verified"))
     signer: User = field(metadata=config(field_name="signer"))
     sign_key: PublicKey = field(metadata=config(field_name="signKey"))
+    warnings: Optional[List[str]] = field(
+        default=None, metadata=config(field_name="warnings")
+    )
 
 
 @dataclass
 class Process(DataClassJsonMixin):
     pid: str = field(metadata=config(field_name="pid"))
     command: str = field(metadata=config(field_name="command"))
-    file_descriptors: Optional[Optional[List[FileDescriptor]]] = field(
+    file_descriptors: Optional[List[FileDescriptor]] = field(
         default=None, metadata=config(field_name="fileDescriptors")
     )
 
@@ -5352,14 +5756,14 @@ class ExternalServiceConfig(DataClassJsonMixin):
 class ProblemTLF(DataClassJsonMixin):
     tlf: TLF = field(metadata=config(field_name="tlf"))
     score: int = field(metadata=config(field_name="score"))
-    solution_kids: Optional[Optional[List[KID]]] = field(
+    solution_kids: Optional[List[KID]] = field(
         default=None, metadata=config(field_name="solution_kids")
     )
 
 
 @dataclass
 class RevokeWarning(DataClassJsonMixin):
-    endangered_tl_fs: Optional[Optional[List[TLF]]] = field(
+    endangered_tl_fs: Optional[List[TLF]] = field(
         default=None, metadata=config(field_name="endangeredTLFs")
     )
 
@@ -5388,7 +5792,7 @@ class SaltpackEncryptedMessageInfo(DataClassJsonMixin):
     num_anon_receivers: int = field(metadata=config(field_name="numAnonReceivers"))
     receiver_is_anon: bool = field(metadata=config(field_name="receiverIsAnon"))
     sender: SaltpackSender = field(metadata=config(field_name="sender"))
-    devices: Optional[Optional[List[Device]]] = field(
+    devices: Optional[List[Device]] = field(
         default=None, metadata=config(field_name="devices")
     )
 
@@ -5444,13 +5848,13 @@ class SimpleFSStats(DataClassJsonMixin):
     process_stats: ProcessRuntimeStats = field(
         metadata=config(field_name="processStats")
     )
-    block_cache_db_stats: Optional[Optional[List[str]]] = field(
+    block_cache_db_stats: Optional[List[str]] = field(
         default=None, metadata=config(field_name="blockCacheDbStats")
     )
-    sync_cache_db_stats: Optional[Optional[List[str]]] = field(
+    sync_cache_db_stats: Optional[List[str]] = field(
         default=None, metadata=config(field_name="syncCacheDbStats")
     )
-    runtime_db_stats: Optional[Optional[List[DbStats]]] = field(
+    runtime_db_stats: Optional[List[DbStats]] = field(
         default=None, metadata=config(field_name="runtimeDbStats")
     )
 
@@ -5466,12 +5870,20 @@ class DownloadInfo(DataClassJsonMixin):
 
 @dataclass
 class DownloadStatus(DataClassJsonMixin):
-    regular_download_i_ds: Optional[Optional[List[str]]] = field(
+    regular_download_i_ds: Optional[List[str]] = field(
         default=None, metadata=config(field_name="regularDownloadIDs")
     )
-    states: Optional[Optional[List[DownloadState]]] = field(
+    states: Optional[List[DownloadState]] = field(
         default=None, metadata=config(field_name="states")
     )
+
+
+@dataclass
+class UploadState(DataClassJsonMixin):
+    upload_id: str = field(metadata=config(field_name="uploadID"))
+    target_path: KBFSPath = field(metadata=config(field_name="targetPath"))
+    canceled: bool = field(metadata=config(field_name="canceled"))
+    error: Optional[str] = field(default=None, metadata=config(field_name="error"))
 
 
 @dataclass
@@ -5504,22 +5916,22 @@ class PerTeamKeySeedItem(DataClassJsonMixin):
 
 @dataclass
 class TeamMembers(DataClassJsonMixin):
-    owners: Optional[Optional[List[UserVersion]]] = field(
+    owners: Optional[List[UserVersion]] = field(
         default=None, metadata=config(field_name="owners")
     )
-    admins: Optional[Optional[List[UserVersion]]] = field(
+    admins: Optional[List[UserVersion]] = field(
         default=None, metadata=config(field_name="admins")
     )
-    writers: Optional[Optional[List[UserVersion]]] = field(
+    writers: Optional[List[UserVersion]] = field(
         default=None, metadata=config(field_name="writers")
     )
-    readers: Optional[Optional[List[UserVersion]]] = field(
+    readers: Optional[List[UserVersion]] = field(
         default=None, metadata=config(field_name="readers")
     )
-    bots: Optional[Optional[List[UserVersion]]] = field(
+    bots: Optional[List[UserVersion]] = field(
         default=None, metadata=config(field_name="bots")
     )
-    restricted_bots: Optional[Optional[List[UserVersion]]] = field(
+    restricted_bots: Optional[List[UserVersion]] = field(
         default=None, metadata=config(field_name="restrictedBots")
     )
 
@@ -5531,6 +5943,24 @@ class TeamMemberDetails(DataClassJsonMixin):
     full_name: FullName = field(metadata=config(field_name="fullName"))
     needs_puk: bool = field(metadata=config(field_name="needsPUK"))
     status: TeamMemberStatus = field(metadata=config(field_name="status"))
+    join_time: Optional[Time] = field(
+        default=None, metadata=config(field_name="joinTime")
+    )
+
+
+@dataclass
+class UntrustedTeamInfo(DataClassJsonMixin):
+    name: TeamName = field(metadata=config(field_name="name"))
+    in_team: bool = field(metadata=config(field_name="inTeam"))
+    open: bool = field(metadata=config(field_name="open"))
+    description: str = field(metadata=config(field_name="description"))
+    num_members: int = field(metadata=config(field_name="numMembers"))
+    public_admins: Optional[List[str]] = field(
+        default=None, metadata=config(field_name="publicAdmins")
+    )
+    public_members: Optional[List[TeamMemberRole]] = field(
+        default=None, metadata=config(field_name="publicMembers")
+    )
 
 
 @dataclass
@@ -5541,23 +5971,26 @@ class TeamChangeReq(DataClassJsonMixin):
     completed_invites: Dict[str, UserVersionPercentForm] = field(
         metadata=config(field_name="completedInvites")
     )
-    owners: Optional[Optional[List[UserVersion]]] = field(
+    owners: Optional[List[UserVersion]] = field(
         default=None, metadata=config(field_name="owners")
     )
-    admins: Optional[Optional[List[UserVersion]]] = field(
+    admins: Optional[List[UserVersion]] = field(
         default=None, metadata=config(field_name="admins")
     )
-    writers: Optional[Optional[List[UserVersion]]] = field(
+    writers: Optional[List[UserVersion]] = field(
         default=None, metadata=config(field_name="writers")
     )
-    readers: Optional[Optional[List[UserVersion]]] = field(
+    readers: Optional[List[UserVersion]] = field(
         default=None, metadata=config(field_name="readers")
     )
-    bots: Optional[Optional[List[UserVersion]]] = field(
+    bots: Optional[List[UserVersion]] = field(
         default=None, metadata=config(field_name="bots")
     )
-    none: Optional[Optional[List[UserVersion]]] = field(
+    none: Optional[List[UserVersion]] = field(
         default=None, metadata=config(field_name="none")
+    )
+    used_invites: Optional[List[TeamUsedInvite]] = field(
+        default=None, metadata=config(field_name="usedInvites")
     )
 
 
@@ -5568,16 +6001,16 @@ class TeamPlusApplicationKeys(DataClassJsonMixin):
     implicit: bool = field(metadata=config(field_name="implicit"))
     public: bool = field(metadata=config(field_name="public"))
     application: TeamApplication = field(metadata=config(field_name="application"))
-    writers: Optional[Optional[List[UserVersion]]] = field(
+    writers: Optional[List[UserVersion]] = field(
         default=None, metadata=config(field_name="writers")
     )
-    only_readers: Optional[Optional[List[UserVersion]]] = field(
+    only_readers: Optional[List[UserVersion]] = field(
         default=None, metadata=config(field_name="onlyReaders")
     )
-    only_restricted_bots: Optional[Optional[List[UserVersion]]] = field(
+    only_restricted_bots: Optional[List[UserVersion]] = field(
         default=None, metadata=config(field_name="onlyRestrictedBots")
     )
-    application_keys: Optional[Optional[List[TeamApplicationKey]]] = field(
+    application_keys: Optional[List[TeamApplicationKey]] = field(
         default=None, metadata=config(field_name="applicationKeys")
     )
 
@@ -5616,17 +6049,23 @@ class FastTeamSigChainState(DataClassJsonMixin):
 
 @dataclass
 class AuditHistory(DataClassJsonMixin):
+    post_probes: Dict[str, Probe] = field(metadata=config(field_name="postProbes"))
     id: TeamID = field(metadata=config(field_name="ID"))
-    public: bool = field(metadata=config(field_name="public"))
     prior_merkle_seqno: Seqno = field(metadata=config(field_name="priorMerkleSeqno"))
     version: AuditVersion = field(metadata=config(field_name="version"))
-    pre_probes: Dict[str, Probe] = field(metadata=config(field_name="preProbes"))
-    post_probes: Dict[str, Probe] = field(metadata=config(field_name="postProbes"))
-    tails: Dict[str, LinkID] = field(metadata=config(field_name="tails"))
     hidden_tails: Dict[str, LinkID] = field(metadata=config(field_name="hiddenTails"))
+    pre_probes: Dict[str, Probe] = field(metadata=config(field_name="preProbes"))
+    public: bool = field(metadata=config(field_name="public"))
+    tails: Dict[str, LinkID] = field(metadata=config(field_name="tails"))
     skip_until: Time = field(metadata=config(field_name="skipUntil"))
-    audits: Optional[Optional[List[Audit]]] = field(
+    audits: Optional[List[Audit]] = field(
         default=None, metadata=config(field_name="audits")
+    )
+    pre_probes_to_retry: Optional[List[Seqno]] = field(
+        default=None, metadata=config(field_name="preProbesToRetry")
+    )
+    post_probes_to_retry: Optional[List[Seqno]] = field(
+        default=None, metadata=config(field_name="postProbesToRetry")
     )
 
 
@@ -5637,19 +6076,16 @@ class TeamInvite(DataClassJsonMixin):
     type: TeamInviteType = field(metadata=config(field_name="type"))
     name: TeamInviteName = field(metadata=config(field_name="name"))
     inviter: UserVersion = field(metadata=config(field_name="inviter"))
+    max_uses: Optional[TeamInviteMaxUses] = field(
+        default=None, metadata=config(field_name="maxUses")
+    )
+    etime: Optional[UnixTime] = field(default=None, metadata=config(field_name="etime"))
 
 
 @dataclass
-class AnnotatedTeamInvite(DataClassJsonMixin):
-    role: TeamRole = field(metadata=config(field_name="role"))
-    id: TeamInviteID = field(metadata=config(field_name="id"))
-    type: TeamInviteType = field(metadata=config(field_name="type"))
-    name: TeamInviteName = field(metadata=config(field_name="name"))
+class TeamUsedInviteLogPoint(DataClassJsonMixin):
     uv: UserVersion = field(metadata=config(field_name="uv"))
-    inviter: UserVersion = field(metadata=config(field_name="inviter"))
-    inviter_username: str = field(metadata=config(field_name="inviterUsername"))
-    team_name: str = field(metadata=config(field_name="teamName"))
-    status: TeamMemberStatus = field(metadata=config(field_name="status"))
+    log_point: int = field(metadata=config(field_name="logPoint"))
 
 
 @dataclass
@@ -5663,7 +6099,7 @@ class TeamCLKRMsg(DataClassJsonMixin):
     team_id: TeamID = field(metadata=config(field_name="team_id"))
     generation: PerTeamKeyGeneration = field(metadata=config(field_name="generation"))
     score: int = field(metadata=config(field_name="score"))
-    reset_users_untrusted: Optional[Optional[List[TeamCLKRResetUser]]] = field(
+    reset_users_untrusted: Optional[List[TeamCLKRResetUser]] = field(
         default=None, metadata=config(field_name="reset_users")
     )
 
@@ -5679,7 +6115,7 @@ class TeamMemberOutFromReset(DataClassJsonMixin):
 class TeamSBSMsg(DataClassJsonMixin):
     team_id: TeamID = field(metadata=config(field_name="team_id"))
     score: int = field(metadata=config(field_name="score"))
-    invitees: Optional[Optional[List[TeamInvitee]]] = field(
+    invitees: Optional[List[TeamInvitee]] = field(
         default=None, metadata=config(field_name="invitees")
     )
 
@@ -5687,7 +6123,7 @@ class TeamSBSMsg(DataClassJsonMixin):
 @dataclass
 class TeamOpenReqMsg(DataClassJsonMixin):
     team_id: TeamID = field(metadata=config(field_name="team_id"))
-    tars: Optional[Optional[List[TeamAccessRequest]]] = field(
+    tars: Optional[List[TeamAccessRequest]] = field(
         default=None, metadata=config(field_name="tars")
     )
 
@@ -5705,9 +6141,15 @@ class SeitanKeyAndLabelVersion2(DataClassJsonMixin):
 
 
 @dataclass
+class SeitanKeyAndLabelInvitelink(DataClassJsonMixin):
+    i: SeitanIKeyInvitelink = field(metadata=config(field_name="i"))
+    l: SeitanKeyLabel = field(metadata=config(field_name="l"))
+
+
+@dataclass
 class TeamSeitanMsg(DataClassJsonMixin):
     team_id: TeamID = field(metadata=config(field_name="team_id"))
-    seitans: Optional[Optional[List[TeamSeitanRequest]]] = field(
+    seitans: Optional[List[TeamSeitanRequest]] = field(
         default=None, metadata=config(field_name="seitans")
     )
 
@@ -5715,7 +6157,7 @@ class TeamSeitanMsg(DataClassJsonMixin):
 @dataclass
 class TeamOpenSweepMsg(DataClassJsonMixin):
     team_id: TeamID = field(metadata=config(field_name="team_id"))
-    reset_users_untrusted: Optional[Optional[List[TeamCLKRResetUser]]] = field(
+    reset_users_untrusted: Optional[List[TeamCLKRResetUser]] = field(
         default=None, metadata=config(field_name="reset_users")
     )
 
@@ -5735,7 +6177,7 @@ class TeamRefreshers(DataClassJsonMixin):
     need_kbfs_key_generation: TeamKBFSKeyRefresher = field(
         metadata=config(field_name="needKBFSKeyGeneration")
     )
-    want_members: Optional[Optional[List[UserVersion]]] = field(
+    want_members: Optional[List[UserVersion]] = field(
         default=None, metadata=config(field_name="wantMembers")
     )
 
@@ -5752,10 +6194,10 @@ class FastTeamLoadArg(DataClassJsonMixin):
     assert_team_name: Optional[TeamName] = field(
         default=None, metadata=config(field_name="assertTeamName")
     )
-    applications: Optional[Optional[List[TeamApplication]]] = field(
+    applications: Optional[List[TeamApplication]] = field(
         default=None, metadata=config(field_name="applications")
     )
-    key_generations_needed: Optional[Optional[List[PerTeamKeyGeneration]]] = field(
+    key_generations_needed: Optional[List[PerTeamKeyGeneration]] = field(
         default=None, metadata=config(field_name="keyGenerationsNeeded")
     )
 
@@ -5763,7 +6205,7 @@ class FastTeamLoadArg(DataClassJsonMixin):
 @dataclass
 class FastTeamLoadRes(DataClassJsonMixin):
     name: TeamName = field(metadata=config(field_name="name"))
-    application_keys: Optional[Optional[List[TeamApplicationKey]]] = field(
+    application_keys: Optional[List[TeamApplicationKey]] = field(
         default=None, metadata=config(field_name="applicationKeys")
     )
 
@@ -5821,7 +6263,7 @@ class TeamAddMemberResult(DataClassJsonMixin):
 
 @dataclass
 class TeamAddMembersResult(DataClassJsonMixin):
-    not_added: Optional[Optional[List[User]]] = field(
+    not_added: Optional[List[User]] = field(
         default=None, metadata=config(field_name="notAdded")
     )
 
@@ -5846,11 +6288,41 @@ class TeamAndMemberShowcase(DataClassJsonMixin):
 
 
 @dataclass
+class TeamRemoveMembersResult(DataClassJsonMixin):
+    failures: Optional[List[TeamMemberToRemove]] = field(
+        default=None, metadata=config(field_name="failures")
+    )
+
+
+@dataclass
+class TeamEditMembersResult(DataClassJsonMixin):
+    failures: Optional[List[UserRolePair]] = field(
+        default=None, metadata=config(field_name="failures")
+    )
+
+
+@dataclass
+class InviteLinkDetails(DataClassJsonMixin):
+    invite_id: TeamInviteID = field(metadata=config(field_name="inviteID"))
+    inviter_uid: UID = field(metadata=config(field_name="inviterUID"))
+    inviter_username: str = field(metadata=config(field_name="inviterUsername"))
+    inviter_reset_or_del: bool = field(metadata=config(field_name="inviterResetOrDel"))
+    team_is_open: bool = field(metadata=config(field_name="teamIsOpen"))
+    team_id: TeamID = field(metadata=config(field_name="teamID"))
+    team_desc: str = field(metadata=config(field_name="teamDesc"))
+    team_name: TeamName = field(metadata=config(field_name="teamName"))
+    team_num_members: int = field(metadata=config(field_name="teamNumMembers"))
+    team_avatars: Dict[str, AvatarUrl] = field(
+        metadata=config(field_name="teamAvatars")
+    )
+
+
+@dataclass
 class ImplicitTeamUserSet(DataClassJsonMixin):
-    keybase_users: Optional[Optional[List[str]]] = field(
+    keybase_users: Optional[List[str]] = field(
         default=None, metadata=config(field_name="keybaseUsers")
     )
-    unresolved_users: Optional[Optional[List[SocialAssertion]]] = field(
+    unresolved_users: Optional[List[SocialAssertion]] = field(
         default=None, metadata=config(field_name="unresolvedUsers")
     )
 
@@ -5867,6 +6339,46 @@ class TeamProfileAddEntry(DataClassJsonMixin):
 class TeamRoleMapAndVersion(DataClassJsonMixin):
     teams: Dict[str, TeamRolePair] = field(metadata=config(field_name="teams"))
     version: UserTeamVersion = field(metadata=config(field_name="user_team_version"))
+
+
+@dataclass
+class TeamTreeMembershipResult__OK(DataClassJsonMixin):
+    s: Literal[TeamTreeMembershipStatusStrings.OK]
+    OK: Optional[TeamTreeMembershipValue]
+
+
+@dataclass
+class TeamTreeMembershipResult__ERROR(DataClassJsonMixin):
+    s: Literal[TeamTreeMembershipStatusStrings.ERROR]
+    ERROR: Optional[TeamTreeError]
+
+
+@dataclass
+class TeamTreeMembershipResult__HIDDEN(DataClassJsonMixin):
+    s: Literal[TeamTreeMembershipStatusStrings.HIDDEN]
+    HIDDEN: None
+
+
+TeamTreeMembershipResult = Union[
+    TeamTreeMembershipResult__OK,
+    TeamTreeMembershipResult__ERROR,
+    TeamTreeMembershipResult__HIDDEN,
+]
+
+
+@dataclass
+class TeamSearchExport(DataClassJsonMixin):
+    items: Dict[str, TeamSearchItem] = field(metadata=config(field_name="items"))
+    suggested: Optional[List[TeamID]] = field(
+        default=None, metadata=config(field_name="suggested")
+    )
+
+
+@dataclass
+class TeamSearchRes(DataClassJsonMixin):
+    results: Optional[List[TeamSearchItem]] = field(
+        default=None, metadata=config(field_name="results")
+    )
 
 
 @dataclass
@@ -5892,33 +6404,33 @@ class SignatureMetadata(DataClassJsonMixin):
 
 @dataclass
 class Proofs(DataClassJsonMixin):
-    social: Optional[Optional[List[TrackProof]]] = field(
+    social: Optional[List[TrackProof]] = field(
         default=None, metadata=config(field_name="social")
     )
-    web: Optional[Optional[List[WebProof]]] = field(
+    web: Optional[List[WebProof]] = field(
         default=None, metadata=config(field_name="web")
     )
-    public_keys: Optional[Optional[List[PublicKey]]] = field(
+    public_keys: Optional[List[PublicKey]] = field(
         default=None, metadata=config(field_name="publicKeys")
     )
 
 
 @dataclass
-class UserSettings(DataClassJsonMixin):
-    emails: Optional[Optional[List[Email]]] = field(
-        default=None, metadata=config(field_name="emails")
-    )
-    phone_numbers: Optional[Optional[List[UserPhoneNumber]]] = field(
-        default=None, metadata=config(field_name="phoneNumbers")
+class UserSummarySet(DataClassJsonMixin):
+    time: Time = field(metadata=config(field_name="time"))
+    version: int = field(metadata=config(field_name="version"))
+    users: Optional[List[UserSummary]] = field(
+        default=None, metadata=config(field_name="users")
     )
 
 
 @dataclass
-class UserSummary2Set(DataClassJsonMixin):
-    time: Time = field(metadata=config(field_name="time"))
-    version: int = field(metadata=config(field_name="version"))
-    users: Optional[Optional[List[UserSummary2]]] = field(
-        default=None, metadata=config(field_name="users")
+class UserSettings(DataClassJsonMixin):
+    emails: Optional[List[Email]] = field(
+        default=None, metadata=config(field_name="emails")
+    )
+    phone_numbers: Optional[List[UserPhoneNumber]] = field(
+        default=None, metadata=config(field_name="phoneNumbers")
     )
 
 
@@ -5929,16 +6441,19 @@ class ProofSuggestion(DataClassJsonMixin):
     profile_text: str = field(metadata=config(field_name="profileText"))
     picker_text: str = field(metadata=config(field_name="pickerText"))
     picker_subtext: str = field(metadata=config(field_name="pickerSubtext"))
-    profile_icon: Optional[Optional[List[SizedImage]]] = field(
+    profile_icon: Optional[List[SizedImage]] = field(
         default=None, metadata=config(field_name="profileIcon")
     )
-    profile_icon_white: Optional[Optional[List[SizedImage]]] = field(
-        default=None, metadata=config(field_name="profileIconWhite")
+    profile_icon_darkmode: Optional[List[SizedImage]] = field(
+        default=None, metadata=config(field_name="profileIconDarkmode")
     )
-    picker_icon: Optional[Optional[List[SizedImage]]] = field(
+    picker_icon: Optional[List[SizedImage]] = field(
         default=None, metadata=config(field_name="pickerIcon")
     )
-    metas: Optional[Optional[List[Identify3RowMeta]]] = field(
+    picker_icon_darkmode: Optional[List[SizedImage]] = field(
+        default=None, metadata=config(field_name="pickerIconDarkmode")
+    )
+    metas: Optional[List[Identify3RowMeta]] = field(
         default=None, metadata=config(field_name="metas")
     )
 
@@ -5952,7 +6467,7 @@ class NextMerkleRootRes(DataClassJsonMixin):
 class UserBlockedBody(DataClassJsonMixin):
     uid: UID = field(metadata=config(field_name="blocker_uid"))
     username: str = field(metadata=config(field_name="blocker_username"))
-    blocks: Optional[Optional[List[UserBlockedRow]]] = field(
+    blocks: Optional[List[UserBlockedRow]] = field(
         default=None, metadata=config(field_name="blocks")
     )
 
@@ -5966,6 +6481,17 @@ class UserBlockedSummary(DataClassJsonMixin):
 
 
 @dataclass
+class Confidence(DataClassJsonMixin):
+    username_verified_via: UsernameVerificationType = field(
+        metadata=config(field_name="username_verified_via,omitempty")
+    )
+    other: str = field(metadata=config(field_name="other,omitempty"))
+    proofs: Optional[List[WotProof]] = field(
+        default=None, metadata=config(field_name="proofs,omitempty")
+    )
+
+
+@dataclass
 class BlockReferenceCount(DataClassJsonMixin):
     ref: BlockReference = field(metadata=config(field_name="ref"))
     live_count: int = field(metadata=config(field_name="liveCount"))
@@ -5973,8 +6499,18 @@ class BlockReferenceCount(DataClassJsonMixin):
 
 @dataclass
 class ReferenceCountRes(DataClassJsonMixin):
-    counts: Optional[Optional[List[BlockIdCount]]] = field(
+    counts: Optional[List[BlockIdCount]] = field(
         default=None, metadata=config(field_name="counts")
+    )
+
+
+@dataclass
+class BlockQuotaInfo(DataClassJsonMixin):
+    total: UsageStat = field(metadata=config(field_name="total"))
+    limit: int = field(metadata=config(field_name="limit"))
+    git_limit: int = field(metadata=config(field_name="gitLimit"))
+    folders: Optional[List[FolderUsageStat]] = field(
+        default=None, metadata=config(field_name="folders")
     )
 
 
@@ -5986,19 +6522,19 @@ class UserPlusKeys(DataClassJsonMixin):
     username: str = field(metadata=config(field_name="username"))
     pgp_key_count: int = field(metadata=config(field_name="pgpKeyCount"))
     uvv: UserVersionVector = field(metadata=config(field_name="uvv"))
-    device_keys: Optional[Optional[List[PublicKey]]] = field(
+    device_keys: Optional[List[PublicKey]] = field(
         default=None, metadata=config(field_name="deviceKeys")
     )
-    resets: Optional[Optional[List[ResetSummary]]] = field(
+    resets: Optional[List[ResetSummary]] = field(
         default=None, metadata=config(field_name="resets")
     )
-    deleted_device_keys: Optional[Optional[List[PublicKey]]] = field(
+    deleted_device_keys: Optional[List[PublicKey]] = field(
         default=None, metadata=config(field_name="deletedDeviceKeys")
     )
-    per_user_keys: Optional[Optional[List[PerUserKey]]] = field(
+    per_user_keys: Optional[List[PerUserKey]] = field(
         default=None, metadata=config(field_name="perUserKeys")
     )
-    revoked_device_keys: Optional[Optional[List[RevokedKey]]] = field(
+    revoked_device_keys: Optional[List[RevokedKey]] = field(
         default=None, metadata=config(field_name="revokedDeviceKeys")
     )
 
@@ -6028,35 +6564,35 @@ class ExtendedStatus(DataClassJsonMixin):
         metadata=config(field_name="passphraseStreamCached")
     )
     default_username: str = field(metadata=config(field_name="defaultUsername"))
-    local_db_stats: Optional[Optional[List[str]]] = field(
+    local_db_stats: Optional[List[str]] = field(
         default=None, metadata=config(field_name="localDbStats")
     )
-    provisioned_usernames: Optional[Optional[List[str]]] = field(
+    provisioned_usernames: Optional[List[str]] = field(
         default=None, metadata=config(field_name="provisionedUsernames")
     )
-    clients: Optional[Optional[List[ClientStatus]]] = field(
+    clients: Optional[List[ClientStatus]] = field(
         default=None, metadata=config(field_name="Clients")
     )
-    device_ek_names: Optional[Optional[List[str]]] = field(
+    device_ek_names: Optional[List[str]] = field(
         default=None, metadata=config(field_name="deviceEkNames")
     )
     device_err: Optional[LoadDeviceErr] = field(
         default=None, metadata=config(field_name="deviceErr")
     )
     device: Optional[Device] = field(default=None, metadata=config(field_name="device"))
-    configured_accounts: Optional[Optional[List[ConfiguredAccount]]] = field(
+    configured_accounts: Optional[List[ConfiguredAccount]] = field(
         default=None, metadata=config(field_name="configuredAccounts")
     )
-    local_chat_db_stats: Optional[Optional[List[str]]] = field(
+    local_chat_db_stats: Optional[List[str]] = field(
         default=None, metadata=config(field_name="localChatDbStats")
     )
-    local_block_cache_db_stats: Optional[Optional[List[str]]] = field(
+    local_block_cache_db_stats: Optional[List[str]] = field(
         default=None, metadata=config(field_name="localBlockCacheDbStats")
     )
-    local_sync_cache_db_stats: Optional[Optional[List[str]]] = field(
+    local_sync_cache_db_stats: Optional[List[str]] = field(
         default=None, metadata=config(field_name="localSyncCacheDbStats")
     )
-    cache_dir_size_info: Optional[Optional[List[DirSizeInfo]]] = field(
+    cache_dir_size_info: Optional[List[DirSizeInfo]] = field(
         default=None, metadata=config(field_name="cacheDirSizeInfo")
     )
     session: Optional[SessionStatus] = field(
@@ -6066,10 +6602,10 @@ class ExtendedStatus(DataClassJsonMixin):
 
 @dataclass
 class ContactListResolutionResult(DataClassJsonMixin):
-    newly_resolved: Optional[Optional[List[ProcessedContact]]] = field(
+    newly_resolved: Optional[List[ProcessedContact]] = field(
         default=None, metadata=config(field_name="newlyResolved")
     )
-    resolved: Optional[Optional[List[ProcessedContact]]] = field(
+    resolved: Optional[List[ProcessedContact]] = field(
         default=None, metadata=config(field_name="resolved")
     )
 
@@ -6113,7 +6649,7 @@ class GitLocalMetadata(DataClassJsonMixin):
     previous_repo_name: GitRepoName = field(
         metadata=config(field_name="previousRepoName")
     )
-    refs: Optional[Optional[List[GitRefMetadata]]] = field(
+    refs: Optional[List[GitRefMetadata]] = field(
         default=None, metadata=config(field_name="refs")
     )
 
@@ -6128,20 +6664,28 @@ HomeScreenItemDataExt = Union[HomeScreenItemDataExt__TODO]
 
 
 @dataclass
+class HomeScreenPeopleNotificationFollowedMulti(DataClassJsonMixin):
+    num_others: int = field(metadata=config(field_name="numOthers"))
+    followers: Optional[List[HomeScreenPeopleNotificationFollowed]] = field(
+        default=None, metadata=config(field_name="followers")
+    )
+
+
+@dataclass
 class Identity(DataClassJsonMixin):
     when_last_tracked: Time = field(metadata=config(field_name="whenLastTracked"))
     breaks_tracking: bool = field(metadata=config(field_name="breaksTracking"))
     status: Optional[Status] = field(default=None, metadata=config(field_name="status"))
-    proofs: Optional[Optional[List[IdentifyRow]]] = field(
+    proofs: Optional[List[IdentifyRow]] = field(
         default=None, metadata=config(field_name="proofs")
     )
-    cryptocurrency: Optional[Optional[List[Cryptocurrency]]] = field(
+    cryptocurrency: Optional[List[Cryptocurrency]] = field(
         default=None, metadata=config(field_name="cryptocurrency")
     )
-    revoked: Optional[Optional[List[TrackDiff]]] = field(
+    revoked: Optional[List[TrackDiff]] = field(
         default=None, metadata=config(field_name="revoked")
     )
-    revoked_details: Optional[Optional[List[RevokedProof]]] = field(
+    revoked_details: Optional[List[RevokedProof]] = field(
         default=None, metadata=config(field_name="revokedDetails")
     )
 
@@ -6168,13 +6712,13 @@ class LinkCheckResult(DataClassJsonMixin):
 
 @dataclass
 class ServicesStatus(DataClassJsonMixin):
-    service: Optional[Optional[List[ServiceStatus]]] = field(
+    service: Optional[List[ServiceStatus]] = field(
         default=None, metadata=config(field_name="service")
     )
-    kbfs: Optional[Optional[List[ServiceStatus]]] = field(
+    kbfs: Optional[List[ServiceStatus]] = field(
         default=None, metadata=config(field_name="kbfs")
     )
-    updater: Optional[Optional[List[ServiceStatus]]] = field(
+    updater: Optional[List[ServiceStatus]] = field(
         default=None, metadata=config(field_name="updater")
     )
 
@@ -6183,7 +6727,7 @@ class ServicesStatus(DataClassJsonMixin):
 class InstallResult(DataClassJsonMixin):
     status: Status = field(metadata=config(field_name="status"))
     fatal: bool = field(metadata=config(field_name="fatal"))
-    component_results: Optional[Optional[List[ComponentResult]]] = field(
+    component_results: Optional[List[ComponentResult]] = field(
         default=None, metadata=config(field_name="componentResults")
     )
 
@@ -6191,7 +6735,7 @@ class InstallResult(DataClassJsonMixin):
 @dataclass
 class UninstallResult(DataClassJsonMixin):
     status: Status = field(metadata=config(field_name="status"))
-    component_results: Optional[Optional[List[ComponentResult]]] = field(
+    component_results: Optional[List[ComponentResult]] = field(
         default=None, metadata=config(field_name="componentResults")
     )
 
@@ -6200,7 +6744,7 @@ class UninstallResult(DataClassJsonMixin):
 class ProblemSet(DataClassJsonMixin):
     user: User = field(metadata=config(field_name="user"))
     kid: KID = field(metadata=config(field_name="kid"))
-    tlfs: Optional[Optional[List[ProblemTLF]]] = field(
+    tlfs: Optional[List[ProblemTLF]] = field(
         default=None, metadata=config(field_name="tlfs")
     )
 
@@ -6249,7 +6793,7 @@ class DirentWithRevision(DataClassJsonMixin):
 @dataclass
 class SimpleFSListResult(DataClassJsonMixin):
     progress: Progress = field(metadata=config(field_name="progress"))
-    entries: Optional[Optional[List[Dirent]]] = field(
+    entries: Optional[List[Dirent]] = field(
         default=None, metadata=config(field_name="entries")
     )
 
@@ -6262,22 +6806,22 @@ class FolderSyncConfigAndStatus(DataClassJsonMixin):
 
 @dataclass
 class TeamMembersDetails(DataClassJsonMixin):
-    owners: Optional[Optional[List[TeamMemberDetails]]] = field(
+    owners: Optional[List[TeamMemberDetails]] = field(
         default=None, metadata=config(field_name="owners")
     )
-    admins: Optional[Optional[List[TeamMemberDetails]]] = field(
+    admins: Optional[List[TeamMemberDetails]] = field(
         default=None, metadata=config(field_name="admins")
     )
-    writers: Optional[Optional[List[TeamMemberDetails]]] = field(
+    writers: Optional[List[TeamMemberDetails]] = field(
         default=None, metadata=config(field_name="writers")
     )
-    readers: Optional[Optional[List[TeamMemberDetails]]] = field(
+    readers: Optional[List[TeamMemberDetails]] = field(
         default=None, metadata=config(field_name="readers")
     )
-    bots: Optional[Optional[List[TeamMemberDetails]]] = field(
+    bots: Optional[List[TeamMemberDetails]] = field(
         default=None, metadata=config(field_name="bots")
     )
-    restricted_bots: Optional[Optional[List[TeamMemberDetails]]] = field(
+    restricted_bots: Optional[List[TeamMemberDetails]] = field(
         default=None, metadata=config(field_name="restrictedBots")
     )
 
@@ -6331,6 +6875,14 @@ class UserLogPoint(DataClassJsonMixin):
 
 
 @dataclass
+class AnnotatedTeamUsedInviteLogPoint(DataClassJsonMixin):
+    username: str = field(metadata=config(field_name="username"))
+    team_used_invite_log_point: TeamUsedInviteLogPoint = field(
+        metadata=config(field_name="teamUsedInviteLogPoint")
+    )
+
+
+@dataclass
 class SeitanKeyAndLabel__V1(DataClassJsonMixin):
     v: Literal[SeitanKeyAndLabelVersionStrings.V1]
     V1: Optional[SeitanKeyAndLabelVersion1]
@@ -6342,7 +6894,15 @@ class SeitanKeyAndLabel__V2(DataClassJsonMixin):
     V2: Optional[SeitanKeyAndLabelVersion2]
 
 
-SeitanKeyAndLabel = Union[SeitanKeyAndLabel__V1, SeitanKeyAndLabel__V2]
+@dataclass
+class SeitanKeyAndLabel__Invitelink(DataClassJsonMixin):
+    v: Literal[SeitanKeyAndLabelVersionStrings.Invitelink]
+    Invitelink: Optional[SeitanKeyAndLabelInvitelink]
+
+
+SeitanKeyAndLabel = Union[
+    SeitanKeyAndLabel__V1, SeitanKeyAndLabel__V2, SeitanKeyAndLabel__Invitelink
+]
 
 
 @dataclass
@@ -6367,31 +6927,21 @@ class LoadTeamArg(DataClassJsonMixin):
 
 @dataclass
 class TeamList(DataClassJsonMixin):
-    teams: Optional[Optional[List[MemberInfo]]] = field(
-        default=None, metadata=config(field_name="teams")
-    )
-
-
-@dataclass
-class AnnotatedTeamList(DataClassJsonMixin):
-    annotated_active_invites: Dict[str, AnnotatedTeamInvite] = field(
-        metadata=config(field_name="annotatedActiveInvites")
-    )
-    teams: Optional[Optional[List[AnnotatedMemberInfo]]] = field(
+    teams: Optional[List[MemberInfo]] = field(
         default=None, metadata=config(field_name="teams")
     )
 
 
 @dataclass
 class TeamTreeResult(DataClassJsonMixin):
-    entries: Optional[Optional[List[TeamTreeEntry]]] = field(
+    entries: Optional[List[TeamTreeEntry]] = field(
         default=None, metadata=config(field_name="entries")
     )
 
 
 @dataclass
 class SubteamListResult(DataClassJsonMixin):
-    entries: Optional[Optional[List[SubteamListEntry]]] = field(
+    entries: Optional[List[SubteamListEntry]] = field(
         default=None, metadata=config(field_name="entries")
     )
 
@@ -6419,6 +6969,15 @@ class AnnotatedTeamMemberDetails(DataClassJsonMixin):
 
 
 @dataclass
+class TeamTreeMembership(DataClassJsonMixin):
+    team_name: str = field(metadata=config(field_name="teamName"))
+    result: TeamTreeMembershipResult = field(metadata=config(field_name="result"))
+    target_team_id: TeamID = field(metadata=config(field_name="targetTeamID"))
+    target_username: str = field(metadata=config(field_name="targetUsername"))
+    guid: int = field(metadata=config(field_name="guid"))
+
+
+@dataclass
 class PublicKeyV2Base(DataClassJsonMixin):
     kid: KID = field(metadata=config(field_name="kid"))
     is_sibkey: bool = field(metadata=config(field_name="isSibkey"))
@@ -6432,22 +6991,9 @@ class PublicKeyV2Base(DataClassJsonMixin):
 
 
 @dataclass
-class UserSummary(DataClassJsonMixin):
-    uid: UID = field(metadata=config(field_name="uid"))
-    username: str = field(metadata=config(field_name="username"))
-    thumbnail: str = field(metadata=config(field_name="thumbnail"))
-    id_version: int = field(metadata=config(field_name="idVersion"))
-    full_name: str = field(metadata=config(field_name="fullName"))
-    bio: str = field(metadata=config(field_name="bio"))
-    proofs: Proofs = field(metadata=config(field_name="proofs"))
-    sig_id_display: str = field(metadata=config(field_name="sigIDDisplay"))
-    track_time: Time = field(metadata=config(field_name="trackTime"))
-
-
-@dataclass
 class ProofSuggestionsRes(DataClassJsonMixin):
     show_more: bool = field(metadata=config(field_name="showMore"))
-    suggestions: Optional[Optional[List[ProofSuggestion]]] = field(
+    suggestions: Optional[List[ProofSuggestion]] = field(
         default=None, metadata=config(field_name="suggestions")
     )
 
@@ -6485,21 +7031,41 @@ class NonUserDetails(DataClassJsonMixin):
     service: Optional[APIUserServiceResult] = field(
         default=None, metadata=config(field_name="service")
     )
-    site_icon: Optional[Optional[List[SizedImage]]] = field(
+    site_icon: Optional[List[SizedImage]] = field(
         default=None, metadata=config(field_name="siteIcon")
     )
-    site_icon_full: Optional[Optional[List[SizedImage]]] = field(
+    site_icon_darkmode: Optional[List[SizedImage]] = field(
+        default=None, metadata=config(field_name="siteIconDarkmode")
+    )
+    site_icon_full: Optional[List[SizedImage]] = field(
         default=None, metadata=config(field_name="siteIconFull")
     )
-    site_icon_white: Optional[Optional[List[SizedImage]]] = field(
-        default=None, metadata=config(field_name="siteIconWhite")
+    site_icon_full_darkmode: Optional[List[SizedImage]] = field(
+        default=None, metadata=config(field_name="siteIconFullDarkmode")
+    )
+
+
+@dataclass
+class WotVouch(DataClassJsonMixin):
+    status: WotStatusType = field(metadata=config(field_name="status"))
+    vouch_proof: SigID = field(metadata=config(field_name="vouchProof"))
+    vouchee: UserVersion = field(metadata=config(field_name="vouchee"))
+    vouchee_username: str = field(metadata=config(field_name="voucheeUsername"))
+    voucher: UserVersion = field(metadata=config(field_name="voucher"))
+    voucher_username: str = field(metadata=config(field_name="voucherUsername"))
+    vouched_at: Time = field(metadata=config(field_name="vouchedAt"))
+    vouch_texts: Optional[List[str]] = field(
+        default=None, metadata=config(field_name="vouchTexts")
+    )
+    confidence: Optional[Confidence] = field(
+        default=None, metadata=config(field_name="confidence")
     )
 
 
 @dataclass
 class DowngradeReferenceRes(DataClassJsonMixin):
     failed: BlockReference = field(metadata=config(field_name="failed"))
-    completed: Optional[Optional[List[BlockReferenceCount]]] = field(
+    completed: Optional[List[BlockReferenceCount]] = field(
         default=None, metadata=config(field_name="completed")
     )
 
@@ -6507,10 +7073,10 @@ class DowngradeReferenceRes(DataClassJsonMixin):
 @dataclass
 class UserPlusAllKeys(DataClassJsonMixin):
     base: UserPlusKeys = field(metadata=config(field_name="base"))
-    pgp_keys: Optional[Optional[List[PublicKey]]] = field(
+    pgp_keys: Optional[List[PublicKey]] = field(
         default=None, metadata=config(field_name="pgpKeys")
     )
-    remote_tracks: Optional[Optional[List[RemoteTrack]]] = field(
+    remote_tracks: Optional[List[RemoteTrack]] = field(
         default=None, metadata=config(field_name="remoteTracks")
     )
 
@@ -6534,7 +7100,7 @@ class FullStatus(DataClassJsonMixin):
 class FolderNormalView(DataClassJsonMixin):
     resolving_conflict: bool = field(metadata=config(field_name="resolvingConflict"))
     stuck_in_conflict: bool = field(metadata=config(field_name="stuckInConflict"))
-    local_views: Optional[Optional[List[Path]]] = field(
+    local_views: Optional[List[Path]] = field(
         default=None, metadata=config(field_name="localViews")
     )
 
@@ -6563,10 +7129,35 @@ class GitRepoInfo(DataClassJsonMixin):
 
 
 @dataclass
-class HomeScreenPeopleNotificationFollowed(DataClassJsonMixin):
-    follow_time: Time = field(metadata=config(field_name="followTime"))
-    followed_back: bool = field(metadata=config(field_name="followedBack"))
-    user: UserSummary = field(metadata=config(field_name="user"))
+class HomeScreenPeopleNotification__FOLLOWED(DataClassJsonMixin):
+    t: Literal[HomeScreenPeopleNotificationTypeStrings.FOLLOWED]
+    FOLLOWED: Optional[HomeScreenPeopleNotificationFollowed]
+
+
+@dataclass
+class HomeScreenPeopleNotification__FOLLOWED_MULTI(DataClassJsonMixin):
+    t: Literal[HomeScreenPeopleNotificationTypeStrings.FOLLOWED_MULTI]
+    FOLLOWED_MULTI: Optional[HomeScreenPeopleNotificationFollowedMulti]
+
+
+@dataclass
+class HomeScreenPeopleNotification__CONTACT(DataClassJsonMixin):
+    t: Literal[HomeScreenPeopleNotificationTypeStrings.CONTACT]
+    CONTACT: Optional[HomeScreenPeopleNotificationContact]
+
+
+@dataclass
+class HomeScreenPeopleNotification__CONTACT_MULTI(DataClassJsonMixin):
+    t: Literal[HomeScreenPeopleNotificationTypeStrings.CONTACT_MULTI]
+    CONTACT_MULTI: Optional[HomeScreenPeopleNotificationContactMulti]
+
+
+HomeScreenPeopleNotification = Union[
+    HomeScreenPeopleNotification__FOLLOWED,
+    HomeScreenPeopleNotification__FOLLOWED_MULTI,
+    HomeScreenPeopleNotification__CONTACT,
+    HomeScreenPeopleNotification__CONTACT_MULTI,
+]
 
 
 @dataclass
@@ -6578,7 +7169,7 @@ class IdentifyProofBreak(DataClassJsonMixin):
 @dataclass
 class ProblemSetDevices(DataClassJsonMixin):
     problem_set: ProblemSet = field(metadata=config(field_name="problemSet"))
-    devices: Optional[Optional[List[Device]]] = field(
+    devices: Optional[List[Device]] = field(
         default=None, metadata=config(field_name="devices")
     )
 
@@ -6625,6 +7216,9 @@ class CopyArgs(DataClassJsonMixin):
     op_id: OpID = field(metadata=config(field_name="opID"))
     src: Path = field(metadata=config(field_name="src"))
     dest: Path = field(metadata=config(field_name="dest"))
+    overwrite_existing_files: bool = field(
+        metadata=config(field_name="overwriteExistingFiles")
+    )
 
 
 @dataclass
@@ -6632,6 +7226,9 @@ class MoveArgs(DataClassJsonMixin):
     op_id: OpID = field(metadata=config(field_name="opID"))
     src: Path = field(metadata=config(field_name="src"))
     dest: Path = field(metadata=config(field_name="dest"))
+    overwrite_existing_files: bool = field(
+        metadata=config(field_name="overwriteExistingFiles")
+    )
 
 
 @dataclass
@@ -6644,23 +7241,9 @@ class GetRevisionsArgs(DataClassJsonMixin):
 @dataclass
 class GetRevisionsResult(DataClassJsonMixin):
     progress: Progress = field(metadata=config(field_name="progress"))
-    revisions: Optional[Optional[List[DirentWithRevision]]] = field(
+    revisions: Optional[List[DirentWithRevision]] = field(
         default=None, metadata=config(field_name="revisions")
     )
-
-
-@dataclass
-class TeamDetails(DataClassJsonMixin):
-    name: str = field(metadata=config(field_name="name"))
-    members: TeamMembersDetails = field(metadata=config(field_name="members"))
-    key_generation: PerTeamKeyGeneration = field(
-        metadata=config(field_name="keyGeneration")
-    )
-    annotated_active_invites: Dict[str, AnnotatedTeamInvite] = field(
-        metadata=config(field_name="annotatedActiveInvites")
-    )
-    settings: TeamSettings = field(metadata=config(field_name="settings"))
-    showcase: TeamShowcase = field(metadata=config(field_name="showcase"))
 
 
 @dataclass
@@ -6694,6 +7277,23 @@ class HiddenTeamChain(DataClassJsonMixin):
     need_rotate: bool = field(metadata=config(field_name="needRotate"))
     merkle_roots: Dict[str, MerkleRootV2] = field(
         metadata=config(field_name="merkleRoots")
+    )
+
+
+@dataclass
+class AnnotatedTeamInvite(DataClassJsonMixin):
+    invite: TeamInvite = field(metadata=config(field_name="invite"))
+    display_name: TeamInviteDisplayName = field(
+        metadata=config(field_name="displayName")
+    )
+    inviter_username: str = field(metadata=config(field_name="inviterUsername"))
+    invitee_uv: UserVersion = field(metadata=config(field_name="inviteeUv"))
+    team_name: str = field(metadata=config(field_name="teamName"))
+    status: Optional[TeamMemberStatus] = field(
+        default=None, metadata=config(field_name="status")
+    )
+    used_invites: Optional[List[AnnotatedTeamUsedInviteLogPoint]] = field(
+        default=None, metadata=config(field_name="usedInvites")
     )
 
 
@@ -6734,6 +7334,9 @@ class TeamSigChainState(DataClassJsonMixin):
     obsolete_invites: Dict[str, TeamInvite] = field(
         metadata=config(field_name="obsoleteInvites")
     )
+    used_invites: Dict[str, Optional[List[TeamUsedInviteLogPoint]]] = field(
+        metadata=config(field_name="usedInvites")
+    )
     open: bool = field(metadata=config(field_name="open"))
     open_team_join_as: TeamRole = field(metadata=config(field_name="openTeamJoinAs"))
     merkle_roots: Dict[str, MerkleRootV2] = field(
@@ -6742,10 +7345,10 @@ class TeamSigChainState(DataClassJsonMixin):
     parent_id: Optional[TeamID] = field(
         default=None, metadata=config(field_name="parentID")
     )
-    tlf_i_ds: Optional[Optional[List[TLFID]]] = field(
+    tlf_i_ds: Optional[List[TLFID]] = field(
         default=None, metadata=config(field_name="tlfIDs")
     )
-    name_log: Optional[Optional[List[TeamNameLogPoint]]] = field(
+    name_log: Optional[List[TeamNameLogPoint]] = field(
         default=None, metadata=config(field_name="nameLog")
     )
     head_merkle: Optional[MerkleRootV2] = field(
@@ -6764,33 +7367,11 @@ class LookupImplicitTeamRes(DataClassJsonMixin):
 
 
 @dataclass
-class AnnotatedTeam(DataClassJsonMixin):
-    team_id: TeamID = field(metadata=config(field_name="teamID"))
-    name: str = field(metadata=config(field_name="name"))
-    transitive_subteams_unverified: SubteamListResult = field(
-        metadata=config(field_name="transitiveSubteamsUnverified")
-    )
-    user_is_showcasing: bool = field(metadata=config(field_name="userIsShowcasing"))
-    tars_disabled: bool = field(metadata=config(field_name="tarsDisabled"))
-    settings: TeamSettings = field(metadata=config(field_name="settings"))
-    showcase: TeamShowcase = field(metadata=config(field_name="showcase"))
-    members: Optional[Optional[List[AnnotatedTeamMemberDetails]]] = field(
-        default=None, metadata=config(field_name="members")
-    )
-    invites: Optional[Optional[List[AnnotatedTeamInvite]]] = field(
-        default=None, metadata=config(field_name="invites")
-    )
-    join_requests: Optional[Optional[List[TeamJoinRequest]]] = field(
-        default=None, metadata=config(field_name="joinRequests")
-    )
-
-
-@dataclass
 class PublicKeyV2NaCl(DataClassJsonMixin):
     base: PublicKeyV2Base = field(metadata=config(field_name="base"))
     device_id: DeviceID = field(metadata=config(field_name="deviceID"))
     device_description: str = field(metadata=config(field_name="deviceDescription"))
-    device_type: str = field(metadata=config(field_name="deviceType"))
+    device_type: DeviceTypeV2 = field(metadata=config(field_name="deviceType"))
     parent: Optional[KID] = field(default=None, metadata=config(field_name="parent"))
 
 
@@ -6798,7 +7379,7 @@ class PublicKeyV2NaCl(DataClassJsonMixin):
 class PublicKeyV2PGPSummary(DataClassJsonMixin):
     base: PublicKeyV2Base = field(metadata=config(field_name="base"))
     fingerprint: PGPFingerprint = field(metadata=config(field_name="fingerprint"))
-    identities: Optional[Optional[List[PGPIdentity]]] = field(
+    identities: Optional[List[PGPIdentity]] = field(
         default=None, metadata=config(field_name="identities")
     )
 
@@ -6836,19 +7417,36 @@ GitRepoResult = Union[GitRepoResult__ERR, GitRepoResult__OK]
 
 
 @dataclass
-class HomeScreenPeopleNotificationFollowedMulti(DataClassJsonMixin):
-    num_others: int = field(metadata=config(field_name="numOthers"))
-    followers: Optional[Optional[List[HomeScreenPeopleNotificationFollowed]]] = field(
-        default=None, metadata=config(field_name="followers")
-    )
+class HomeScreenItemData__TODO(DataClassJsonMixin):
+    t: Literal[HomeScreenItemTypeStrings.TODO]
+    TODO: Optional[HomeScreenTodo]
+
+
+@dataclass
+class HomeScreenItemData__PEOPLE(DataClassJsonMixin):
+    t: Literal[HomeScreenItemTypeStrings.PEOPLE]
+    PEOPLE: Optional[HomeScreenPeopleNotification]
+
+
+@dataclass
+class HomeScreenItemData__ANNOUNCEMENT(DataClassJsonMixin):
+    t: Literal[HomeScreenItemTypeStrings.ANNOUNCEMENT]
+    ANNOUNCEMENT: Optional[HomeScreenAnnouncement]
+
+
+HomeScreenItemData = Union[
+    HomeScreenItemData__TODO,
+    HomeScreenItemData__PEOPLE,
+    HomeScreenItemData__ANNOUNCEMENT,
+]
 
 
 @dataclass
 class IdentifyTrackBreaks(DataClassJsonMixin):
-    keys: Optional[Optional[List[IdentifyKey]]] = field(
+    keys: Optional[List[IdentifyKey]] = field(
         default=None, metadata=config(field_name="keys")
     )
-    proofs: Optional[Optional[List[IdentifyProofBreak]]] = field(
+    proofs: Optional[List[IdentifyProofBreak]] = field(
         default=None, metadata=config(field_name="proofs")
     )
 
@@ -6921,6 +7519,20 @@ OpDescription = Union[
 
 
 @dataclass
+class TeamDetails(DataClassJsonMixin):
+    name: str = field(metadata=config(field_name="name"))
+    members: TeamMembersDetails = field(metadata=config(field_name="members"))
+    key_generation: PerTeamKeyGeneration = field(
+        metadata=config(field_name="keyGeneration")
+    )
+    annotated_active_invites: Dict[str, AnnotatedTeamInvite] = field(
+        metadata=config(field_name="annotatedActiveInvites")
+    )
+    settings: TeamSettings = field(metadata=config(field_name="settings"))
+    showcase: TeamShowcase = field(metadata=config(field_name="showcase"))
+
+
+@dataclass
 class TeamData(DataClassJsonMixin):
     chain: TeamSigChainState = field(metadata=config(field_name="chain"))
     subversion: int = field(metadata=config(field_name="v"))
@@ -6942,8 +7554,39 @@ class TeamData(DataClassJsonMixin):
 
 
 @dataclass
+class AnnotatedTeamList(DataClassJsonMixin):
+    annotated_active_invites: Dict[str, AnnotatedTeamInvite] = field(
+        metadata=config(field_name="annotatedActiveInvites")
+    )
+    teams: Optional[List[AnnotatedMemberInfo]] = field(
+        default=None, metadata=config(field_name="teams")
+    )
+
+
+@dataclass
 class TeamDebugRes(DataClassJsonMixin):
     chain: TeamSigChainState = field(metadata=config(field_name="chain"))
+
+
+@dataclass
+class AnnotatedTeam(DataClassJsonMixin):
+    team_id: TeamID = field(metadata=config(field_name="teamID"))
+    name: str = field(metadata=config(field_name="name"))
+    transitive_subteams_unverified: SubteamListResult = field(
+        metadata=config(field_name="transitiveSubteamsUnverified")
+    )
+    tars_disabled: bool = field(metadata=config(field_name="tarsDisabled"))
+    settings: TeamSettings = field(metadata=config(field_name="settings"))
+    showcase: TeamShowcase = field(metadata=config(field_name="showcase"))
+    members: Optional[List[AnnotatedTeamMemberDetails]] = field(
+        default=None, metadata=config(field_name="members")
+    )
+    invites: Optional[List[AnnotatedTeamInvite]] = field(
+        default=None, metadata=config(field_name="invites")
+    )
+    join_requests: Optional[List[TeamJoinRequest]] = field(
+        default=None, metadata=config(field_name="joinRequests")
+    )
 
 
 @dataclass
@@ -6980,7 +7623,7 @@ class UserPlusKeysV2(DataClassJsonMixin):
     stellar_account_id: Optional[str] = field(
         default=None, metadata=config(field_name="stellarAccountID")
     )
-    per_user_keys: Optional[Optional[List[PerUserKey]]] = field(
+    per_user_keys: Optional[List[PerUserKey]] = field(
         default=None, metadata=config(field_name="perUserKeys")
     )
     reset: Optional[ResetSummary] = field(
@@ -7011,7 +7654,7 @@ class Folder(DataClassJsonMixin):
     team_id: Optional[TeamID] = field(
         default=None, metadata=config(field_name="team_id")
     )
-    reset_members: Optional[Optional[List[User]]] = field(
+    reset_members: Optional[List[User]] = field(
         default=None, metadata=config(field_name="reset_members")
     )
     mtime: Optional[Time] = field(default=None, metadata=config(field_name="mtime"))
@@ -7024,35 +7667,10 @@ class Folder(DataClassJsonMixin):
 
 
 @dataclass
-class HomeScreenPeopleNotification__FOLLOWED(DataClassJsonMixin):
-    t: Literal[HomeScreenPeopleNotificationTypeStrings.FOLLOWED]
-    FOLLOWED: Optional[HomeScreenPeopleNotificationFollowed]
-
-
-@dataclass
-class HomeScreenPeopleNotification__FOLLOWED_MULTI(DataClassJsonMixin):
-    t: Literal[HomeScreenPeopleNotificationTypeStrings.FOLLOWED_MULTI]
-    FOLLOWED_MULTI: Optional[HomeScreenPeopleNotificationFollowedMulti]
-
-
-@dataclass
-class HomeScreenPeopleNotification__CONTACT(DataClassJsonMixin):
-    t: Literal[HomeScreenPeopleNotificationTypeStrings.CONTACT]
-    CONTACT: Optional[HomeScreenPeopleNotificationContact]
-
-
-@dataclass
-class HomeScreenPeopleNotification__CONTACT_MULTI(DataClassJsonMixin):
-    t: Literal[HomeScreenPeopleNotificationTypeStrings.CONTACT_MULTI]
-    CONTACT_MULTI: Optional[HomeScreenPeopleNotificationContactMulti]
-
-
-HomeScreenPeopleNotification = Union[
-    HomeScreenPeopleNotification__FOLLOWED,
-    HomeScreenPeopleNotification__FOLLOWED_MULTI,
-    HomeScreenPeopleNotification__CONTACT,
-    HomeScreenPeopleNotification__CONTACT_MULTI,
-]
+class HomeScreenItem(DataClassJsonMixin):
+    badged: bool = field(metadata=config(field_name="badged"))
+    data: HomeScreenItemData = field(metadata=config(field_name="data"))
+    data_ext: HomeScreenItemDataExt = field(metadata=config(field_name="dataExt"))
 
 
 @dataclass
@@ -7080,7 +7698,7 @@ class ResolveIdentifyImplicitTeamRes(DataClassJsonMixin):
         metadata=config(field_name="trackBreaks")
     )
     folder_id: TLFID = field(metadata=config(field_name="folderID"))
-    writers: Optional[Optional[List[UserVersion]]] = field(
+    writers: Optional[List[UserVersion]] = field(
         default=None, metadata=config(field_name="writers")
     )
 
@@ -7102,7 +7720,7 @@ class UserPlusKeysV2AllIncarnations(DataClassJsonMixin):
     )
     minor_version: UPK2MinorVersion = field(metadata=config(field_name="minorVersion"))
     stale: bool = field(metadata=config(field_name="stale"))
-    past_incarnations: Optional[Optional[List[UserPlusKeysV2]]] = field(
+    past_incarnations: Optional[List[UserPlusKeysV2]] = field(
         default=None, metadata=config(field_name="pastIncarnations")
     )
 
@@ -7116,47 +7734,38 @@ class UPKLiteV1AllIncarnations(DataClassJsonMixin):
     minor_version: UPKLiteMinorVersion = field(
         metadata=config(field_name="minorVersion")
     )
-    past_incarnations: Optional[Optional[List[UPKLiteV1]]] = field(
+    past_incarnations: Optional[List[UPKLiteV1]] = field(
         default=None, metadata=config(field_name="pastIncarnations")
     )
 
 
 @dataclass
 class FavoritesResult(DataClassJsonMixin):
-    favorite_folders: Optional[Optional[List[Folder]]] = field(
+    favorite_folders: Optional[List[Folder]] = field(
         default=None, metadata=config(field_name="favoriteFolders")
     )
-    ignored_folders: Optional[Optional[List[Folder]]] = field(
+    ignored_folders: Optional[List[Folder]] = field(
         default=None, metadata=config(field_name="ignoredFolders")
     )
-    new_folders: Optional[Optional[List[Folder]]] = field(
+    new_folders: Optional[List[Folder]] = field(
         default=None, metadata=config(field_name="newFolders")
     )
 
 
 @dataclass
-class HomeScreenItemData__TODO(DataClassJsonMixin):
-    t: Literal[HomeScreenItemTypeStrings.TODO]
-    TODO: Optional[HomeScreenTodo]
-
-
-@dataclass
-class HomeScreenItemData__PEOPLE(DataClassJsonMixin):
-    t: Literal[HomeScreenItemTypeStrings.PEOPLE]
-    PEOPLE: Optional[HomeScreenPeopleNotification]
-
-
-@dataclass
-class HomeScreenItemData__ANNOUNCEMENT(DataClassJsonMixin):
-    t: Literal[HomeScreenItemTypeStrings.ANNOUNCEMENT]
-    ANNOUNCEMENT: Optional[HomeScreenAnnouncement]
-
-
-HomeScreenItemData = Union[
-    HomeScreenItemData__TODO,
-    HomeScreenItemData__PEOPLE,
-    HomeScreenItemData__ANNOUNCEMENT,
-]
+class HomeScreen(DataClassJsonMixin):
+    last_viewed: Time = field(metadata=config(field_name="lastViewed"))
+    version: int = field(metadata=config(field_name="version"))
+    visits: int = field(metadata=config(field_name="visits"))
+    announcements_version: int = field(
+        metadata=config(field_name="announcementsVersion")
+    )
+    items: Optional[List[HomeScreenItem]] = field(
+        default=None, metadata=config(field_name="items")
+    )
+    follow_suggestions: Optional[List[HomeUserSummary]] = field(
+        default=None, metadata=config(field_name="followSuggestions")
+    )
 
 
 @dataclass
@@ -7178,7 +7787,7 @@ class FSEditListRequest(DataClassJsonMixin):
 class FSFolderEditHistory(DataClassJsonMixin):
     folder: Folder = field(metadata=config(field_name="folder"))
     server_time: Time = field(metadata=config(field_name="serverTime"))
-    history: Optional[Optional[List[FSFolderWriterEditHistory]]] = field(
+    history: Optional[List[FSFolderWriterEditHistory]] = field(
         default=None, metadata=config(field_name="history")
     )
 
@@ -7199,8 +7808,22 @@ class FolderWithFavFlags(DataClassJsonMixin):
 
 
 @dataclass
+class SimpleFSIndexProgress(DataClassJsonMixin):
+    overall_progress: IndexProgressRecord = field(
+        metadata=config(field_name="overallProgress")
+    )
+    curr_folder: Folder = field(metadata=config(field_name="currFolder"))
+    curr_progress: IndexProgressRecord = field(
+        metadata=config(field_name="currProgress")
+    )
+    folders_left: Optional[List[Folder]] = field(
+        default=None, metadata=config(field_name="foldersLeft")
+    )
+
+
+@dataclass
 class TLFBreak(DataClassJsonMixin):
-    breaks: Optional[Optional[List[TLFIdentifyFailure]]] = field(
+    breaks: Optional[List[TLFIdentifyFailure]] = field(
         default=None, metadata=config(field_name="breaks")
     )
 
@@ -7221,18 +7844,11 @@ UPAKVersioned = Union[UPAKVersioned__V1, UPAKVersioned__V2]
 
 
 @dataclass
-class HomeScreenItem(DataClassJsonMixin):
-    badged: bool = field(metadata=config(field_name="badged"))
-    data: HomeScreenItemData = field(metadata=config(field_name="data"))
-    data_ext: HomeScreenItemDataExt = field(metadata=config(field_name="dataExt"))
-
-
-@dataclass
 class SyncConfigAndStatusRes(DataClassJsonMixin):
     overall_status: FolderSyncStatus = field(
         metadata=config(field_name="overallStatus")
     )
-    folders: Optional[Optional[List[FolderSyncConfigAndStatusWithFolder]]] = field(
+    folders: Optional[List[FolderSyncConfigAndStatusWithFolder]] = field(
         default=None, metadata=config(field_name="folders")
     )
 
@@ -7247,26 +7863,10 @@ class CanonicalTLFNameAndIDWithBreaks(DataClassJsonMixin):
 
 
 @dataclass
-class HomeScreen(DataClassJsonMixin):
-    last_viewed: Time = field(metadata=config(field_name="lastViewed"))
-    version: int = field(metadata=config(field_name="version"))
-    visits: int = field(metadata=config(field_name="visits"))
-    announcements_version: int = field(
-        metadata=config(field_name="announcementsVersion")
-    )
-    items: Optional[Optional[List[HomeScreenItem]]] = field(
-        default=None, metadata=config(field_name="items")
-    )
-    follow_suggestions: Optional[Optional[List[HomeUserSummary]]] = field(
-        default=None, metadata=config(field_name="followSuggestions")
-    )
-
-
-@dataclass
 class GetTLFCryptKeysRes(DataClassJsonMixin):
     name_id_breaks: CanonicalTLFNameAndIDWithBreaks = field(
         metadata=config(field_name="nameIDBreaks")
     )
-    crypt_keys: Optional[Optional[List[CryptKey]]] = field(
+    crypt_keys: Optional[List[CryptKey]] = field(
         default=None, metadata=config(field_name="CryptKeys")
     )
