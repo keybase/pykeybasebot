@@ -16,7 +16,7 @@ exclude = ["tests/", "examples/"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-dataclasses-json = "^0.3.2"
+dataclasses-json = "^0.5.2"
 typing-extensions = "^3.7"
 
 [tool.poetry.dev-dependencies]
